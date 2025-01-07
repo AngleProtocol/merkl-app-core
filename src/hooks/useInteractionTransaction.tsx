@@ -16,6 +16,7 @@ export default function useInteractionTransaction(
   tokenIn?: Token,
   amount?: bigint,
   userAddress?: string,
+  slippage?: bigint,
 ) {
   const { address: connectedAddress, sponsorTransactions } = useWalletContext();
   const address = useMemo(() => userAddress ?? connectedAddress, [userAddress, connectedAddress]);
@@ -29,10 +30,11 @@ export default function useInteractionTransaction(
       protocolId,
       identifier: target?.identifier,
       userAddress: address,
+      slippage: slippage ? slippage.toString() : undefined,
       fromAmount: amount?.toString(),
       fromTokenAddress: tokenIn?.address,
     };
-  }, [chainId, protocolId, target, address, tokenIn, amount]);
+  }, [chainId, protocolId, target, address, tokenIn, slippage, amount]);
 
   const transaction = useMemo(() => {
     if (!payload) return;

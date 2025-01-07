@@ -27,6 +27,7 @@ export default function Token({
   icon = true,
   symbol = true,
   chain,
+  ...props
 }: TokenProps) {
   const amountFormatted = amount ? formatUnits(amount, token.decimals) : "0";
   const amountUSD = !amount ? 0 : (token.price ?? 0) * Number.parseFloat(amountFormatted ?? "0");
@@ -69,7 +70,7 @@ export default function Token({
 
   return (
     <Dropdown content={<TokenTooltip {...{ token, amount, chain, size }} />}>
-      <Button size={size} look="soft">
+      <Button {...props} size={size} look="soft">
         {display}
       </Button>
     </Dropdown>

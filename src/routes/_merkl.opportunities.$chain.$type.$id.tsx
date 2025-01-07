@@ -104,7 +104,7 @@ export default function Index() {
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
             )}
-            {!(merklConfig.hideInteractor ?? true) && (
+            {merklConfig.deposit && (
               <OpportunityParticipateModal opportunity={opportunity}>
                 <Button className="inline-flex" look="hype" size="md">
                   Supply

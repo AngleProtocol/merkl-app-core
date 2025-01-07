@@ -4,6 +4,7 @@ import { Button, Divider, Group, Image, Modal, Text, Title } from "packages/dapp
 import type { PropsWithChildren } from "react";
 import React from "react";
 
+import merklConfig from "merkl.config";
 import Participate from "../participate/Participate";
 export type OpportunityParticipateModalProps = {
   opportunity: Opportunity;
@@ -21,9 +22,9 @@ export default function OpportunityParticipateModal({ opportunity, children }: O
             displayLinks
             displayOpportunity
             displayMode="deposit"
-            hideInteractor={config?.hideInteractor ? config.hideInteractor : true}
+            hideInteractor={!config?.deposit}
           />
-          {!!config.supplyCredits && config.supplyCredits.length > 0 && (
+          {merklConfig.deposit && !!config.supplyCredits && config.supplyCredits.length > 0 && (
             <Text look="bold" className="flex gap-md items-center mx-auto">
               Powered by{" "}
               {config.supplyCredits.map(credit => (

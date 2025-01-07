@@ -65,6 +65,7 @@ export default function OpportunityLibrary({
       case "table":
         return (
           <OpportunityTable
+            exclude={["tvl"]}
             opportunityHeader={
               <Title className="!text-main-11" h={5}>
                 Opportunities

@@ -89,7 +89,7 @@ export default function ClaimRewardsChainTableRow({
           <Tag type="chain" value={reward.chain} />
           <Icon
             data-state={!open ? "closed" : "opened"}
-            className="transition duration-150 ease-out data-[state=opened]:rotate-180"
+            className=" data-[state=opened]:rotate-180"
             remix={"RiArrowDropDownLine"}
           />
           <EventBlocker>

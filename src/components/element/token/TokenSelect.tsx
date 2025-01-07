@@ -12,6 +12,7 @@ export type TokenSelectProps = {
 
 export default function TokenSelect({ tokens, balances, ...props }: TokenSelectProps) {
   const sortedTokens = useMemo(() => {
+    if (!tokens) return [];
     const tokensWithBalance = tokens
       .filter(({ balance }) => balance > 0)
       .sort((a, b) => {

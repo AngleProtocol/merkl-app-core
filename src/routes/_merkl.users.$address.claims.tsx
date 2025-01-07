@@ -13,7 +13,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 export default function Index() {
   const { claims } = useLoaderData<typeof loader>();
 
-  const claimWiped = claims.filter(claim => BigInt(claim.amount) > 0n);
+  const claimWiped = claims.filter(claim => claim.amount !== "0");
 
   return (
     <Container>

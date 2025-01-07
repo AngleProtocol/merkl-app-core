@@ -1,6 +1,7 @@
 import type { Opportunity } from "@merkl/api";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
 import config from "merkl.config";
+import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { Suspense, useMemo, useState } from "react";
@@ -18,6 +19,8 @@ export type ParticipateProps = {
   displayLinks?: boolean;
   hideInteractor?: boolean;
 };
+
+const DEFAULT_SLIPPAGE = 200n;
 
 export default function Participate({
   opportunity,
@@ -56,19 +59,14 @@ export default function Participate({
   //         </Button>
   //       );
   //   }
-  // }, [mode]);
+  // }, [mode]);    if (hideInteractor) return;
+
+  const [slippage, setSlippage] = useState(DEFAULT_SLIPPAGE);
 
   const interactor = useMemo(() => {
-    if (loading)
-      return (
-        <Group className="w-full justify-center">
-          <Icon remix="RiLoader2Line" className="animate-spin" />
-        </Group>
-      );
-    if (!targets?.length) return;
-
+    if (hideInteractor || loading || !targets?.length) return;
     return (
-      <Group className="mt-lg">
+      <Group className="mt-lg !gap-0">
         <Input.BigInt
           className="w-full gap-xs"
           inputClassName="font-title font-bold italic text-[clamp(38px,0.667vw+1.125rem,46px)] !leading-none"
@@ -95,7 +93,7 @@ export default function Participate({
                           size="sm"
                           look="bold"
                           format="0,0.###a">
-                          {Fmt.toNumber(inputToken?.balance, inputToken.decimals)}
+                          {Fmt.toNumber(inputToken?.balance, inputToken.decimals).toString()}
                         </Value>{" "}
                         {inputToken?.symbol}
                       </PrimitiveTag>
@@ -116,16 +114,57 @@ export default function Participate({
         />
         <Suspense>
           <Interact
+            onSuccess={() => setAmount(undefined)}
             disabled={!loading && !targets?.length}
             target={targets?.[0]}
+            slippage={slippage}
             inputToken={inputToken}
             amount={amount}
             opportunity={opportunity}
+            settings={
+              <Group className="justify-between w-full items-center">
+                <Text>Slippage</Text>
+                <Input.BigInt
+                  base={2}
+                  state={[slippage, setSlippage]}
+                  size="sm"
+                  className="max-w-[20ch] !rounded-sm+sm"
+                  prefix={
+                    <Group size="xs">
+                      {[50n, 100n, 200n].map(_slippage => (
+                        <PrimitiveTag
+                          key={_slippage}
+                          onClick={() => setSlippage(_slippage)}
+                          look={_slippage === slippage ? "hype" : "base"}
+                          size="xs">
+                          <Value value format="0.#%">
+                            {Fmt.toNumber(_slippage, 4)}
+                          </Value>
+                        </PrimitiveTag>
+                      ))}
+                    </Group>
+                  }
+                />
+              </Group>
+            }
           />
         </Suspense>
       </Group>
     );
-  }, [opportunity, mode, inputToken, loading, amount, tokenAddress, balance, targets, connected]);
+  }, [
+    opportunity,
+    hideInteractor,
+    mode,
+    inputToken,
+    slippage,
+    setSlippage,
+    loading,
+    amount,
+    tokenAddress,
+    balance,
+    targets,
+    connected,
+  ]);
 
   return (
     <>
@@ -146,7 +185,12 @@ export default function Participate({
           </Text>
         </Group>
       )}
-      {!hideInteractor && interactor}
+      {loading && (
+        <Group className="w-full justify-center">
+          <Icon remix="RiLoader2Line" className="animate-spin" />
+        </Group>
+      )}
+      <Collapsible state={[!!interactor]}>{interactor}</Collapsible>
     </>
   );
 }
