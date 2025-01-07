@@ -8,7 +8,7 @@ import type { OpportunityView } from "src/config/opportunity";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import useChains from "src/hooks/resources/useChains";
 import useProtocols from "src/hooks/resources/useProtocols";
-const filters = ["search", "action", "status", "chain", "protocol", "tvl"] as const;
+const filters = ["search", "action", "status", "chain", "protocol", "tvl", "sort"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
@@ -51,6 +51,46 @@ export default function OpportunityFilters({
         }),
       {},
     );
+
+  const sortOptions = {
+    "apr-asc": (
+      <Group>
+        By APR
+        <Icon remix="RiArrowUpLine" />
+      </Group>
+    ),
+    "apr-desc": (
+      <Group>
+        By APR
+        <Icon remix="RiArrowDownLine" />
+      </Group>
+    ),
+    "tvl-asc": (
+      <Group>
+        By TVL
+        <Icon remix="RiArrowUpLine" />
+      </Group>
+    ),
+    "tvl-desc": (
+      <Group>
+        By TVL
+        <Icon remix="RiArrowDownLine" />
+      </Group>
+    ),
+    "rewards-asc": (
+      <Group>
+        By rewards
+        <Icon remix="RiArrowUpLine" />
+      </Group>
+    ),
+    "rewards-desc": (
+      <Group>
+        By rewards
+        <Icon remix="RiArrowDownLine" />
+      </Group>
+    ),
+  };
+
   const statusOptions = {
     LIVE: (
       <>
@@ -77,7 +117,15 @@ export default function OpportunityFilters({
     v => v?.join(","),
     v => v?.split(","),
   );
+
   const [actionsInput, setActionsInput] = useState<string[]>(actionsFilter ?? []);
+
+  const [sortFilter] = useSearchParamState<string>(
+    "sort",
+    v => v,
+    v => v,
+  );
+  const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
 
   const [statusFilter] = useSearchParamState<string[]>(
     "status",
@@ -147,9 +195,10 @@ export default function OpportunityFilters({
     const sameStatus = isSameArray(statusInput, statusFilter);
     const sameProtocols = isSameArray(protocolInput, protocolFilter);
     const sameTvl = tvlFilter === tvlInput || tvlInput === "";
+    const sameSort = sortFilter === sortInput || sortInput === "";
     const sameSearch = (search ?? "") === innerSearch;
 
-    return [sameChains, sameActions, sameTvl, sameStatus, sameSearch, sameProtocols].some(v => v === false);
+    return [sameChains, sameActions, sameTvl, sameStatus, sameSearch, sameProtocols, sameSort].some(v => v === false);
   }, [
     chainIdsInput,
     chainIdsFilter,
@@ -163,6 +212,8 @@ export default function OpportunityFilters({
     statusInput,
     search,
     innerSearch,
+    sortFilter,
+    sortInput,
   ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
@@ -174,13 +225,13 @@ export default function OpportunityFilters({
   function onApplyFilters() {
     setApplying(true);
     setClearing(false);
-
     setSearchParams(params => {
       updateParams("chain", chainIdsInput, params);
       updateParams("action", actionsInput, params);
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
       tvlInput && updateParams("tvl", [tvlInput], params);
+      sortInput && updateParams("sort", [sortInput], params);
 
       return params;
     });
@@ -197,6 +248,7 @@ export default function OpportunityFilters({
     setActionsInput([]);
     setTvlInput("");
     setInnerSearch("");
+    setSortInput("");
   }
 
   useEffect(() => {
@@ -282,6 +334,9 @@ export default function OpportunityFilters({
                   placeholder="Minimum TVL"
                 />
               </Form>
+            )}
+            {view === "cells" && (
+              <Select state={[sortInput, setSortInput]} options={sortOptions} look="tint" placeholder="Sort by" />
             )}
           </Group>
           <Group
