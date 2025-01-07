@@ -14,7 +14,8 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { address } = useLoaderData<typeof loader>();
-  const { sortedRewards } = useOutletContext<OutletContextRewards>();
+  const { rewards: sortedRewards, onClaimSuccess } = useOutletContext<OutletContextRewards>();
+  
 
   return (
     <Container>
@@ -28,7 +29,7 @@ export default function Index() {
         </Group>
       )}
       <Space size="md" />
-      <ClaimRewardsLibrary from={address} rewards={sortedRewards} />
+      <ClaimRewardsLibrary from={address} rewards={sortedRewards} onClaimSuccess={onClaimSuccess} />
     </Container>
   );
 }

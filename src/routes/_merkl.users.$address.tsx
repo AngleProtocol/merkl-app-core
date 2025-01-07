@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, json, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
 import config from "merkl.config";
-import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
+import TransactionButton, { type TransactionButtonProps } from "packages/dappkit/src/components/dapp/TransactionButton";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useMemo } from "react";
 import { RewardService } from "src/api/services/reward.service";
@@ -38,13 +38,16 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   ];
 };
 
-export type OutletContextRewards = ReturnType<typeof useRewards>;
+export type OutletContextRewards = {
+  rewards: ReturnType<typeof useRewards>["sortedRewards"];
+  onClaimSuccess: TransactionButtonProps["onSuccess"];
+};
 
 export default function Index() {
   const { rewards: raw, address, token: rawToken } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof loader>();
 
-  const handleRefreshData = async () => {
+  const onClaimSuccess = async (_hash: string) => {
     await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
   };
 
@@ -151,7 +154,7 @@ export default function Index() {
                   look="hype"
                   size="lg"
                   tx={claimTransaction}
-                  onSuccess={_hash => handleRefreshData()}>
+                  onSuccess={onClaimSuccess}>
                   {isSingleChain ? "Claim Now" : `Claim on ${chain?.name}`}
                   <Icon remix="RiHandCoinFill" />
                 </TransactionButton>
@@ -193,7 +196,7 @@ export default function Index() {
       }
       description={""}
       tabs={tabs}>
-      <Outlet context={rewards} />
+      <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess } as OutletContextRewards} />
     </Hero>
   );
 }

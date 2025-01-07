@@ -52,9 +52,9 @@ export abstract class RewardService {
 
     // biome-ignore lint/suspicious/noExplicitAny: TODO
     const query: Record<string, any> = {
-      chainId: url.searchParams.get("chainId") ?? undefined,
       test: config.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
     };
+    if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
     if (chainIds) query.chainIds = chainIds;
     return await RewardService.#fetch(async () =>
       api.v4.users({ address }).rewards.breakdowns.get({

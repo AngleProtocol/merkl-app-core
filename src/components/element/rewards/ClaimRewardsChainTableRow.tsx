@@ -1,7 +1,7 @@
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
 import config from "merkl.config";
-import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
+import TransactionButton, { type TransactionButtonProps } from "packages/dappkit/src/components/dapp/TransactionButton";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
@@ -16,12 +16,14 @@ import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
 export type ClaimRewardsChainTableRowProps = Component<{
   from: string;
   reward: Reward;
+  onClaimSuccess: TransactionButtonProps["onSuccess"];
 }>;
 
 export default function ClaimRewardsChainTableRow({
   from,
   reward,
   className,
+  onClaimSuccess,
   ...props
 }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
@@ -99,7 +101,8 @@ export default function ClaimRewardsChainTableRow({
                   disabled={!claimTransaction}
                   className="ml-xl"
                   look="hype"
-                  tx={claimTransaction}>
+                  tx={claimTransaction}
+                  onSuccess={onClaimSuccess}>
                   Claim
                 </TransactionButton>
               ) : (
