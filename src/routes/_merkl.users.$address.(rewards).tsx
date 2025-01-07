@@ -15,7 +15,6 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 export default function Index() {
   const { address } = useLoaderData<typeof loader>();
   const { rewards: sortedRewards, onClaimSuccess } = useOutletContext<OutletContextRewards>();
-  
 
   return (
     <Container>
