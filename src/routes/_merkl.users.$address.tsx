@@ -168,19 +168,6 @@ export default function Index() {
           <Group className="flex-1 gap-xl md:gap-xl*4 items-center lg:justify-end">
             <Group className="flex-col">
               {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
-              ) : (
-                <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
-                  {rewards.earned}
-                </Value>
-              )}
-              <Text size="xl" bold className="not-italic">
-                Lifetime Earned
-              </Text>
-            </Group>
-
-            <Group className="flex-col">
-              {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
               ) : (
                 <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
@@ -189,6 +176,19 @@ export default function Index() {
               )}
               <Text size="xl" bold className="not-italic">
                 Pending Rewards
+              </Text>
+            </Group>
+
+            <Group className="flex-col">
+              {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
+                <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
+              ) : (
+                <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
+                  {rewards.earned + rewards.pending}
+                </Value>
+              )}
+              <Text size="xl" bold className="not-italic">
+                Lifetime Earned
               </Text>
             </Group>
           </Group>
