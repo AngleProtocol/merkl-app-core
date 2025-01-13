@@ -23,7 +23,7 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 export const clientLoader = Cache.wrap("chain", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: `${data?.chain?.name} on Merkl` }];
+  return [{ title: `${data?.chain?.name}` }];
 };
 
 export default function Index() {

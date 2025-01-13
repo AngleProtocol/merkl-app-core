@@ -1,5 +1,6 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { I18n } from "src/I18n";
 import { Cache } from "src/api/services/cache.service";
 import { ChainService } from "src/api/services/chain.service";
 import { OpportunityService } from "src/api/services/opportunity/opportunity.service";
@@ -33,9 +34,9 @@ export const clientLoader = Cache.wrap("token", 300);
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const symbol = data?.tokens?.[0]?.symbol;
 
-  if (!symbol) return [{ title: "Merkl" }];
+  if (!symbol) return [{ title: I18n.trad.get.pages.tokens.headTitle }];
 
-  return [{ title: `${symbol} on Merkl` }];
+  return [{ title: `${symbol}` }];
 };
 
 export default function Index() {

@@ -5,9 +5,10 @@ import Hero from "src/components/composite/Hero";
 import { v4 as uuidv4 } from "uuid";
 
 import { Outlet, json, useLoaderData } from "@remix-run/react";
+import { I18n } from "src/I18n";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Merkl | Protocols" }];
+  return [{ title: I18n.trad.get.pages.protocols.headTitle }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -22,9 +23,9 @@ export default function Index() {
   return (
     <Hero
       icons={[{ remix: "RiCommandLine", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
-      title={"Protocols"}
+      title={I18n.trad.get.pages.protocols.title}
       breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
-      description={"Explore protocols incentivized on Merkl"}
+      description={I18n.trad.get.pages.protocols.description}
       sideDatas={[
         {
           data: count,

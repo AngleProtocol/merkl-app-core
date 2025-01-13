@@ -33,7 +33,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   return [
     {
-      title: `${data?.address?.substring(0, 6)}…${data?.address.substring(data?.address.length - 4)} on Merkl`,
+      title: `${data?.address?.substring(0, 6)}…${data?.address.substring(data?.address.length - 4)}`,
     },
   ];
 };

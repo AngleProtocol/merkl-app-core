@@ -35,7 +35,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   return [
     {
-      title: `${data?.rawOpportunity.name} on Merkl`,
+      title: `${data?.rawOpportunity.name}`,
     },
   ];
 };

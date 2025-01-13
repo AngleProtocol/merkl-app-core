@@ -1,9 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
+import { I18n } from "src/I18n";
 import Hero from "src/components/composite/Hero";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Merkl | Tokens" }];
+  return [{ title: I18n.trad.get.pages.tokens.headTitle }];
 };
 
 export default function Index() {
@@ -12,7 +13,7 @@ export default function Index() {
       icons={[{ remix: "RiCoinFill" }]}
       title={"Tokens"}
       breadcrumbs={[{ link: "/tokens", name: "Tokens" }]}
-      description={"Tokens indexed by Merkl"}>
+      description={I18n.trad.get.pages.tokens.description}>
       <Outlet />
     </Hero>
   );

@@ -4,7 +4,7 @@ import { I18n } from "src/I18n";
 import Hero from "src/components/composite/Hero";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Merkl" }];
+  return [{ title: I18n.trad.get.pages.home.headTitle }];
 };
 
 export default function Index() {

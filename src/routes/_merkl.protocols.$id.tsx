@@ -2,6 +2,7 @@ import type { Opportunity } from "@merkl/api";
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
+import { I18n } from "src/I18n";
 import { Cache } from "src/api/services/cache.service";
 import { OpportunityService } from "src/api/services/opportunity/opportunity.service";
 import { ProtocolService } from "src/api/services/protocol.service";
@@ -61,7 +62,7 @@ export default function Index() {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  if (!data?.protocol) return [{ title: "Merkl" }];
+  if (!data?.protocol) return [{ title: I18n.trad.get.pages.protocols.headTitle }];
 
-  return [{ title: `${data?.protocol?.name} on Merkl` }];
+  return [{ title: `${data?.protocol?.name}` }];
 };

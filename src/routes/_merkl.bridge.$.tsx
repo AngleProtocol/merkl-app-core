@@ -6,7 +6,7 @@ import { I18n } from "src/I18n";
 import { LiFiWidget } from "src/components/composite/LiFiWidget.client";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Merkl" }];
+  return [{ title: I18n.trad.get.pages.bridge.headTitle }];
 };
 
 export default function Index() {
