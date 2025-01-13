@@ -157,7 +157,6 @@ export default function Participate({
     mode,
     inputToken,
     slippage,
-    setSlippage,
     loading,
     amount,
     tokenAddress,

@@ -56,7 +56,7 @@ export default function Interact({
     user,
     slippage,
   );
-  const [approvalHash, setApprovalHash] = useState<string>();
+  const [_approvalHash, setApprovalHash] = useState<string>();
   const { reload: reloadBalances } = useBalances();
 
   const currentInteraction = useMemo(() => {
@@ -133,11 +133,11 @@ export default function Interact({
     amount,
     transaction,
     disabled,
-    approvalHash,
     switchChain,
     user,
     txLoading,
     reload,
+    onSuccess,
   ]);
 
   const providerIcon = useMemo(() => {
