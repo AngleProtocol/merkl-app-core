@@ -60,7 +60,7 @@ export default function Index() {
 
   const { chainId, chains, address: user } = useWalletContext();
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
-  const reward = useMemo(() => raw.find(({ chain: { id } }) => id === chainId), [chainId, raw]);
+  const reward = useMemo(() => rawRewards.find(({ chain: { id } }) => id === chainId), [chainId, rawRewards]);
   const { claimTransaction } = useReward(reward, user);
 
   const isUserRewards = useMemo(() => user === address, [user, address]);
