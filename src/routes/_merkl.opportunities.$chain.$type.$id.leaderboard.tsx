@@ -1,7 +1,7 @@
 import type { Campaign } from "@merkl/api";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Box, Container, Group, Icon, OverrideTheme, PrimitiveTag, Select, Space, Title, Value } from "dappkit";
+import { Box, Container, Group, Icon, OverrideTheme, PrimitiveTag, Select, Space, Text, Title, Value } from "dappkit";
 import config from "merkl.config";
 import moment from "moment";
 import Time from "packages/dappkit/src/components/primitives/Time";
@@ -14,13 +14,6 @@ import LeaderboardLibrary from "src/components/element/leaderboard/LeaderboardLi
 import Token from "src/components/element/token/Token";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import { formatUnits, parseUnits } from "viem";
-
-export type DummyLeaderboard = {
-  rank: number;
-  address: string;
-  rewards: number;
-  protocol: string;
-};
 
 export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
@@ -124,6 +117,17 @@ export default function Index() {
               {totalRewardsInUsd}
             </Value>,
           ],
+          [
+            "Last Update",
+
+            <Text key="updated">
+              {selectedCampaign?.campaignStatus?.computedUntil ? (
+                <Time timestamp={Number(selectedCampaign?.campaignStatus?.computedUntil) * 1000} />
+              ) : (
+                "Never"
+              )}
+            </Text>,
+          ],
         ] as const
       ).map(([label, value]) => (
         <Box
@@ -139,7 +143,7 @@ export default function Index() {
           <Title h={3}>{value}</Title>
         </Box>
       )),
-    [totalRewardsInUsd, count],
+    [totalRewardsInUsd, count, selectedCampaign],
   );
 
   return (
@@ -157,7 +161,14 @@ export default function Index() {
       <Group size="lg">{metrics}</Group>
       <Space size="lg" />
       {selectedCampaign && (
-        <LeaderboardLibrary leaderboard={rewards} campaign={selectedCampaign} count={count?.count ?? 0} total={total} />
+        <LeaderboardLibrary
+          withReason={true}
+          leaderboard={rewards}
+          token={selectedCampaign?.rewardToken}
+          chain={selectedCampaign?.computeChainId}
+          count={count?.count ?? 0}
+          total={total}
+        />
       )}
     </Container>
   );

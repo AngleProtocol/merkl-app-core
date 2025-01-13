@@ -17,12 +17,15 @@ export abstract class RewardService {
   }
 
   /**
-   * Retrieves opportunities query params from page request
+   * Retrieves query params from page request
    * @param request request containing query params such as chains, status, pagination...
    * @param override params for which to override value
    * @returns query
    */
-  static #getQueryFromRequest(request: Request, override?: Parameters<typeof api.v4.rewards.index.get>[0]["query"]) {
+  static #getCampaignLeaderboardQueryFromRequest(
+    request: Request,
+    override?: Parameters<typeof api.v4.rewards.index.get>[0]["query"],
+  ) {
     const campaignId = new URL(request.url).searchParams.get("campaignId");
     const page = new URL(request.url).searchParams.get("page");
     const items = new URL(request.url).searchParams.get("items");
@@ -63,12 +66,58 @@ export abstract class RewardService {
     );
   }
 
+  static #getTokenLeaderboardQueryFromRequest(
+    request: Request,
+    override?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+  ) {
+    const page = new URL(request.url).searchParams.get("page");
+    const items = new URL(request.url).searchParams.get("items");
+
+    const filters = Object.assign(
+      {
+        items: items ?? DEFAULT_ITEMS_PER_PAGE,
+        page,
+      },
+      override ?? {},
+      page !== null && { page: Number(page) - 1 },
+    );
+
+    const query = Object.entries(filters).reduce(
+      (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
+      {},
+    );
+
+    return query;
+  }
+
+  static async getTokenLeaderboard(
+    request: Request,
+    overrides?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+  ) {
+    return RewardService.getByToken(
+      Object.assign(RewardService.#getTokenLeaderboardQueryFromRequest(request), overrides ?? undefined),
+    );
+  }
+
+  static async getByToken(query: Parameters<typeof api.v4.rewards.index.get>[0]["query"]) {
+    const rewards = await RewardService.#fetch(async () =>
+      api.v4.rewards.token.get({
+        query,
+      }),
+    );
+
+    const count = await RewardService.#fetch(async () => api.v4.rewards.token.count.get({ query }));
+    const { amount } = await RewardService.#fetch(async () => api.v4.rewards.token.total.get({ query }));
+
+    return { count, rewards, total: amount };
+  }
+
   static async getManyFromRequest(
     request: Request,
     overrides?: Parameters<typeof api.v4.rewards.index.get>[0]["query"],
   ) {
     return RewardService.getByParams(
-      Object.assign(RewardService.#getQueryFromRequest(request), overrides ?? undefined),
+      Object.assign(RewardService.#getCampaignLeaderboardQueryFromRequest(request), overrides ?? undefined),
     );
   }
 

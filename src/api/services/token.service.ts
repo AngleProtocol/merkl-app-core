@@ -59,6 +59,10 @@ export abstract class TokenService {
     return tokens;
   }
 
+  static async findUniqueOrThrow(chainId: number, address: string) {
+    return await TokenService.#fetch(async () => api.v4.tokens({ id: `${chainId}-${address}` }).get());
+  }
+
   static async getSymbol(symbol: string | undefined): Promise<Token[]> {
     if (!symbol) throw new Response("Token not found");
 
