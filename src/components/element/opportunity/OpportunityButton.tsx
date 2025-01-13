@@ -7,7 +7,7 @@ export type OpportuntiyButtonProps = {
   opportunity: Opportunity;
 };
 
-export default function OpportuntiyButton({ opportunity }: OpportuntiyButtonProps) {
+export default function OpportunityButton({ opportunity }: OpportuntiyButtonProps) {
   const { icons, link } = useOpportunity(opportunity);
 
   return (

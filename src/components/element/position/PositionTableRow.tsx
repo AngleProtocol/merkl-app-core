@@ -3,7 +3,7 @@ import { type Component, PrimitiveTag, Value, sizeScale } from "dappkit";
 import config from "merkl.config";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
-import OpportuntiyButton from "../opportunity/OpportunityButton";
+import OpportunityButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { PositionRow } from "./PositionTable";
 
@@ -57,7 +57,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
           <PositionRow
             {...props}
             className={className}
-            sourceColumn={<OpportuntiyButton opportunity={row.opportunity} />}
+            sourceColumn={<OpportunityButton opportunity={row.opportunity} />}
             liquidityColumn={
               <PrimitiveTag size={sizeScale[Math.max(sizeScale.indexOf("md") - 1, 0)]}>
                 <Value
@@ -77,7 +77,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
           <PositionRow
             {...props}
             className={className}
-            sourceColumn={<OpportuntiyButton opportunity={row.opportunity} />}
+            sourceColumn={<OpportunityButton opportunity={row.opportunity} />}
             liquidityColumn={
               <Token size="sm" token={row.tokens[0]?.token} format="amount_price" amount={tokenAmount0} />
             }

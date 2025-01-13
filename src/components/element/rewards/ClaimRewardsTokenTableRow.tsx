@@ -4,7 +4,7 @@ import Collapsible from "packages/dappkit/src/components/primitives/Collapsible"
 import { Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { useMemo, useState } from "react";
 import Tag from "../Tag";
-import OpportuntiyButton from "../opportunity/OpportunityButton";
+import OpportunityButton from "../opportunity/OpportunityButton";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 
@@ -75,7 +75,7 @@ export default function ClaimRewardsTokenTableRow({
                   onClick={() => setOpen(o => !o)}
                   tokenColumn={
                     <Group className="flex-col justify-center">
-                      <OpportuntiyButton opportunity={b.opportunity} />
+                      <OpportunityButton opportunity={b.opportunity} />
                     </Group>
                   }
                   amountColumn={
