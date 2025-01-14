@@ -97,10 +97,9 @@ export default function Index() {
         ]}
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
-            <span className="w-full md:w-auto md:flex-1">{styleName}</span>
+            <span className="w-full md:w-auto md:flex-1">{styleName} </span>
             {!!visitUrl && (
-              <Button to={visitUrl} external className="inline-flex" look="hype" size="md">
-                Supply
+              <Button to={visitUrl} external className="inline-flex" size="md">
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
             )}

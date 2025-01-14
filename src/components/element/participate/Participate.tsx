@@ -1,4 +1,5 @@
 import type { Opportunity } from "@merkl/api";
+import { useLocation } from "@remix-run/react";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
 import { Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -40,7 +41,8 @@ export default function Participate({
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
   const { link } = useOpportunity(opportunity);
-  console.log("link", link);
+  const location = useLocation();
+  const isOnOpportunityPage = location.pathname.includes("/opportunities/");
 
   const { connected } = useWalletContext();
 
@@ -171,7 +173,7 @@ export default function Participate({
     <>
       {displayOpportunity && <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />}
 
-      {displayLinks && (
+      {displayLinks && !isOnOpportunityPage && (
         <Group className="w-full py-md">
           <Button to={link} look="soft" size="sm">
             Opportunity overview <Icon remix="RiArrowRightLine" />
