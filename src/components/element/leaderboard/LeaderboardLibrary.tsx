@@ -2,12 +2,12 @@ import type { Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Text, Title } from "dappkit";
 import { useMemo } from "react";
+import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
 import { v4 as uuidv4 } from "uuid";
 import type { RewardService } from "../../../modules/reward/reward.service";
 import Pagination from "../opportunity/Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
-import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
 
 export type LeaderboardLibraryProps = {
   leaderboard: Awaited<ReturnType<(typeof RewardService)["getManyFromRequest"]>>["rewards"];
