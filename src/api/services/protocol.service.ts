@@ -9,7 +9,7 @@ export abstract class ProtocolService {
   static async get(query: Parameters<typeof api.v4.protocols.index.get>[0]["query"]) {
     return await ProtocolService.#fetch(async () =>
       api.v4.protocols.index.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
       }),
     );
   }

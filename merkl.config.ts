@@ -85,6 +85,7 @@ export default createConfig({
       length: 6,
     },
     library: {
+      dailyRewardsTokenAddress: "",
       columns: {
         action: {
           enabled: false,

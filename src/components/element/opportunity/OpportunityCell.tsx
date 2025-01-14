@@ -4,6 +4,7 @@ import { Box, Button, Divider, Dropdown, Group, Icon, Icons, PrimitiveTag, Text,
 import { mergeClass } from "dappkit";
 import config from "merkl.config";
 import { useOverflowingRef } from "packages/dappkit/src/hooks/events/useOverflowing";
+import { FormatterService as Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { useMemo } from "react";
 import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
 import type { OpportunityNavigationMode } from "src/config/opportunity";
@@ -24,29 +25,46 @@ export default function OpportunityCell({
   hideTags,
   navigationMode,
 }: OpportunityTableRowProps) {
-  const { tags, link, icons, rewardsBreakdown, opportunity } = useOpportunity(opportunityRaw);
+  const { tags, link, icons, opportunity } = useOpportunity(opportunityRaw);
 
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
+
+  const renderDailyRewards = useMemo(() => {
+    if (config.opportunity.library.dailyRewardsTokenAddress) {
+      const breakdown = opportunity.rewardsRecord.breakdowns.find(breakdown => {
+        return breakdown.token.address === config.opportunity.library.dailyRewardsTokenAddress;
+      });
+
+      return (
+        <>
+          <Title h={3} size={3} look="soft">
+            <Value value format={"0,0.##a"}>
+              {Fmt.toNumber(breakdown?.amount?.toString() ?? "0", breakdown?.token?.decimals).toString()}
+            </Value>
+
+            {` ${breakdown?.token.symbol}`}
+          </Title>
+          <Text className="text-xl">
+            <Icon key={breakdown?.token.icon} src={breakdown?.token.icon} />
+          </Text>
+        </>
+      );
+    }
+    return (
+      <Title h={3} size={3} look="soft">
+        <Value value format={config.decimalFormat.dollar}>
+          {opportunity.dailyRewards ?? 0}
+        </Value>
+      </Title>
+    );
+  }, [opportunity]);
 
   const cell = useMemo(
     () => (
       <Box className="flex-col hover:bg-main-2 bg-main-3 ease !gap-0 h-full cursor-pointer">
         <Group className="p-xl justify-between items-end">
           <Group className="flex-col">
-            <Group className="min-w-0 flex-nowrap items-center overflow-hidden">
-              <Title h={3} size={3} look="soft">
-                <Value value format={config.decimalFormat.dollar}>
-                  {opportunity.dailyRewards ?? 0}
-                </Value>
-              </Title>
-              <Text className="text-xl">
-                <Icons>
-                  {rewardsBreakdown.map(({ token: { icon } }) => (
-                    <Icon key={icon} src={icon} />
-                  ))}
-                </Icons>
-              </Text>
-            </Group>
+            <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{renderDailyRewards}</Group>
             <Text bold look="bold">
               Total daily rewards
             </Text>
@@ -99,7 +117,7 @@ export default function OpportunityCell({
         </Group>
       </Box>
     ),
-    [opportunity, overflowing, ref, icons, rewardsBreakdown.map, tags, hideTags],
+    [opportunity, overflowing, ref, icons, tags, hideTags, renderDailyRewards],
   );
 
   if (navigationMode === "supply")

@@ -59,6 +59,7 @@ export type MerklConfig<T extends Themes> = {
       length: number;
     };
     library: {
+      dailyRewardsTokenAddress: string;
       columns: {
         action: {
           enabled: boolean;
