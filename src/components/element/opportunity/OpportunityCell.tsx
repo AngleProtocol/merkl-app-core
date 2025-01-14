@@ -30,21 +30,24 @@ export default function OpportunityCell({
 
   const renderDailyRewards = useMemo(() => {
     if (config.opportunity.library.dailyRewardsTokenAddress) {
-      const breakdown = opportunity.rewardsRecord.breakdowns.find(breakdown => {
-        return breakdown.token.address === config.opportunity.library.dailyRewardsTokenAddress;
+      const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
+        return breakdown?.token.address === config.opportunity.library.dailyRewardsTokenAddress;
       });
-
+      const token = breakdowns?.[0]?.token;
+      const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
+        return acc + breakdown.amount;
+      }, 0n);
       return (
         <>
           <Title h={3} size={3} look="soft">
             <Value value format={"0,0.##a"}>
-              {Fmt.toNumber(breakdown?.amount?.toString() ?? "0", breakdown?.token?.decimals).toString()}
+              {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
             </Value>
 
-            {` ${breakdown?.token.symbol}`}
+            {` ${token?.symbol}`}
           </Title>
           <Text className="text-xl">
-            <Icon key={breakdown?.token.icon} src={breakdown?.token.icon} />
+            <Icon key={token?.icon} src={token?.icon} />
           </Text>
         </>
       );
