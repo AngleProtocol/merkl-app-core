@@ -1,8 +1,8 @@
 import type { Chain } from "@merkl/api";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
-import merklConfig from "merkl.config";
 import { type ReactNode, useMemo } from "react";
+import merklConfig from "../../config";
 
 /**
  * Utilities for displaying data & components related to chains

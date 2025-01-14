@@ -1,7 +1,7 @@
 import type { Opportunity } from "@merkl/api";
-import config from "merkl.config";
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
+import merklConfig from "../../config";
 import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
 
 export abstract class OpportunityService {
@@ -17,15 +17,15 @@ export abstract class OpportunityService {
     query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ): Promise<{ opportunities: Opportunity[]; count: number }> {
     //TODO: updates tags to take an array
-    const overrideQuery = { ...query, sort: query.sort ?? config.opportunity.library.sortedBy };
+    const overrideQuery = { ...query, sort: query.sort ?? merklConfig.opportunity.library.sortedBy };
     const opportunities = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.index.get({
-        query: Object.assign({ ...overrideQuery }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
       }),
     );
     const count = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.count.get({
-        query: Object.assign({ ...overrideQuery }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
       }),
     );
 
@@ -38,10 +38,10 @@ export abstract class OpportunityService {
     request: Request,
     overrides?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ): Promise<{ opportunities: Opportunity[]; count: number }> {
-    if (config.opportunity.featured.enabled)
+    if (merklConfig.opportunity.featured.enabled)
       return await OpportunityService.getMany(
         Object.assign(OpportunityService.#getQueryFromRequest(request), {
-          items: config.opportunity.featured.length,
+          items: merklConfig.opportunity.featured.length,
           ...overrides,
         }),
       );
@@ -59,13 +59,13 @@ export abstract class OpportunityService {
     const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
       api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
         query: {
-          test: config.alwaysShowTestTokens ?? false,
+          test: merklConfig.alwaysShowTestTokens ?? false,
         },
       }),
     );
 
     // TODO: updates tags to take an array
-    if (config.tags?.length && config.tags && !opportunityWithCampaigns.tags.includes(config.tags?.[0]))
+    if (merklConfig.tags?.length && merklConfig.tags && !opportunityWithCampaigns.tags.includes(merklConfig.tags?.[0]))
       throw new Response("Opportunity inaccessible", { status: 403 });
 
     return opportunityWithCampaigns;
@@ -122,7 +122,7 @@ export abstract class OpportunityService {
       sort: url.searchParams.get("sort")?.split("-")[0],
       order: url.searchParams.get("sort")?.split("-")[1],
       name: url.searchParams.get("search") ?? undefined,
-      test: config.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+      test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
       page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
       ...override,
     };

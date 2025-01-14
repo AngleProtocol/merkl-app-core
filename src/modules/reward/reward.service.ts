@@ -1,6 +1,6 @@
-import config from "merkl.config";
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
+import merklConfig from "../../config";
 import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
 
 export abstract class RewardService {
@@ -51,11 +51,11 @@ export abstract class RewardService {
   static async getForUser(request: Request, address: string) {
     const url = new URL(request.url);
 
-    const chainIds = config.chains?.map(({ id }) => id).join(",");
+    const chainIds = merklConfig.chains?.map(({ id }) => id).join(",");
 
     // biome-ignore lint/suspicious/noExplicitAny: TODO
     const query: Record<string, any> = {
-      test: config.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+      test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
     };
     if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
     if (chainIds) query.chainIds = chainIds;

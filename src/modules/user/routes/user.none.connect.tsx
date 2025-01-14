@@ -2,8 +2,8 @@ import { useNavigate } from "@remix-run/react";
 import { Button, Connected, Container, Group, Icon, Input, Space, Text } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import config from "merkl.config";
 import { useState } from "react";
+import merklConfig from "../../../config";
 
 export default function Index() {
   const [_isEditingAddress] = useState(false);
@@ -17,7 +17,7 @@ export default function Index() {
       <Group className="w-full items-center flex-col">
         <Group className="w-min justify-center">
           <Space size="xl" />
-          <Connected hideSpyMode={config.hideSpyMode}>
+          <Connected hideSpyMode={merklConfig.hideSpyMode}>
             <Button onClick={() => navigate(`/users/${address}`)} look="hype">
               Open {Fmt.address(address, "short")}
             </Button>

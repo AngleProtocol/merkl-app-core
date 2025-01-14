@@ -14,9 +14,9 @@ import {
   useTheme,
 } from "dappkit";
 import { Button } from "dappkit";
-import config from "merkl.config";
 import type { PropsWithChildren, ReactNode } from "react";
 import { v4 as uuidv4 } from "uuid";
+import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -51,20 +51,20 @@ export default function Hero({
 
   return (
     <>
-      <OverrideTheme mode={!!config.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
+      <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
           className={`${
-            !!config.hero.bannerOnAllPages
+            !!merklConfig.hero.bannerOnAllPages
               ? "bg-cover"
               : location?.pathname === "/" || location?.pathname === "/opportunities"
                 ? "bg-cover"
                 : "bg-main-6"
           } flex-row justify-between bg-no-repeat xl:aspect-auto xl:min-h-[350px] aspect-[1440/300]`}
           style={{
-            backgroundImage: !!config.hero.bannerOnAllPages
-              ? `url('${config.images.hero}')`
+            backgroundImage: !!merklConfig.hero.bannerOnAllPages
+              ? `url('${merklConfig.images.hero}')`
               : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? `url('${config.images.hero}')`
+                ? `url('${merklConfig.images.hero}')`
                 : "none",
           }}>
           <Container>
@@ -161,7 +161,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
     },
     !!dailyRewards && {
       data: (
-        <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
+        <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
           {dailyRewards}
         </Value>
       ),

@@ -1,10 +1,10 @@
 import { Outlet } from "@remix-run/react";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
-import config from "merkl.config";
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
+import merklConfig from "../../../config";
 
 export default function Index() {
   const [_isEditingAddress] = useState(false);
@@ -48,14 +48,14 @@ export default function Index() {
     ];
 
     // Filter out the Liquidity tab if it's disabled in the config
-    return baseTabs.filter(tab => !(tab.key === "Liquidity" && !config.dashboard.liquidityTab.enabled));
+    return baseTabs.filter(tab => !(tab.key === "Liquidity" && !merklConfig.dashboard.liquidityTab.enabled));
   }, [address]);
 
   return (
     <Hero
       breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={!!config.dashboardPageName ? config.dashboardPageName : "Claims"}
+      title={!!merklConfig.dashboardPageName ? merklConfig.dashboardPageName : "Claims"}
       description={"Claim and monitor the rewards awarded through Merkl"}
       tabs={tabs}>
       <Outlet />

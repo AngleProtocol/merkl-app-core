@@ -1,7 +1,7 @@
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
-import config from "merkl.config";
 import { Fragment, useMemo, useState } from "react";
+import merklConfig from "../../../config";
 
 interface TvlSectionProps {
   opportunity: Opportunity;
@@ -101,7 +101,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                   </PrimitiveTag>
                 )}
                 <Text look="bold" className="inline-flex justify-end" size="sm">
-                  <Value value format={config.decimalFormat.dollar}>
+                  <Value value format={merklConfig.decimalFormat.dollar}>
                     {breakdown.value}
                   </Value>
                 </Text>

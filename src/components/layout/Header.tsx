@@ -3,10 +3,10 @@ import { Button, Container, Dropdown, Group, Icon, SCREEN_BREAKDOWNS, Select, Wa
 import { Image } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
-import config from "merkl.config";
 import { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { v4 as uuidv4 } from "uuid";
+import merklConfig from "../../config";
 import customerDarkLogo from "../../customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "../../customer/assets/images/customer-logo.svg";
 import useChains from "../../hooks/resources/useChains";
@@ -43,21 +43,21 @@ export default function Header() {
 
   // Dynamically filter routes based on the config
   const routes = useMemo(() => {
-    const { home, opportunities, protocols, bridge, ...rest } = config.routes;
+    const { home, opportunities, protocols, bridge, ...rest } = merklConfig.routes;
 
     return Object.assign(
       { home },
       {
-        [!!config.dashboardPageName ? config.dashboardPageName : "dashboard"]: {
+        [!!merklConfig.dashboardPageName ? merklConfig.dashboardPageName : "dashboard"]: {
           icon: "RiDashboardFill",
           route: user ? `/users/${user}` : "/users",
           key: uuidv4(),
         },
       },
-      config.header.opportunities.enabled ? { opportunities } : {},
+      merklConfig.header.opportunities.enabled ? { opportunities } : {},
       { protocols },
       // Include bridge route only if enabled in config
-      config.header.bridge.enabled ? { bridge } : {},
+      merklConfig.header.bridge.enabled ? { bridge } : {},
       rest,
     );
   }, [user]);
@@ -94,10 +94,10 @@ export default function Header() {
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item} className="cursor-pointer">
-            {media || config.hideLayerMenuHomePage ? (
+            {media || merklConfig.hideLayerMenuHomePage ? (
               <Image
                 imgClassName="w-[200px] max-h-[2.5rem]"
-                alt={`${config.appName} logo`}
+                alt={`${merklConfig.appName} logo`}
                 src={mode !== "dark" ? customerDarkLogo : customerLogo}
                 onClick={navigateToHomepage}
               />
@@ -110,7 +110,7 @@ export default function Header() {
                 className="flex gap-sm md:gap-lg items-center">
                 <Image
                   imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
-                  alt={`${config.appName} logo`}
+                  alt={`${merklConfig.appName} logo`}
                   src={mode !== "dark" ? customerDarkLogo : customerLogo}
                 />
                 <Icon className="text-main-12" remix="RiArrowDownSLine" />
@@ -137,12 +137,12 @@ export default function Header() {
                   })}
                 <Group className="items-center">
                   <SwitchMode />
-                  {config.header.searchbar.enabled && <SearchBar icon={true} />}
+                  {merklConfig.header.searchbar.enabled && <SearchBar icon={true} />}
                 </Group>
               </Group>
 
               <Group className="flex">
-                <WalletButton select={chainSwitcher} hideSpyMode={config.hideSpyMode}>
+                <WalletButton select={chainSwitcher} hideSpyMode={merklConfig.hideSpyMode}>
                   <Button to={`/users/${user}`} size="sm" look="soft">
                     <Icon remix="RiArrowRightLine" /> Check claims
                   </Button>

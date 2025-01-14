@@ -1,13 +1,13 @@
 import type { Reward } from "@merkl/api";
 import { Fmt } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
 import { getAddress, isAddress } from "viem";
+import merklConfig from "../../config";
 
 function getValueOf(chainRewards: Reward["rewards"], amount: (t: Reward["rewards"][number]) => bigint) {
   return chainRewards.reduce((sum: number, reward) => {
-    if (isAddress(config.rewardsTotalClaimableMode ?? "")) {
-      if (reward.token.address === getAddress(config.rewardsTotalClaimableMode ?? "")) {
+    if (isAddress(merklConfig.rewardsTotalClaimableMode ?? "")) {
+      if (reward.token.address === getAddress(merklConfig.rewardsTotalClaimableMode ?? "")) {
         return sum + Number.parseFloat(amount(reward).toString());
       }
       return sum;

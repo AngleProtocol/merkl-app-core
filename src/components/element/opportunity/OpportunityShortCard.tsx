@@ -1,7 +1,6 @@
-import { Box, Button, Group, Icon, Icons, Text, Title, Value } from "dappkit";
-import { Fmt } from "dappkit";
-import config from "merkl.config";
+import { Box, Button, Fmt, Group, Icon, Icons, Text, Title, Value } from "dappkit";
 import { useMemo } from "react";
+import merklConfig from "../../../config";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
 import Tag from "../Tag";
@@ -17,9 +16,9 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
   }, [opportunity]);
 
   const renderDailyRewards = useMemo(() => {
-    if (config.opportunity.library.dailyRewardsTokenAddress) {
+    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
       const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
-        return breakdown?.token.address === config.opportunity.library.dailyRewardsTokenAddress;
+        return breakdown?.token.address === merklConfig.opportunity.library.dailyRewardsTokenAddress;
       });
       const token = breakdowns?.[0]?.token;
       const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
@@ -43,7 +42,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
     return (
       <>
         <Title h={3} size={3} look="soft">
-          <Value value format={config.decimalFormat.dollar}>
+          <Value value format={merklConfig.decimalFormat.dollar}>
             {opportunity.dailyRewards ?? 0}
           </Value>
         </Title>

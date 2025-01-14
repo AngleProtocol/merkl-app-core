@@ -4,8 +4,8 @@ import { Dropdown, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "
 import { mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
+import merklConfig from "../../../config";
 import { actions } from "../../../config/actions";
 import type { OpportunityNavigationMode } from "../../../config/opportunity";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
@@ -53,7 +53,7 @@ export default function OpportunityTableRow({
       <EventBlocker>
         <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
           <PrimitiveTag look="base" className="font-mono">
-            <Value value format={config.decimalFormat.dollar}>
+            <Value value format={merklConfig.decimalFormat.dollar}>
               {opportunity.tvl ?? 0}
             </Value>
           </PrimitiveTag>
@@ -82,7 +82,7 @@ export default function OpportunityTableRow({
             />
           }>
           <PrimitiveTag look="base" className="font-mono">
-            <Value value format={config.decimalFormat.dollar}>
+            <Value value format={merklConfig.decimalFormat.dollar}>
               {opportunity.dailyRewards ?? 0}
             </Value>
             <Icons>
@@ -128,7 +128,7 @@ export default function OpportunityTableRow({
                   className={mergeClass(
                     overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
                   )}>
-                  {config.opportunityPercentage
+                  {merklConfig.opportunityPercentage
                     ? opportunity.name
                     : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
                 </Title>

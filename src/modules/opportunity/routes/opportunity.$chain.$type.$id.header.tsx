@@ -3,13 +3,13 @@ import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/nod
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
-import merklConfig from "merkl.config";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Hero from "../../../components/composite/Hero";
 import Tag from "../../../components/element/Tag";
 import OpportunityParticipateModal from "../../../components/element/opportunity/OpportunityParticipateModal";
 import { ErrorHeading } from "../../../components/layout/ErrorHeading";
+import merklConfig from "../../../config";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";

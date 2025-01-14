@@ -141,6 +141,7 @@ export default function Interact({
   ]);
 
   const providerIcon = useMemo(() => {
+    if (!target) return;
     if (target.provider === "enso")
       return (
         <>

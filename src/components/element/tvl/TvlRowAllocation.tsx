@@ -1,6 +1,6 @@
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, Icon, Text, Value } from "dappkit";
-import config from "merkl.config";
+import merklConfig from "../../../config";
 
 type TvlRowAllocationProps = {
   opportunity: Opportunity;
@@ -31,7 +31,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
 
             {!!tvlBreakdownToken0?.value && !!token0?.price && (
               <Text size="sm">
-                <Value value format={config.decimalFormat.dollar}>
+                <Value value format={merklConfig.decimalFormat.dollar}>
                   {tvlBreakdownToken0.value * token0.price}
                 </Value>
                 {" ~ "}
@@ -55,7 +55,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
 
             {!!tvlBreakdownToken1?.value && !!token1?.price && (
               <Text size="sm">
-                <Value value format={config.decimalFormat.dollar}>
+                <Value value format={merklConfig.decimalFormat.dollar}>
                   {tvlBreakdownToken1.value * token1.price}
                 </Value>
                 {" ~ "}

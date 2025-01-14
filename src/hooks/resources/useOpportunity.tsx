@@ -1,9 +1,9 @@
 import type { Token } from "@merkl/api";
 import { Icon, Value } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TagType } from "../../components/element/Tag";
+import merklConfig from "../../config";
 import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export default function useOpportunity(opportunity: Opportunity) {
@@ -91,7 +91,7 @@ export default function useOpportunity(opportunity: Opportunity) {
           !!opportunity.dailyRewards && {
             label: "Daily rewards",
             data: (
-              <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
+              <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
                 {opportunity.dailyRewards}
               </Value>
             ),
@@ -109,7 +109,7 @@ export default function useOpportunity(opportunity: Opportunity) {
           !!opportunity.tvl && {
             label: "Total value locked",
             data: (
-              <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
+              <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
                 {opportunity.tvl}
               </Value>
             ),
@@ -147,7 +147,9 @@ export default function useOpportunity(opportunity: Opportunity) {
     rewardsBreakdown,
     opportunity: {
       ...opportunity,
-      name: config.opportunityPercentage ? opportunity.name : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim(),
+      name: merklConfig.opportunityPercentage
+        ? opportunity.name
+        : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim(),
     },
     tags,
     herosData,

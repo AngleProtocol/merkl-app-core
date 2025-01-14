@@ -15,12 +15,12 @@ import {
   Title,
   Value,
 } from "dappkit";
-import config from "merkl.config";
 import moment from "moment";
 import { useCallback, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
 import Token from "../../../components/element/token/Token";
+import merklConfig from "../../../config";
 import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
 import { Cache } from "../../../modules/cache/cache.service";
 import { CampaignService } from "../../../modules/campaigns/campaign.service";
@@ -123,7 +123,7 @@ export default function Index() {
           ],
           [
             "Total Rewards Distributed",
-            <Value value key="users" format={config.decimalFormat.dollar}>
+            <Value value key="users" format={merklConfig.decimalFormat.dollar}>
               {totalRewardsInUsd}
             </Value>,
           ],

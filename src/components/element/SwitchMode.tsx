@@ -1,10 +1,10 @@
 import { Button, Icon, Select, useTheme } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
+import merklConfig from "../../config";
 
 export default function SwitchMode() {
   const { mode, toggleMode, themes, theme, setTheme } = useTheme();
-  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
+  const canSwitchModes = useMemo(() => !(!merklConfig.modes || merklConfig.modes?.length === 1), []);
 
   const themeOptions = useMemo(() => {
     return Object.keys(themes).reduce(

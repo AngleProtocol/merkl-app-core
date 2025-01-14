@@ -1,6 +1,6 @@
-import config from "merkl.config";
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
+import merklConfig from "../../config";
 import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
 
 export abstract class ProtocolService {
@@ -9,7 +9,7 @@ export abstract class ProtocolService {
   static async get(query: Parameters<typeof api.v4.protocols.index.get>[0]["query"]) {
     return await ProtocolService.#fetch(async () =>
       api.v4.protocols.index.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
+        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
       }),
     );
   }
@@ -33,12 +33,12 @@ export abstract class ProtocolService {
       ProtocolService.#getQueryFromRequest(request);
     const protocols = await ProtocolService.#fetch(async () =>
       api.v4.protocols.index.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
+        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
       }),
     );
     const count = await ProtocolService.#fetch(async () =>
       api.v4.protocols.count.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
+        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
       }),
     );
 

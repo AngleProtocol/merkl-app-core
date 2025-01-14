@@ -4,7 +4,7 @@ import { Button, Group, Icon, Value } from "dappkit";
 import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
-import config from "merkl.config";
+import merklConfig from "../../../config";
 import type { TagTypes } from "../Tag";
 import { TokenRow } from "./TokenTable";
 
@@ -37,7 +37,7 @@ export default function TokenTableRow({ hideTags, token, className, ...props }: 
         priceColumn={
           <Group className="py-xl">
             <Button look={"soft"} className="font-mono">
-              <Value value format={config.decimalFormat.dollar}>
+              <Value value format={merklConfig.decimalFormat.dollar}>
                 {token.price ?? 0}
               </Value>
             </Button>

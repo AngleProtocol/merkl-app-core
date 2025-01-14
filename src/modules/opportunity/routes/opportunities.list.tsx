@@ -1,9 +1,9 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
-import config from "merkl.config";
 import OpportunityLibrary from "../../../components/element/opportunity/OpportunityLibrary";
 import { ErrorContent } from "../../../components/layout/ErrorContent";
+import merklConfig from "../../../config";
 import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
@@ -29,7 +29,7 @@ export default function Index() {
     <Container>
       <Space size="xl" />
       <Group size="xl" className="py-xl">
-        {config.opportunity.featured.enabled && (
+        {merklConfig.opportunity.featured.enabled && (
           <>
             <Title className="!text-main-11" h={3}>
               BEST OPPORTUNITIES

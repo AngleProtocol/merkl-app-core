@@ -1,12 +1,12 @@
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
-import TransactionButton, { type TransactionButtonProps } from "dappkit";
-import Collapsible from "dappkit";
-import EventBlocker from "dappkit";
+import { TransactionButton, type TransactionButtonProps } from "dappkit";
+import { Collapsible } from "dappkit";
+import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import config from "merkl.config";
 import { useMemo, useState } from "react";
+import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import Tag from "../Tag";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
@@ -115,7 +115,7 @@ export default function ClaimRewardsChainTableRow({
       }
       unclaimedColumn={
         unclaimed === 0 ? undefined : (
-          <Value size="lg" format={config.decimalFormat.dollar} look="bold" className="font-title">
+          <Value size="lg" format={merklConfig.decimalFormat.dollar} look="bold" className="font-title">
             {unclaimed}
           </Value>
         )

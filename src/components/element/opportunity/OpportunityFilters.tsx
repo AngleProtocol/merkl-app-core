@@ -1,8 +1,8 @@
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
-import config from "merkl.config";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import merklConfig from "../../../config";
 import { actions } from "../../../config/actions";
 import type { OpportunityView } from "../../../config/opportunity";
 import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
@@ -261,7 +261,7 @@ export default function OpportunityFilters({
   return (
     <Group className="justify-between flex-nowrap">
       <Group
-        className={`items-center flex-nowrap w-full ${config.opportunityLibrary?.views?.length === 1 ? "justify-between" : ""}`}>
+        className={`items-center flex-nowrap w-full ${merklConfig.opportunityLibrary?.views?.length === 1 ? "justify-between" : ""}`}>
         {fields.includes("search") && (
           <Form>
             <Input
@@ -278,7 +278,7 @@ export default function OpportunityFilters({
           </Form>
         )}
         <Group
-          className={`items-center ${config.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
+          className={`items-center ${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
           <Group className="items-center">
             {fields.includes("action") && (
               <Select
@@ -340,7 +340,7 @@ export default function OpportunityFilters({
             )}
           </Group>
           <Group
-            className={`${config.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} items-center`}>
+            className={`${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} items-center`}>
             {((canApply && !clearing && navigation.state === "idle") ||
               (applying && !clearing && navigation.state === "loading")) && (
               <Button onClick={onApplyFilters} look="bold">
@@ -353,14 +353,14 @@ export default function OpportunityFilters({
               </Button>
             )}
             <Button onClick={onClearFilters} look="soft">
-              {config.opportunityLibrary?.views?.length !== 1 && <Icon remix="RiCloseLine" />}
+              {merklConfig.opportunityLibrary?.views?.length !== 1 && <Icon remix="RiCloseLine" />}
               Clear filters
-              {config.opportunityLibrary?.views?.length === 1 && <Icon remix="RiCloseLine" />}
+              {merklConfig.opportunityLibrary?.views?.length === 1 && <Icon remix="RiCloseLine" />}
             </Button>
           </Group>
         </Group>
       </Group>
-      {(config.opportunityLibrary?.views == null || config.opportunityLibrary?.views?.length > 1) && view && (
+      {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) && view && (
         <Group className="flex-nowrap">
           <Button disabled={view === "cells"} look="soft" onClick={() => setView?.("cells")}>
             <Icon remix="RiDashboardFill" />

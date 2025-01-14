@@ -4,9 +4,9 @@ import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
 import { Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import config from "merkl.config";
 import { Suspense, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
+import merklConfig from "../../../config";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import useParticipate from "../../../hooks/useParticipate";
 import OpportunityShortCard from "../opportunity/OpportunityShortCard";
@@ -103,7 +103,7 @@ export default function Participate({
                       </PrimitiveTag>
                     )}
                     {!!BigInt(inputToken?.balance ?? "0") && (
-                      <Value className="text-right" look={"soft"} size="sm" format={config.decimalFormat.dollar}>
+                      <Value className="text-right" look={"soft"} size="sm" format={merklConfig.decimalFormat.dollar}>
                         {Fmt.toPrice(inputToken?.balance, inputToken)}
                       </Value>
                     )}

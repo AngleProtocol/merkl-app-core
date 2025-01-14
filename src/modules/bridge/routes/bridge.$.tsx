@@ -1,9 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Button, Group, Icon, Space, Text } from "dappkit";
-import config from "merkl.config";
 import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
+import merklConfig from "../../../config";
 
 export const meta: MetaFunction = () => {
   return [{ title: I18n.trad.get.pages.bridge.headTitle }];
@@ -20,8 +20,8 @@ export default function Index() {
               <Icon remix="RiInformation2Fill" className="inline mr-md text-2xl text-accent-11" />
               {I18n.trad.get.pages.bridge.helper}
             </Text>
-            {!!config.bridge.helperLink && (
-              <Button to={config.bridge.helperLink} external look="tint">
+            {!!merklConfig.bridge.helperLink && (
+              <Button to={merklConfig.bridge.helperLink} external look="tint">
                 Bridge now
               </Button>
             )}

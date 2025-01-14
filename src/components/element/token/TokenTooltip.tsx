@@ -1,6 +1,6 @@
 import type { Chain, Explorer, Token } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, Text } from "dappkit";
-import merklConfig from "merkl.config";
+import merklConfig from "../../../config";
 
 export type TokenTooltipProps = {
   token: Token;

@@ -1,7 +1,7 @@
 import type { Chain } from "@merkl/api";
 import { Box, Group, type Order, Title } from "dappkit";
-import merklConfig from "merkl.config";
 import { useCallback, useMemo, useState } from "react";
+import merklConfig from "../../../config";
 import type { OpportunityView } from "../../../config/opportunity";
 import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
 import type { Opportunity } from "../../../modules/opportunity/opportunity.model";

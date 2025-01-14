@@ -1,7 +1,7 @@
 import { Group, PrimitiveTag, Value } from "dappkit";
-import config from "merkl.config";
 import type { PropsWithChildren } from "react";
 import { formatUnits } from "viem";
+import merklConfig from "../../../config";
 
 export type ClaimRewardsTokenTablePriceProps = PropsWithChildren & {
   price: number | null;
@@ -31,7 +31,7 @@ export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }:
           size="xs"
           className="text-right items-center flex font-title"
           look={"bold"}
-          format={config.decimalFormat.dollar}>
+          format={merklConfig.decimalFormat.dollar}>
           {Number.parseFloat(value) * (price ?? 0)}
         </Value>
       </PrimitiveTag>

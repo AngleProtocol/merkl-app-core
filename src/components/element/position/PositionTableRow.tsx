@@ -1,8 +1,8 @@
 import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
 import { type Component, PrimitiveTag, Value, sizeScale } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
+import merklConfig from "../../../config";
 import OpportunityButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { PositionRow } from "./PositionTable";
@@ -64,7 +64,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
                   className="text-right"
                   look={"soft"}
                   size={sizeScale[Math.max(sizeScale.indexOf("md") - 1, 0)]}
-                  format={config.decimalFormat.dollar}>
+                  format={merklConfig.decimalFormat.dollar}>
                   {price0 + price1}
                 </Value>
               </PrimitiveTag>

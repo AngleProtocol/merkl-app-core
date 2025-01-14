@@ -1,8 +1,8 @@
 import type { Reward } from "@merkl/api";
 import { Group, Text } from "dappkit";
 import type { TransactionButtonProps } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
+import merklConfig from "../../../config";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";
 import ClaimRewardsByOpportunity from "./byOpportunity/ClaimRewardsByOpportunity";
@@ -25,7 +25,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
   );
 
   const renderRewards = useMemo(() => {
-    switch (config.rewardsNavigationMode) {
+    switch (merklConfig.rewardsNavigationMode) {
       case "opportunity":
         return <ClaimRewardsByOpportunity from={from} rewards={flatenedRewards} />;
       default:

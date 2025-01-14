@@ -3,9 +3,8 @@ import type { BoxProps } from "dappkit";
 import { Box, Button, Divider, Dropdown, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "dappkit";
 import { mergeClass } from "dappkit";
 import { useOverflowingRef } from "dappkit";
-import { Fmt } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
+import merklConfig from "../../../config";
 import type { OpportunityNavigationMode } from "../../../config/opportunity";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
@@ -30,9 +29,9 @@ export default function OpportunityCell({
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
 
   const renderDailyRewards = useMemo(() => {
-    if (config.opportunity.library.dailyRewardsTokenAddress) {
+    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
       const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
-        return breakdown?.token.address === config.opportunity.library.dailyRewardsTokenAddress;
+        return breakdown?.token.address === merklConfig.opportunity.library.dailyRewardsTokenAddress;
       });
       const token = breakdowns?.[0]?.token;
       const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
@@ -55,7 +54,7 @@ export default function OpportunityCell({
     }
     return (
       <Title h={3} size={3} look="soft">
-        <Value value format={config.decimalFormat.dollar}>
+        <Value value format={merklConfig.decimalFormat.dollar}>
           {opportunity.dailyRewards ?? 0}
         </Value>
       </Title>

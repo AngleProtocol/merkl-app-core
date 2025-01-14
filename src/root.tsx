@@ -14,9 +14,9 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DAppProvider, Group, Icon, Text, Title } from "dappkit";
 import { useEffect } from "react";
-import config from "../merkl.config";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
 import LoadingIndicator from "./components/layout/LoadingIndicator";
+import merklConfig from "./config";
 import styles from "./index.css?url";
 import { Cache } from "./modules/cache/cache.service";
 import { ChainService } from "./modules/chain/chain.service";
@@ -51,12 +51,12 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <DAppProvider
-        walletOptions={config.walletOptions}
+        walletOptions={merklConfig.walletOptions}
         chains={data.chains}
-        modes={config.modes}
-        themes={config.themes}
-        sizing={config.sizing}
-        config={config.wagmi}>
+        modes={merklConfig.modes}
+        themes={merklConfig.themes}
+        sizing={merklConfig.sizing}
+        config={merklConfig.wagmi}>
         <LoadingIndicator />
         <Outlet />
         <script
@@ -103,10 +103,10 @@ export function ErrorBoundary() {
       <QueryClientProvider client={queryClient}>
         <DAppProvider
           chains={[]}
-          modes={config.modes}
-          themes={config.themes}
-          sizing={config.sizing}
-          config={config.wagmi}>
+          modes={merklConfig.modes}
+          themes={merklConfig.themes}
+          sizing={merklConfig.sizing}
+          config={merklConfig.wagmi}>
           <Group className="h-[100vh] flex-col justify-center m-auto w-min">
             <Title h={1} className="flex flex-nowrap flex-col">
               <Icon size="xl" className="!w-[100px] h-[100px]" remix="RiAlertFill" />
@@ -121,10 +121,10 @@ export function ErrorBoundary() {
     <QueryClientProvider client={queryClient}>
       <DAppProvider
         chains={[]}
-        modes={config.modes}
-        themes={config.themes}
-        sizing={config.sizing}
-        config={config.wagmi}>
+        modes={merklConfig.modes}
+        themes={merklConfig.themes}
+        sizing={merklConfig.sizing}
+        config={merklConfig.wagmi}>
         <Group className="h-[100vh] flex-col justify-center m-auto w-min">
           <Title h={1} className="flex flex-nowrap flex-col">
             <Icon size="xl" className="!w-[100px] h-[100px]" remix="RiAlertFill" />

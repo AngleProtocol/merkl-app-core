@@ -1,11 +1,11 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
 import Hero from "../../../components/composite/Hero";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
+import merklConfig from "../../../config";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
@@ -50,7 +50,7 @@ export default function Index() {
           ],
           [
             "Total Rewards Distributed",
-            <Value value key="users" format={config.decimalFormat.dollar}>
+            <Value value key="users" format={merklConfig.decimalFormat.dollar}>
               {totalRewardsInUsd}
             </Value>,
           ],

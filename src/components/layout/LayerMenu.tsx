@@ -1,8 +1,8 @@
 import { NavLink } from "@remix-run/react";
 import { Divider, Group, Text } from "dappkit";
 import { Icon } from "dappkit";
-import config from "merkl.config";
 import type { FC } from "react";
+import merklConfig from "../../config";
 import type { routesType } from "../../config/type";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
@@ -47,7 +47,7 @@ export const LayerMenu: FC<{
       </main>
       <footer className="mt-lg">
         <Group className="items-center">
-          {config.header.searchbar.enabled && <SearchBar />}
+          {merklConfig.header.searchbar.enabled && <SearchBar />}
           <SwitchMode />
         </Group>
       </footer>

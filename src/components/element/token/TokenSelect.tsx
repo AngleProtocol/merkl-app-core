@@ -1,8 +1,7 @@
 import { Group, Icon, Select, type SelectProps, Text, Title, Value } from "dappkit";
 import { Fmt } from "dappkit";
-import config from "merkl.config";
-import merklConfig from "merkl.config";
 import { useMemo } from "react";
+import merklConfig from "../../../config";
 import Token from "./Token";
 
 export type TokenSelectProps = {
@@ -84,7 +83,7 @@ export default function TokenSelect({ tokens, balances, ...props }: TokenSelectP
                       </Text>
                       <Text look="soft" className="flex gap-sm">
                         {token.symbol} -{" "}
-                        <Value format={config.decimalFormat.dollar}>{Fmt.toPrice(token.balance, token)}</Value> -{" "}
+                        <Value format={merklConfig.decimalFormat.dollar}>{Fmt.toPrice(token.balance, token)}</Value> -{" "}
                         <Value format="0,0.###a">{Fmt.toNumber(token.balance, token.decimals)}</Value>{" "}
                       </Text>
                     </Group>

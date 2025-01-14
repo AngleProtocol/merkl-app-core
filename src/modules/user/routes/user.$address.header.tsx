@@ -1,14 +1,14 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, json, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
-import TransactionButton, { type TransactionButtonProps } from "dappkit";
+import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
-import config from "merkl.config";
 import { useMemo } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
 import AddressEdit from "../../../components/element/AddressEdit";
 import Token from "../../../components/element/token/Token";
+import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
 import { RewardService } from "../../../modules/reward/reward.service";
@@ -18,10 +18,10 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
   if (!address || !isAddress(address)) throw "";
 
   const rewards = await RewardService.getForUser(request, address);
-  const token = !!config.rewardsTotalClaimableMode
+  const token = !!merklConfig.rewardsTotalClaimableMode
     ? (
         await TokenService.getMany({
-          address: config.rewardsTotalClaimableMode,
+          address: merklConfig.rewardsTotalClaimableMode,
         })
       )?.[0]
     : null;
@@ -56,7 +56,7 @@ export default function Index() {
 
   const rewards = useRewards(rawRewards);
 
-  const isSingleChain = config?.chains?.length === 1;
+  const isSingleChain = merklConfig?.chains?.length === 1;
 
   const { chainId, chains, address: user } = useWalletContext();
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
@@ -105,7 +105,7 @@ export default function Index() {
     ];
 
     // Remove the Liquidity tab if disabled in the config
-    return baseTabs.filter(tab => !(tab.key === "LiquidityUserChain" && !config.dashboard.liquidityTab.enabled));
+    return baseTabs.filter(tab => !(tab.key === "LiquidityUserChain" && !merklConfig.dashboard.liquidityTab.enabled));
   }, [address, chainId]);
 
   return (
@@ -134,10 +134,10 @@ export default function Index() {
         <Group className="w-full items-center flex justify-between gap-xl md:gap-x-xl*4">
           <Group className="flex-1 gap-xl md:gap-x-xl*4 items-center">
             <Group className="flex-col">
-              {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
+              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
               ) : (
-                <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
                   {rewards.unclaimed}
                 </Value>
               )}
@@ -167,10 +167,10 @@ export default function Index() {
 
           <Group className="flex-1 gap-xl md:gap-xl*4 items-center lg:justify-end">
             <Group className="flex-col">
-              {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
+              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
               ) : (
-                <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
                   {rewards.pending}
                 </Value>
               )}
@@ -180,10 +180,10 @@ export default function Index() {
             </Group>
 
             <Group className="flex-col">
-              {isAddress(config.rewardsTotalClaimableMode ?? "") && !!token ? (
+              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
               ) : (
-                <Value format={config.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
                   {rewards.earned + rewards.pending}
                 </Value>
               )}
