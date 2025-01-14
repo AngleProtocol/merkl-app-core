@@ -85,6 +85,7 @@ export default createConfig({
       length: 6,
     },
     library: {
+      sortedBy: "rewards",
       dailyRewardsTokenAddress: "",
       columns: {
         action: {

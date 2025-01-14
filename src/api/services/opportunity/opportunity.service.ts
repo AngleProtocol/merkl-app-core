@@ -17,14 +17,15 @@ export abstract class OpportunityService {
     query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ): Promise<{ opportunities: Opportunity[]; count: number }> {
     //TODO: updates tags to take an array
+    const overrideQuery = { ...query, sort: query.sort ?? config.opportunity.library.sortedBy };
     const opportunities = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.index.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+        query: Object.assign({ ...overrideQuery }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
       }),
     );
     const count = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.count.get({
-        query: Object.assign({ ...query }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+        query: Object.assign({ ...overrideQuery }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
       }),
     );
 

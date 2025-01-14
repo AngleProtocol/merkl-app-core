@@ -5,7 +5,7 @@ import type { TagTypes } from "src/components/element/Tag";
 import type { OpportunityFilter } from "src/components/element/opportunity/OpportunityFilters";
 import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
-import type { OpportunityNavigationMode, OpportunityView } from "./opportunity";
+import type { OpportunityNavigationMode, OpportunitySortedBy, OpportunityView } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
 
 export type routesType = {
@@ -59,6 +59,7 @@ export type MerklConfig<T extends Themes> = {
       length: number;
     };
     library: {
+      sortedBy: OpportunitySortedBy;
       dailyRewardsTokenAddress: string;
       columns: {
         action: {
