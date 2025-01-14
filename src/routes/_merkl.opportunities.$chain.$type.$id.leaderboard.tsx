@@ -27,9 +27,11 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     mainParameter: id,
   });
 
+  const selectedCampaign = campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0];
+
   const { rewards, count, total } = await RewardService.getManyFromRequest(request, {
-    chainId: chain.id,
-    campaignId: campaignId ?? campaigns?.[0]?.campaignId,
+    chainId: selectedCampaign.distributionChainId,
+    campaignId: selectedCampaign.campaignId,
   });
 
   return json({
@@ -37,23 +39,19 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     campaigns,
     count,
     total,
+    selectedCampaign,
   });
 }
 
 export const clientLoader = Cache.wrap("opportunity/leaderboard", 300);
 
 export default function Index() {
-  const { rewards, campaigns, count, total } = useLoaderData<typeof loader>();
+  const { rewards, campaigns, count, total, selectedCampaign } = useLoaderData<typeof loader>();
 
   const [campaignId, setCampaignIds] = useSearchParamState<string>(
     "campaignId",
     v => v,
     v => v,
-  );
-
-  const selectedCampaign = useMemo(
-    () => campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0],
-    [campaigns, campaignId],
   );
 
   const totalRewardsInUsd = useMemo(() => {
