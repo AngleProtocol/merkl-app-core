@@ -7,6 +7,7 @@ import type { RewardService } from "../../../modules/reward/reward.service";
 import Pagination from "../opportunity/Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
+import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
 
 export type LeaderboardLibraryProps = {
   leaderboard: Awaited<ReturnType<(typeof RewardService)["getManyFromRequest"]>>["rewards"];
@@ -21,7 +22,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
   const { leaderboard, count, total, token, chain, withReason } = props;
   const [searchParams] = useSearchParams();
 
-  const items = searchParams.get("items");
+  const items = searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
   const page = searchParams.get("page");
 
   const Table = withReason ? LeaderboardTable : LeaderboardTableWithoutReason;
