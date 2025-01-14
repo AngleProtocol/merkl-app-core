@@ -1,6 +1,6 @@
 import type { Chain } from "@merkl/api";
-import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag } from "packages/dappkit/src";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag } from "dappkit";
+import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 
 export type UserProps = { address: string; chain?: Chain };

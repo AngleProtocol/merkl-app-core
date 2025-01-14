@@ -13,11 +13,11 @@ import {
   Text,
   WalletButton,
 } from "dappkit";
-import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { TransactionButton } from "dappkit";
+import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
-import useBalances from "src/hooks/useBalances";
-import useInteractionTransaction from "src/hooks/useInteractionTransaction";
+import useBalances from "../../../hooks/useBalances";
+import useInteractionTransaction from "../../../hooks/useInteractionTransaction";
 import Token from "../token/Token";
 
 export type InteractProps = {

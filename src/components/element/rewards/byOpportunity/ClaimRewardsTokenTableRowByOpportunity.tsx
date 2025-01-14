@@ -4,7 +4,7 @@ import OpportunityButton from "../../opportunity/OpportunityButton";
 import Token from "../../token/Token";
 import { ClaimRewardsByOpportunityRow } from "./ClaimRewardsTableByOpportunity";
 
-export type ClaimRewardsTokenTableRowProps = Component<{
+export type ClaimRewardsTokenTableRowByOpportunityProps = Component<{
   breakdown: Reward["rewards"][number]["breakdowns"][number];
   token: Reward["rewards"][number]["token"];
   checkedState?: GetSet<boolean>;
@@ -21,8 +21,9 @@ export default function ClaimRewardsTokenTableRowByOpportunity({
   from,
   distributor,
   ...props
-}: ClaimRewardsTokenTableRowProps) {
+}: ClaimRewardsTokenTableRowByOpportunityProps) {
   const unclaimed = BigInt(breakdown.amount) - BigInt(breakdown.claimed);
+
   return (
     <>
       <Divider look="soft" />

@@ -1,7 +1,7 @@
+import { Group, Icon, Select, type SelectProps, Text, Title, Value } from "dappkit";
+import { Fmt } from "dappkit";
 import config from "merkl.config";
 import merklConfig from "merkl.config";
-import { Group, Icon, Select, type SelectProps, Text, Title, Value } from "packages/dappkit/src";
-import { Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { useMemo } from "react";
 import Token from "./Token";
 

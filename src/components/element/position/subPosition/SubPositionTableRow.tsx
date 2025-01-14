@@ -5,11 +5,11 @@ import { parseUnits } from "viem";
 import Token from "../../token/Token";
 import { SubPositionRow } from "./SubPositionTable";
 
-export type PositionRowProps = Component<{
+export type SubPositionTableRowProps = Component<{
   row: PositionT;
 }>;
 
-export default function SubPositionTableRow({ row, className, ...props }: PositionRowProps) {
+export default function SubPositionTableRow({ row, className, ...props }: SubPositionTableRowProps) {
   const tokenBalance0 = row.tokens?.[0]?.breakdown?.find(breakdown => breakdown?.type === "balance");
   const tokenBalance1 = row.tokens?.[1]?.breakdown?.find(breakdown => breakdown?.type === "balance");
   // const tokenLiquidity1 = row.tokens?.[0]?.breakdown?.filter(breakdown => breakdown?.type === "liquidity")[0];

@@ -1,6 +1,6 @@
 import type { Chain, Token as TokenType } from "@merkl/api";
+import { Button, Dropdown, Group, Icon, type IconProps, PrimitiveTag, Value, sizeScale } from "dappkit";
 import config from "merkl.config";
-import { Button, Dropdown, Group, Icon, type IconProps, PrimitiveTag, Value, sizeScale } from "packages/dappkit/src";
 import { Fragment, useMemo } from "react";
 import { formatUnits } from "viem";
 import TokenTooltip from "./TokenTooltip";

@@ -1,9 +1,9 @@
 import { NavLink } from "@remix-run/react";
 import { Divider, Group, Text } from "dappkit";
+import { Icon } from "dappkit";
 import config from "merkl.config";
-import { Icon } from "packages/dappkit/src";
 import type { FC } from "react";
-import type { routesType } from "src/config/type";
+import type { routesType } from "../../config/type";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 

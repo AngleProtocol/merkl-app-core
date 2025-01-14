@@ -3,11 +3,11 @@ import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import config from "merkl.config";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { actions } from "src/config/actions";
-import type { OpportunityView } from "src/config/opportunity";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
-import useChains from "src/hooks/resources/useChains";
-import useProtocols from "src/hooks/resources/useProtocols";
+import { actions } from "../../../config/actions";
+import type { OpportunityView } from "../../../config/opportunity";
+import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
+import useChains from "../../../hooks/resources/useChains";
+import useProtocols from "../../../hooks/resources/useProtocols";
 const filters = ["search", "action", "status", "chain", "protocol", "tvl", "sort"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 

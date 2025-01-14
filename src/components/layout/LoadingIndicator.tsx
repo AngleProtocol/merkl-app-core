@@ -1,5 +1,5 @@
 import { useNavigation } from "@remix-run/react";
-import { Bar, mergeClass } from "packages/dappkit/src";
+import { Bar, mergeClass } from "dappkit";
 import { useEffect, useState } from "react";
 
 const RESET_DELAY = 250;

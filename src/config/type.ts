@@ -1,10 +1,10 @@
 import type * as RemixIcon from "@remixicon/react";
 import type { Mode, Themes, sizeScale } from "dappkit";
-import type { WalletOptions } from "packages/dappkit/src/hooks/useWalletState";
-import type { TagTypes } from "src/components/element/Tag";
-import type { OpportunityFilter } from "src/components/element/opportunity/OpportunityFilters";
+import type { WalletOptions } from "dappkit";
 import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
+import type { TagTypes } from "../components/element/Tag";
+import type { OpportunityFilter } from "../components/element/opportunity/OpportunityFilters";
 import type { OpportunityNavigationMode, OpportunitySortedBy, OpportunityView } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
 

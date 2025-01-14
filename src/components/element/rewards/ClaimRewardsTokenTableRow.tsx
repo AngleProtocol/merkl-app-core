@@ -1,7 +1,7 @@
 import type { Reward } from "@merkl/api";
 import { Checkbox, type Component, Divider, type GetSet, Group, Icon, Space } from "dappkit";
-import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
-import { Fmt } from "packages/dappkit/src/utils/formatter.service";
+import { Collapsible } from "dappkit";
+import { Fmt } from "dappkit";
 import { useMemo, useState } from "react";
 import Tag from "../Tag";
 import OpportunityButton from "../opportunity/OpportunityButton";

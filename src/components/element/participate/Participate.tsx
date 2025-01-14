@@ -1,13 +1,13 @@
 import type { Opportunity } from "@merkl/api";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
+import { Collapsible } from "dappkit";
+import { useWalletContext } from "dappkit";
+import { Fmt } from "dappkit";
 import config from "merkl.config";
-import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
-import { Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { Suspense, useMemo, useState } from "react";
-import { I18n } from "src/I18n";
-import useOpportunity from "src/hooks/resources/useOpportunity";
-import useParticipate from "src/hooks/useParticipate";
+import { I18n } from "../../../I18n";
+import useOpportunity from "../../../hooks/resources/useOpportunity";
+import useParticipate from "../../../hooks/useParticipate";
 import OpportunityShortCard from "../opportunity/OpportunityShortCard";
 import TokenSelect from "../token/TokenSelect";
 import Interact from "./Interact.client";
@@ -40,6 +40,8 @@ export default function Participate({
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
   const { link } = useOpportunity(opportunity);
+  console.log("link", link);
+
   const { connected } = useWalletContext();
 
   //TODO: add withdraw

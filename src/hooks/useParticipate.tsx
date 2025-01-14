@@ -1,4 +1,4 @@
-import { useWalletContext } from "dappkit/src/context/Wallet.context";
+import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import useBalances from "./useBalances";
 import useInteractionTargets from "./useInteractionTarget";

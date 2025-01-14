@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
-import { Container, Group, Space, Title } from "packages/dappkit/src";
+import { Container, Group, Space, Title } from "dappkit";
 import { useMemo } from "react";
 
 export function ErrorContent() {

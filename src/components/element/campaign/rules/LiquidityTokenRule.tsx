@@ -1,4 +1,4 @@
-import { Button, Divider, Dropdown, Group, Icon, PrimitiveTag, Text } from "packages/dappkit/src";
+import { Button, Divider, Dropdown, Group, Icon, PrimitiveTag, Text } from "dappkit";
 import type { ReactNode } from "react";
 
 export type LiquidityTokenRuleProps = { value: { label: ReactNode; percentage: number } };

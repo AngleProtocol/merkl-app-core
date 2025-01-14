@@ -1,14 +1,14 @@
 import type { Opportunity } from "@merkl/api";
-import { Divider, Group, PrimitiveTag, Title, Value } from "packages/dappkit/src";
+import { Divider, Group, PrimitiveTag, Title, Value } from "dappkit";
 import TvlRowAllocation from "../tvl/TvlRowAllocation";
 import TvlSection from "../tvl/TvlSection";
 import AprSection from "./AprSection";
 
-type IProps = {
+type AprModalProps = {
   opportunity: Opportunity;
 };
 
-export default function AprModal(props: IProps) {
+export default function AprModal(props: AprModalProps) {
   const { opportunity } = props;
 
   return (

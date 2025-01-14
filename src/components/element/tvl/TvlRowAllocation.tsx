@@ -1,12 +1,12 @@
 import type { Opportunity } from "@merkl/api";
+import { Divider, Group, Icon, Text, Value } from "dappkit";
 import config from "merkl.config";
-import { Divider, Group, Icon, Text, Value } from "packages/dappkit/src";
 
-type IProps = {
+type TvlRowAllocationProps = {
   opportunity: Opportunity;
 };
 
-export default function TvlRowAllocation({ opportunity }: IProps) {
+export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps) {
   let content: React.ReactNode = null;
   switch (opportunity.type) {
     case "CLAMM": {

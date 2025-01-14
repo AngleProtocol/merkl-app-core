@@ -1,4 +1,4 @@
-import type { PrimitiveTagProps } from "packages/dappkit/src";
+import type { PrimitiveTagProps } from "dappkit";
 import AddressListRule from "./AddressListRule";
 import BooleanRule from "./BooleanRule";
 import LiquidityRule from "./LiquidityRule";

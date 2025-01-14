@@ -1,6 +1,6 @@
 import type { Opportunity } from "@merkl/api";
+import { Button, Divider, Group, Image, Modal, Text, Title } from "dappkit";
 import config from "merkl.config";
-import { Button, Divider, Group, Image, Modal, Text, Title } from "packages/dappkit/src";
 import type { PropsWithChildren } from "react";
 import React from "react";
 

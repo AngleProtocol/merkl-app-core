@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "packages/dappkit/src";
+import { Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
 import { useMemo } from "react";
 
 type AprSectionProps = {

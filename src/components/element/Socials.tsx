@@ -1,5 +1,5 @@
+import { Button, Group, Icon } from "dappkit";
 import config from "merkl.config";
-import { Button, Group, Icon } from "packages/dappkit/src";
 
 export default function Socials() {
   return (

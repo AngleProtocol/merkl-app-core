@@ -3,11 +3,11 @@ import type { Chain } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Button, Divider, Dropdown, EventBlocker, Group, Hash, Icon, PrimitiveTag, Text } from "dappkit";
 import type { Component, PrimitiveTagProps } from "dappkit";
+import { useWalletContext } from "dappkit";
 import merklConfig from "merkl.config";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
-import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
-import { actions } from "src/config/actions";
-import { statuses } from "src/config/status";
+import { actions } from "../../config/actions";
+import { statuses } from "../../config/status";
+import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export type TagTypes = {
   chain: Opportunity["chain"];

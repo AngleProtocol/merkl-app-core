@@ -1,5 +1,5 @@
 import type { Protocol } from "@merkl/api";
-import { Icon } from "packages/dappkit/src";
+import { Icon } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 
 /**

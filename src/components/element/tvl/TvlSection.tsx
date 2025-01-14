@@ -1,6 +1,6 @@
 import type { Opportunity } from "@merkl/api";
+import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
 import config from "merkl.config";
-import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "packages/dappkit/src";
 import { Fragment, useMemo, useState } from "react";
 
 interface TvlSectionProps {

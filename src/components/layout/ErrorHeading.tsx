@@ -1,5 +1,5 @@
 import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "@remix-run/react";
-import { Container } from "packages/dappkit/src";
+import { Container } from "dappkit";
 import { useMemo } from "react";
 import Hero from "../composite/Hero";
 

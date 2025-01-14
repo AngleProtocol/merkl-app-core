@@ -1,6 +1,6 @@
 import type { Reward } from "@merkl/api";
 import { type Component, Title } from "dappkit";
-import { Fmt } from "packages/dappkit/src/utils/formatter.service";
+import { Fmt } from "dappkit";
 import { useMemo, useState } from "react";
 
 import { ClaimRewardsTableByOpportunity } from "./ClaimRewardsTableByOpportunity";

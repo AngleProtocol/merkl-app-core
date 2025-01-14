@@ -2,13 +2,13 @@ import type { Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Text, Title } from "dappkit";
 import { useMemo } from "react";
-import type { RewardService } from "src/api/services/reward.service";
 import { v4 as uuidv4 } from "uuid";
+import type { RewardService } from "../../../modules/reward/reward.service";
 import Pagination from "../opportunity/Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
 
-export type IProps = {
+export type LeaderboardLibraryProps = {
   leaderboard: Awaited<ReturnType<(typeof RewardService)["getManyFromRequest"]>>["rewards"];
   count?: number;
   total?: bigint;
@@ -17,7 +17,7 @@ export type IProps = {
   chain: number;
 };
 
-export default function LeaderboardLibrary(props: IProps) {
+export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
   const { leaderboard, count, total, token, chain, withReason } = props;
   const [searchParams] = useSearchParams();
 

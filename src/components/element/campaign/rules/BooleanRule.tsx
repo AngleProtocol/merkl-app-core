@@ -1,4 +1,4 @@
-import { Dropdown, Group, PrimitiveTag } from "packages/dappkit/src";
+import { Dropdown, Group, PrimitiveTag } from "dappkit";
 import type { ReactNode } from "react";
 
 export type BooleanRuleProps = { value: { label: ReactNode; description: string } };

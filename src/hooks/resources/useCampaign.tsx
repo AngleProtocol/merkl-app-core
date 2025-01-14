@@ -1,14 +1,14 @@
 import type { Campaign as CampaignFromApi } from "@merkl/api";
 import { Bar, Icon } from "dappkit";
+import { Group, Text, Value } from "dappkit";
+import { Time } from "dappkit";
 import moment from "moment";
-import { Group, Text, Value } from "packages/dappkit/src";
-import Time from "packages/dappkit/src/components/primitives/Time";
 import { type ReactNode, useMemo } from "react";
-import type { Campaign } from "src/api/services/campaigns/campaign.model";
-import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
-import type { RuleType } from "src/components/element/campaign/rules/Rule";
-import Token from "src/components/element/token/Token";
 import { parseUnits } from "viem";
+import type { RuleType } from "../../components/element/campaign/rules/Rule";
+import Token from "../../components/element/token/Token";
+import type { Campaign } from "../../modules/campaigns/campaign.model";
+import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export default function useCampaign(campaign: CampaignFromApi, opportunity?: Opportunity) {
   if (!campaign)
@@ -57,7 +57,9 @@ export default function useCampaign(campaign: CampaignFromApi, opportunity?: Opp
             {
               type: "liquidity" as const,
               value: {
-                description: `${c.params.weightFees / 100}% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
+                description: `${
+                  c.params.weightFees / 100
+                }% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
                 label: (
                   <>
                     <Icon remix="RiDiscountPercentFill" />
@@ -70,7 +72,13 @@ export default function useCampaign(campaign: CampaignFromApi, opportunity?: Opp
             !!opportunity && {
               type: "liquidity" as const,
               value: {
-                description: `${c.params.weightToken0 / 100}% of campaign rewards are split amongst liquidity providers based on the amount of ${opportunity.tokens?.[0].symbol} held in their positions. The more ${opportunity.tokens?.[0].symbol} they hold over time relative to others, the greater their share of rewards`,
+                description: `${
+                  c.params.weightToken0 / 100
+                }% of campaign rewards are split amongst liquidity providers based on the amount of ${
+                  opportunity.tokens?.[0].symbol
+                } held in their positions. The more ${
+                  opportunity.tokens?.[0].symbol
+                } they hold over time relative to others, the greater their share of rewards`,
                 label: <Token value token={opportunity.tokens?.[0]} />,
                 percentage: c.params.weightToken0,
               },
@@ -78,7 +86,13 @@ export default function useCampaign(campaign: CampaignFromApi, opportunity?: Opp
             !!opportunity && {
               type: "liquidity" as const,
               value: {
-                description: `${c.params.weightToken1 / 100}% of campaign rewards are split amongst liquidity providers based on the amount of ${opportunity.tokens?.[1].symbol} held in their positions. The more ${opportunity.tokens?.[1].symbol} they hold over time relative to others, the greater their share of rewards`,
+                description: `${
+                  c.params.weightToken1 / 100
+                }% of campaign rewards are split amongst liquidity providers based on the amount of ${
+                  opportunity.tokens?.[1].symbol
+                } held in their positions. The more ${
+                  opportunity.tokens?.[1].symbol
+                } they hold over time relative to others, the greater their share of rewards`,
                 label: <Token value token={opportunity.tokens?.[1]} />,
                 percentage: c.params.weightToken1,
               },

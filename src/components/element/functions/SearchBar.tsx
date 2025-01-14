@@ -2,10 +2,10 @@ import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
 import { Divider, Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
-import Scroll from "packages/dappkit/src/components/primitives/Scroll";
+import { Scroll } from "dappkit";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
-import useOpportunity from "src/hooks/resources/useOpportunity";
-import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
+import useOpportunity from "../../../hooks/resources/useOpportunity";
+import { type Results, type Searchable, useMerklSearch } from "../../../hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",

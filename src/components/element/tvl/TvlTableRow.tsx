@@ -1,14 +1,14 @@
 import type { Opportunity } from "@merkl/api";
-import { Button, Group, Hash, Value } from "packages/dappkit/src";
+import { Button, Group, Hash, Value } from "dappkit";
 import { useMemo } from "react";
 import { TvlRow } from "./TvlTable";
 
-type IProps = {
+type TvlTableRowProps = {
   aprBreakdown?: Opportunity["aprRecord"]["breakdowns"][number];
   tvlBreakdown: Opportunity["tvlRecord"]["breakdowns"][number];
 };
 
-export default function TvlTableRow({ aprBreakdown, tvlBreakdown }: IProps) {
+export default function TvlTableRow({ aprBreakdown, tvlBreakdown }: TvlTableRowProps) {
   const breakdownName = useMemo(() => {
     switch (aprBreakdown?.type) {
       case "CAMPAIGN":

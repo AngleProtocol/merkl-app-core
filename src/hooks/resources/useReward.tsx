@@ -1,7 +1,7 @@
 import type { Reward } from "@merkl/api";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { InteractionService } from "src/api/services/interaction.service";
+import { InteractionService } from "../../modules/interaction/interaction.service";
 
 export default function useReward(reward?: Reward, userAddress?: string, tokenAddresses?: Set<string>) {
   const [claimTransaction, setClaimTransaction] = useState();

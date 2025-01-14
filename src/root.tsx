@@ -16,10 +16,10 @@ import { DAppProvider, Group, Icon, Text, Title } from "dappkit";
 import { useEffect } from "react";
 import config from "../merkl.config";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
-import { Cache } from "./api/services/cache.service";
-import { ChainService } from "./api/services/chain.service";
 import LoadingIndicator from "./components/layout/LoadingIndicator";
 import styles from "./index.css?url";
+import { Cache } from "./modules/cache/cache.service";
+import { ChainService } from "./modules/chain/chain.service";
 
 export const links: LinksFunction = () => [
   {
@@ -39,7 +39,7 @@ export async function loader(_args: LoaderFunctionArgs) {
 
   if (!chains) throw new Response("Unable to fetch chains", { status: 500 });
 
-  return json({ ENV: { API_URL: process.env.API_URL, ZYFI_API_KEY: process.env.ZYFI_API_KEY }, chains });
+  return json({ ENV: { API_URL: process.env.API_URL }, chains });
 }
 
 export const clientLoader = Cache.wrap("root", 300);

@@ -1,4 +1,4 @@
-import { Dropdown, Group, PrimitiveTag, Value } from "packages/dappkit/src";
+import { Dropdown, Group, PrimitiveTag, Value } from "dappkit";
 import type { ReactNode } from "react";
 
 export type LiquidityRuleProps = { value: { label: ReactNode; percentage: number; description: string } };

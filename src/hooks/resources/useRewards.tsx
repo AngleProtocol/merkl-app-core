@@ -1,6 +1,6 @@
 import type { Reward } from "@merkl/api";
+import { Fmt } from "dappkit";
 import config from "merkl.config";
-import { Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { useMemo } from "react";
 import { getAddress, isAddress } from "viem";
 

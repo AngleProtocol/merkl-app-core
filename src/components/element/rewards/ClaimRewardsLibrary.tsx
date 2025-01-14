@@ -1,7 +1,7 @@
 import type { Reward } from "@merkl/api";
 import { Group, Text } from "dappkit";
+import type { TransactionButtonProps } from "dappkit";
 import config from "merkl.config";
-import type { TransactionButtonProps } from "packages/dappkit/src/components/dapp/TransactionButton";
 import { useMemo } from "react";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";

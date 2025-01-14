@@ -1,5 +1,5 @@
-import { generateTailwindConfig } from "dappkit/src/utils/tailwind";
 import type { Config } from "tailwindcss";
+import { generateTailwindConfig } from "./packages/dappkit/src/utils/tailwind";
 
 export default {
   content: [

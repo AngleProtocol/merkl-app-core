@@ -2,7 +2,7 @@ import type { Token } from "@merkl/api";
 import { Group } from "dappkit";
 import { useMemo } from "react";
 import Pagination from "../opportunity/Pagination";
-import ProtocolFilters from "./TokenFilters";
+import TokenFilters from "./TokenFilters";
 import { TokenTable } from "./TokenTable";
 import TokenTableRow from "./TokenTableRow";
 
@@ -22,7 +22,7 @@ export default function TokenLibrary({ tokens, count }: TokenLibraryProps) {
       footer={count !== undefined && <Pagination count={count} />}
       header={
         <Group className="justify-between w-full">
-          <ProtocolFilters />
+          <TokenFilters />
         </Group>
       }>
       {rows}

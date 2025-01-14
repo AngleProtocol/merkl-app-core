@@ -1,4 +1,4 @@
-import { Button, Dropdown, Icon, type Size } from "packages/dappkit/src";
+import { Button, Dropdown, Icon, type Size } from "dappkit";
 
 export type ChainProps = {
   chain: ChainType;

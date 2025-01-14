@@ -1,11 +1,11 @@
 import { Container, useTheme } from "dappkit";
-import { Button, Group, Text } from "dappkit/src";
+import { Button, Group, Text } from "dappkit";
 import config from "merkl.config";
-import merklDarkLogo from "src/assets/images/by-merkl-dark.svg";
-import merklLogo from "src/assets/images/by-merkl.svg";
-import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
-import customerLogo from "src/customer/assets/images/customer-logo.svg";
 import Image from "../../../packages/dappkit/src/components/primitives/Image";
+import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
+import merklLogo from "../../assets/images/by-merkl.svg";
+import customerDarkLogo from "../../customer/assets/images/customer-dark-logo.svg";
+import customerLogo from "../../customer/assets/images/customer-logo.svg";
 import Socials from "../element/Socials";
 
 export default function Footer() {

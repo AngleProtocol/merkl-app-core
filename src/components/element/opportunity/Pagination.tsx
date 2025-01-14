@@ -1,7 +1,7 @@
-import { Button, Group, Icon, Select } from "dappkit/src";
+import { Button, Group, Icon, Select } from "dappkit";
 import { useMemo } from "react";
-import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
+import { DEFAULT_ITEMS_PER_PAGE } from "../../../constants/pagination";
+import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
 
 export type PaginationProps = {
   count?: number;

@@ -2,18 +2,17 @@ import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import { Box, Button, Divider, Dropdown, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "dappkit";
 import { mergeClass } from "dappkit";
+import { useOverflowingRef } from "dappkit";
 import config from "merkl.config";
-import { useOverflowingRef } from "packages/dappkit/src/hooks/events/useOverflowing";
-import { FormatterService as Fmt } from "packages/dappkit/src/utils/formatter.service";
 import { useMemo } from "react";
-import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
-import type { OpportunityNavigationMode } from "src/config/opportunity";
-import useOpportunity from "src/hooks/resources/useOpportunity";
+import type { OpportunityNavigationMode } from "../../../config/opportunity";
+import useOpportunity from "../../../hooks/resources/useOpportunity";
+import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
 import Tag, { type TagTypes } from "../Tag";
 import AprModal from "../apr/AprModal";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
-export type OpportunityTableRowProps = {
+export type OpportunityCellProps = {
   hideTags?: (keyof TagTypes)[];
   opportunity: Opportunity;
 
@@ -24,7 +23,7 @@ export default function OpportunityCell({
   opportunity: opportunityRaw,
   hideTags,
   navigationMode,
-}: OpportunityTableRowProps) {
+}: OpportunityCellProps) {
   const { tags, link, icons, opportunity } = useOpportunity(opportunityRaw);
 
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();

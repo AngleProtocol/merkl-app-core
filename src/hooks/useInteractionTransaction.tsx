@@ -1,10 +1,10 @@
 import type { Token } from "@merkl/api";
 //TODO: export from api index
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { api as clientApi } from "src/api/index.client";
-import { InteractionService } from "src/api/services/interaction.service";
+import type { api as clientApi } from "../api/index.client";
+import { InteractionService } from "../modules/interaction/interaction.service";
 
 type Payload = Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"];
 type Transaction = Awaited<ReturnType<typeof clientApi.v4.interaction.transaction.get>>["data"];

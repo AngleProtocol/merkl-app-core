@@ -2,16 +2,16 @@ import type { Chain } from "@merkl/api";
 import { Box, Button, Group, Icon, Text, Title } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import type { OpportunityWithCampaigns } from "src/api/services/opportunity/opportunity.model";
+import type { OpportunityWithCampaigns } from "../../../modules/opportunity/opportunity.model";
 import { CampaignTable } from "./CampaignTable";
 import CampaignTableRow from "./CampaignTableRow";
 
-export type IProps = {
+export type CampaignLibraryProps = {
   opportunity: OpportunityWithCampaigns;
   chain: Chain;
 };
 
-export default function CampaignLibrary({ opportunity, chain }: IProps) {
+export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryProps) {
   const [showInactive, setShowInactive] = useState(false);
 
   const rows = useMemo(() => {

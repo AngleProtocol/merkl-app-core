@@ -1,15 +1,18 @@
 import config from "merkl.config";
 import { useMemo } from "react";
-import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
+import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
 import OpportunityCell from "./OpportunityCell";
 
-type IProps = {
+type OpportunityFeaturedProps = {
   opportunities: Opportunity[];
   maxLength?: number;
   title?: string;
 };
 
-export default function OpportunityFeatured({ opportunities, maxLength = config.opportunity.featured.length }: IProps) {
+export default function OpportunityFeatured({
+  opportunities,
+  maxLength = config.opportunity.featured.length,
+}: OpportunityFeaturedProps) {
   const renderOpportunities = useMemo(() => {
     return opportunities
       .slice(0, maxLength)

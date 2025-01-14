@@ -1,5 +1,5 @@
 import { useNavigate } from "@remix-run/react";
-import { Button, Group, Icon, Input } from "packages/dappkit/src";
+import { Button, Group, Icon, Input } from "dappkit";
 import { useCallback, useState } from "react";
 
 export default function AddressEdit() {

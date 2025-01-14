@@ -1,11 +1,11 @@
 import type { Campaign } from "@merkl/api";
-import { Button, Dropdown } from "packages/dappkit/src";
+import { Button, Dropdown } from "dappkit";
 
-type IProps = {
+type RestrictionsCollumnProps = {
   campaign: Campaign;
 };
 
-export default function RestrictionsCollumn(props: IProps) {
+export default function RestrictionsCollumn(props: RestrictionsCollumnProps) {
   const { campaign } = props;
 
   const hasWhitelist = campaign.params.whitelist.length > 0;

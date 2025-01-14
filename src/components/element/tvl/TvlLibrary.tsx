@@ -1,16 +1,16 @@
 import type { Opportunity } from "@merkl/api";
-import { Button, Icon } from "packages/dappkit/src";
+import { Button, Icon } from "dappkit";
 import { useMemo, useState } from "react";
 import { TvlTable } from "./TvlTable";
 import TvlTableRow from "./TvlTableRow";
 
-type IProps = {
+type TvlLibraryProps = {
   opportunity: Opportunity;
 };
 
 const DEFAULT_ARRAY_SIZE = 3;
 
-export default function TvlLibrary({ opportunity }: IProps) {
+export default function TvlLibrary({ opportunity }: TvlLibraryProps) {
   const [isShowingMore, setIsShowingMore] = useState(false);
   const aprFiltered = useMemo(() => {
     return opportunity.aprRecord.breakdowns.filter(breakdown => breakdown.type === "PROTOCOL");

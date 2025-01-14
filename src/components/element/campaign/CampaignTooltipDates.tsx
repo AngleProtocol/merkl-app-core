@@ -1,12 +1,12 @@
 import type { Campaign } from "@merkl/api";
+import { Divider, Group, Icon, Text } from "dappkit";
 import moment from "moment";
-import { Divider, Group, Icon, Text } from "packages/dappkit/src";
 
-export type IProps = {
+export type CampaignTooltipDatesProps = {
   campaign: Campaign;
 };
 
-export default function CampaignTooltipDates({ campaign }: IProps) {
+export default function CampaignTooltipDates({ campaign }: CampaignTooltipDatesProps) {
   return (
     <>
       <Group>

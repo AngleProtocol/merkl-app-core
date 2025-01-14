@@ -5,12 +5,12 @@ import Pagination from "../opportunity/Pagination";
 import { PositionTable } from "./PositionTable";
 import PositionTableRow from "./PositionTableRow";
 
-export type IProps = {
+export type PositionLibraryProps = {
   positions: PositionT[];
   count?: number;
 };
 
-export default function PositionLibrary(props: IProps) {
+export default function PositionLibrary(props: PositionLibraryProps) {
   const { positions, count } = props;
 
   const rows = useMemo(() => {

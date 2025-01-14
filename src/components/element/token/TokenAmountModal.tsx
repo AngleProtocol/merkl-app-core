@@ -1,5 +1,5 @@
 import type { Token as TokenType } from "@merkl/api";
-import { Divider, Group } from "packages/dappkit/src";
+import { Divider, Group } from "dappkit";
 import type { ReactNode } from "react";
 import Token from "./Token";
 
