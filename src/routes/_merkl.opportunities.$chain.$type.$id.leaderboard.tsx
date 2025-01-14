@@ -29,7 +29,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
 
   const selectedCampaign = campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0];
 
-  const { rewards, count, total } = await RewardService.getManyFromRequest(request, {
+  const { rewards, count, total } = await RewardService.getCampaignLeaderboard(request, {
     chainId: selectedCampaign.distributionChainId,
     campaignId: selectedCampaign.campaignId,
   });

@@ -82,10 +82,10 @@ export default function Index() {
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <>
-          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
+          {token.name} <span className="font-mono text-main-8">({token.symbol})</span> Leaderboard
         </>
       }
-      description={`Leaderboard of all ${token.symbol} rewards earned through Merkl`}
+      description={`Browse through all ${token.symbol} rewards earned through Merkl`}
       // sideDatas={defaultHeroSideDatas(count, maxApr, Number.parseFloat(dailyRewards))}
       // tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}
     >

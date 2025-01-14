@@ -9,7 +9,7 @@ import User from "../user/User";
 import { LeaderboardRow, LeaderboardRowWithoutReason } from "./LeaderboardTable";
 
 export type LeaderboardTableRowProps = Component<{
-  row: Awaited<ReturnType<typeof RewardService.getManyFromRequest>>["rewards"][0];
+  row: Awaited<ReturnType<typeof RewardService.getCampaignLeaderboard>>["rewards"][0];
   total: bigint;
   rank: number;
   token: TokenType;
@@ -20,8 +20,6 @@ export type LeaderboardTableRowProps = Component<{
 export default function LeaderboardTableRow({ row, rank, total, className, ...props }: LeaderboardTableRowProps) {
   const { token, chain: chainId, withReason } = props;
   const { chains } = useWalletContext();
-
-  const Row = withReason ? LeaderboardRow : LeaderboardRowWithoutReason;
 
   const share = useMemo(() => {
     const amount = formatUnits(BigInt(row?.amount) + BigInt(row?.pending ?? 0), token.decimals);
@@ -34,8 +32,8 @@ export default function LeaderboardTableRow({ row, rank, total, className, ...pr
     return chains?.find(c => c.id === chainId);
   }, [chains, chainId]);
 
-  return (
-    <Row
+  return withReason ? (
+    <LeaderboardRow
       {...props}
       className={mergeClass("cursor-pointer", className)}
       rankColumn={
@@ -50,7 +48,24 @@ export default function LeaderboardTableRow({ row, rank, total, className, ...pr
       }
       addressColumn={<User chain={chain} address={row.recipient} />}
       rewardsColumn={<Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} />}
-      protocolColumn={withReason ? <Text>{row?.reason?.split("_")[0]}</Text> : undefined}
+      protocolColumn={<Text>{row?.reason?.split("_")[0]}</Text>}
+    />
+  ) : (
+    <LeaderboardRowWithoutReason
+      {...props}
+      className={mergeClass("cursor-pointer", className)}
+      rankColumn={
+        <Group className="flex-nowrap">
+          <PrimitiveTag className="pointer-events-none" look="bold">
+            #{rank}
+          </PrimitiveTag>
+          <PrimitiveTag size="xs" className="pointer-events-none" look="soft">
+            <Value format="0.#%">{share}</Value>
+          </PrimitiveTag>
+        </Group>
+      }
+      addressColumn={<User chain={chain} address={row.recipient} />}
+      rewardsColumn={<Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} />}
     />
   );
 }

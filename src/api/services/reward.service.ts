@@ -94,44 +94,42 @@ export abstract class RewardService {
     request: Request,
     overrides?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
   ) {
-    return RewardService.getByToken(
-      Object.assign(RewardService.#getTokenLeaderboardQueryFromRequest(request), overrides ?? undefined),
-    );
+    const query = Object.assign(RewardService.#getTokenLeaderboardQueryFromRequest(request), overrides ?? undefined);
+
+    const promises = [
+      RewardService.#fetch(async () =>
+        api.v4.rewards.token.get({
+          query,
+        }),
+      ),
+      RewardService.#fetch(async () => api.v4.rewards.token.count.get({ query })),
+      await RewardService.#fetch(async () => api.v4.rewards.token.total.get({ query })),
+    ] as const;
+
+    const [rewards, count, total] = await Promise.all(promises);
+
+    return { count, rewards, total: total.amount };
   }
 
-  static async getByToken(query: Parameters<typeof api.v4.rewards.index.get>[0]["query"]) {
-    const rewards = await RewardService.#fetch(async () =>
-      api.v4.rewards.token.get({
-        query,
-      }),
-    );
-
-    const count = await RewardService.#fetch(async () => api.v4.rewards.token.count.get({ query }));
-    const { amount } = await RewardService.#fetch(async () => api.v4.rewards.token.total.get({ query }));
-
-    return { count, rewards, total: amount };
-  }
-
-  static async getManyFromRequest(
+  static async getCampaignLeaderboard(
     request: Request,
     overrides?: Parameters<typeof api.v4.rewards.index.get>[0]["query"],
   ) {
-    return RewardService.getByParams(
-      Object.assign(RewardService.#getCampaignLeaderboardQueryFromRequest(request), overrides ?? undefined),
-    );
-  }
+    const query = Object.assign(RewardService.#getCampaignLeaderboardQueryFromRequest(request), overrides ?? undefined);
 
-  static async getByParams(query: Parameters<typeof api.v4.rewards.index.get>[0]["query"]) {
-    const rewards = await RewardService.#fetch(async () =>
-      api.v4.rewards.index.get({
-        query,
-      }),
-    );
+    const promises = [
+      RewardService.#fetch(async () =>
+        api.v4.rewards.index.get({
+          query,
+        }),
+      ),
+      RewardService.#fetch(async () => api.v4.rewards.count.get({ query })),
+      await RewardService.#fetch(async () => api.v4.rewards.total.get({ query })),
+    ] as const;
 
-    const count = await RewardService.#fetch(async () => api.v4.rewards.count.get({ query }));
-    const { amount } = await RewardService.#fetch(async () => api.v4.rewards.total.get({ query }));
+    const [rewards, count, total] = await Promise.all(promises);
 
-    return { count, rewards, total: amount };
+    return { count, rewards, total: total.amount };
   }
 
   static async total(query: { chainId: number; campaignId: string }) {
