@@ -1,5 +1,6 @@
 import { type Themes, createColoring } from "dappkit";
-import merklClientConfig from "merkl.config";
+//TODO: find a better way to handle importing the client config, this works
+import merklClientConfig from "../../../../../merkl.config";
 import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
 import {
