@@ -7,8 +7,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { v4 as uuidv4 } from "uuid";
 import merklConfig from "../../config";
-import customerDarkLogo from "../../customer/assets/images/customer-dark-logo.svg";
-import customerLogo from "../../customer/assets/images/customer-logo.svg";
 import useChains from "../../hooks/resources/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
@@ -98,7 +96,7 @@ export default function Header() {
               <Image
                 imgClassName="w-[200px] max-h-[2.5rem]"
                 alt={`${merklConfig.appName} logo`}
-                src={mode !== "dark" ? customerDarkLogo : customerLogo}
+                src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 onClick={navigateToHomepage}
               />
             ) : (
@@ -111,7 +109,7 @@ export default function Header() {
                 <Image
                   imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
                   alt={`${merklConfig.appName} logo`}
-                  src={mode !== "dark" ? customerDarkLogo : customerLogo}
+                  src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 />
                 <Icon className="text-main-12" remix="RiArrowDownSLine" />
               </Dropdown>
