@@ -1,7 +1,0 @@
-@import "./fonts.css";
-@import "./specific.css";
-@import "./shorthands.css";
-
-:root {
-  --empty: true;
-}
