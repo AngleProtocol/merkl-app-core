@@ -17,7 +17,6 @@ import { useEffect } from "react";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
 import LoadingIndicator from "./components/layout/LoadingIndicator";
 import merklConfig from "./config";
-import styles from "./index.css?url";
 import { Cache } from "./modules/cache/cache.service";
 import { ChainService } from "./modules/chain/chain.service";
 
@@ -25,11 +24,6 @@ export const links: LinksFunction = () => [
   {
     rel: "stylesheet",
     href: dappkitStyles,
-    as: "style",
-  },
-  {
-    rel: "stylesheet",
-    href: styles,
     as: "style",
   },
 ];
