@@ -1,7 +1,7 @@
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
-import { Collapsible } from "dappkit";
+import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { Suspense, useMemo, useState } from "react";
@@ -43,6 +43,7 @@ export default function Participate({
   const { link } = useOpportunity(opportunity);
   const location = useLocation();
   const isOnOpportunityPage = location.pathname.includes("/opportunities/");
+  const [success, setSuccess] = useState(false);
 
   const { connected } = useWalletContext();
 
@@ -118,7 +119,10 @@ export default function Participate({
         />
         <Suspense>
           <Interact
-            onSuccess={() => setAmount(undefined)}
+            onSuccess={() => {
+              setAmount(undefined);
+              setSuccess(true);
+            }}
             disabled={!loading && !targets?.length}
             target={targets?.[0]}
             slippage={slippage}
@@ -185,13 +189,14 @@ export default function Participate({
           </Button>
         </Group>
       )}
-      {!!I18n.trad.get.pages.home.depositInformation && (
-        <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">
-          <Icon remix="RiInformation2Fill" className="text-lg text-accent-11 flex-shrink-0" />
-          <Text look="bold" size="xs">
-            {I18n.trad.get.pages.home.depositInformation}
-          </Text>
-        </Group>
+
+      {!loading && !!interactor && (
+        <Box look="soft" className="gap-xs bg-main-5">
+          <Group className="flex flex-nowrap">
+            <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
+            <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
+          </Group>
+        </Box>
       )}
       {loading && (
         <Group className="w-full justify-center">
@@ -199,6 +204,21 @@ export default function Participate({
         </Group>
       )}
       <Collapsible state={[!!interactor]}>{interactor}</Collapsible>
+      <Collapsible state={[success]}>
+        <Box look="soft" className="gap-xs bg-main-5">
+          <Group>
+            <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
+            <Text look="bold" className="font-bold">
+              Deposit successful !
+            </Text>
+          </Group>
+          <Text size="sm">
+            Your liquidity is now earning rewards (if any are currently being distributed to this opportunity). You'll
+            soon be able to claim them directly from your dashboard. You can monitor your positions and withdraw your
+            liquidity anytime directly through the protocol app.
+          </Text>
+        </Box>
+      </Collapsible>
     </>
   );
 }
