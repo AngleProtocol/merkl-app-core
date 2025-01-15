@@ -30,7 +30,7 @@ export default function Participate({
   displayLinks,
   hideInteractor,
 }: ParticipateProps) {
-  const [tokenAddress, setTokenAddress] = useState();
+  const [tokenAddress, setTokenAddress] = useState("");
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
 
@@ -130,7 +130,12 @@ export default function Participate({
                 <Text>Slippage</Text>
                 <Input.BigInt
                   base={2}
-                  state={[slippage, setSlippage]}
+                  state={[
+                    slippage,
+                    v => {
+                      if (!!v) setSlippage(v);
+                    },
+                  ]}
                   size="sm"
                   className="max-w-[20ch] !rounded-sm+sm"
                   prefix={

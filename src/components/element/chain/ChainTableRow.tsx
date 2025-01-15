@@ -1,9 +1,6 @@
 import type { Chain } from "@merkl/api";
 import { Link } from "@remix-run/react";
-import { Group, Icon } from "dappkit";
-import type { BoxProps } from "dappkit";
-import { Title } from "dappkit";
-import { mergeClass } from "dappkit";
+import { type BoxProps, Group, Icon, Title, mergeClass } from "dappkit";
 import type { TagTypes } from "../Tag";
 import { ChainRow } from "./ChainTable";
 

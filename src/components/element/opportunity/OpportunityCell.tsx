@@ -1,8 +1,21 @@
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Box, Button, Divider, Dropdown, Fmt, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "dappkit";
-import { mergeClass } from "dappkit";
-import { useOverflowingRef } from "dappkit";
+import {
+  Box,
+  Button,
+  Divider,
+  Dropdown,
+  Fmt,
+  Group,
+  Icon,
+  Icons,
+  PrimitiveTag,
+  Text,
+  Title,
+  Value,
+  mergeClass,
+  useOverflowingRef,
+} from "dappkit";
 import { useMemo } from "react";
 import merklConfig from "../../../config";
 import type { OpportunityNavigationMode } from "../../../config/opportunity";

@@ -21,7 +21,7 @@ export function useMerklSearch(input: string, include?: Searchable[]) {
       const fetchers: {
         [S in Searchable]: (i: string) => Promise<Results[S] | null>;
       } = {
-        chain: async i => (await api.v4.chains.index.get({ query: { search: i } }))?.data,
+        chain: async i => (await api.v4.chains.index.get({ query: { name: i } }))?.data,
         opportunity: async i => (await api.v4.opportunities.index.get({ query: { name: i } }))?.data,
         protocol: async i => (await api.v4.protocols.index.get({ query: { name: i } }))?.data,
       };

@@ -1,7 +1,7 @@
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
-import type { api as clientApi } from "../api/index.client";
+import type { api as clientApi } from "../api/index";
 import { InteractionService } from "../modules/interaction/interaction.service";
 
 type TokenBalances = Awaited<ReturnType<typeof clientApi.v4.tokens.balances.get>>["data"];

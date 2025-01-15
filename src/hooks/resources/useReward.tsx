@@ -6,7 +6,7 @@ import { InteractionService } from "../../modules/interaction/interaction.servic
 export default function useReward(reward?: Reward, userAddress?: string, tokenAddresses?: Set<string>) {
   const [claimTransaction, setClaimTransaction] = useState();
   const { sponsorTransactions, chainId } = useWalletContext();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
 
   const payload = useMemo(() => {
     if (!userAddress || !reward) return;

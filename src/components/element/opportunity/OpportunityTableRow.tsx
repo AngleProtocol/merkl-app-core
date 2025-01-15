@@ -1,7 +1,6 @@
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Dropdown, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "dappkit";
-import { FormatterService as Fmt, mergeClass } from "dappkit";
+import { Dropdown, Fmt, Group, Icon, Icons, PrimitiveTag, Text, Title, Value, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
