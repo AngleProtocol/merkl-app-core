@@ -39,6 +39,11 @@ const en = {
       title: "Protocols",
       description: "Explore protocols incentivized on Merkl",
     },
+    leaderboard: {
+      headTitle: "Merkl | Leaderboard Per Token",
+      title: "Leaderboard",
+      description: "Leaderboard of all rewards earned through Merkl",
+    },
   },
 };
 

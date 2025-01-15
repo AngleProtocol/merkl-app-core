@@ -1,14 +1,19 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { type MetaFunction, useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
+import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
 import merklConfig from "../../../config";
 import { ChainService } from "../../chain/chain.service";
 import { RewardService } from "../../reward/reward.service";
 import { TokenService } from "../../token/token.service";
+
+export const meta: MetaFunction = () => {
+  return [{ title: I18n.trad.get.pages.leaderboard.headTitle }];
+};
 
 export async function loader({ params: { address, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId && !merklConfig.leaderboard) throw "";
