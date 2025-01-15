@@ -1,5 +1,5 @@
 import { Button, type Component, Icon, mergeClass } from "dappkit";
-import Time from "dappkit";
+import { Time } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import type { ClaimsService } from "../../../modules/claim/claim.service";
