@@ -1,5 +1,6 @@
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
+import merklConfig from "../../config";
 
 export abstract class ClaimsService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(

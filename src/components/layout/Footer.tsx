@@ -16,7 +16,7 @@ export default function Footer() {
           <Group className="gap-xl*2 lg:ml-xl*2 items-center">
             <Button to="/" look="soft" className="hidden md:flex">
               <Image
-                className="w-[125px] lg:w-[165px]"
+                imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
                 alt={`${merklConfig.appName} logo`}
                 src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
               />
