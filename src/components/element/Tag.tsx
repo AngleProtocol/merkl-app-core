@@ -12,6 +12,7 @@ import {
   PrimitiveTag,
   type PrimitiveTagProps,
   Text,
+  useWalletContext,
 } from "dappkit";
 import merklConfig from "../../config";
 import { actions } from "../../config/actions";
