@@ -40,9 +40,6 @@ import { eip712WalletActions, zksync } from "viem/zksync";
 import { walletConnect } from "wagmi/connectors";
 //TODO: find a better way to handle importing the client config, this works
 import merklClientConfig from "../../../../../merkl.config";
-import logoDark from "../customer/assets/images/customer-dark-logo.svg?url";
-import logoLight from "../customer/assets/images/customer-logo.svg?url";
-import hero from "../customer/assets/images/hero.jpg?url";
 import { type MerklConfig, createConfig } from "./type";
 
 //TODO: import default config
@@ -152,11 +149,6 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   },
   alwaysShowTestTokens: true,
   showCopyOpportunityIdToClipboard: true,
-  images: {
-    hero: hero,
-    logoDark,
-    logoLight,
-  },
   routes: {
     home: {
       icon: "RiHomeFill",
