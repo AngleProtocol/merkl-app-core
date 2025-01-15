@@ -31,7 +31,7 @@ export default function ClaimRewardsChainTableRow({
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
 
   const { address: user, chainId, switchChain } = useWalletContext();
-  const isUserRewards = useMemo(() => UserService.isSame(user, address), [user, from]);
+  const isUserRewards = useMemo(() => UserService.isSame(user, from), [user, from]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],

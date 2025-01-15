@@ -1,11 +1,8 @@
 import type { Opportunity } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
-  Box,
   Button,
   type ButtonProps,
-  Checkbox,
-  Collapsible,
   Divider,
   Dropdown,
   Group,
@@ -45,7 +42,7 @@ export default function Interact({
   target,
   disabled,
 }: InteractProps) {
-  const { chainId, switchChain, address: user, sponsorTransactions, setSponsorTransactions } = useWalletContext();
+  const { chainId, switchChain, address: user } = useWalletContext();
   const {
     transaction,
     reload,
@@ -90,6 +87,15 @@ export default function Interact({
         children: (
           <>
             <Icon className="animate-spin" remix="RiLoader2Fill" /> Loading...
+          </>
+        ),
+      });
+    else if (transaction.approved && !transaction.transaction)
+      createProps({
+        disabled: true,
+        children: (
+          <>
+            <Icon remix="RiProhibitedLine" /> An error occured
           </>
         ),
       });
@@ -151,13 +157,13 @@ export default function Interact({
           <Dropdown
             content={
               <Group className="flex-col max-w-[42ch]">
-                <Text size="sm">Enso provides abstract on-chain actions, shortcuts and routes that allows dApps to find the best routes to interact with other protocols.</Text>
+                <Text size="sm">
+                  Enso provides abstract on-chain actions, shortcuts and routes that allows dApps to find the best
+                  routes to interact with other protocols.
+                </Text>
                 <Divider look="soft" horizontal />
                 <Group className="flex-col">
-                  <Button
-                    to={"https://www.enso.build/"}
-                    size="xs"
-                    look="soft">
+                  <Button to={"https://www.enso.build/"} size="xs" look="soft">
                     <Icon remix="RiArrowRightLine" /> Visit Enso
                   </Button>
                 </Group>
@@ -175,7 +181,10 @@ export default function Interact({
           <Dropdown
             content={
               <Group className="flex-col max-w-[42ch]">
-                <Text size="sm">Zap enables users to effortlessly add liquidity into any concentrated liquidity protocol using any tokens, thanks to the KyberSwap aggregator.</Text>
+                <Text size="sm">
+                  Zap enables users to effortlessly add liquidity into any concentrated liquidity protocol using any
+                  tokens, thanks to the KyberSwap aggregator.
+                </Text>
                 <Divider look="soft" horizontal />
                 <Group className="flex-col">
                   <Button

@@ -10,7 +10,6 @@ import {
   PrimitiveTag,
   Space,
   Text,
-  Token,
   useWalletContext,
 } from "dappkit";
 import { type ReactNode, useState } from "react";
@@ -23,7 +22,7 @@ export interface TransactionOverviewProps {
 }
 
 export default function TransactionOverview({ allowTxSponsoring, settings, children }: TransactionOverviewProps) {
-  const { address: user, sponsorTransactions, setSponsorTransactions } = useWalletContext();
+  const { sponsorTransactions, setSponsorTransactions } = useWalletContext();
   const [settingsCollapsed, setSettingsCollapsed] = useState<boolean>(false);
 
   return (
@@ -53,7 +52,8 @@ export default function TransactionOverview({ allowTxSponsoring, settings, child
                 content={
                   <Group className="flex-col max-w-[42ch]">
                     <Text size="sm">
-                      Zyfi leverages ZKSync's native account abstraction to allow dApps simplify gas management for dApps users.
+                      Zyfi leverages ZKSync's native account abstraction to allow dApps simplify gas management for
+                      dApps users.
                     </Text>
                     <Divider look="soft" horizontal />
                     <Group className="flex-col">
