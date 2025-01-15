@@ -13,6 +13,7 @@ import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
 import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
+import { UserService } from "../user.service";
 
 export async function loader({ params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
@@ -63,7 +64,7 @@ export default function Index() {
   const reward = useMemo(() => rawRewards.find(({ chain: { id } }) => id === chainId), [chainId, rawRewards]);
   const { claimTransaction } = useReward(reward, user);
 
-  const isUserRewards = useMemo(() => user === address, [user, address]);
+  const isUserRewards = useMemo(() => UserService.isSame(user, address), [user, address]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && reward && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],

@@ -8,6 +8,7 @@ import { Fmt } from "dappkit";
 import { useMemo, useState } from "react";
 import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
+import { UserService } from "../../../modules/user/user.service";
 import Tag from "../Tag";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
@@ -30,7 +31,7 @@ export default function ClaimRewardsChainTableRow({
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
 
   const { address: user, chainId, switchChain } = useWalletContext();
-  const isUserRewards = useMemo(() => user === from, [user, from]);
+  const isUserRewards = useMemo(() => UserService.isSame(user, address), [user, from]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],

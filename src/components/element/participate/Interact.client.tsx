@@ -6,6 +6,8 @@ import {
   type ButtonProps,
   Checkbox,
   Collapsible,
+  Divider,
+  Dropdown,
   Group,
   Icon,
   PrimitiveTag,
@@ -19,6 +21,7 @@ import { useMemo, useState } from "react";
 import useBalances from "../../../hooks/useBalances";
 import useInteractionTransaction from "../../../hooks/useInteractionTransaction";
 import Token from "../token/Token";
+import TransactionOverview from "../transaction/TransactionOverview";
 
 export type InteractProps = {
   opportunity: Opportunity;
@@ -145,59 +148,68 @@ export default function Interact({
     if (target.provider === "enso")
       return (
         <>
-          <Icon src="https://framerusercontent.com/images/19ye5oms8sG6XHF1K8p03vLNkg.png" /> Enso
+          <Dropdown
+            content={
+              <Group className="flex-col max-w-[42ch]">
+                <Text size="sm">Enso provides abstract on-chain actions, shortcuts and routes that allows dApps to find the best routes to interact with other protocols.</Text>
+                <Divider look="soft" horizontal />
+                <Group className="flex-col">
+                  <Button
+                    to={"https://www.enso.build/"}
+                    size="xs"
+                    look="soft">
+                    <Icon remix="RiArrowRightLine" /> Visit Enso
+                  </Button>
+                </Group>
+              </Group>
+            }>
+            <PrimitiveTag size="sm">
+              <Icon src="https://framerusercontent.com/images/19ye5oms8sG6XHF1K8p03vLNkg.png" /> Enso
+            </PrimitiveTag>
+          </Dropdown>
         </>
       );
     if (target.provider === "zap")
       return (
         <>
-          <Icon src="https://docs.kyberswap.com/~gitbook/image?url=https%3A%2F%2F1368568567-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Fw1XgQJc40kVeGUIxgI7c%252Ficon%252FYl1TDE5MQwDPbEsfCerK%252Fimage%2520%281%29.png%3Falt%3Dmedia%26token%3D3f984a53-8b11-4d1b-b550-193d82610e7b&width=32&dpr=1&quality=100&sign=a7af3e95&sv=2" />{" "}
-          Zap
+          <Dropdown
+            content={
+              <Group className="flex-col max-w-[42ch]">
+                <Text size="sm">Zap enables users to effortlessly add liquidity into any concentrated liquidity protocol using any tokens, thanks to the KyberSwap aggregator.</Text>
+                <Divider look="soft" horizontal />
+                <Group className="flex-col">
+                  <Button
+                    to={"https://docs.kyberswap.com/kyberswap-solutions/kyberswap-zap-as-a-service"}
+                    size="xs"
+                    look="soft">
+                    <Icon remix="RiArrowRightLine" /> Visit Kyberswap Zap
+                  </Button>
+                </Group>
+              </Group>
+            }>
+            <PrimitiveTag size="sm">
+              <Icon src="https://docs.kyberswap.com/~gitbook/image?url=https%3A%2F%2F1368568567-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Fw1XgQJc40kVeGUIxgI7c%252Ficon%252FYl1TDE5MQwDPbEsfCerK%252Fimage%2520%281%29.png%3Falt%3Dmedia%26token%3D3f984a53-8b11-4d1b-b550-193d82610e7b&width=32&dpr=1&quality=100&sign=a7af3e95&sv=2" />{" "}
+              Kyberswap Zap
+            </PrimitiveTag>
+          </Dropdown>
         </>
       );
   }, [target]);
 
   const canTransactionBeSponsored = opportunity.chainId === 324;
-  const [settingsCollapsed, setSettingsCollapsed] = useState<boolean>(false);
 
   return (
     <>
       <Space size="sm" />
-      <Box content="sm" className="w-full !gap-0 !bg-main-2" look="base">
-        <Group className="w-full flex-nowrap">
-          <Group className="grow items-center">
-            {amount && inputToken && (
-              <Text className="flex animate-drop grow flex-nowrap items-center gap-md" size={6}>
-                Supply
-                <Token key={amount} className="animate-drop" token={inputToken} amount={amount} format="price" /> with{" "}
-                {providerIcon}
-              </Text>
-            )}
-          </Group>
-          <PrimitiveTag
-            onClick={() => setSettingsCollapsed(o => !o)}
-            size="sm"
-            look="base"
-            className="flex flex-nowrap gap-md">
-            <Icon remix="RiSettings3Line" />
-            <Icon
-              data-state={!settingsCollapsed ? "closed" : "opened"}
-              className={"transition duration-150 ease-out data-[state=opened]:rotate-180"}
-              remix="RiArrowDownSLine"
-            />
-          </PrimitiveTag>
-        </Group>
-        <Collapsible state={[settingsCollapsed]}>
-          <Space size="md" />
-          {canTransactionBeSponsored && (
-            <Group className="justify-between w-full items-center">
-              <Text>Gasless</Text>
-              <Checkbox size="sm" state={[sponsorTransactions, setSponsorTransactions]} />
-            </Group>
-          )}
-          {settings}
-        </Collapsible>
-      </Box>
+      <TransactionOverview settings={settings} allowTxSponsoring={canTransactionBeSponsored}>
+        {amount && inputToken && (
+          <Text className="flex animate-drop grow flex-nowrap items-center gap-md" size={6}>
+            Supply
+            <Token key={amount} className="animate-drop" token={inputToken} amount={amount} format="price" /> with{" "}
+            {providerIcon}
+          </Text>
+        )}
+      </TransactionOverview>
       <Space size="xl" />
       {currentInteraction}
     </>
