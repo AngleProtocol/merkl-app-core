@@ -21,10 +21,6 @@ export const LifiConfig: Partial<WidgetConfig> = {
         primary: "#dfefff",
         secondary: "#85b1ff",
       },
-      common: {
-        white: "#dfefff",
-        black: "#0f1732",
-      },
       grey: {
         200: "#d6eaff",
         300: "#85b1ff",

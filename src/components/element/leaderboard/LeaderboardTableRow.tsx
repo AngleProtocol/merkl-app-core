@@ -1,6 +1,5 @@
 import type { Token as TokenType } from "@merkl/api";
-import { type Component, Group, PrimitiveTag, Text, Value, mergeClass } from "dappkit";
-import { useWalletContext } from "dappkit";
+import { type Component, Group, PrimitiveTag, Text, Value, mergeClass, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
 import type { RewardService } from "../../../modules/reward/reward.service";
