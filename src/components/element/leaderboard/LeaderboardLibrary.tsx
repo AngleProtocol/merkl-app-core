@@ -13,19 +13,19 @@ export type LeaderboardLibraryProps = {
   leaderboard: Awaited<ReturnType<typeof RewardService.getCampaignLeaderboard>>["rewards"];
   count?: number;
   total?: bigint;
-  withReason: boolean;
+  reason: boolean;
   token: Token;
   chain: number;
 };
 
 export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
-  const { leaderboard, count, total, token, chain, withReason } = props;
+  const { leaderboard, count, total, token, chain, reason } = props;
   const [searchParams] = useSearchParams();
 
   const items = searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
   const page = searchParams.get("page");
 
-  const Table = withReason ? LeaderboardTable : LeaderboardTableWithoutReason;
+  const Table = reason ? LeaderboardTable : LeaderboardTableWithoutReason;
 
   const rows = useMemo(() => {
     return leaderboard?.map((row, index) => (
@@ -33,13 +33,13 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
         key={uuidv4()}
         total={BigInt(total ?? 0n)}
         row={row}
-        withReason={withReason}
+        reason={reason}
         rank={index + 1 + Math.max(Number(page) - 1, 0) * Number(items)}
         token={token}
         chain={chain}
       />
     ));
-  }, [leaderboard, page, items, total, token, chain, withReason]);
+  }, [leaderboard, page, items, total, token, chain, reason]);
 
   return (
     <Group className="flex-row w-full [&>*]:flex-grow">

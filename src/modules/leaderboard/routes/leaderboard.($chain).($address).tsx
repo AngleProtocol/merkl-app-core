@@ -6,12 +6,16 @@ import { formatUnits } from "viem";
 import Hero from "../../../components/composite/Hero";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
 import merklConfig from "../../../config";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { RewardService } from "../../../modules/reward/reward.service";
-import { TokenService } from "../../../modules/token/token.service";
+import { ChainService } from "../../chain/chain.service";
+import { RewardService } from "../../reward/reward.service";
+import { TokenService } from "../../token/token.service";
 
 export async function loader({ params: { address, chain: chainId }, request }: LoaderFunctionArgs) {
-  if (!chainId || !address) throw "";
+  if (!chainId && !merklConfig.leaderboard) throw "";
+  if (!chainId) chainId = merklConfig.leaderboard!.chain;
+
+  if (!address && !merklConfig.leaderboard) throw "";
+  if (!address) address = merklConfig.leaderboard!.address;
 
   const chain = await ChainService.get({ name: chainId });
   const token = await TokenService.findUniqueOrThrow(chain.id, address);
@@ -85,16 +89,13 @@ export default function Index() {
           {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
         </>
       }
-      description={`Leaderboard of all ${token.symbol} rewards earned through Merkl`}
-      // sideDatas={defaultHeroSideDatas(count, maxApr, Number.parseFloat(dailyRewards))}
-      // tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}
-    >
+      description={`Leaderboard of all ${token.symbol} rewards earned through Merkl`}>
       <Container>
         <Space size="lg" />
         <Group size="lg">{metrics}</Group>
         <Space size="lg" />
         <LeaderboardLibrary
-          withReason={false}
+          reason={false}
           leaderboard={rewards}
           token={token}
           chain={chain.id}

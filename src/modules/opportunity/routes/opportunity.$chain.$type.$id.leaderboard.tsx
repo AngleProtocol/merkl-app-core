@@ -172,7 +172,7 @@ export default function Index() {
       <Space size="lg" />
       {selectedCampaign && (
         <LeaderboardLibrary
-          withReason={true}
+          reason={true}
           leaderboard={rewards}
           token={selectedCampaign?.rewardToken}
           chain={selectedCampaign?.computeChainId}

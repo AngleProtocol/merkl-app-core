@@ -1,6 +1,7 @@
 import type * as RemixIcon from "@remixicon/react";
-import type { Mode, Themes, sizeScale } from "dappkit";
+import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
+import type { Mode } from "packages/dappkit/src/theming/variables";
 import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
@@ -160,6 +161,10 @@ export type MerklConfig<T extends Themes> = {
         enabled: boolean;
       };
     };
+  };
+  leaderboard?: {
+    chain: string;
+    address: string;
   };
   decimalFormat: {
     dollar: string;
