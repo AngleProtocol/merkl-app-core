@@ -11,10 +11,6 @@ import { ChainService } from "../../chain/chain.service";
 import { RewardService } from "../../reward/reward.service";
 import { TokenService } from "../../token/token.service";
 
-export const meta: MetaFunction = () => {
-  return [{ title: I18n.trad.get.pages.leaderboard.headTitle }];
-};
-
 export async function loader({ params: { address, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId && !merklConfig.leaderboard) throw "";
   if (!chainId) chainId = merklConfig.leaderboard!.chain;
@@ -38,6 +34,10 @@ export async function loader({ params: { address, chain: chainId }, request }: L
     total,
   });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data: _data }) => {
+  return [{ title: I18n.trad.get.pages.leaderboard.headTitle }];
+};
 
 export default function Index() {
   const { rewards, token, chain, count, total } = useLoaderData<typeof loader>();
