@@ -1,5 +1,5 @@
 {
-  "name": "merkl-app",
+  "name": "merkl-app-core",
   "private": true,
   "sideEffects": false,
   "type": "module",
