@@ -4,7 +4,7 @@ import { Container, Group, Icon, Space, Text } from "dappkit";
 import { isAddress } from "viem";
 import { I18n } from "../../../I18n";
 import ClaimRewardsLibrary from "../../../components/element/rewards/ClaimRewardsLibrary";
-import type { OutletContextRewards } from "./_merkl.users.$address";
+import type { OutletContextRewards } from "./user.$address.header";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";

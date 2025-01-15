@@ -1,9 +1,18 @@
-import type { Token } from "@merkl/api";
-import type { Chain } from "@merkl/api";
+import type { Chain, Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
-import { Button, Divider, Dropdown, EventBlocker, Group, Hash, Icon, PrimitiveTag, Text } from "dappkit";
-import type { Component, PrimitiveTagProps } from "dappkit";
-import { useWalletContext } from "dappkit";
+import {
+  Button,
+  type Component,
+  Divider,
+  Dropdown,
+  EventBlocker,
+  Group,
+  Hash,
+  Icon,
+  PrimitiveTag,
+  type PrimitiveTagProps,
+  Text,
+} from "dappkit";
 import merklConfig from "../../config";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";

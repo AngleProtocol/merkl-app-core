@@ -1,3 +1,4 @@
+import type { Chain as ChainType } from "@merkl/api";
 import { Button, Dropdown, Icon, type Size } from "dappkit";
 
 export type ChainProps = {
