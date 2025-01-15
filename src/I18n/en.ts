@@ -1,3 +1,5 @@
+import clientEn from "../../../../I18n/en";
+
 const en = {
   pages: {
     home: {
@@ -40,4 +42,4 @@ const en = {
   },
 };
 
-export default en;
+export default Object.assign(en, clientEn);

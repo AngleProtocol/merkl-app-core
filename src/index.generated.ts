@@ -1,7 +1,6 @@
 /**
  *
  */
-export * from ".//entry.server";
 export * from ".//root";
 export { default as root } from ".//root";
 export * from ".//entry.client";

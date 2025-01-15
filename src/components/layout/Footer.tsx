@@ -4,8 +4,6 @@ import Image from "../../../packages/dappkit/src/components/primitives/Image";
 import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
 import merklLogo from "../../assets/images/by-merkl.svg";
 import merklConfig from "../../config";
-import customerDarkLogo from "../../customer/assets/images/customer-dark-logo.svg";
-import customerLogo from "../../customer/assets/images/customer-logo.svg";
 import Socials from "../element/Socials";
 
 export default function Footer() {
@@ -20,7 +18,7 @@ export default function Footer() {
               <Image
                 className="w-[125px] lg:w-[165px]"
                 alt={`${merklConfig.appName} logo`}
-                src={mode !== "dark" ? customerDarkLogo : customerLogo}
+                src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
               />
             </Button>
             <Socials />

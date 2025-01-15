@@ -1,7 +1,17 @@
 import { useNavigate } from "@remix-run/react";
-import { Button, Container, Dropdown, Group, Icon, SCREEN_BREAKDOWNS, Select, WalletButton, useTheme } from "dappkit";
-import { Image } from "dappkit";
-import { useWalletContext } from "dappkit";
+import {
+  Button,
+  Container,
+  Dropdown,
+  Group,
+  Icon,
+  Image,
+  SCREEN_BREAKDOWNS,
+  Select,
+  WalletButton,
+  useTheme,
+  useWalletContext,
+} from "dappkit";
 import { motion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -57,7 +67,7 @@ export default function Header() {
       // Include bridge route only if enabled in config
       merklConfig.header.bridge.enabled ? { bridge } : {},
       rest,
-    );
+    ) as (typeof merklConfig)["routes"];
   }, [user]);
 
   const navigate = useNavigate();
@@ -120,7 +130,7 @@ export default function Header() {
             <Group className="items-center" size="xl">
               <Group className="hidden lg:flex items-center" size="xl">
                 {Object.entries(routes)
-                  .filter(([key]) => !["home", "faq", "docs"].includes(key))
+                  .filter(([key]) => !["home", "docs"].includes(key))
                   .map(([key, route]) => {
                     return (
                       <Button
