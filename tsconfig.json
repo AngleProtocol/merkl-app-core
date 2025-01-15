@@ -1,6 +1,6 @@
 {
   "include": ["src/**/*.ts", "src/**/*.tsx", "*.config.ts"],
-  "exclude": ["node_modules", "dist", "build", "public", "packages"],
+  "exclude": ["src/**/node_modules", "dist", "build", "public"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@remix-run/node", "vite/client"],

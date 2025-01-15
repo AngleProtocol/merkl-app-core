@@ -5,7 +5,12 @@ import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
 import type { OpportunityFilter } from "../components/element/opportunity/OpportunityFilters";
-import type { OpportunityNavigationMode, OpportunitySortedBy, OpportunityView } from "./opportunity";
+import type {
+  OpportunityNavigationMode,
+  OpportunityRowView,
+  OpportunitySortedBy,
+  OpportunityView,
+} from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
 
 export type routesType = {
@@ -135,6 +140,7 @@ export type MerklConfig<T extends Themes> = {
   opportunityLibrary: {
     defaultView?: OpportunityView;
     views?: OpportunityView[];
+    rowView?: OpportunityRowView;
     cells?: {
       hideTags?: (keyof TagTypes)[];
     };

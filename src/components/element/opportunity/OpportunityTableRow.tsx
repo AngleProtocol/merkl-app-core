@@ -1,12 +1,11 @@
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import { Dropdown, Group, Icon, Icons, PrimitiveTag, Text, Title, Value } from "dappkit";
-import { mergeClass } from "dappkit";
+import { FormatterService as Fmt, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import merklConfig from "../../../config";
-import { actions } from "../../../config/actions";
 import type { OpportunityNavigationMode } from "../../../config/opportunity";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
@@ -97,58 +96,130 @@ export default function OpportunityTableRow({
     [opportunity, rewardsBreakdown],
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
-  const row = useMemo(
-    () => (
-      <OpportunityRow
-        size="lg"
-        content="sm"
-        className={mergeClass("cursor-pointer", className)}
-        {...props}
-        aprColumn={aprColumn}
-        tvlColumn={tvlColumn}
-        rewardsColumn={rewardsColumn}
-        actionColumn={
-          <Group>
-            <Icon remix={actions[opportunity.action].icon.remix} />
-            {actions[opportunity.action].label}
-          </Group>
-        }
-        opportunityColumn={
-          <Group className="flex-col w-full">
-            <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
-              <Group className="text-xl items-center">
-                <Icons className="flex-nowrap">{icons}</Icons>
-              </Group>
-              <Group>
-                <Title
-                  h={3}
-                  size={4}
-                  ref={ref}
-                  className={mergeClass(
-                    overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
-                  )}>
-                  {merklConfig.opportunityPercentage
-                    ? opportunity.name
-                    : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
-                </Title>
-              </Group>
-            </Group>
+  const renderDailyRewards = useMemo(() => {
+    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
+      const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
+        return breakdown?.token.address === merklConfig.opportunity.library.dailyRewardsTokenAddress;
+      });
+      const token = breakdowns?.[0]?.token;
+      const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
+        return acc + breakdown.amount;
+      }, 0n);
+      return (
+        <>
+          <Title h={3} size={3} look="soft">
+            <Value value format={"0,0.##a"}>
+              {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
+            </Value>
 
-            <Group className="items-center">
-              {tags
-                ?.filter(a => a !== undefined)
-                ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
-                .map(tag => (
-                  <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
-                ))}
-            </Group>
-          </Group>
-        }
-      />
-    ),
-    [opportunity, aprColumn, tvlColumn, hideTags, className, rewardsColumn, icons, overflowing, ref, tags],
-  );
+            {` ${token?.symbol}`}
+          </Title>
+          <Text className="text-xl">
+            <Icon key={token?.icon} src={token?.icon} />
+          </Text>
+        </>
+      );
+    }
+    return (
+      <Title h={3} size={3} look="soft">
+        <Value value format={merklConfig.decimalFormat.dollar}>
+          {opportunity.dailyRewards ?? 0}
+        </Value>
+      </Title>
+    );
+  }, [opportunity]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
+  const row = useMemo(() => {
+    switch (merklConfig.opportunityLibrary.rowView) {
+      case "classic":
+        return (
+          <OpportunityRow
+            size="lg"
+            content="sm"
+            className={mergeClass("cursor-pointer", className)}
+            {...props}
+            aprColumn={aprColumn}
+            tvlColumn={tvlColumn}
+            rewardsColumn={rewardsColumn}
+            opportunityColumn={
+              <Group className="flex-col w-full">
+                <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
+                  <Group className="text-xl items-center">
+                    <Icons className="flex-nowrap">{icons}</Icons>
+                  </Group>
+                  <Group>
+                    <Title
+                      h={3}
+                      size={4}
+                      ref={ref}
+                      className={mergeClass(
+                        overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
+                      )}>
+                      {merklConfig.opportunityPercentage
+                        ? opportunity.name
+                        : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
+                    </Title>
+                  </Group>
+                </Group>
+
+                <Group className="items-center">
+                  {tags
+                    ?.filter(a => a !== undefined)
+                    ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
+                    .map(tag => (
+                      <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
+                    ))}
+                </Group>
+              </Group>
+            }
+          />
+        );
+      case "rewards":
+        return (
+          <OpportunityRow
+            size="lg"
+            content="sm"
+            className={mergeClass("cursor-pointer", className)}
+            {...props}
+            aprColumn={aprColumn}
+            tvlColumn={tvlColumn}
+            rewardsColumn={rewardsColumn}
+            opportunityColumn={
+              <Group className="flex-col w-full text-nowrap whitespace-nowrap text-ellipsis">
+                <Group className="text-nowrap whitespace-nowrap min-w-0 flex-nowrap items-center overflow-hidden max-w-full">
+                  {renderDailyRewards}
+                </Group>
+                <Group className="items-center">
+                  <Group>
+                    <Title
+                      h={3}
+                      size={4}
+                      ref={ref}
+                      className={mergeClass(
+                        overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
+                      )}>
+                      {merklConfig.opportunityPercentage
+                        ? opportunity.name
+                        : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
+                    </Title>
+                  </Group>
+                </Group>
+
+                <Group className="items-center">
+                  {tags
+                    ?.filter(a => a !== undefined)
+                    ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
+                    .map(tag => (
+                      <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
+                    ))}
+                </Group>
+              </Group>
+            }
+          />
+        );
+    }
+  }, [opportunity, aprColumn, tvlColumn, hideTags, className, rewardsColumn, icons, overflowing, ref, tags]);
 
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{row}</OpportunityParticipateModal>;
