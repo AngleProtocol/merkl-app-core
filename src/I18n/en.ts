@@ -41,8 +41,6 @@ const en = {
     },
     leaderboard: {
       headTitle: "Merkl | Leaderboard Per Token",
-      title: "Leaderboard",
-      description: "Leaderboard of all rewards earned through Merkl",
     },
   },
 };
