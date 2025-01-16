@@ -12,10 +12,30 @@ export default function ReinvestBanner() {
 
   useEffect(() => {
     if (!merklConfig.dashboard?.reinvestTokenAddress) return;
-    OpportunityService.getMany({
-      items: 3,
-      sort: "rewards",
-    }).then(({ opportunities }) => setOpportunities(opportunities));
+
+    const fetchData = async () => {
+      const opp1 = await OpportunityService.getMany({
+        items: 1,
+        sort: "rewards",
+        name: "Supply ZK on Venus",
+      });
+
+      const opp2 = await OpportunityService.getMany({
+        items: 1,
+        sort: "rewards",
+        name: "Supply ZK on ZeroLend",
+      });
+
+      const opp3 = await OpportunityService.getMany({
+        items: 1,
+        sort: "rewards",
+        name: "Supply ZK on Aave",
+      });
+
+      setOpportunities([...opp1.opportunities, ...opp2.opportunities, ...opp3.opportunities]);
+    };
+
+    fetchData();
   }, []);
 
   const cells = useMemo(
