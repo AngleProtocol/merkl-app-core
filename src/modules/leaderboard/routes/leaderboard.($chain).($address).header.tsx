@@ -24,10 +24,10 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
 export async function loader({ params: { address, chain: chainName } }: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  return json({
+  return {
     token,
     chain,
-  });
+  };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data: _data }) => {
