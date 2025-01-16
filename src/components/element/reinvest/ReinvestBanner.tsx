@@ -14,7 +14,7 @@ export default function ReinvestBanner() {
     if (!merklConfig.dashboard?.reinvestTokenAddress) return;
     OpportunityService.getMany({
       items: 3,
-      status: "LIVE",
+      sort: "rewards",
     }).then(({ opportunities }) => setOpportunities(opportunities));
   }, []);
 
