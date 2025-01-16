@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import Hero from "../../../components/composite/Hero";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-import { Outlet, json, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { I18n } from "../../../I18n";
 
 export const meta: MetaFunction = () => {

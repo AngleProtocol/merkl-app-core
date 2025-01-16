@@ -1,5 +1,5 @@
 import type { Chain } from "@merkl/api";
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";

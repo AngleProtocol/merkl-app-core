@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";

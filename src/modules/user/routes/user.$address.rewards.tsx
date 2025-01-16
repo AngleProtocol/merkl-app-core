@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData, useOutletContext } from "@remix-run/react";
+import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Container, Fmt, Group, Icon, Space, Text, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";

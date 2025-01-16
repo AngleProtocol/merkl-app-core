@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import { isAddress } from "viem";
 import HistoricalClaimsLibrary from "../../../components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";

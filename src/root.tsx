@@ -6,7 +6,6 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
-  json,
   useLoaderData,
   useNavigate,
   useRouteError,

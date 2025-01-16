@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import ProtocolLibrary from "../../../components/element/protocol/ProtocolLibrary";
