@@ -154,6 +154,10 @@ export type MerklConfig<T extends Themes> = {
     liquidityTab: {
       enabled: boolean;
     };
+    /**
+     * Address of the token of user to reinvest in the dashboard
+     */
+    reinvestTokenAddress?: string;
   };
   tagsDetails: {
     token: {

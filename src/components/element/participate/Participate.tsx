@@ -198,7 +198,7 @@ export default function Participate({
           </Group>
         </Box>
       )}
-      {loading && (
+      {loading && !!merklConfig.deposit && (
         <Group className="w-full justify-center">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>

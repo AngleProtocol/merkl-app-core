@@ -101,6 +101,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     liquidityTab: {
       enabled: false,
     },
+    reinvestTokenAddress: "",
   },
   tagsDetails: {
     token: {
