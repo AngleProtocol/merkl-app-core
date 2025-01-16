@@ -39,6 +39,13 @@ export default defineConfig({
               ],
             );
 
+            route(
+              "/leaderboard/:chain/:address",
+              "./packages/merkl-app-core/src/modules/leaderboard/routes/leaderboard.($chain).($address)",
+              file => `${file}.header`,
+              [[url => `${url}/leaderboard`, file => `${file}.leaderboard`]],
+            );
+
             route("/tokens/:symbol", "modules/token/routes/token.$symbol", tokens => `${tokens}.header`, [
               [tokens => tokens, tokens => `${tokens}.opportunities`],
             ]);

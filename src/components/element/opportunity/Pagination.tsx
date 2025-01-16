@@ -28,7 +28,7 @@ export default function Pagination({ count }: PaginationProps) {
   }, [pages]);
 
   return (
-    <Group className="justify-between">
+    <Group className="justify-between w-full">
       <Group>
         <Select
           state={[itemsFilter ?? DEFAULT_ITEMS_PER_PAGE, setItemsFilter]}

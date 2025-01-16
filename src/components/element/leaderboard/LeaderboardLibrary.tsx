@@ -33,7 +33,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
         key={uuidv4()}
         total={BigInt(total ?? 0n)}
         row={row}
-        reason={reason}
+        showreason={reason}
         rank={index + 1 + Math.max(Number(page) - 1, 0) * Number(items)}
         token={token}
         chain={chain}

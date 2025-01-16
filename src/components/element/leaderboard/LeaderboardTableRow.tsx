@@ -13,11 +13,11 @@ export type LeaderboardTableRowProps = Component<{
   rank: number;
   token: TokenType;
   chain: number;
-  reason: boolean;
+  showreason: boolean;
 }>;
 
 export default function LeaderboardTableRow({ row, rank, total, className, ...props }: LeaderboardTableRowProps) {
-  const { token, chain: chainId, reason } = props;
+  const { token, chain: chainId, showreason } = props;
   const { chains } = useWalletContext();
 
   const share = useMemo(() => {
@@ -31,7 +31,7 @@ export default function LeaderboardTableRow({ row, rank, total, className, ...pr
     return chains?.find(c => c.id === chainId);
   }, [chains, chainId]);
 
-  return reason ? (
+  return showreason ? (
     <LeaderboardRow
       {...props}
       className={mergeClass("cursor-pointer", className)}

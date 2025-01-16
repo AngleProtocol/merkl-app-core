@@ -1,29 +1,21 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { type MetaFunction, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
-import { I18n } from "../../../I18n";
-import Hero from "../../../components/composite/Hero";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
+import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
-import { ChainService } from "../../chain/chain.service";
+import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
-import { TokenService } from "../../token/token.service";
+import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
 
-export async function loader({ params: { address, chain: chainId }, request }: LoaderFunctionArgs) {
-  if (!chainId && !merklConfig.leaderboard) throw "";
-  if (!chainId) chainId = merklConfig.leaderboard!.chain;
-
-  if (!address && !merklConfig.leaderboard) throw "";
-  if (!address) address = merklConfig.leaderboard!.address;
-
-  const chain = await ChainService.get({ name: chainId });
-  const token = await TokenService.findUniqueOrThrow(chain.id, address);
+export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
+  const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
   const { rewards, count, total } = await RewardService.getTokenLeaderboard(request, {
     chainId: chain.id,
-    address,
+    address: token.address,
   });
 
   return json({
@@ -35,9 +27,7 @@ export async function loader({ params: { address, chain: chainId }, request }: L
   });
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data: _data }) => {
-  return [{ title: I18n.trad.get.pages.leaderboard.headTitle }];
-};
+export const clientLoader = Cache.wrap("leaderboard", 300);
 
 export default function Index() {
   const { rewards, token, chain, count, total } = useLoaderData<typeof loader>();
@@ -82,23 +72,11 @@ export default function Index() {
   );
 
   return (
-    <Hero
-      breadcrumbs={[
-        { link: "/tokens", name: "Tokens" },
-        { link: `/tokens/${token.symbol}`, name: token.symbol },
-      ]}
-      icons={[{ src: token.icon }]}
-      navigation={{ label: "Back to opportunities", link: "/" }}
-      title={
-        <>
-          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
-        </>
-      }
-      description={`Leaderboard of all ${token.symbol} rewards earned through Merkl`}>
-      <Container>
-        <Space size="lg" />
-        <Group size="lg">{metrics}</Group>
-        <Space size="lg" />
+    <Container>
+      <Space size="lg" />
+      <Group size="lg">{metrics}</Group>
+      <Space size="lg" />
+      {token && (
         <LeaderboardLibrary
           reason={false}
           leaderboard={rewards}
@@ -107,8 +85,12 @@ export default function Index() {
           count={count?.count ?? 0}
           total={total}
         />
-      </Container>
+      )}
       <Space size="lg" />
-    </Hero>
+    </Container>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorHeading />;
 }
