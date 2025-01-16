@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Collapsible, EventBlocker, Group, Icon, Text, mergeClass } from "dappkit";
+import { Collapsible, EventBlocker, Group, Icon, Space, Text, mergeClass } from "dappkit";
 import { useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
 import OpportunityCell from "../../../components/element/opportunity/OpportunityCell";
@@ -35,7 +35,7 @@ export default function ReinvestBanner() {
   if (!merklConfig.dashboard?.reinvestTokenAddress) return;
   return (
     <Group
-      className="rounded-md p-md bg-main-5 flex-nowrap items-start flex-col cursor-pointer"
+      className="rounded-md p-md bg-main-5 flex-nowrap items-start flex-col cursor-pointer !gap-0"
       onClick={() => setIsOpen(!isOpen)}>
       <Group className="w-full justify-between">
         <Group>
@@ -50,7 +50,8 @@ export default function ReinvestBanner() {
           remix="RiArrowDownSLine"
         />
       </Group>
-      <Collapsible state={[isOpen, setIsOpen]} className={mergeClass("w-full", !isOpen && "hidden")}>
+      {isOpen && <Space size="md" />}
+      <Collapsible state={[isOpen, setIsOpen]} className={mergeClass("w-full")}>
         <Group className="grid grid-cols-1 lg:grid-cols-3 gap-lg*2 w-full">{cells}</Group>
       </Collapsible>
     </Group>
