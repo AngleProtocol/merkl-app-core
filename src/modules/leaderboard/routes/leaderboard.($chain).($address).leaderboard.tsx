@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
-import { Suspense, useMemo } from "react";
+import { useMemo } from "react";
 import { formatUnits } from "viem";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
 import merklConfig from "../../../config";
@@ -75,18 +75,16 @@ export default function Index() {
       <Space size="lg" />
       <Group size="lg">{metrics}</Group>
       <Space size="lg" />
-      <Suspense fallback={<></>}>
-        {token && (
-          <LeaderboardLibrary
-            reason={false}
-            leaderboard={rewards}
-            token={token}
-            chain={chain}
-            count={count?.count ?? 0}
-            total={total}
-          />
-        )}
-      </Suspense>
+      {token && (
+        <LeaderboardLibrary
+          reason={false}
+          leaderboard={rewards}
+          token={token}
+          chain={chain}
+          count={count?.count ?? 0}
+          total={total}
+        />
+      )}
       <Space size="lg" />
     </Container>
   );

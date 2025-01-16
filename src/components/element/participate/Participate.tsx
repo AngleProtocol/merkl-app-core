@@ -42,7 +42,7 @@ export default function Participate({
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
 
-  const { link  } = useOpportunity(opportunity);
+  const { link } = useOpportunity(opportunity);
   const location = useLocation();
   const isOnOpportunityPage = location.pathname.includes("/opportunities/");
   const [success, setSuccess] = useState(false);
