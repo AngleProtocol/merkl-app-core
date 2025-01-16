@@ -43,4 +43,8 @@ export abstract class ChainService {
     //TODO: add some cache here
     return chains?.[0];
   }
+
+  static async getById(chainId: number): Promise<Chain> {
+    return await ChainService.#fetch(async () => api.v4.chains({ chainId }).get());
+  }
 }

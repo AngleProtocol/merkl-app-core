@@ -1,4 +1,4 @@
-import type { Token } from "@merkl/api";
+import type { Chain, Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Text, Title } from "dappkit";
 import { useMemo } from "react";
@@ -15,7 +15,7 @@ export type LeaderboardLibraryProps = {
   total?: bigint;
   reason: boolean;
   token: Token;
-  chain: number;
+  chain: Chain;
 };
 
 export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {

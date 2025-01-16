@@ -1,10 +1,9 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { formatUnits } from "viem";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
-import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
 import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
@@ -76,21 +75,19 @@ export default function Index() {
       <Space size="lg" />
       <Group size="lg">{metrics}</Group>
       <Space size="lg" />
-      {token && (
-        <LeaderboardLibrary
-          reason={false}
-          leaderboard={rewards}
-          token={token}
-          chain={chain.id}
-          count={count?.count ?? 0}
-          total={total}
-        />
-      )}
+      <Suspense fallback={<></>}>
+        {token && (
+          <LeaderboardLibrary
+            reason={false}
+            leaderboard={rewards}
+            token={token}
+            chain={chain}
+            count={count?.count ?? 0}
+            total={total}
+          />
+        )}
+      </Suspense>
       <Space size="lg" />
     </Container>
   );
-}
-
-export function ErrorBoundary() {
-  return <ErrorHeading />;
 }

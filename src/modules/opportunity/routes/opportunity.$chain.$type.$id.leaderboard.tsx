@@ -22,7 +22,6 @@ import LeaderboardLibrary from "../../../components/element/leaderboard/Leaderbo
 import Token from "../../../components/element/token/Token";
 import merklConfig from "../../../config";
 import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
-import { Cache } from "../../../modules/cache/cache.service";
 import { CampaignService } from "../../../modules/campaigns/campaign.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { RewardService } from "../../../modules/reward/reward.service";
@@ -40,6 +39,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
   });
 
   const selectedCampaign = campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0];
+  const computeChain = await ChainService.getById(selectedCampaign?.computeChainId ?? chain.id);
 
   const { rewards, count, total } = await RewardService.getCampaignLeaderboard(request, {
     chainId: selectedCampaign.distributionChainId,
@@ -47,6 +47,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
   });
 
   return json({
+    computeChain,
     rewards,
     campaigns,
     count,
@@ -55,10 +56,8 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
   });
 }
 
-export const clientLoader = Cache.wrap("opportunity/leaderboard", 300);
-
 export default function Index() {
-  const { rewards, campaigns, count, total, selectedCampaign } = useLoaderData<typeof loader>();
+  const { rewards, campaigns, count, total, selectedCampaign, computeChain } = useLoaderData<typeof loader>();
 
   const [campaignId, setCampaignIds] = useSearchParamState<string>(
     "campaignId",
@@ -175,7 +174,7 @@ export default function Index() {
           reason={true}
           leaderboard={rewards}
           token={selectedCampaign?.rewardToken}
-          chain={selectedCampaign?.computeChainId}
+          chain={computeChain}
           count={count?.count ?? 0}
           total={total}
         />

@@ -3,6 +3,7 @@ import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
+import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
 import { ChainService } from "../../chain/chain.service";
 import { TokenService } from "../../token/token.service";
@@ -53,4 +54,8 @@ export default function Index() {
       <Outlet />
     </Hero>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorHeading />;
 }

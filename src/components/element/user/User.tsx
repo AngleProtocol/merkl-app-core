@@ -1,17 +1,9 @@
 import type { Chain } from "@merkl/api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag } from "dappkit";
-import { useWalletContext } from "dappkit";
-import { useMemo } from "react";
 
-export type UserProps = { address: string; chain?: Chain };
+export type UserProps = { address: string; chain: Chain };
 
-export default function User({ address, chain: raw }: UserProps) {
-  const { chains } = useWalletContext();
-
-  const chain = useMemo(() => {
-    return chains?.find(c => c.id === raw?.id) ?? raw;
-  }, [raw, chains]);
-
+export default function User({ address, chain }: UserProps) {
   return (
     <Dropdown
       size="lg"
