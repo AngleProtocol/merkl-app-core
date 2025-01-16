@@ -68,7 +68,7 @@ export abstract class RewardService {
 
   static #getTokenLeaderboardQueryFromRequest(
     request: Request,
-    override?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+    override?: Parameters<typeof api.v4.rewards.token.index.get>[0]["query"],
   ) {
     const page = new URL(request.url).searchParams.get("page");
     const items = new URL(request.url).searchParams.get("items");
@@ -92,13 +92,13 @@ export abstract class RewardService {
 
   static async getTokenLeaderboard(
     request: Request,
-    overrides?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+    overrides?: Parameters<typeof api.v4.rewards.token.index.get>[0]["query"],
   ) {
     const query = Object.assign(RewardService.#getTokenLeaderboardQueryFromRequest(request), overrides ?? undefined);
 
     const promises = [
       RewardService.#fetch(async () =>
-        api.v4.rewards.token.get({
+        api.v4.rewards.token.index.get({
           query,
         }),
       ),

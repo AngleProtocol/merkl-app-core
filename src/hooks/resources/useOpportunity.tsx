@@ -1,10 +1,9 @@
-import type { Token } from "@merkl/api";
+import type { Token, Opportunity } from "@merkl/api";
 import { Icon, Value } from "dappkit";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TagType } from "../../components/element/Tag";
 import merklConfig from "../../config";
-import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export default function useOpportunity(opportunity: Opportunity) {
   const tags = useMemo(() => {

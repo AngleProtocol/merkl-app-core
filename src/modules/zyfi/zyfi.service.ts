@@ -20,6 +20,7 @@ export type ZyfiApi = {
         from: string;
         to: string;
         data: string;
+        value: bigint;
       };
     };
     response: {
@@ -40,6 +41,16 @@ export type ZyfiApi = {
         from: string;
         to: string;
         data: string;
+        value: string;
+        maxFeePerGas: string;
+        gasLimit: string;
+        customData: {
+          gasPerPubdata: string;
+          paymasterParams: {
+            paymaster: string;
+            paymasterInput: string;
+          }
+        }
       };
       warnings: string[];
     };

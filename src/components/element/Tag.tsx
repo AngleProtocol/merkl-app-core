@@ -49,13 +49,13 @@ export default function Tag<T extends keyof TagTypes>({ type, filter, value, ...
       return (
         <EventBlocker>
           <PrimitiveTag
-            className={!filter && "pointer-events-none"}
-            onClick={() =>
+            className={!filter ? "pointer-events-none" : ""}
+            onClick={() => {
               setSearchParams(s => {
                 s.set("status", value as TagTypes["status"]);
                 return s;
-              })
-            }
+              });
+            }}
             look="soft"
             {...props}>
             <Icon size={props?.size} {...status.icon} />

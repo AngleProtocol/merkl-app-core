@@ -1,4 +1,4 @@
-import type { Campaign } from "@merkl/api";
+import type { Campaign } from "../../campaigns/campaign.model";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import {
@@ -72,7 +72,7 @@ export default function Index() {
 
   // --------------- Campaign utils ---------------
 
-  const dailyRewards = useCallback((campaign: Campaign) => {
+  const dailyRewards = useCallback((campaign: { endTimestamp: bigint; startTimestamp: bigint; amount: string }) => {
     const duration = campaign.endTimestamp - campaign.startTimestamp;
     const oneDayInSeconds = BigInt(3600 * 24);
     const dayspan = BigInt(duration) / BigInt(oneDayInSeconds) || BigInt(1);
@@ -85,7 +85,7 @@ export default function Index() {
   // -------------------------------------------
 
   const campaignsOptions = campaigns?.reduce(
-    (options, campaign: Campaign) => {
+    (options, campaign) => {
       if (!campaign) return options;
       const isActive = BigInt(campaign.endTimestamp) > BigInt(moment().unix());
       options[campaign.campaignId] = (

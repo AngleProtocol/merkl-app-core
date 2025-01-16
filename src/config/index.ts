@@ -65,17 +65,16 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     bannerOnAllPages: false, // show banner on all pages
     invertColors: false, // Light mode: light text on dark background (instead of dark text on light background)
   },
-  opportunityFilters: {
-    minimumTVL: false,
-    protocols: false,
-    displaySelector: false,
+  images: {
+
   },
   deposit: true,
   walletOptions: {
     hideInjectedWallets: ["phantom", "coinbase wallet"],
     sponsorTransactions: true,
-    client(c) {
+    client: async (c) => {
       if (c.chain?.id === zksync.id) return c.extend(eip712WalletActions());
+      return c;
     },
   },
   chains: [],

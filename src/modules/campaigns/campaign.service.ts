@@ -24,7 +24,7 @@ export abstract class CampaignService {
    */
   static #getQueryFromRequest(
     request: Request,
-    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+    override?: Parameters<typeof api.v4.campaigns.index.get>[0]["query"],
   ) {
     const status = new URL(request.url).searchParams.get("status");
     const action = new URL(request.url).searchParams.get("action");
