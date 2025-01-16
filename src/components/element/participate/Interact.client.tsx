@@ -70,6 +70,7 @@ export default function Interact({
     else if (!user) return <WalletButton {...commonProps} />;
     else if (chainId !== opportunity.chainId)
       createProps({ children: `Switch to ${opportunity.chain.name}`, onClick: () => switchChain(opportunity.chainId) });
+    else if (!inputToken) createProps({ disabled: true, children: "Select a token" });
     else if (!amount || amount === 0n) createProps({ disabled: true, children: "Enter an amount" });
     else if (amount > inputToken.balance) createProps({ disabled: true, children: "Exceeds balance" });
     else if (!transaction && !txLoading)

@@ -4,11 +4,12 @@ import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
 import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
 import merklConfig from "../../../config";
 import useOpportunity from "../../../hooks/resources/useOpportunity";
 import useParticipate from "../../../hooks/useParticipate";
+import { TokenService } from "../../../modules/token/token.service";
 import OpportunityShortCard from "../opportunity/OpportunityShortCard";
 import TokenSelect from "../token/TokenSelect";
 import Interact from "./Interact.client";
@@ -40,6 +41,7 @@ export default function Participate({
     token: inputToken,
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
+
   const { link } = useOpportunity(opportunity);
   const location = useLocation();
   const isOnOpportunityPage = location.pathname.includes("/opportunities/");
@@ -177,6 +179,10 @@ export default function Participate({
     targets,
     connected,
   ]);
+
+  useEffect(() => {
+    if (!tokenAddress || tokenAddress === "") setTokenAddress(TokenService.sortForUser(balance)?.[0]?.address);
+  }, [balance, tokenAddress]);
 
   return (
     <>
