@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 import OpportunityLibrary from "../../../components/element/opportunity/OpportunityLibrary";
 import { ErrorContent } from "../../../components/layout/ErrorContent";
@@ -17,7 +17,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const chains = await ChainService.getAll();
   const { protocols } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ opportunities, chains, count, protocols, featuredOpportunities });
+  return { opportunities, chains, count, protocols, featuredOpportunities };
 }
 
 export const clientLoader = Cache.wrap("opportunities", 300);

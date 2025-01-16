@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData, useOutletContext } from "@remix-run/react";
+import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Container, Fmt, Group, Icon, Space, Text, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";
@@ -12,7 +12,8 @@ import type { OutletContextRewards } from "./user.$address.header";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
-  return json({ address });
+
+  return { address };
 }
 
 export default function Index() {

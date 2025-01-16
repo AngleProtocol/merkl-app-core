@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Container } from "dappkit";
 import { isAddress } from "viem";
 import PositionLibrary from "../../../components/element/position/PositionLibrary";
@@ -16,7 +16,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
     address,
     chainId: defaultChain,
   });
-  return json({ positions });
+  return { positions };
 }
 
 export default function Index() {

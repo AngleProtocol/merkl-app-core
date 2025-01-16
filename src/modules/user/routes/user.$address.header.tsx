@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, json, useFetcher, useLoaderData } from "@remix-run/react";
+import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -28,7 +28,7 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
       )?.[0]
     : null;
 
-  return json({ rewards, address, token });
+  return { rewards, address, token };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

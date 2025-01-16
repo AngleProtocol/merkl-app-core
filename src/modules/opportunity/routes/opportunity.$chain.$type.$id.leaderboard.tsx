@@ -1,5 +1,5 @@
 import type { Campaign } from "@merkl/api";
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import {
   Box,
@@ -46,14 +46,14 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     campaignId: selectedCampaign.campaignId,
   });
 
-  return json({
+  return {
     computeChain,
     rewards,
     campaigns,
     count,
     total,
     selectedCampaign,
-  });
+  };
 }
 
 export default function Index() {

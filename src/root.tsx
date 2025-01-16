@@ -6,7 +6,6 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
-  json,
   useLoaderData,
   useNavigate,
   useRouteError,
@@ -33,7 +32,7 @@ export async function loader(_args: LoaderFunctionArgs) {
 
   if (!chains) throw new Response("Unable to fetch chains", { status: 500 });
 
-  return json({ ENV: { API_URL: process.env.API_URL }, chains });
+  return { ENV: { API_URL: process.env.API_URL }, chains };
 }
 
 export const clientLoader = Cache.wrap("root", 300);

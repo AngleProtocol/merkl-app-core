@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { I18n } from "../../../I18n";
@@ -24,10 +24,10 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
 export async function loader({ params: { address, chain: chainName } }: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  return json({
+  return {
     token,
     chain,
-  });
+  };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data: _data }) => {

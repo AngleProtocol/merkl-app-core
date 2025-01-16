@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { useNavigate } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ import { TokenService } from "../../../modules/token/token.service";
 export async function loader({ request }: LoaderFunctionArgs) {
   const { tokens, count } = await TokenService.getManyFromRequest(request);
 
-  return json({ tokens, count });
+  return { tokens, count };
 }
 
 export const clientLoader = Cache.wrap("tokens", 300);

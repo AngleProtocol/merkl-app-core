@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs, json } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { encodeFunctionData, parseAbi } from "viem";
 import { api } from "../../../api/";
 import { ZyfiService } from "../../../modules/zyfi/zyfi.service";
@@ -25,9 +25,9 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
       if (payload.sponsor) {
         const sponsoredTx = await ZyfiService.wrapAndPrepareTx(tx);
 
-        return json(sponsoredTx);
+        return sponsoredTx;
       }
-      return json(tx);
+      return tx;
     }
     case "supply": {
       try {
@@ -49,7 +49,7 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
           });
         }
 
-        return json(tx);
+        return tx;
       } catch (err) {
         console.error(err);
 

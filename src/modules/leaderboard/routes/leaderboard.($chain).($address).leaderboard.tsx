@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { Suspense, useMemo } from "react";
@@ -17,13 +17,13 @@ export async function loader({ params: { address, chain: chainName }, request }:
     address: token.address,
   });
 
-  return json({
+  return {
     rewards,
     token,
     chain,
     count,
     total,
-  });
+  };
 }
 
 export const clientLoader = Cache.wrap("leaderboard", 300);

@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
@@ -17,7 +17,7 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 
   const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
 
-  return json({ chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr });
+  return { chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr };
 }
 
 export const clientLoader = Cache.wrap("chain", 300);

@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
 import { I18n } from "../../../I18n";
@@ -23,14 +23,14 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
-  return json({
+  return {
     opportunities,
     count,
     protocol,
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
-  });
+  };
 }
 
 export const clientLoader = Cache.wrap("protocol", 300);

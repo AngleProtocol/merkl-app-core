@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { useNavigate } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ import { ChainService } from "../../../modules/chain/chain.service";
 
 export async function loader(_args: LoaderFunctionArgs) {
   const chains = await ChainService.getAll();
-  return json({ chains, count: chains.length });
+  return { chains, count: chains.length };
 }
 
 export const clientLoader = Cache.wrap("chains", 300);

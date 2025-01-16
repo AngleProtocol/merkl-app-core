@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import Hero from "../../../components/composite/Hero";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-import { Outlet, json, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { I18n } from "../../../I18n";
 
 export const meta: MetaFunction = () => {
@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ protocols, count });
+  return { protocols, count };
 }
 
 export default function Index() {

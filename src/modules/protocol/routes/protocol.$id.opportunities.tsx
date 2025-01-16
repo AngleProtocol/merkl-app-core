@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -16,7 +16,7 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   //TODO: embed this in client/service
   const { protocols } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ opportunities, count, protocols, featuredOpportunities });
+  return { opportunities, count, protocols, featuredOpportunities };
 }
 
 export default function Index() {
