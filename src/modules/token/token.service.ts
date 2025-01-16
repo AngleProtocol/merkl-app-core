@@ -1,6 +1,8 @@
 import type { Token } from "@merkl/api";
+import { Fmt } from "dappkit";
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
+import merklConfig from "../../config";
 
 export abstract class TokenService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -70,5 +72,34 @@ export abstract class TokenService {
 
     if (tokens.length === 0) throw new Response("Token not found", { status: 404 });
     return tokens;
+  }
+
+  /**
+   * Sorts tokens based on dollar value & token priority
+   * @returns
+   */
+  static sortForUser(tokens?: (Token & { balance: bigint })[]) {
+    if (!tokens) return [];
+
+    const tokensWithBalance = tokens
+      .filter(({ balance }) => balance > 0)
+      .sort((a, b) => {
+        if (a.price && b.price) return Fmt.toPrice(b.balance, b) - Fmt.toPrice(a.balance, a);
+        if (a.price && a.balance && Fmt.toPrice(a.balance, a)) return -1;
+        if (b.price && b.balance && Fmt.toPrice(b.balance, b)) return 1;
+
+        return b.balance - a.balance;
+      });
+    const tokensWithNoBalance = tokens.filter(({ balance }) => !balance || BigInt(balance) <= 0n);
+
+    const tokensInPriority = !merklConfig?.tokenSymbolPriority?.length
+      ? tokensWithNoBalance
+      : merklConfig?.tokenSymbolPriority
+          .map(s => tokensWithNoBalance.find(({ symbol }) => symbol === s))
+          .filter(t => t !== undefined);
+
+    const otherTokens = tokensWithNoBalance.filter(s => merklConfig?.tokenSymbolPriority?.includes(s));
+
+    return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
   }
 }
