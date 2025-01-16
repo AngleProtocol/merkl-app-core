@@ -12,7 +12,8 @@ import type { OutletContextRewards } from "./user.$address.header";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
-  return json({ address });
+
+  return { address };
 }
 
 export default function Index() {

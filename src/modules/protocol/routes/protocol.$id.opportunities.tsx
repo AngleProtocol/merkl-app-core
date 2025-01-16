@@ -16,7 +16,7 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   //TODO: embed this in client/service
   const { protocols } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ opportunities, count, protocols, featuredOpportunities });
+  return { opportunities, count, protocols, featuredOpportunities };
 }
 
 export default function Index() {

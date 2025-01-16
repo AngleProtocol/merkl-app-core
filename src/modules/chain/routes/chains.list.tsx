@@ -10,7 +10,7 @@ import { ChainService } from "../../../modules/chain/chain.service";
 
 export async function loader(_args: LoaderFunctionArgs) {
   const chains = await ChainService.getAll();
-  return json({ chains, count: chains.length });
+  return { chains, count: chains.length };
 }
 
 export const clientLoader = Cache.wrap("chains", 300);

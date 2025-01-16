@@ -8,7 +8,7 @@ import { ClaimsService } from "../../../modules/claim/claim.service";
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
   const claims = await ClaimsService.getForUser(address);
-  return json({ claims });
+  return { claims };
 }
 export default function Index() {
   const { claims } = useLoaderData<typeof loader>();

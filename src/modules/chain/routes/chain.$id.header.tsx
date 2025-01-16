@@ -17,7 +17,7 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 
   const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
 
-  return json({ chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr });
+  return { chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr };
 }
 
 export const clientLoader = Cache.wrap("chain", 300);

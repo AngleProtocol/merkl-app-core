@@ -8,7 +8,7 @@ import { ProtocolService } from "../../../modules/protocol/protocol.service";
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ protocols, count });
+  return { protocols, count };
 }
 
 export const clientLoader = Cache.wrap("protocols", 300);

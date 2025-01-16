@@ -16,7 +16,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
     address,
     chainId: defaultChain,
   });
-  return json({ positions });
+  return { positions };
 }
 
 export default function Index() {

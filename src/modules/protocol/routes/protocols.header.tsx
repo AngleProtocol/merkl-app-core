@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ protocols, count });
+  return { protocols, count };
 }
 
 export default function Index() {

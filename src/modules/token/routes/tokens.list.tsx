@@ -11,7 +11,7 @@ import { TokenService } from "../../../modules/token/token.service";
 export async function loader({ request }: LoaderFunctionArgs) {
   const { tokens, count } = await TokenService.getManyFromRequest(request);
 
-  return json({ tokens, count });
+  return { tokens, count };
 }
 
 export const clientLoader = Cache.wrap("tokens", 300);

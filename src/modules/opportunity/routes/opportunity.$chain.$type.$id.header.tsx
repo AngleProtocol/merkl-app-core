@@ -26,7 +26,7 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
     type: type,
     identifier: id,
   });
-  return json({ rawOpportunity, chain });
+  return { rawOpportunity, chain };
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);

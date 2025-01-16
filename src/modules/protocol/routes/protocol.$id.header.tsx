@@ -23,14 +23,14 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
-  return json({
+  return {
     opportunities,
     count,
     protocol,
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
-  });
+  };
 }
 
 export const clientLoader = Cache.wrap("protocol", 300);

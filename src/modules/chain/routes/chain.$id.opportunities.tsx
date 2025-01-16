@@ -19,7 +19,7 @@ export async function loader({ params: { id: chainId }, request }: LoaderFunctio
 
   const { protocols } = await ProtocolService.getManyFromRequest(request);
 
-  return json({ opportunities, count, protocols, featuredOpportunities });
+  return { opportunities, count, protocols, featuredOpportunities };
 }
 
 export const clientLoader = Cache.wrap("chain/opportunities", 300);

@@ -17,13 +17,13 @@ export async function loader({ params: { address, chain: chainName }, request }:
     address: token.address,
   });
 
-  return json({
+  return {
     rewards,
     token,
     chain,
     count,
     total,
-  });
+  };
 }
 
 export const clientLoader = Cache.wrap("leaderboard", 300);

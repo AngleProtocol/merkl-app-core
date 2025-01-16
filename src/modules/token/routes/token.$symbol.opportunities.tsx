@@ -16,7 +16,7 @@ export async function loader({ params: { symbol }, request }: LoaderFunctionArgs
   //TODO: embed this in client/service
   const chains = await ChainService.getAll();
 
-  return json({ opportunities, chains, count, featuredOpportunities });
+  return { opportunities, chains, count, featuredOpportunities };
 }
 
 export const clientLoader = Cache.wrap("token/opportunities", 300);

@@ -46,14 +46,14 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     campaignId: selectedCampaign.campaignId,
   });
 
-  return json({
+  return {
     computeChain,
     rewards,
     campaigns,
     count,
     total,
     selectedCampaign,
-  });
+  };
 }
 
 export default function Index() {

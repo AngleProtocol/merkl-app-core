@@ -28,7 +28,7 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
       )?.[0]
     : null;
 
-  return json({ rewards, address, token });
+  return { rewards, address, token };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
