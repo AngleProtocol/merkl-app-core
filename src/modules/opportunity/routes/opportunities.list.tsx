@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
+import CustomBanner from "src/components/element/CustomBanner";
 import OpportunityLibrary from "../../../components/element/opportunity/OpportunityLibrary";
 import { ErrorContent } from "../../../components/layout/ErrorContent";
 import merklConfig from "../../../config";
@@ -28,6 +29,7 @@ export default function Index() {
   return (
     <Container>
       <Space size="xl" />
+      <CustomBanner />
       <Group size="xl" className="py-xl">
         {merklConfig.opportunity.featured.enabled && (
           <>

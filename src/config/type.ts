@@ -118,6 +118,10 @@ export type MerklConfig<T extends Themes> = {
   modes: Mode[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   /**
+   * Custom white-label-banner component to showup on the top of pages
+   */
+  customBanner?: React.ReactNode;
+  /**
    * App name reflected in the app titles & descriptions
    */
   appName: string;
