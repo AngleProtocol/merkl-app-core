@@ -11,6 +11,7 @@ import Token from "../../../components/element/token/Token";
 import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
+import useBalances from "../../../hooks/useBalances";
 import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
 import { UserService } from "../user.service";
@@ -48,7 +49,10 @@ export default function Index() {
   const { rewards: raw, address, token: rawToken } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof loader>();
 
+  const { reload: reloadBalances } = useBalances();
+
   const onClaimSuccess = async (_hash: string) => {
+    reloadBalances();
     await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
   };
 
