@@ -5,16 +5,7 @@ import { Fmt, Icon, Icons, Text, Title, Value } from "dappkit";
 import { useMemo } from "react";
 
 const rewards = [
-  "name",
-  "identifier",
-  "action",
-  "status",
-  "type",
-  "protocol",
   "dailyRewards",
-  "depositUrl",
-  "chain",
-  "tokens",
   "rewardsRecord",
 ] satisfies (keyof Opportunity)[];
 
