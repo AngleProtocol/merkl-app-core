@@ -48,7 +48,7 @@ export default function OpportunityCell({
       });
       const token = breakdowns?.[0]?.token;
       const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
-        return acc + breakdown.amount;
+        return BigInt(acc) + BigInt(breakdown.amount);
       }, 0n);
       return (
         <>
@@ -57,7 +57,7 @@ export default function OpportunityCell({
               {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
             </Value>
 
-            {` ${token?.symbol}`}
+            {` ${token?.symbol ?? ""}`}
           </Title>
           <Text className="text-xl">
             <Icon key={token?.icon} src={token?.icon} />
