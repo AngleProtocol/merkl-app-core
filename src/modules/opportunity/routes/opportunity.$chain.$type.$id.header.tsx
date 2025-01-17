@@ -98,17 +98,25 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{styleName} </span>
-            {!!visitUrl && (
-              <Button to={visitUrl} external className="inline-flex" size="md">
+            {merklConfig.deposit && (
+              <>
+                {!!visitUrl && (
+                  <Button to={visitUrl} external className="inline-flex" size="md">
+                    <Icon remix="RiArrowRightUpLine" size="sm" />
+                  </Button>
+                )}
+                <OpportunityParticipateModal opportunity={opportunity}>
+                  <Button className="inline-flex" look="hype" size="md">
+                    Supply
+                  </Button>
+                </OpportunityParticipateModal>
+              </>
+            )}
+            {!merklConfig.deposit && !!visitUrl && (
+              <Button className="inline-flex" look="hype" size="md" to={visitUrl} external>
+                Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
-            )}
-            {merklConfig.deposit && (
-              <OpportunityParticipateModal opportunity={opportunity}>
-                <Button className="inline-flex" look="hype" size="md">
-                  Supply
-                </Button>
-              </OpportunityParticipateModal>
             )}
             {(merklConfig.showCopyOpportunityIdToClipboard ?? false) && (
               <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
