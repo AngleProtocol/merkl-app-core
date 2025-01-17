@@ -138,7 +138,8 @@ export default function Header() {
                         look="soft"
                         size="lg"
                         key={`${key}-link`}
-                        to={route?.route}>
+                        to={route?.route}
+                        external={route?.external}>
                         {key}
                       </Button>
                     );

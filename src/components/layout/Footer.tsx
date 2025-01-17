@@ -22,6 +22,18 @@ export default function Footer() {
               />
             </Button>
             <Socials />
+            {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
+              Object.entries(merklConfig.footerNavLinks).map(([key, route]) => (
+                <Button
+                  look="soft"
+                  className="capitalize"
+                  size="lg"
+                  key={route.key}
+                  external={route.external}
+                  to={route.route}>
+                  {key}
+                </Button>
+              ))}
           </Group>
           <Group className="items-center gap-xl*2">
             <Group className="items-center" size="xl">
