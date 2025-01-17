@@ -4,10 +4,7 @@ import type { Opportunity } from "@merkl/api";
 import { Fmt, Icon, Icons, Text, Title, Value } from "dappkit";
 import { useMemo } from "react";
 
-const rewards = [
-  "dailyRewards",
-  "rewardsRecord",
-] satisfies (keyof Opportunity)[];
+const rewards = ["dailyRewards", "rewardsRecord"] satisfies (keyof Opportunity)[];
 
 /**
  * Formats rewards for a given opportunity
@@ -57,7 +54,7 @@ export default function useOpportunityRewards({
         ({ token }) => token?.address === merklConfig.opportunity.library.dailyRewardsTokenAddress,
       );
       const token = breakdowns?.[0]?.token;
-      const breakdownAmount = breakdowns.reduce((acc, breakdown) => acc + breakdown.amount, 0n);
+      const breakdownAmount = breakdowns.reduce((acc, breakdown) => BigInt(acc) + BigInt(breakdown.amount), 0n);
 
       return (
         <>
