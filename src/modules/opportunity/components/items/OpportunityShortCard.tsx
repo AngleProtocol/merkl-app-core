@@ -6,7 +6,7 @@ import { Box, Button, Group, Icon, Text } from "dappkit";
 export type OpportunityShortCardProps = { opportunity: Opportunity; displayLinks?: boolean };
 
 export default function OpportunityShortCard({ opportunity, displayLinks }: OpportunityShortCardProps) {
-  const { url, Tags, Icons } = useOpportunityData(opportunity);
+  const { name, url, Tags, Icons } = useOpportunityData(opportunity);
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
   return (
@@ -29,7 +29,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
       <Group className="text-xl flex-nowrap">
         <Icons />
         <Text look="bold" bold>
-          {opportunity.name}
+          {name}
         </Text>
       </Group>
       {displayLinks && !!url && (
