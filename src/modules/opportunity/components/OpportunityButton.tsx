@@ -1,19 +1,19 @@
+import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
-import { Button, Icon, Icons } from "dappkit";
+import { Button, Icon } from "dappkit";
 import { blockEvent } from "dappkit";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
 
 export type OpportuntiyButtonProps = {
   opportunity: Opportunity;
 };
 
 export default function OpportunityButton({ opportunity }: OpportuntiyButtonProps) {
-  const { icons, link } = useOpportunity(opportunity);
+  const { name, Icons, link } = useOpportunityData(opportunity);
 
   return (
     <Button to={link} onClick={blockEvent(() => {})} look="soft">
-      <Icons size="sm">{icons}</Icons>
-      {opportunity.name}
+      <Icons groupProps={{ className: "flex-nowrap" }} />
+      {name}
       <Icon remix="RiArrowRightLine" />
     </Button>
   );

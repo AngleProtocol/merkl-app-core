@@ -24,7 +24,7 @@ export type HeroProps = PropsWithChildren<{
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
-  tags?: ReactNode[];
+  tags?: ReactNode[] | ReactNode;
   sideDatas?: HeroInformations[];
   tabs?: { label: ReactNode; link: string; key: string }[];
 }>;

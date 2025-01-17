@@ -1,3 +1,4 @@
+import type { TagTypes } from "@core/components/element/Tag";
 import type { Token } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { Button, Group, Icon, Value } from "dappkit";
@@ -5,7 +6,6 @@ import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
 import merklConfig from "../../../config";
-import type { TagTypes } from "../Tag";
 import { TokenRow } from "./TokenTable";
 
 export type TokenTableRowProps = {

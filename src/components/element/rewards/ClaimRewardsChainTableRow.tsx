@@ -1,3 +1,4 @@
+import Tag from "@core/components/element/Tag";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
@@ -9,7 +10,6 @@ import { useMemo, useState } from "react";
 import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import { UserService } from "../../../modules/user/user.service";
-import Tag from "../Tag";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";

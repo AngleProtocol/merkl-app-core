@@ -1,5 +1,5 @@
 import { Title, createTable } from "dappkit";
-import merklConfig from "../../../config";
+import merklConfig from "../../../../config";
 
 // biome-ignore lint/suspicious/noExplicitAny: TODO
 export function filterColumns<T extends Record<string, any>>(columns: T): T {
@@ -16,7 +16,7 @@ export function filterColumns<T extends Record<string, any>>(columns: T): T {
   return filteredColumns;
 }
 
-const opportunityColumns = {
+export const opportunityColumns = {
   opportunity: {
     name: (
       <Title h={5} look="soft">

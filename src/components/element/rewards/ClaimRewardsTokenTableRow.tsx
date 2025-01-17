@@ -1,10 +1,10 @@
+import Tag from "@core/components/element/Tag";
+import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { Reward } from "@merkl/api";
 import { Checkbox, type Component, Divider, type GetSet, Group, Icon, Space } from "dappkit";
 import { Collapsible } from "dappkit";
 import { Fmt } from "dappkit";
 import { useMemo, useState } from "react";
-import Tag from "../Tag";
-import OpportunityButton from "../opportunity/OpportunityButton";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 

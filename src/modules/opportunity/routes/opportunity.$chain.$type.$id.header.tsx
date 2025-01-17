@@ -1,32 +1,35 @@
-import type { Chain } from "@merkl/api";
+import Hero from "@core/components/composite/Hero";
+import { ErrorHeading } from "@core/components/layout/ErrorHeading";
+import merklConfig from "@core/config";
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
+import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
+import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetrics from "@core/modules/opportunity/hooks/useOpportunityMetrics";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import type { Campaign, Chain } from "@merkl/api";
+import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
-import { useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Hero from "../../../components/composite/Hero";
-import Tag from "../../../components/element/Tag";
-import OpportunityParticipateModal from "../../../components/element/opportunity/OpportunityParticipateModal";
-import { ErrorHeading } from "../../../components/layout/ErrorHeading";
-import merklConfig from "../../../config";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import type { OpportunityWithCampaigns } from "../../../modules/opportunity/opportunity.model";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ name: chainId });
 
-  const rawOpportunity = await OpportunityService.getCampaignsByParams({
+  const opportunity = await OpportunityService.getCampaignsByParams({
     chainId: chain.id,
     type: type,
     identifier: id,
   });
-  return { rawOpportunity, chain };
+
+  return {
+    //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
+    opportunity: opportunity as typeof opportunity & Opportunity,
+    chain,
+  };
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
@@ -35,59 +38,31 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   return [
     {
-      title: `${data?.rawOpportunity.name}`,
+      title: `${data?.opportunity.name}`,
     },
   ];
 };
 
 export type OutletContextOpportunity = {
-  opportunity: OpportunityWithCampaigns;
+  opportunity: Opportunity & { campaigns: Campaign[] };
   chain: Chain;
 };
 
 export default function Index() {
-  const { rawOpportunity, chain } = useLoaderData<typeof loader>();
-  const { tags, description, link, herosData, opportunity, iconTokens } = useOpportunity(rawOpportunity);
+  const { opportunity, chain } = useLoaderData<typeof loader>();
+
+  const { headerMetrics } = useOpportunityMetrics(opportunity);
+  const { title, Tags, description, link, url, icons } = useOpportunityData(opportunity);
 
   const { copy: copyCall, isCopied } = useClipboard();
 
-  const styleName = useMemo(() => {
-    const spaced = opportunity.name.split(" ");
-
-    return spaced
-      .map(str => {
-        const key = str + uuidv4();
-        if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
-          return [
-            <span key={key} className="text-main-11">
-              {str}
-            </span>,
-          ];
-        if (str.includes("-"))
-          return str
-            .split("-")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">-</span>]);
-        if (str.includes("/"))
-          return str
-            .split("/")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>]);
-        return [<span key={key}>{str}</span>];
-      })
-      .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
-  }, [opportunity]);
-
   const currentLiveCampaign = opportunity.campaigns?.[0];
-
-  const visitUrl = useMemo(() => {
-    if (!!opportunity.depositUrl) return opportunity.depositUrl;
-    if (!!opportunity.protocol?.url) return opportunity.protocol?.url;
-  }, [opportunity]);
 
   return (
     <>
       <Meta />
       <Hero
-        icons={iconTokens.map(t => ({ src: t.icon }))}
+        icons={icons}
         breadcrumbs={[
           { link: merklConfig.routes.opportunities?.route ?? "/", name: "Opportunities" },
           {
@@ -97,11 +72,11 @@ export default function Index() {
         ]}
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
-            <span className="w-full md:w-auto md:flex-1">{styleName} </span>
+            <span className="w-full md:w-auto md:flex-1">{title} </span>
             {merklConfig.deposit && (
               <>
-                {!!visitUrl && (
-                  <Button to={visitUrl} external className="inline-flex" size="md">
+                {!!url && (
+                  <Button to={url} external className="inline-flex" size="md">
                     <Icon remix="RiArrowRightUpLine" size="sm" />
                   </Button>
                 )}
@@ -112,8 +87,8 @@ export default function Index() {
                 </OpportunityParticipateModal>
               </>
             )}
-            {!merklConfig.deposit && !!visitUrl && (
-              <Button className="inline-flex" look="hype" size="md" to={visitUrl} external>
+            {!merklConfig.deposit && !!url && (
+              <Button className="inline-flex" look="hype" size="md" to={url} external>
                 Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
@@ -134,17 +109,8 @@ export default function Index() {
             key: "leaderboard",
           },
         ]}
-        tags={tags.map(tag => (
-          <Tag
-            key={`${tag?.type}_${
-              // biome-ignore lint/suspicious/noExplicitAny: templated type
-              (tag?.value as any)?.address ?? tag?.value
-            }`}
-            {...tag}
-            size="sm"
-          />
-        ))}
-        sideDatas={herosData}>
+        tags={<Tags size="sm" />}
+        sideDatas={headerMetrics}>
         <Outlet context={{ opportunity, chain }} />
       </Hero>
     </>

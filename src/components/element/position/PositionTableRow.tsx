@@ -1,9 +1,9 @@
+import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
 import { type Component, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import merklConfig from "../../../config";
-import OpportunityButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { PositionRow } from "./PositionTable";
 

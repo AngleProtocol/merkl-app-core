@@ -1,8 +1,8 @@
+import OpportunityCell from "@core/modules/opportunity/components/items/OpportunityCell";
 import type { Opportunity } from "@merkl/api";
 import { Collapsible, EventBlocker, Group, Icon, Space, Text, mergeClass } from "dappkit";
 import { useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
-import OpportunityCell from "../../../components/element/opportunity/OpportunityCell";
 import merklConfig from "../../../config";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 

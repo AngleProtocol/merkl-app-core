@@ -1,7 +1,7 @@
+import type { Opportunity } from "@merkl/api"
 import { useMemo } from "react";
-import merklConfig from "../../../config";
-import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
-import OpportunityCell from "./OpportunityCell";
+import merklConfig from "../../../../config";
+import OpportunityCell from "../items/OpportunityCell";
 
 type OpportunityFeaturedProps = {
   opportunities: Opportunity[];

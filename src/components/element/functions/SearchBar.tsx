@@ -1,11 +1,11 @@
 import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
-import { Divider, Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
+import { Divider, Group, Icon, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
 import { Scroll } from "dappkit";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
 import { type Results, type Searchable, useMerklSearch } from "../../../hooks/useMerklSearch";
+import useOpportunityData from "../../../modules/opportunity/hooks/useOpportunityMetadata";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -14,12 +14,12 @@ const titles: { [S in Searchable]: ReactNode } = {
 };
 
 function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
-  const { link, icons } = useOpportunity(opportunity);
+  const { link, Icons } = useOpportunityData(opportunity);
 
   return (
     <>
       <Button to={link} look="soft">
-        <Icons>{icons}</Icons>
+        <Icons />
         {opportunity.name}
         <Icon remix="RiArrowRightLine" />
       </Button>

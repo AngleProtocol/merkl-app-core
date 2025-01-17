@@ -1,13 +1,13 @@
+import merklConfig from "@core/config";
+import { actions } from "@core/config/actions";
+import type { OpportunityView } from "@core/config/opportunity";
+import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
+import useChains from "@core/hooks/resources/useChains";
+import useProtocols from "@core/hooks/resources/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import merklConfig from "../../../config";
-import { actions } from "../../../config/actions";
-import type { OpportunityView } from "../../../config/opportunity";
-import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
-import useChains from "../../../hooks/resources/useChains";
-import useProtocols from "../../../hooks/resources/useProtocols";
 const filters = ["search", "action", "status", "chain", "protocol", "tvl", "sort"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 

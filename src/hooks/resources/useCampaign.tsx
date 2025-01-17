@@ -1,4 +1,5 @@
 import type { Campaign as CampaignFromApi } from "@merkl/api";
+import type { Opportunity } from "@merkl/api"
 import { Bar, Icon } from "dappkit";
 import { Group, Text, Value } from "dappkit";
 import { Time } from "dappkit";
@@ -8,7 +9,6 @@ import { parseUnits } from "viem";
 import type { RuleType } from "../../components/element/campaign/rules/Rule";
 import Token from "../../components/element/token/Token";
 import type { Campaign } from "../../modules/campaigns/campaign.model";
-import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export default function useCampaign(campaign: CampaignFromApi, opportunity?: Opportunity) {
   if (!campaign)

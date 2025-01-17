@@ -1,4 +1,6 @@
+import Tag from "@core/components/element/Tag";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
+import type { Opportunity } from "@merkl/api"
 import {
   Box,
   Button,
@@ -23,8 +25,6 @@ import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import EtherScan from "../../../assets/images/etherscan.svg";
 import useCampaign from "../../../hooks/resources/useCampaign";
-import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
-import Tag from "../Tag";
 import Token from "../token/Token";
 import { CampaignRow } from "./CampaignTable";
 import CampaignTooltipDates from "./CampaignTooltipDates";

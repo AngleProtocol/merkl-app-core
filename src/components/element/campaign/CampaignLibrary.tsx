@@ -1,13 +1,13 @@
-import type { Chain } from "@merkl/api";
+import type { Campaign, Chain } from "@merkl/api";
+import type { Opportunity } from "@merkl/api"
 import { Box, Button, Group, Icon, Text, Title } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import type { OpportunityWithCampaigns } from "../../../modules/opportunity/opportunity.model";
 import { CampaignTable } from "./CampaignTable";
 import CampaignTableRow from "./CampaignTableRow";
 
 export type CampaignLibraryProps = {
-  opportunity: OpportunityWithCampaigns;
+  opportunity: Opportunity & { campaigns: Campaign[] };
   chain: Chain;
 };
 

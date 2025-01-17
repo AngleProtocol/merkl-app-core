@@ -1,4 +1,5 @@
 import type { Chain, Token } from "@merkl/api";
+import type { Opportunity } from "@merkl/api"
 import { useSearchParams } from "@remix-run/react";
 import {
   Button,
@@ -17,7 +18,6 @@ import {
 import merklConfig from "../../config";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
-import type { Opportunity } from "../../modules/opportunity/opportunity.model";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
@@ -34,6 +34,7 @@ export type TagType<T extends keyof TagTypes = keyof TagTypes> = {
 };
 export type TagProps<T extends keyof TagTypes> = {
   type: T;
+  look?: PrimitiveTagProps["look"];
   value: TagTypes[T];
   filter?: boolean;
   size?: PrimitiveTagProps["size"];

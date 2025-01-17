@@ -1,18 +1,19 @@
+import type { TagTypes } from "@core/components/element/Tag";
+import AprModal from "@core/components/element/apr/AprModal";
+import TokenAmountModal from "@core/components/element/token/TokenAmountModal";
+import merklConfig from "@core/config";
+import type { OpportunityNavigationMode } from "@core/config/opportunity";
+import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
+import { OpportunityRow } from "@core/modules/opportunity/components/library/OpportunityTable";
+import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
+import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Dropdown, Fmt, Group, Icon, Icons, PrimitiveTag, Text, Title, Value, mergeClass } from "dappkit";
+import { Dropdown, Group, Icon, Icons as IconGroup, PrimitiveTag, Text, Title, Value, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
-import merklConfig from "../../../config";
-import type { OpportunityNavigationMode } from "../../../config/opportunity";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
-import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
-import Tag, { type TagTypes } from "../Tag";
-import AprModal from "../apr/AprModal";
-import TokenAmountModal from "../token/TokenAmountModal";
-import OpportunityParticipateModal from "./OpportunityParticipateModal";
-import { OpportunityRow } from "./OpportunityTable";
 
 export type OpportunityTableRowProps = {
   hideTags?: (keyof TagTypes)[];
@@ -22,12 +23,13 @@ export type OpportunityTableRowProps = {
 
 export default function OpportunityTableRow({
   hideTags,
-  opportunity: opportunityRaw,
+  opportunity,
   className,
   navigationMode,
   ...props
 }: OpportunityTableRowProps) {
-  const { tags, link, icons, rewardsBreakdown, opportunity } = useOpportunity(opportunityRaw);
+  const { name, tags, link, icons, Tags, Icons } = useOpportunityData(opportunity);
+  const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
 
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
 
@@ -83,50 +85,17 @@ export default function OpportunityTableRow({
             <Value value format={merklConfig.decimalFormat.dollar}>
               {opportunity.dailyRewards ?? 0}
             </Value>
-            <Icons>
+            <IconGroup>
               {rewardsBreakdown.map(({ token: { icon } }) => (
                 <Icon key={icon} src={icon} />
               ))}
-            </Icons>
+            </IconGroup>
           </PrimitiveTag>
         </Dropdown>
       </EventBlocker>
     ),
     [opportunity, rewardsBreakdown],
   );
-
-  const renderDailyRewards = useMemo(() => {
-    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
-      const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
-        return breakdown?.token.address === merklConfig.opportunity.library.dailyRewardsTokenAddress;
-      });
-      const token = breakdowns?.[0]?.token;
-      const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
-        return BigInt(acc) + BigInt(breakdown.amount);
-      }, 0n);
-      return (
-        <>
-          <Title h={3} size={3} look="soft">
-            <Value value format={"0,0.##a"}>
-              {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
-            </Value>
-
-            {` ${token?.symbol ?? ""}`}
-          </Title>
-          <Text className="text-xl">
-            <Icon key={token?.icon} src={token?.icon} />
-          </Text>
-        </>
-      );
-    }
-    return (
-      <Title h={3} size={3} look="soft">
-        <Value value format={merklConfig.decimalFormat.dollar}>
-          {opportunity.dailyRewards ?? 0}
-        </Value>
-      </Title>
-    );
-  }, [opportunity]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
   const row = useMemo(() => {
@@ -145,7 +114,7 @@ export default function OpportunityTableRow({
               <Group className="flex-col w-full">
                 <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
                   <Group className="text-xl items-center">
-                    <Icons className="flex-nowrap">{icons}</Icons>
+                    <Icons groupProps={{ className: "flex-nowrap" }} />
                   </Group>
                   <Group>
                     <Title
@@ -155,20 +124,13 @@ export default function OpportunityTableRow({
                       className={mergeClass(
                         overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
                       )}>
-                      {merklConfig.opportunityPercentage
-                        ? opportunity.name
-                        : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
+                      {name}
                     </Title>
                   </Group>
                 </Group>
 
                 <Group className="items-center">
-                  {tags
-                    ?.filter(a => a !== undefined)
-                    ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
-                    .map(tag => (
-                      <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
-                    ))}
+                  <Tags hide={hideTags} size="sm" />
                 </Group>
               </Group>
             }
@@ -187,7 +149,7 @@ export default function OpportunityTableRow({
             opportunityColumn={
               <Group className="flex-col w-full text-nowrap whitespace-nowrap text-ellipsis">
                 <Group className="text-nowrap whitespace-nowrap min-w-0 flex-nowrap items-center overflow-hidden max-w-full">
-                  {renderDailyRewards}
+                  {formattedDailyRewards}
                 </Group>
                 <Group className="items-center">
                   <Group>
@@ -198,20 +160,13 @@ export default function OpportunityTableRow({
                       className={mergeClass(
                         overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
                       )}>
-                      {merklConfig.opportunityPercentage
-                        ? opportunity.name
-                        : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim()}
+                      {name}
                     </Title>
                   </Group>
                 </Group>
 
                 <Group className="items-center">
-                  {tags
-                    ?.filter(a => a !== undefined)
-                    ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
-                    .map(tag => (
-                      <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
-                    ))}
+                  <Tags hide={hideTags} size="sm" />
                 </Group>
               </Group>
             }

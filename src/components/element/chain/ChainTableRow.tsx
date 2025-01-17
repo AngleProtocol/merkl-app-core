@@ -1,7 +1,7 @@
+import type { TagTypes } from "@core/components/element/Tag";
 import type { Chain } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { type BoxProps, Group, Icon, Title, mergeClass } from "dappkit";
-import type { TagTypes } from "../Tag";
 import { ChainRow } from "./ChainTable";
 
 export type ChainTableRowProps = {
