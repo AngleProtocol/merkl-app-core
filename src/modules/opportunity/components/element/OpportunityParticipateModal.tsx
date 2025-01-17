@@ -3,8 +3,9 @@ import { Button, Divider, Group, Image, Modal, Text, Title } from "dappkit";
 import type { PropsWithChildren } from "react";
 import React from "react";
 
-import merklConfig from "../../../config";
-import Participate from "../participate/Participate";
+import Participate from "@core/components/element/participate/Participate";
+import merklConfig from "@core/config";
+
 export type OpportunityParticipateModalProps = {
   opportunity: Opportunity;
 } & PropsWithChildren;

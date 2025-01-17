@@ -1,3 +1,10 @@
+import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
+import Token from "@core/components/element/token/Token";
+import merklConfig from "@core/config";
+import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
+import { CampaignService } from "@core/modules/campaigns/campaign.service";
+import { ChainService } from "@core/modules/chain/chain.service";
+import { RewardService } from "@core/modules/reward/reward.service";
 import type { Campaign } from "@merkl/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -18,13 +25,6 @@ import {
 import moment from "moment";
 import { useCallback, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
-import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
-import Token from "../../../components/element/token/Token";
-import merklConfig from "../../../config";
-import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
-import { CampaignService } from "../../../modules/campaigns/campaign.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { RewardService } from "../../../modules/reward/reward.service";
 
 export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { DEFAULT_ITEMS_PER_PAGE } from "../../../constants/pagination";
 import type { RewardService } from "../../../modules/reward/reward.service";
-import Pagination from "../opportunity/Pagination";
+import Pagination from "../Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
 

@@ -19,6 +19,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "sourceMap": true,
+    "paths": {
+      "@core/*": ["./src/*"]
+    },
 
     // Vite takes care of building everything, not tsc.
     "noEmit": true

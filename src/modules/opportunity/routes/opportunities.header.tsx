@@ -1,7 +1,7 @@
+import { I18n } from "@core/I18n";
+import Hero from "@core/components/composite/Hero";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { I18n } from "../../../I18n";
-import Hero from "../../../components/composite/Hero";
 
 export const meta: MetaFunction = () => {
   return [{ title: I18n.trad.get.pages.home.headTitle }];

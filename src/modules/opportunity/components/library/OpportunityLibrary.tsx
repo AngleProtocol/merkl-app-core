@@ -1,15 +1,15 @@
 import type { Chain } from "@merkl/api";
+import type { Opportunity } from "@merkl/api";
 import { Box, Group, type Order, Title } from "dappkit";
 import { useCallback, useMemo, useState } from "react";
-import merklConfig from "../../../config";
-import type { OpportunityView } from "../../../config/opportunity";
-import useSearchParamState from "../../../hooks/filtering/useSearchParamState";
-import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
-import OpportunityCell from "./OpportunityCell";
-import OpportunityFilters, { type OpportunityFilterProps } from "./OpportunityFilters";
+import Pagination from "../../../../components/element/Pagination";
+import merklConfig from "../../../../config";
+import type { OpportunityView } from "../../../../config/opportunity";
+import useSearchParamState from "../../../../hooks/filtering/useSearchParamState";
+import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
+import OpportunityCell from "../items/OpportunityCell";
+import OpportunityTableRow from "../items/OpportunityTableRow";
 import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";
-import OpportunityTableRow from "./OpportunityTableRow";
-import Pagination from "./Pagination";
 
 export type Displays = "grid" | "list";
 

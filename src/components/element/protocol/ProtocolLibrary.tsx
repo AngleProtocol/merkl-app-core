@@ -1,7 +1,7 @@
 import type { Protocol } from "@merkl/api";
 import { Group } from "dappkit";
 import { useMemo } from "react";
-import Pagination from "../opportunity/Pagination";
+import Pagination from "../Pagination";
 import ProtocolCell from "./ProtocolCell";
 import ProtocolFilters from "./ProtocolFilters";
 

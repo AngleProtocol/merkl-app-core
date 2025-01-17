@@ -1,7 +1,7 @@
+import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
-import OpportunityLibrary from "../../../components/element/opportunity/OpportunityLibrary";
 import merklConfig from "../../../config";
 import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";

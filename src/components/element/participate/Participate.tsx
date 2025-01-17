@@ -1,3 +1,4 @@
+import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
@@ -7,10 +8,9 @@ import { Fmt } from "dappkit";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
 import merklConfig from "../../../config";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
 import useParticipate from "../../../hooks/useParticipate";
+import useOpportunityData from "../../../modules/opportunity/hooks/useOpportunityMetadata";
 import { TokenService } from "../../../modules/token/token.service";
-import OpportunityShortCard from "../opportunity/OpportunityShortCard";
 import TokenSelect from "../token/TokenSelect";
 import Interact from "./Interact.client";
 
@@ -42,7 +42,7 @@ export default function Participate({
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
 
-  const { link } = useOpportunity(opportunity);
+  const { link } = useOpportunityData(opportunity);
   const location = useLocation();
   const isOnOpportunityPage = location.pathname.includes("/opportunities/");
   const [success, setSuccess] = useState(false);

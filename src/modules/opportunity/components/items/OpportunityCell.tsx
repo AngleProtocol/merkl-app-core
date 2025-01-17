@@ -1,3 +1,10 @@
+import type { TagTypes } from "@core/components/element/Tag";
+import AprModal from "@core/components/element/apr/AprModal";
+import type { OpportunityNavigationMode } from "@core/config/opportunity";
+import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
+import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
+import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import {
@@ -5,10 +12,8 @@ import {
   Button,
   Divider,
   Dropdown,
-  Fmt,
   Group,
   Icon,
-  Icons,
   PrimitiveTag,
   Text,
   Title,
@@ -17,13 +22,6 @@ import {
   useOverflowingRef,
 } from "dappkit";
 import { useMemo } from "react";
-import merklConfig from "../../../config";
-import type { OpportunityNavigationMode } from "../../../config/opportunity";
-import useOpportunity from "../../../hooks/resources/useOpportunity";
-import type { Opportunity } from "../../../modules/opportunity/opportunity.model";
-import Tag, { type TagTypes } from "../Tag";
-import AprModal from "../apr/AprModal";
-import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export type OpportunityCellProps = {
   hideTags?: (keyof TagTypes)[];
@@ -32,54 +30,17 @@ export type OpportunityCellProps = {
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 
-export default function OpportunityCell({
-  opportunity: opportunityRaw,
-  hideTags,
-  navigationMode,
-}: OpportunityCellProps) {
-  const { tags, link, icons, opportunity } = useOpportunity(opportunityRaw);
-
+export default function OpportunityCell({ opportunity, hideTags, navigationMode }: OpportunityCellProps) {
+  const { name, link, Tags, Icons } = useOpportunityData(opportunity);
+  const { formattedDailyRewards } = useOpportunityRewards(opportunity);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
-
-  const renderDailyRewards = useMemo(() => {
-    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
-      const breakdowns = opportunity.rewardsRecord.breakdowns.filter(breakdown => {
-        return breakdown?.token.address === merklConfig.opportunity.library.dailyRewardsTokenAddress;
-      });
-      const token = breakdowns?.[0]?.token;
-      const breakdownAmount = breakdowns.reduce((acc, breakdown) => {
-        return BigInt(acc) + BigInt(breakdown.amount);
-      }, 0n);
-      return (
-        <>
-          <Title h={3} size={3} look="soft">
-            <Value value format={"0,0.##a"}>
-              {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
-            </Value>
-
-            {` ${token?.symbol ?? ""}`}
-          </Title>
-          <Text className="text-xl">
-            <Icon key={token?.icon} src={token?.icon} />
-          </Text>
-        </>
-      );
-    }
-    return (
-      <Title h={3} size={3} look="soft">
-        <Value value format={merklConfig.decimalFormat.dollar}>
-          {opportunity.dailyRewards ?? 0}
-        </Value>
-      </Title>
-    );
-  }, [opportunity]);
 
   const cell = useMemo(
     () => (
       <Box className="flex-col hover:bg-main-2 bg-main-3 ease !gap-0 h-full cursor-pointer">
         <Group className="p-xl justify-between items-end">
           <Group className="flex-col">
-            <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{renderDailyRewards}</Group>
+            <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
             <Text bold look="bold">
               Total daily rewards
             </Text>
@@ -99,7 +60,7 @@ export default function OpportunityCell({
           <Group className="justify-between flex-col flex-1">
             <Group className="flex-nowrap">
               <Text className="text-3xl">
-                <Icons className="flex-nowrap">{icons}</Icons>
+                <Icons groupProps={{ className: "flex-nowrap" }} />
               </Text>
               <Title
                 h={3}
@@ -109,18 +70,13 @@ export default function OpportunityCell({
                   "font-medium [overflow-wrap:anywhere]",
                   overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
                 )}>
-                {opportunity.name}
+                {name}
               </Title>
             </Group>
 
             <Group className="justify-between flex-nowrap">
               <Group className="items-center">
-                {tags
-                  ?.filter(a => a !== undefined)
-                  ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
-                  .map(tag => (
-                    <Tag filter key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" />
-                  ))}
+                <Tags hide={hideTags} size="sm" />
               </Group>
               <Group className="flex-col justify-end">
                 <Button className="hidden lg:block" look="base">
@@ -132,7 +88,7 @@ export default function OpportunityCell({
         </Group>
       </Box>
     ),
-    [opportunity, overflowing, ref, icons, tags, hideTags, renderDailyRewards],
+    [opportunity, Icons, name, overflowing, ref, Tags, hideTags, formattedDailyRewards],
   );
 
   if (navigationMode === "supply")

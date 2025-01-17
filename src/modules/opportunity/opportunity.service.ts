@@ -1,8 +1,8 @@
+import { api } from "@core/api";
+import { fetchWithLogs } from "@core/api/utils";
+import merklConfig from "@core/config";
+import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Opportunity } from "@merkl/api";
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
-import merklConfig from "../../config";
-import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
 
 export abstract class OpportunityService {
   static async getManyFromRequest(

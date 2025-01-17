@@ -1,7 +1,7 @@
 import type { Token } from "@merkl/api";
 import { Group } from "dappkit";
 import { useMemo } from "react";
-import Pagination from "../opportunity/Pagination";
+import Pagination from "../Pagination";
 import TokenFilters from "./TokenFilters";
 import { TokenTable } from "./TokenTable";
 import TokenTableRow from "./TokenTableRow";

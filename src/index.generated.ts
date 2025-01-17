@@ -34,6 +34,8 @@ export * from "./config/status";
 export * from "./config/rewards";
 export * from "./config/type";
 export * from "./config/opportunity";
+export * from "./config/index";
+export { default as index } from "./config/index";
 
 /**
  * api
@@ -41,58 +43,6 @@ export * from "./config/opportunity";
 export * from "./api/utils";
 export * from "./api/types";
 export * from "./api/index";
-
-/**
- * modules/token
- */
-export * from "./modules/token/token.service";
-
-/**
- * modules/protocol
- */
-export * from "./modules/protocol/protocol.service";
-
-/**
- * modules/cache
- */
-export * from "./modules/cache/cache.service";
-
-/**
- * modules/chain
- */
-export * from "./modules/chain/chain.service";
-
-/**
- * modules/zyfi
- */
-export * from "./modules/zyfi/zyfi.service";
-
-/**
- * modules/liquidity
- */
-export * from "./modules/liquidity/liquidity.service";
-
-/**
- * modules/claim
- */
-export * from "./modules/claim/claim.service";
-
-/**
- * modules/reward
- */
-export * from "./modules/reward/reward.service";
-
-/**
- * components/element
- */
-export * from "./components/element/Tag";
-export { default as Tag } from "./components/element/Tag";
-export * from "./components/element/Socials";
-export { default as Socials } from "./components/element/Socials";
-export * from "./components/element/SwitchMode";
-export { default as SwitchMode } from "./components/element/SwitchMode";
-export * from "./components/element/AddressEdit";
-export { default as AddressEdit } from "./components/element/AddressEdit";
 
 /**
  * I18n
@@ -116,63 +66,57 @@ export * from "./hooks/resources/useProtocols";
 export { default as useProtocols } from "./hooks/resources/useProtocols";
 export * from "./hooks/resources/useReward";
 export { default as useReward } from "./hooks/resources/useReward";
-export * from "./hooks/resources/useOpportunity";
-export { default as useOpportunity } from "./hooks/resources/useOpportunity";
+export * from "./modules/opportunity/hooks/useOpportunityMetadata";
+export { default as useOpportunity } from "./modules/opportunity/hooks/useOpportunityMetadata";
 export * from "./hooks/resources/useRewards";
 export { default as useRewards } from "./hooks/resources/useRewards";
 export * from "./hooks/resources/useChains";
 export { default as useChains } from "./hooks/resources/useChains";
 
 /**
- * components/element/opportunity
+ * components/element
  */
-export * from "./components/element/opportunity/OpportunityTableRow";
-export { default as OpportunityTableRow } from "./components/element/opportunity/OpportunityTableRow";
-export * from "./components/element/opportunity/OpportunityLibrary";
-export { default as OpportunityLibrary } from "./components/element/opportunity/OpportunityLibrary";
-export * from "./components/element/opportunity/OpportunityCell";
-export { default as OpportunityCell } from "./components/element/opportunity/OpportunityCell";
-export * from "./components/element/opportunity/OpportunityParticipateModal";
-export { default as OpportunityParticipateModal } from "./components/element/opportunity/OpportunityParticipateModal";
-export * from "./components/element/opportunity/OpportunityButton";
-export { default as OpportunityButton } from "./components/element/opportunity/OpportunityButton";
-export * from "./components/element/opportunity/Pagination";
-export { default as Pagination } from "./components/element/opportunity/Pagination";
-export * from "./components/element/opportunity/OpportunityShortCard";
-export { default as OpportunityShortCard } from "./components/element/opportunity/OpportunityShortCard";
-export * from "./components/element/opportunity/OpportunityFilters";
-export { default as OpportunityFilters } from "./components/element/opportunity/OpportunityFilters";
-export * from "./components/element/opportunity/OpportunityTable";
-export * from "./components/element/opportunity/OpportunityFeatured";
-export { default as OpportunityFeatured } from "./components/element/opportunity/OpportunityFeatured";
+export * from "./components/element/Tag";
+export { default as Tag } from "./components/element/Tag";
+export * from "./components/element/Pagination";
+export { default as Pagination } from "./components/element/Pagination";
+export * from "./components/element/Socials";
+export { default as Socials } from "./components/element/Socials";
+export * from "./components/element/SwitchMode";
+export { default as SwitchMode } from "./components/element/SwitchMode";
+export * from "./components/element/AddressEdit";
+export { default as AddressEdit } from "./components/element/AddressEdit";
 
 /**
- * components/element/historicalClaimsLibrary
+ * components/composite
  */
-export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsRow";
-export { default as HistoricalClaimsRow } from "./components/element/historicalClaimsLibrary/HistoricalClaimsRow";
-export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsTable";
-export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
-export { default as HistoricalClaimsLibrary } from "./components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
+export * from "./components/composite/Hero";
+export { default as Hero } from "./components/composite/Hero";
+export * from "./components/composite/LiFiWidget.client";
 
 /**
- * components/element/functions
+ * components/layout
  */
-export * from "./components/element/functions/SearchBar";
-export { default as SearchBar } from "./components/element/functions/SearchBar";
+export * from "./components/layout/LayerMenu";
+export * from "./components/layout/LoadingIndicator";
+export { default as LoadingIndicator } from "./components/layout/LoadingIndicator";
+export * from "./components/layout/Header";
+export { default as Header } from "./components/layout/Header";
+export * from "./components/layout/Footer";
+export { default as Footer } from "./components/layout/Footer";
+export * from "./components/layout/ErrorContent";
+export * from "./components/layout/ErrorHeading";
 
 /**
- * components/element/tvl
+ * modules/campaigns
  */
-export * from "./components/element/tvl/TvlRowAllocation";
-export { default as TvlRowAllocation } from "./components/element/tvl/TvlRowAllocation";
-export * from "./components/element/tvl/TvlLibrary";
-export { default as TvlLibrary } from "./components/element/tvl/TvlLibrary";
-export * from "./components/element/tvl/TvlTableRow";
-export { default as TvlTableRow } from "./components/element/tvl/TvlTableRow";
-export * from "./components/element/tvl/TvlSection";
-export { default as TvlSection } from "./components/element/tvl/TvlSection";
-export * from "./components/element/tvl/TvlTable";
+export * from "./modules/campaigns/campaign.model";
+export * from "./modules/campaigns/campaign.service";
+
+/**
+ * modules/opportunity
+ */
+export * from "./modules/opportunity/opportunity.service";
 
 /**
  * components/element/token
@@ -247,12 +191,6 @@ export * from "./components/element/chain/ChainLibrary";
 export { default as ChainLibrary } from "./components/element/chain/ChainLibrary";
 
 /**
- * modules/campaigns
- */
-export * from "./modules/campaigns/campaign.model";
-export * from "./modules/campaigns/campaign.service";
-
-/**
  * components/element/apr
  */
 export * from "./components/element/apr/AprSection";
@@ -275,13 +213,6 @@ export { default as ClaimRewardsTokenTableRow } from "./components/element/rewar
 export * from "./components/element/rewards/ClaimRewardsChainTable";
 
 /**
- * components/composite
- */
-export * from "./components/composite/Hero";
-export { default as Hero } from "./components/composite/Hero";
-export * from "./components/composite/LiFiWidget.client";
-
-/**
  * components/element/position
  */
 export * from "./components/element/position/PositionTableRow";
@@ -298,17 +229,32 @@ export * from "./components/element/participate/Participate";
 export { default as Participate } from "./components/element/participate/Participate";
 
 /**
- * components/layout
+ * components/element/transaction
  */
-export * from "./components/layout/LayerMenu";
-export * from "./components/layout/LoadingIndicator";
-export { default as LoadingIndicator } from "./components/layout/LoadingIndicator";
-export * from "./components/layout/Header";
-export { default as Header } from "./components/layout/Header";
-export * from "./components/layout/Footer";
-export { default as Footer } from "./components/layout/Footer";
-export * from "./components/layout/ErrorContent";
-export * from "./components/layout/ErrorHeading";
+export * from "./components/element/transaction/TransactionOverview";
+export { default as TransactionOverview } from "./components/element/transaction/TransactionOverview";
+
+/**
+ * modules/opportunity/components
+ */
+export * from "./modules/opportunity/components/OpportunityButton";
+export { default as OpportunityButton } from "./modules/opportunity/components/OpportunityButton";
+export * from "./modules/opportunity/components/OpportunityFilters";
+export { default as OpportunityFilters } from "./modules/opportunity/components/OpportunityFilters";
+
+/**
+ * components/element/campaign/rules
+ */
+export * from "./components/element/campaign/rules/Rule";
+export { default as Rule } from "./components/element/campaign/rules/Rule";
+export * from "./components/element/campaign/rules/LiquidityTokenRule";
+export { default as LiquidityTokenRule } from "./components/element/campaign/rules/LiquidityTokenRule";
+export * from "./components/element/campaign/rules/AddressListRule";
+export { default as AddressListRule } from "./components/element/campaign/rules/AddressListRule";
+export * from "./components/element/campaign/rules/LiquidityRule";
+export { default as LiquidityRule } from "./components/element/campaign/rules/LiquidityRule";
+export * from "./components/element/campaign/rules/BooleanRule";
+export { default as BooleanRule } from "./components/element/campaign/rules/BooleanRule";
 
 /**
  * components/element/campaign/tableCollumns
@@ -326,20 +272,6 @@ export * from "./components/element/rewards/byOpportunity/ClaimRewardsByOpportun
 export { default as ClaimRewardsByOpportunity } from "./components/element/rewards/byOpportunity/ClaimRewardsByOpportunity";
 
 /**
- * components/element/campaign/rules
- */
-export * from "./components/element/campaign/rules/Rule";
-export { default as Rule } from "./components/element/campaign/rules/Rule";
-export * from "./components/element/campaign/rules/LiquidityTokenRule";
-export { default as LiquidityTokenRule } from "./components/element/campaign/rules/LiquidityTokenRule";
-export * from "./components/element/campaign/rules/AddressListRule";
-export { default as AddressListRule } from "./components/element/campaign/rules/AddressListRule";
-export * from "./components/element/campaign/rules/LiquidityRule";
-export { default as LiquidityRule } from "./components/element/campaign/rules/LiquidityRule";
-export * from "./components/element/campaign/rules/BooleanRule";
-export { default as BooleanRule } from "./components/element/campaign/rules/BooleanRule";
-
-/**
  * components/element/position/subPosition
  */
 export * from "./components/element/position/subPosition/SubPositionTableRow";
@@ -347,12 +279,110 @@ export { default as SubPositionTableRow } from "./components/element/position/su
 export * from "./components/element/position/subPosition/SubPositionTable";
 
 /**
- * modules/opportunity
+ * modules/opportunity/components/element
  */
-export * from "./modules/opportunity/opportunity.model";
-export * from "./modules/opportunity/opportunity.service";
+export * from "./modules/opportunity/components/element/OpportunityParticipateModal";
+export { default as OpportunityParticipateModal } from "./modules/opportunity/components/element/OpportunityParticipateModal";
+
+/**
+ * modules/opportunity/components/library
+ */
+export * from "./modules/opportunity/components/library/OpportunityLibrary";
+export { default as OpportunityLibrary } from "./modules/opportunity/components/library/OpportunityLibrary";
+export * from "./modules/opportunity/components/library/OpportunityTable";
+export * from "./modules/opportunity/components/library/OpportunityFeatured";
+export { default as OpportunityFeatured } from "./modules/opportunity/components/library/OpportunityFeatured";
+
+/**
+ * modules/opportunity/components/items
+ */
+export * from "./modules/opportunity/components/items/OpportunityTableRow";
+export { default as OpportunityTableRow } from "./modules/opportunity/components/items/OpportunityTableRow";
+export * from "./modules/opportunity/components/items/OpportunityCell";
+export { default as OpportunityCell } from "./modules/opportunity/components/items/OpportunityCell";
+export * from "./modules/opportunity/components/items/OpportunityShortCard";
+export { default as OpportunityShortCard } from "./modules/opportunity/components/items/OpportunityShortCard";
+
+/**
+ * modules/chain
+ */
+export * from "./modules/chain/chain.service";
 
 /**
  * modules/interaction
  */
 export * from "./modules/interaction/interaction.service";
+
+/**
+ * modules/token
+ */
+export * from "./modules/token/token.service";
+
+/**
+ * modules/protocol
+ */
+export * from "./modules/protocol/protocol.service";
+
+/**
+ * modules/user
+ */
+export * from "./modules/user/user.service";
+
+/**
+ * modules/cache
+ */
+export * from "./modules/cache/cache.service";
+
+/**
+ * modules/liquidity
+ */
+export * from "./modules/liquidity/liquidity.service";
+
+/**
+ * modules/zyfi
+ */
+export * from "./modules/zyfi/zyfi.service";
+
+/**
+ * components/element/functions
+ */
+export * from "./components/element/functions/SearchBar";
+export { default as SearchBar } from "./components/element/functions/SearchBar";
+
+/**
+ * components/element/historicalClaimsLibrary
+ */
+export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsRow";
+export { default as HistoricalClaimsRow } from "./components/element/historicalClaimsLibrary/HistoricalClaimsRow";
+export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsTable";
+export * from "./components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
+export { default as HistoricalClaimsLibrary } from "./components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
+
+/**
+ * modules/claim
+ */
+export * from "./modules/claim/claim.service";
+
+/**
+ * components/element/tvl
+ */
+export * from "./components/element/tvl/TvlRowAllocation";
+export { default as TvlRowAllocation } from "./components/element/tvl/TvlRowAllocation";
+export * from "./components/element/tvl/TvlLibrary";
+export { default as TvlLibrary } from "./components/element/tvl/TvlLibrary";
+export * from "./components/element/tvl/TvlTableRow";
+export { default as TvlTableRow } from "./components/element/tvl/TvlTableRow";
+export * from "./components/element/tvl/TvlSection";
+export { default as TvlSection } from "./components/element/tvl/TvlSection";
+export * from "./components/element/tvl/TvlTable";
+
+/**
+ * components/element/reinvest
+ */
+export * from "./components/element/reinvest/ReinvestBanner";
+export { default as ReinvestBanner } from "./components/element/reinvest/ReinvestBanner";
+
+/**
+ * modules/reward
+ */
+export * from "./modules/reward/reward.service";
