@@ -11,14 +11,15 @@ import {
   Box,
   Button,
   Divider,
-  Dropdown, Group,
+  Dropdown,
+  Group,
   Icon,
   PrimitiveTag,
   Text,
   Title,
   Value,
   mergeClass,
-  useOverflowingRef
+  useOverflowingRef,
 } from "dappkit";
 import { useMemo } from "react";
 
@@ -29,11 +30,7 @@ export type OpportunityCellProps = {
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 
-export default function OpportunityCell({
-  opportunity,
-  hideTags,
-  navigationMode,
-}: OpportunityCellProps) {
+export default function OpportunityCell({ opportunity, hideTags, navigationMode }: OpportunityCellProps) {
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();

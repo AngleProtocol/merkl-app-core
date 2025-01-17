@@ -1,5 +1,5 @@
 import type { Campaign as CampaignFromApi } from "@merkl/api";
-import type { Opportunity } from "@merkl/api"
+import type { Opportunity } from "@merkl/api";
 import { Bar, Icon } from "dappkit";
 import { Group, Text, Value } from "dappkit";
 import { Time } from "dappkit";

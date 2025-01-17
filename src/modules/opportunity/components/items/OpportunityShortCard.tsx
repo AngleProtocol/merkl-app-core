@@ -1,20 +1,20 @@
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
 import type { Opportunity } from "@merkl/api";
-import { Box, Button, Group, Icon, Icons, Text } from "dappkit";
-import { v4 as uuidv4 } from "uuid";
+import { Box, Button, Group, Icon, Text } from "dappkit";
 
 export type OpportunityShortCardProps = { opportunity: Opportunity; displayLinks?: boolean };
 
 export default function OpportunityShortCard({ opportunity, displayLinks }: OpportunityShortCardProps) {
-  const { url, Tags } = useOpportunityData(opportunity);
-  const { rewardIcons, formattedDailyRewards } = useOpportunityRewards(opportunity);
+  const { url, Tags, Icons } = useOpportunityData(opportunity);
+  const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
   return (
     <Box look="soft" size="lg" className="rounded-sm bg-main-0 border-main-6 border-1">
       <Group className="items-center">
         {formattedDailyRewards}
         <Tags
+          only={["protocol"]}
           size="sm"
           look="base"
           style={{
@@ -27,11 +27,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
         />
       </Group>
       <Group className="text-xl flex-nowrap">
-        <Icons>
-          {rewardIcons.map(icon => (
-            <Icon {...icon} key={uuidv4()} />
-          ))}
-        </Icons>
+        <Icons />
         <Text look="bold" bold>
           {opportunity.name}
         </Text>

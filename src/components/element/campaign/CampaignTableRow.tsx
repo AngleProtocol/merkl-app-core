@@ -1,6 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
-import type { Opportunity } from "@merkl/api"
+import type { Opportunity } from "@merkl/api";
 import {
   Box,
   Button,

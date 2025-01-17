@@ -1,4 +1,4 @@
-import type { Opportunity } from "@merkl/api"
+import type { Opportunity } from "@merkl/api";
 import { useMemo } from "react";
 import merklConfig from "../../../../config";
 import OpportunityCell from "../items/OpportunityCell";

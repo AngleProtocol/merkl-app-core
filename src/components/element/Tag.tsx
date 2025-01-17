@@ -1,5 +1,5 @@
 import type { Chain, Token } from "@merkl/api";
-import type { Opportunity } from "@merkl/api"
+import type { Opportunity } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import {
   Button,

@@ -1,5 +1,5 @@
 import type { Campaign, Chain } from "@merkl/api";
-import type { Opportunity } from "@merkl/api"
+import type { Opportunity } from "@merkl/api";
 import { Box, Button, Group, Icon, Text, Title } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
