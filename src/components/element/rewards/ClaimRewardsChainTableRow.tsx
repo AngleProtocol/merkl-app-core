@@ -1,7 +1,7 @@
 import Tag from "@core/components/element/Tag";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
-import { TransactionButton, type TransactionButtonProps } from "dappkit";
+import type { TransactionButtonProps } from "dappkit";
 import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
