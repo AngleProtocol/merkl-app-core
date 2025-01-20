@@ -18,7 +18,7 @@ export default function useOpportunityMetrics({ dailyRewards, apr, tvl }: Pick<O
     const metricsDefinition = {
       "Daily Rewards": [dailyRewards, { format: merklConfig.decimalFormat.dollar }],
       APR: [apr / 100, { format: "0.00%" }],
-      "Total value locked": [tvl / 100, { format: merklConfig.decimalFormat.dollar }],
+      "Total value locked": [tvl, { format: merklConfig.decimalFormat.dollar }],
     } satisfies { [label: string]: [number | string, ValueProps] };
 
     return Object.entries(metricsDefinition satisfies { [label: string]: [number | string, ValueProps] })
