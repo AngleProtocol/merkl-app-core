@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
-import { TransactionButton, type TransactionButtonProps } from "dappkit";
+import type { TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";
@@ -151,7 +151,7 @@ export default function Index() {
               </Text>
             </Group>
             <Group className="flex-col">
-              {isAbleToClaim && (
+              {/* {isAbleToClaim && (
                 <TransactionButton
                   name="Claim Rewards"
                   enableSponsorCheckbox
@@ -163,7 +163,7 @@ export default function Index() {
                   {isSingleChain ? "Claim Now" : `Claim on ${chain?.name}`}
                   <Icon remix="RiHandCoinFill" />
                 </TransactionButton>
-              )}
+              )} */}
             </Group>
           </Group>
 
