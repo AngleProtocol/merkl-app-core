@@ -154,44 +154,46 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     home: {
       icon: "RiHomeFill",
       route: "/",
+      enabled: true,
+      inHeader: false,
       key: uuidv4(),
     },
     opportunities: {
       icon: "RiPlanetFill",
       route: "/opportunities",
+      enabled: true,
+      inHeader: true,
       key: uuidv4(),
     },
     protocols: {
       icon: "RiVipCrown2Fill",
       route: "/protocols",
+      enabled: true,
+      inHeader: true,
       key: uuidv4(),
     },
     bridge: {
       icon: "RiCompassesLine",
       route: "/bridge",
+      enabled: true,
+      inHeader: true,
       key: uuidv4(),
     },
     docs: {
       icon: "RiFile4Fill",
-      external: true,
       route: "https://docs.merkl.xyz/",
+      external: true,
+      enabled: true,
+      inHeader: true,
       key: uuidv4(),
     },
     faq: {
       icon: "RiQuestionFill",
       route: "/faq",
+      enabled: true,
+      inHeader: true,
       key: uuidv4(),
     },
-    // terms: {
-    //   icon: "RiCompassesLine",
-    //   route: "/terms",
-    //   key: uuidv4(),
-    // },
-    // privacy: {
-    //   icon: "RiInformationFill",
-    //   route: "/privacy",
-    //   key: uuidv4(),
-    // },
   },
   header: {
     searchbar: {

@@ -187,12 +187,6 @@ export type MerklConfig<T extends Themes> = {
     searchbar: {
       enabled: boolean;
     };
-    opportunities: {
-      enabled: boolean;
-    };
-    bridge: {
-      enabled: boolean;
-    };
   };
   images: {
     [name: string]: string;
