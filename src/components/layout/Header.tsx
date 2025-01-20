@@ -1,3 +1,4 @@
+import type { routesType } from "@core/config/type";
 import { useNavigate } from "@remix-run/react";
 import {
   Button,
@@ -15,7 +16,6 @@ import {
 import { motion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { v4 as uuidv4 } from "uuid";
 import merklConfig from "../../config";
 import useChains from "../../hooks/resources/useChains";
 import SwitchMode from "../element/SwitchMode";
@@ -51,23 +51,15 @@ export default function Header() {
 
   // Dynamically filter routes based on the config
   const routes = useMemo(() => {
-    const { home, opportunities, protocols, bridge, ...rest } = merklConfig.routes;
+    const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
+    const filteredRoutes = Object.fromEntries(
+      Object.entries(routes).filter(([key, route]) => route.enabled && route.inHeader === true),
+    );
 
-    return Object.assign(
-      { home },
-      {
-        [!!merklConfig.dashboardPageName ? merklConfig.dashboardPageName : "dashboard"]: {
-          icon: "RiDashboardFill",
-          route: user ? `/users/${user}` : "/users",
-          key: uuidv4(),
-        },
-      },
-      merklConfig.header.opportunities.enabled ? { opportunities } : {},
-      { protocols },
-      // Include bridge route only if enabled in config
-      merklConfig.header.bridge.enabled ? { bridge } : {},
-      rest,
-    ) as (typeof merklConfig)["routes"];
+    if (!!filteredRoutes.dashboard && !!user) {
+      filteredRoutes.dashboard.route = filteredRoutes.dashboard.route.concat(`/${user}`);
+    }
+    return filteredRoutes;
   }, [user]);
 
   const navigate = useNavigate();
