@@ -151,7 +151,7 @@ export default function Index() {
               </Text>
             </Group>
             <Group className="flex-col">
-              {isAbleToClaim && (
+              {/* {isAbleToClaim && (
                 <TransactionButton
                   name="Claim Rewards"
                   enableSponsorCheckbox
@@ -163,7 +163,7 @@ export default function Index() {
                   {isSingleChain ? "Claim Now" : `Claim on ${chain?.name}`}
                   <Icon remix="RiHandCoinFill" />
                 </TransactionButton>
-              )}
+              )} */}
             </Group>
           </Group>
 

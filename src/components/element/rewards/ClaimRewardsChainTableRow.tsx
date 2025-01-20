@@ -96,16 +96,17 @@ export default function ClaimRewardsChainTableRow({
           <EventBlocker>
             {isAbleToClaim &&
               (isOnCorrectChain ? (
-                <TransactionButton
-                  enableSponsorCheckbox
-                  name="Claim Rewards"
-                  disabled={!claimTransaction}
-                  className="ml-xl"
-                  look="hype"
-                  tx={claimTransaction}
-                  onSuccess={onClaimSuccess}>
-                  Claim
-                </TransactionButton>
+                <></>
+                // <TransactionButton
+                //   enableSponsorCheckbox
+                //   name="Claim Rewards"
+                //   disabled={!claimTransaction}
+                //   className="ml-xl"
+                //   look="hype"
+                //   tx={claimTransaction}
+                //   onSuccess={onClaimSuccess}>
+                //   Claim
+                // </TransactionButton>
               ) : (
                 <Button className="ml-xl" onClick={() => switchChain(reward.chain.id)}>
                   Switch Network <Icon remix="RiArrowLeftRightLine" />
