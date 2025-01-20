@@ -1,3 +1,4 @@
+import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
@@ -5,7 +6,6 @@ import type { Mode } from "packages/dappkit/src/theming/variables";
 import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
-import type { OpportunityFilter } from "../components/element/opportunity/OpportunityFilters";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
@@ -20,6 +20,8 @@ export type routesType = {
     icon: keyof typeof RemixIcon;
     key: string;
     external?: boolean;
+    enabled?: boolean;
+    inHeader?: boolean;
   };
 };
 
