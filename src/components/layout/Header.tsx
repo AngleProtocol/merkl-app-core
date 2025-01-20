@@ -1,3 +1,4 @@
+import type { routesType } from "@core/config/type";
 import { useNavigate } from "@remix-run/react";
 import {
   Button,
@@ -50,12 +51,14 @@ export default function Header() {
 
   // Dynamically filter routes based on the config
   const routes = useMemo(() => {
-    const routes = merklConfig.routes;
+    const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
     const filteredRoutes = Object.fromEntries(
       Object.entries(routes).filter(([key, route]) => route.enabled && route.inHeader === true),
     );
 
-    if (filteredRoutes.dashboard && user) filteredRoutes.dashboard.route = `/users/${user}`;
+    if (!!filteredRoutes.dashboard && !!user) {
+      filteredRoutes.dashboard.route = filteredRoutes.dashboard.route.concat(`/${user}`);
+    }
     return filteredRoutes;
   }, [user]);
 
