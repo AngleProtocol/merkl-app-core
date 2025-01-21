@@ -1,7 +1,7 @@
 import Tag from "@core/components/element/Tag";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
-import type { TransactionButtonProps } from "dappkit";
+import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -96,17 +96,16 @@ export default function ClaimRewardsChainTableRow({
           <EventBlocker>
             {isAbleToClaim &&
               (isOnCorrectChain ? (
-                <></>
-                // <TransactionButton
-                //   enableSponsorCheckbox
-                //   name="Claim Rewards"
-                //   disabled={!claimTransaction}
-                //   className="ml-xl"
-                //   look="hype"
-                //   tx={claimTransaction}
-                //   onSuccess={onClaimSuccess}>
-                //   Claim
-                // </TransactionButton>
+                <TransactionButton
+                  enableSponsorCheckbox
+                  name="Claim Rewards"
+                  disabled={!claimTransaction}
+                  className="ml-xl"
+                  look="hype"
+                  tx={claimTransaction}
+                  onSuccess={onClaimSuccess}>
+                  Claim
+                </TransactionButton>
               ) : (
                 <Button className="ml-xl" onClick={() => switchChain(reward.chain.id)}>
                   Switch Network <Icon remix="RiArrowLeftRightLine" />
