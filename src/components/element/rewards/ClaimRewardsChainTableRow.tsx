@@ -1,6 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import type { Reward } from "@merkl/api";
-import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
+import { Button, type Component, Icon, ListProps, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
@@ -18,7 +18,7 @@ export type ClaimRewardsChainTableRowProps = Component<{
   from: string;
   reward: Reward;
   onClaimSuccess: TransactionButtonProps["onSuccess"];
-}>;
+}> & ListProps;
 
 export default function ClaimRewardsChainTableRow({
   from,
@@ -123,7 +123,7 @@ export default function ClaimRewardsChainTableRow({
       }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
-        <ClaimRewardsTokenTable size="sm" dividerClassName={() => "!bg-main-8"} className="[&>*]:bg-main-4" look="soft">
+        <ClaimRewardsTokenTable dividerClassName={() => "!bg-main-8"} className="[&>*]:bg-main-4" look="soft">
           {renderTokenRewards}
         </ClaimRewardsTokenTable>
       </Collapsible>

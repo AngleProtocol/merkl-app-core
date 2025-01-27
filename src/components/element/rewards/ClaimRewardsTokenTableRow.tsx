@@ -1,10 +1,10 @@
 import Tag from "@core/components/element/Tag";
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { Reward } from "@merkl/api";
-import { Checkbox, type Component, Divider, type GetSet, Group, Icon, Space } from "dappkit";
+import { Checkbox, type Component, Divider, type GetSet, Group, Icon, ListProps, Space } from "dappkit";
 import { Collapsible } from "dappkit";
 import { Fmt } from "dappkit";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 
@@ -12,7 +12,7 @@ export type ClaimRewardsTokenTableRowProps = Component<{
   reward: Reward["rewards"][number];
   checkedState?: GetSet<boolean>;
   showCheckbox?: boolean;
-}>;
+}> & ListProps;
 
 export default function ClaimRewardsTokenTableRow({
   reward,

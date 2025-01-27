@@ -18,7 +18,7 @@ export default function User({ address, chain }: UserProps) {
           </Group>
           <Divider className="border-main-6" horizontal />
           {/* <Text size="xs">{token?.description}</Text> */}
-          <Group className="flex-col" size="md">
+          {/* <Group className="flex-col" size="md">
             <Button to={`/users/${address}`} size="xs" look="soft">
               <Icon remix="RiArrowRightLine" />
               Check user claims
@@ -36,7 +36,7 @@ export default function User({ address, chain }: UserProps) {
                 </Button>
               );
             })}
-          </Group>
+          </Group> */}
         </Group>
       }>
       <PrimitiveTag look="soft">

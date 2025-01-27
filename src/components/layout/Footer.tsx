@@ -23,7 +23,7 @@ export default function Footer() {
             </Button>
             <Socials />
             {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
-              Object.entries(merklConfig.footerNavLinks).map(([key, route]) => (
+              Object.entries(merklConfig.footerNavLinks ?? {}).map(([key, route]) => (
                 <Button
                   look="soft"
                   className="capitalize"

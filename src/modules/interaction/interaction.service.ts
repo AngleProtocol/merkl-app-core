@@ -1,5 +1,6 @@
-import { api as clientApi } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
+import { api as clientApi } from "@core/api";
+import { fetchWithLogs } from "@core/api/utils";
+import type { TransactionName, TransactionPayload } from "./interaction.model";
 
 export abstract class InteractionService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -14,10 +15,10 @@ export abstract class InteractionService {
     return data;
   }
 
-  static async get(
+  static async get<Tx extends TransactionName>(
     //TODO: template type the transaction
-    name: "supply" | "claim",
-    payload: Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"],
+    name: Tx,
+    payload: TransactionPayload[Tx],
     options?: { sponsor?: boolean },
   ) {
     const response = await fetch(`/transaction/${name}`, {

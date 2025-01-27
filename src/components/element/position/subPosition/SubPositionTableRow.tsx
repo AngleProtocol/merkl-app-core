@@ -1,5 +1,5 @@
 import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
-import { type Component, Divider, Group, Icon, Text, mergeClass } from "dappkit";
+import { type Component, Divider, Group, Icon, Text, mergeClass, type ListProps } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import Token from "../../../../modules/token/components/element/Token";
@@ -7,7 +7,8 @@ import { SubPositionRow } from "./SubPositionTable";
 
 export type SubPositionTableRowProps = Component<{
   row: PositionT;
-}>;
+}> &
+  ListProps;
 
 export default function SubPositionTableRow({ row, className, ...props }: SubPositionTableRowProps) {
   const tokenBalance0 = row.tokens?.[0]?.breakdown?.find(breakdown => breakdown?.type === "balance");

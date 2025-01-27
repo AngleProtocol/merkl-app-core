@@ -201,12 +201,6 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     searchbar: {
       enabled: true,
     },
-    opportunities: {
-      enabled: false,
-    },
-    bridge: {
-      enabled: true,
-    },
   },
   socials: {
     discord: "",

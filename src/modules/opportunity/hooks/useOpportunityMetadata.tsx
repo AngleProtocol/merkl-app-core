@@ -1,6 +1,7 @@
 import type { TagProps, TagType, TagTypes } from "@core/components/element/Tag";
 import Tag from "@core/components/element/Tag";
 import merklConfig from "@core/config";
+import { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
 import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps } from "dappkit";
 import { useCallback, useMemo } from "react";
@@ -16,8 +17,8 @@ const metadata = [
   "depositUrl",
   "chain",
   "tokens",
-  "rewardsRecord",
 ] satisfies (keyof Opportunity)[];
+
 
 /**
  * Formats basic metadata for a given opportunity
@@ -32,9 +33,8 @@ export default function useOpportunityMetadata({
   tokens,
   protocol,
   depositUrl,
-  rewardsRecord,
   ...opportunity
-}: Pick<Opportunity, (typeof metadata)[number]>) {
+}: PickAndOptOut<Opportunity, (typeof metadata)[number], "depositUrl" | "protocol">) {
   /**
    * Formatted name
    */

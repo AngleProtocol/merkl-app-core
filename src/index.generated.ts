@@ -142,8 +142,8 @@ export * from "./modules/token/components/library/TokenTable";
  */
 export * from "./modules/protocol/components/element/ProtocolCell";
 export { default as ProtocolCell } from "./modules/protocol/components/element/ProtocolCell";
-export * from "./modules/protocol/components/ProtocolLibrary";
-export { default as ProtocolLibrary } from "./modules/protocol/components/ProtocolLibrary";
+export * from "./modules/protocol/components/library/ProtocolLibrary";
+export { default as ProtocolLibrary } from "./modules/protocol/components/library/ProtocolLibrary";
 export * from "./modules/protocol/components/ProtocolFilters";
 export { default as ProtocolFilters } from "./modules/protocol/components/ProtocolFilters";
 
@@ -247,8 +247,6 @@ export { default as OpportunityFilters } from "./modules/opportunity/components/
  */
 export * from "./modules/campaigns/components/rules/Rule";
 export { default as Rule } from "./modules/campaigns/components/rules/Rule";
-export * from "./modules/campaigns/components/rules/LiquidityTokenRule";
-export { default as LiquidityTokenRule } from "./modules/campaigns/components/rules/LiquidityTokenRule";
 export * from "./modules/campaigns/components/rules/AddressListRule";
 export { default as AddressListRule } from "./modules/campaigns/components/rules/AddressListRule";
 export * from "./modules/campaigns/components/rules/LiquidityRule";
