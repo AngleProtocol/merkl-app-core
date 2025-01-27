@@ -4,7 +4,7 @@ import { type Component, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import merklConfig from "../../../config";
-import Token from "../token/Token";
+import Token from "../../../modules/token/components/element/Token";
 import { PositionRow } from "./PositionTable";
 
 export type PositionRowProps = Component<{

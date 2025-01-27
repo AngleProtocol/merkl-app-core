@@ -1,10 +1,10 @@
+import merklConfig from "@core/config";
+import Token from "@core/modules/token/components/element/Token";
+import { TokenService } from "@core/modules/token/token.service";
 import type { Token as TokenType } from "@merkl/api";
 import { Group, Icon, Select, type SelectProps, Text, Title, Value } from "dappkit";
 import { Fmt } from "dappkit";
 import { useMemo } from "react";
-import merklConfig from "../../../config";
-import { TokenService } from "../../../modules/token/token.service";
-import Token from "../../element/token/Token";
 
 export type TokenSelectProps = {
   tokens: (TokenType & { balance: bigint })[];

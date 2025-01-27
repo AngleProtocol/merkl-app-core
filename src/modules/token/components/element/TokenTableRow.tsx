@@ -1,12 +1,12 @@
 import type { TagTypes } from "@core/components/element/Tag";
+import merklConfig from "@core/config";
+import { TokenRow } from "@core/modules/token/components/library/TokenTable";
 import type { Token } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { Button, Group, Icon, Value } from "dappkit";
 import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
-import merklConfig from "../../../config";
-import { TokenRow } from "./TokenTable";
 
 export type TokenTableRowProps = {
   hideTags?: (keyof TagTypes)[];

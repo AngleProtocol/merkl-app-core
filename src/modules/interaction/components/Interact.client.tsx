@@ -1,3 +1,7 @@
+import TransactionOverview from "@core/components/element/transaction/TransactionOverview";
+import useBalances from "@core/hooks/useBalances";
+import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
+import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
@@ -15,10 +19,6 @@ import {
 import { TransactionButton } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { type ReactNode, useMemo, useState } from "react";
-import Token from "@core/components/element/token/Token";
-import TransactionOverview from "@core/components/element/transaction/TransactionOverview";
-import useBalances from "@core/hooks/useBalances";
-import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
 
 export type InteractProps = {
   opportunity: Opportunity;

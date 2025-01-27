@@ -7,13 +7,13 @@ import { useMemo } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
 import AddressEdit from "../../../components/element/AddressEdit";
-import Token from "../../../components/element/token/Token";
 import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
 import useBalances from "../../../hooks/useBalances";
 import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
+import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
 
 export async function loader({ params: { address }, request }: LoaderFunctionArgs) {

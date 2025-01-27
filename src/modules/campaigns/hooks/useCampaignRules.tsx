@@ -2,7 +2,7 @@ import type { Campaign as CampaignFromApi } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Icon } from "dappkit";
 import { useCallback, useMemo } from "react";
-import Token from "../../../components/element/token/Token";
+import Token from "../../token/components/element/Token";
 import type { Campaign } from "../campaign.model";
 import type { RuleType } from "../components/rules/Rule";
 

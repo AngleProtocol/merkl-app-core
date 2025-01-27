@@ -1,9 +1,9 @@
 import { I18n } from "@core/I18n";
-import TokenSelect from "@core/components/element/token/TokenSelect";
 import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";

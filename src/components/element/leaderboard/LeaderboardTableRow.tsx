@@ -3,7 +3,7 @@ import { type Component, Group, PrimitiveTag, Text, Value, mergeClass } from "da
 import { useMemo } from "react";
 import { formatUnits } from "viem";
 import type { RewardService } from "../../../modules/reward/reward.service";
-import Token from "../token/Token";
+import Token from "../../../modules/token/components/element/Token";
 import User from "../user/User";
 import { LeaderboardRow, LeaderboardRowWithoutReason } from "./LeaderboardTable";
 

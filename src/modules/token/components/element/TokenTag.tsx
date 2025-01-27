@@ -10,9 +10,8 @@ import {
   Hash,
   Icon,
   PrimitiveTag,
-  PrimitiveTagProps,
-  Text,
-  useWalletContext,
+  type PrimitiveTagProps,
+  Text
 } from "dappkit";
 
 export default function TokenTag({ token, ...props }: { token: Token } & PrimitiveTagProps) {

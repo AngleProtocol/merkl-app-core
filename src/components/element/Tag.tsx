@@ -19,8 +19,8 @@ import {
 import merklConfig from "../../config";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
-import TokenChainTag from "./token/TokenChainTag";
-import TokenTag from "./token/TokenTag";
+import TokenChainTag from "../../modules/token/components/element/TokenChainTag";
+import TokenTag from "../../modules/token/components/element/TokenTag";
 
 export type TagTypes = {
   chain: Opportunity["chain"];

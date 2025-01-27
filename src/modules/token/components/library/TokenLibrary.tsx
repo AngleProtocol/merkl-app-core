@@ -1,10 +1,10 @@
+import Pagination from "@core/components/element/Pagination";
+import TokenFilters from "@core/modules/token/components/TokenFilters";
+import TokenTableRow from "@core/modules/token/components/element/TokenTableRow";
+import { TokenTable } from "@core/modules/token/components/library/TokenTable";
 import type { Token } from "@merkl/api";
 import { Group } from "dappkit";
 import { useMemo } from "react";
-import Pagination from "../Pagination";
-import TokenFilters from "./TokenFilters";
-import { TokenTable } from "./TokenTable";
-import TokenTableRow from "./TokenTableRow";
 
 export type TokenLibraryProps = {
   tokens: Token[];

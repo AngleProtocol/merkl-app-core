@@ -1,7 +1,7 @@
+import Token from "@core/modules/token/components/element/Token";
 import type { Token as TokenType } from "@merkl/api";
 import { Divider, Group } from "dappkit";
 import type { ReactNode } from "react";
-import Token from "./Token";
 
 export type TokenAmountModalProps = { tokens: { token: TokenType; amount: bigint }[]; label: ReactNode };
 

@@ -4,7 +4,7 @@ import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import Chain from "../../../modules/chain/components/element/Chain";
 import type { ClaimsService } from "../../../modules/claim/claim.service";
-import Token from "../token/Token";
+import Token from "../../../modules/token/components/element/Token";
 import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 
 export type HistoricalClaimsRowProps = Component<{

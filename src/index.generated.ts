@@ -121,21 +121,21 @@ export * from "./modules/opportunity/opportunity.service";
 /**
  * components/element/token
  */
-export * from "./components/element/token/TokenFilters";
-export { default as TokenFilters } from "./components/element/token/TokenFilters";
-export * from "./components/element/token/TokenSelect";
-export { default as TokenSelect } from "./components/element/token/TokenSelect";
-export * from "./components/element/token/TokenTooltip";
-export { default as TokenTooltip } from "./components/element/token/TokenTooltip";
-export * from "./components/element/token/TokenAmountModal";
-export { default as TokenAmountModal } from "./components/element/token/TokenAmountModal";
-export * from "./components/element/token/Token";
-export { default as Token } from "./components/element/token/Token";
-export * from "./components/element/token/TokenLibrary";
-export { default as TokenLibrary } from "./components/element/token/TokenLibrary";
-export * from "./components/element/token/TokenTableRow";
-export { default as TokenTableRow } from "./components/element/token/TokenTableRow";
-export * from "./components/element/token/TokenTable";
+export * from "./modules/token/components/TokenFilters";
+export { default as TokenFilters } from "./modules/token/components/TokenFilters";
+export * from "./modules/token/components/element/TokenSelect";
+export { default as TokenSelect } from "./modules/token/components/element/TokenSelect";
+export * from "./modules/token/components/TokenTooltip";
+export { default as TokenTooltip } from "./modules/token/components/TokenTooltip";
+export * from "./modules/token/components/TokenAmountModal";
+export { default as TokenAmountModal } from "./modules/token/components/TokenAmountModal";
+export * from "./modules/token/components/element/Token";
+export { default as Token } from "./modules/token/components/element/Token";
+export * from "./modules/token/components/library/TokenLibrary";
+export { default as TokenLibrary } from "./modules/token/components/library/TokenLibrary";
+export * from "./modules/token/components/element/TokenTableRow";
+export { default as TokenTableRow } from "./modules/token/components/element/TokenTableRow";
+export * from "./modules/token/components/library/TokenTable";
 
 /**
  * components/element/protocol
