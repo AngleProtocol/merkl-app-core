@@ -1,6 +1,6 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.tsx", "*.config.ts"],
-  "exclude": ["node_modules", "dist", "build", "public", "packages"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "*.config.ts", "../../merkl.config"],
+  "exclude": ["node_modules", "dist", "build", "public", "packages/**/*.tsx"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@remix-run/node", "vite/client"],

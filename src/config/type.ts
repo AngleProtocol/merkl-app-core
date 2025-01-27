@@ -2,7 +2,6 @@ import type { OpportunityFilter } from "@core/modules/opportunity/components/Opp
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
-import type { Mode } from "packages/dappkit/src/theming/variables";
 import type { Chain } from "viem";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
@@ -117,7 +116,7 @@ export type MerklConfig<T extends Themes> = {
   /**
    * Enables themes to be switched between dark and light or enforce only one
    */
-  modes: Mode[];
+  modes: ("dark" | "light")[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   /**
    * Custom white-label-banner component to showup on the top of pages

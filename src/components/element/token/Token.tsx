@@ -1,11 +1,11 @@
 import type { Chain, Token as TokenType } from "@merkl/api";
-import { Button, Dropdown, Group, Icon, type IconProps, PrimitiveTag, Value, sizeScale } from "dappkit";
+import { Button, type ButtonProps, Dropdown, Group, Icon, type IconProps, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { Fragment, useMemo } from "react";
 import { formatUnits } from "viem";
 import merklConfig from "../../../config";
 import TokenTooltip from "./TokenTooltip";
 
-export type TokenProps = {
+export type TokenProps = Omit<ButtonProps, "value"> & {
   token: TokenType;
   format?: "amount" | "price" | "amount_price" | "symbol";
   amount?: bigint;

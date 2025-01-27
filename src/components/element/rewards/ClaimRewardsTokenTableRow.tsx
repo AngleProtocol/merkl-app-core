@@ -65,7 +65,7 @@ export default function ClaimRewardsTokenTableRow({
           .filter(b => b.opportunity !== null)
           .map(b => {
             return (
-              <>
+              <React.Fragment key={b.opportunity.identifier.concat("-divider")}>
                 <Divider look="soft" horizontal key={b.opportunity.identifier.concat("-divider")} />
                 <ClaimRewardsTokenRow
                   {...props}
@@ -100,7 +100,7 @@ export default function ClaimRewardsTokenTableRow({
                     />
                   }
                 />
-              </>
+              </React.Fragment>
             );
           })}
       </Collapsible>

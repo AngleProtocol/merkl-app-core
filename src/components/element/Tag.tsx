@@ -1,3 +1,4 @@
+import ChainTag from "@core/modules/chain/components/element/ChainTag";
 import type { Chain, Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
@@ -18,6 +19,8 @@ import {
 import merklConfig from "../../config";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
+import TokenChainTag from "./token/TokenChainTag";
+import TokenTag from "./token/TokenTag";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
@@ -40,7 +43,12 @@ export type TagProps<T extends keyof TagTypes> = {
   size?: PrimitiveTagProps["size"];
 };
 
-export default function Tag<T extends keyof TagTypes>({ type, filter, value, ...props }: Component<TagProps<T>>) {
+export default function Tag<T extends keyof TagTypes>({
+  type,
+  filter,
+  value,
+  ...props
+}: Component<TagProps<T>, HTMLButtonElement>) {
   const { chains } = useWalletContext();
   const [_searchParams, setSearchParams] = useSearchParams();
 
@@ -50,13 +58,13 @@ export default function Tag<T extends keyof TagTypes>({ type, filter, value, ...
       return (
         <EventBlocker>
           <PrimitiveTag
-            className={!filter && "pointer-events-none"}
-            onClick={() =>
+            className={!filter ? "pointer-events-none" : ""}
+            onClick={() => {
               setSearchParams(s => {
                 s.set("status", value as TagTypes["status"]);
                 return s;
-              })
-            }
+              });
+            }}
             look="soft"
             {...props}>
             <Icon size={props?.size} {...status.icon} />
@@ -66,44 +74,7 @@ export default function Tag<T extends keyof TagTypes>({ type, filter, value, ...
       );
     }
     case "chain": {
-      const chain = value as TagTypes["chain"];
-      return (
-        <EventBlocker>
-          <Dropdown
-            size="lg"
-            padding="xs"
-            content={
-              <Group className="flex-col">
-                <Group className="w-full justify-between items-center" size="xl">
-                  <Group size="sm">
-                    <Icon src={chain?.icon} />
-                    <Text size="sm" className="text-main-12" bold>
-                      {chain?.name}
-                    </Text>
-                  </Group>
-                  <Text size="xs">
-                    Chain ID:{" "}
-                    <Hash size="xs" format="full" copy>
-                      {chain?.id?.toString()}
-                    </Hash>
-                  </Text>
-                </Group>
-
-                <Divider look="soft" horizontal />
-                <Group className="flex-col">
-                  <Button to={`/chains/${chain?.name.replace(" ", "-").toLowerCase()}`} size="xs" look="soft">
-                    <Icon remix="RiArrowRightLine" /> Check opportunities on {chain.name}
-                  </Button>
-                </Group>
-              </Group>
-            }>
-            <PrimitiveTag look="base" key={value} {...props}>
-              <Icon size={props?.size} src={chain?.icon} />
-              {chain?.name}
-            </PrimitiveTag>
-          </Dropdown>
-        </EventBlocker>
-      );
+      return <ChainTag chain={value as TagTypes["chain"]} {...props} />;
     }
     case "action": {
       const action = actions[value as TagTypes["action"]];
@@ -128,120 +99,10 @@ export default function Tag<T extends keyof TagTypes>({ type, filter, value, ...
       );
     }
     case "token": {
-      const token = value as TagTypes["token"];
-      if (!token) return <Button {...props}>{value}</Button>;
-      return (
-        <EventBlocker>
-          <Dropdown
-            size="lg"
-            padding="xs"
-            content={
-              <Group className="flex-col">
-                <Group className="w-full justify-between items-center" size="xl">
-                  <Group size="sm">
-                    <Icon size={props?.size} src={token.icon} />
-                    <Text size="sm" className="text-main-12" bold>
-                      {token?.name}
-                    </Text>
-                  </Group>
-                  <Text size="xs">
-                    <Hash copy format="short" size="xs">
-                      {token.address}
-                    </Hash>
-                  </Text>
-                </Group>
-                {(chains.find(c => c.id === token.chainId && c.explorers?.length > 0) ||
-                  (merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false)) && (
-                  <>
-                    <Divider look="soft" horizontal />
-                    <Group className="flex-col" size="md">
-                      {/* Conditionally render the "Check opportunities" link */}
-                      {(merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) && (
-                        <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
-                          <Icon remix="RiArrowRightLine" />
-                          Check opportunities with {token?.symbol}
-                        </Button>
-                      )}
-                      {chains
-                        .find(c => c.id === token.chainId)
-                        ?.explorers?.map(explorer => (
-                          <Button
-                            key={`${explorer.url}`}
-                            to={`${explorer.url}/token/${token.address}`}
-                            external
-                            size="xs"
-                            look="soft">
-                            <Icon remix="RiArrowRightLine" />
-                            Visit explorer
-                          </Button>
-                        ))}
-                    </Group>
-                  </>
-                )}
-              </Group>
-            }>
-            <PrimitiveTag look="base" key={value} {...props}>
-              <Icon size={props?.size} src={token.icon} />
-              {token?.symbol}
-            </PrimitiveTag>
-          </Dropdown>
-        </EventBlocker>
-      );
+      return <TokenTag token={value as TagTypes["token"]} {...props} />;
     }
     case "tokenChain": {
-      const token = value as TagTypes["tokenChain"];
-      if (!token) return <Button {...props}>{value}</Button>;
-      return (
-        <EventBlocker>
-          <Dropdown
-            size="lg"
-            padding="xs"
-            content={
-              <Group className="flex-col">
-                <Group size="xs" className="flex-col">
-                  <Group className="justify-between" size="xl">
-                    <Text size="xs">Token</Text>
-                    <Hash format="short" size="xs" copy>
-                      {token.address}
-                    </Hash>
-                  </Group>
-                  <Group size="sm">
-                    <Icon size={props?.size} src={token.icon} />
-                    <Text size="sm" className="text-main-12" bold>
-                      {token?.name}
-                    </Text>
-                  </Group>
-                </Group>
-                <Divider look="soft" horizontal />
-                <Group className="flex-col" size="md">
-                  <Button to={`/chains/${token.chain?.name.replace(" ", "-").toLowerCase()}`} size="xs" look="soft">
-                    <Icon remix="RiArrowRightLine" /> Check opportunities on {token.chain?.name}
-                  </Button>
-                  {chains
-                    .find(c => c.id === token.chainId)
-                    ?.explorers?.map(explorer => {
-                      return (
-                        <Button
-                          key={`${explorer.url}`}
-                          to={`${explorer.url}/token/${token.address}`}
-                          external
-                          size="xs"
-                          look="soft">
-                          <Icon remix="RiArrowRightLine" />
-                          Visit explorer
-                        </Button>
-                      );
-                    })}
-                </Group>
-              </Group>
-            }>
-            <PrimitiveTag look="base" key={value} {...props}>
-              <Icon size={props?.size} src={token.chain.icon} />
-              {token.chain.name}
-            </PrimitiveTag>
-          </Dropdown>
-        </EventBlocker>
-      );
+      return <TokenChainTag token={value as TagTypes["tokenChain"]} />;
     }
     case "protocol": {
       const protocol = value as TagTypes["protocol"];

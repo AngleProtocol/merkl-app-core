@@ -1,4 +1,10 @@
+import { I18n } from "@core/I18n";
+import TokenSelect from "@core/components/element/token/TokenSelect";
+import merklConfig from "@core/config";
+import useParticipate from "@core/hooks/useParticipate";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
+import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
 import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
@@ -6,12 +12,6 @@ import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { I18n } from "../../../I18n";
-import merklConfig from "../../../config";
-import useParticipate from "../../../hooks/useParticipate";
-import useOpportunityData from "../../../modules/opportunity/hooks/useOpportunityMetadata";
-import { TokenService } from "../../../modules/token/token.service";
-import TokenSelect from "../token/TokenSelect";
 import Interact from "./Interact.client";
 
 export type ParticipateProps = {
@@ -116,7 +116,7 @@ export default function Participate({
               )}
             </Group>
           }
-          suffix={connected && <TokenSelect balances state={[tokenAddress, setTokenAddress]} tokens={balance} />}
+          suffix={connected && <TokenSelect balances state={[tokenAddress, setTokenAddress]} tokens={balance ?? []} />}
           placeholder="0.0"
         />
         <Suspense>
@@ -181,7 +181,7 @@ export default function Participate({
   ]);
 
   useEffect(() => {
-    if (!tokenAddress || tokenAddress === "") setTokenAddress(TokenService.sortForUser(balance)?.[0]?.address);
+    if (!tokenAddress || tokenAddress === "") setTokenAddress((balance && TokenService.sortForUser(balance)?.[0]?.address) ?? "");
   }, [balance, tokenAddress]);
 
   return (
@@ -209,8 +209,8 @@ export default function Participate({
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>
       )}
-      <Collapsible state={[!!interactor]}>{interactor}</Collapsible>
-      <Collapsible state={[success]}>
+      <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
+      <Collapsible state={[success, () => {}]}>
         <Box look="soft" className="gap-xs bg-main-5">
           <Group>
             <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />

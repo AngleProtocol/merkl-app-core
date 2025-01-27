@@ -224,9 +224,9 @@ export * from "./components/element/position/PositionTable";
 /**
  * components/element/participate
  */
-export * from "./components/element/participate/Interact.client";
-export * from "./components/element/participate/Participate";
-export { default as Participate } from "./components/element/participate/Participate";
+export * from "./modules/interaction/components/Interact.client";
+export * from "./modules/interaction/components/Participate";
+export { default as Participate } from "./modules/interaction/components/Participate";
 
 /**
  * components/element/transaction

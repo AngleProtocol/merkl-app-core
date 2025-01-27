@@ -1,4 +1,4 @@
-import type { Opportunity } from "@merkl/api";
+import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
   Button,
@@ -14,16 +14,16 @@ import {
 } from "dappkit";
 import { TransactionButton } from "dappkit";
 import { useWalletContext } from "dappkit";
-import { useMemo, useState } from "react";
-import useBalances from "../../../hooks/useBalances";
-import useInteractionTransaction from "../../../hooks/useInteractionTransaction";
-import Token from "../token/Token";
-import TransactionOverview from "../transaction/TransactionOverview";
+import { type ReactNode, useMemo, useState } from "react";
+import Token from "@core/components/element/token/Token";
+import TransactionOverview from "@core/components/element/transaction/TransactionOverview";
+import useBalances from "@core/hooks/useBalances";
+import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
 
 export type InteractProps = {
   opportunity: Opportunity;
   target?: InteractionTarget;
-  inputToken?: Token;
+  inputToken?: TokenType & { balance: bigint };
   tokenAddress?: string;
   amount?: bigint;
   slippage?: bigint;
@@ -102,7 +102,7 @@ export default function Interact({
       });
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    if (buttonProps) return <Button {...(buttonProps as any)} />;
+    if (buttonProps || !transaction) return <Button {...(buttonProps as any)} />;
 
     if (!transaction.approved)
       return (
@@ -212,7 +212,7 @@ export default function Interact({
     <>
       <Space size="sm" />
       <TransactionOverview settings={settings} allowTxSponsoring={canTransactionBeSponsored}>
-        {amount && inputToken && (
+        {!!amount && !!inputToken && (
           <Text className="flex animate-drop grow flex-nowrap items-center gap-md" size={6}>
             Supply
             <Token key={amount} className="animate-drop" token={inputToken} amount={amount} format="price" /> with{" "}
