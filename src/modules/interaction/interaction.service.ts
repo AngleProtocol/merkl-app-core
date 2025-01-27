@@ -16,7 +16,7 @@ export abstract class InteractionService {
 
   static async get(
     //TODO: template type the transaction
-    name: "supply",
+    name: "supply" | "claim",
     payload: Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"],
     options?: { sponsor?: boolean },
   ) {

@@ -1,26 +1,24 @@
-import { Button, type Component, Icon, mergeClass } from "dappkit";
+import { Button, Icon, type ListProps, mergeClass } from "dappkit";
 import { Time } from "dappkit";
-import { useWalletContext } from "dappkit";
-import { useMemo } from "react";
-import Chain from "../../../modules/chain/components/element/Chain";
-import type { ClaimsService } from "../../../modules/claim/claim.service";
-import Token from "../../../modules/token/components/element/Token";
+import Chain from "@core/modules/chain/components/element/Chain";
+import useChain from "@core/modules/chain/hooks/useChain";
+import type { ClaimsService } from "@core/modules/claim/claim.service";
+import Token from "@core/modules/token/components/element/Token";
 import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 
-export type HistoricalClaimsRowProps = Component<{
+export type HistoricalClaimsRowProps = {
   claim: Awaited<ReturnType<typeof ClaimsService.getForUser>>[0];
-}>;
+} & ListProps;
 
-export default function HistoricalClaimsTableRow({ claim, className, ...props }: HistoricalClaimsRowProps) {
-  const { chains } = useWalletContext();
-
-  const chain = useMemo(() => chains?.find(c => c.id === claim?.token?.chainId), [chains, claim]);
+export default function HistoricalClaimsTableRow({ claim, className, size, ...props }: HistoricalClaimsRowProps) {
+  const { chain } = useChain({ id: claim?.token?.chainId });
 
   return (
     <HistoricalClaimsRow
       {...props}
+      size={size}
       className={mergeClass("cursor-pointer", className)}
-      chainColumn={<Chain chain={chain} size="md" />}
+      chainColumn={chain && <Chain chain={chain} size="md" />}
       tokenColumn={
         !!claim?.token && (
           <Token token={claim?.token} format="amount_price" amount={BigInt(claim.amount)} chain={chain} />

@@ -33,7 +33,7 @@ export default function TokenFilters(_props: TokenFiltersProps) {
         <Input
           name="search"
           value={innerSearch}
-          state={[innerSearch, setInnerSearch]}
+          state={[innerSearch, v => setInnerSearch(v ?? "")]}
           suffix={<Icon size="sm" remix="RiSearchLine" />}
           onClick={onSearchSubmit}
           placeholder="Search"

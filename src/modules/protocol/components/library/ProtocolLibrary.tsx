@@ -1,6 +1,6 @@
 import Pagination from "@core/components/element/Pagination";
+import ProtocolFilters from "@core/modules/protocol/components/ProtocolFilters";
 import ProtocolCell from "@core/modules/protocol/components/element/ProtocolCell";
-import ProtocolFilters from "@core/modules/protocol/components/element/ProtocolFilters";
 import type { Protocol } from "@merkl/api";
 import { Group } from "dappkit";
 import { useMemo } from "react";

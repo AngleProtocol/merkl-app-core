@@ -107,7 +107,7 @@ export default function useOpportunityMetadata({
       only,
       ...props
     }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[] } & Omit<
-      Component<TagProps<keyof TagTypes>>,
+      Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
       "value" | "type"
     >) {
       return tags

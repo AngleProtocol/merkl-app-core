@@ -35,7 +35,7 @@ export default function LeaderboardTableRow({
 
   return showreason ? (
     <LeaderboardRow
-      {...props}
+      // {...props}
       className={mergeClass("cursor-pointer", className)}
       rankColumn={
         <Group className="flex-nowrap">
