@@ -1,6 +1,6 @@
 import { createTable } from "dappkit";
 
-export const [CampaignTable, CampaignRow, CampaignColumns] = createTable({
+export const [CampaignTable, CampaignRow, campaignColumns] = createTable({
   dailyRewards: {
     name: "Daily rewards",
     size: "minmax(170px,1fr)",

@@ -1,4 +1,7 @@
+import EtherScan from "@core/assets/images/etherscan.svg";
 import Tag from "@core/components/element/Tag";
+import useCampaignMetadata from "@core/modules/campaigns/hooks/useCampaignMetadata";
+import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import {
@@ -12,10 +15,9 @@ import {
   Icon,
   Image,
   OverrideTheme,
-  PrimitiveTag,
-  Space,
+  PrimitiveTag, Space,
   Text,
-  mergeClass,
+  mergeClass
 } from "dappkit";
 import { Collapsible } from "dappkit";
 import { Time } from "dappkit";
@@ -23,18 +25,18 @@ import { Tooltip } from "dappkit";
 import moment from "moment";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import EtherScan from "../../../assets/images/etherscan.svg";
-import useCampaign from "../../../hooks/resources/useCampaign";
-import Token from "../token/Token";
-import { CampaignRow } from "./CampaignTable";
-import CampaignTooltipDates from "./CampaignTooltipDates";
-import Rule from "./rules/Rule";
+import Token from "../../../../components/element/token/Token";
+import useChain from "../../../chain/hooks/useChain";
+import CampaignTooltipDates from "../CampaignTooltipDates";
+import { CampaignRow } from "../library/CampaignTable";
+import Rule from "../rules/Rule";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
   opportunity?: Opportunity;
   startsOpen?: boolean;
   chain: ChainType;
+  size: Parameters<typeof CampaignRow>["0"]["size"]
 }>;
 
 export default function CampaignTableRow({
@@ -45,7 +47,9 @@ export default function CampaignTableRow({
   chain,
   ...props
 }: CampaignTableRowProps) {
-  const { time, dailyRewards, active, amount, rules } = useCampaign(campaign, opportunity);
+  const { time, dailyRewards, active, amount } = useCampaignMetadata(campaign);
+  const {chain: distributionChain} = useChain(campaign.distributionChain);
+  const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
 
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
@@ -127,7 +131,7 @@ export default function CampaignTableRow({
       {...props}
       className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
-      chainColumn={<Tag type="chain" value={campaign.distributionChain} />}
+      chainColumn={distributionChain && <Tag type="chain" value={distributionChain} />}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
@@ -138,7 +142,7 @@ export default function CampaignTableRow({
             token={campaign.rewardToken}
             amount={dailyRewards}
             format="amount_price"
-            chain={campaign.distributionChain}
+            chain={distributionChain}
           />
           <Icon
             data-state={!isOpen ? "closed" : "opened"}

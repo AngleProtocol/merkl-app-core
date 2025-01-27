@@ -1,7 +1,7 @@
 import type { Chain } from "@merkl/api";
 import { Divider, Dropdown, Group, PrimitiveTag, Value } from "dappkit";
 import { type ReactNode, useMemo } from "react";
-import User from "../../user/User";
+import User from "../../../../components/element/user/User";
 
 export type AddressListRuleProps = {
   value: { label: ReactNode; addresses: string[]; description: string; chain: Chain };

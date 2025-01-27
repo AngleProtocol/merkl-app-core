@@ -60,8 +60,8 @@ export { default as useSearchParamState } from "./hooks/filtering/useSearchParam
 /**
  * hooks/resources
  */
-export * from "./hooks/resources/useCampaign";
-export { default as useCampaign } from "./hooks/resources/useCampaign";
+export * from "./modules/campaigns/hooks/useCampaignMetadata";
+export { default as useCampaign } from "./modules/campaigns/hooks/useCampaignMetadata";
 export * from "./hooks/resources/useProtocols";
 export { default as useProtocols } from "./hooks/resources/useProtocols";
 export * from "./hooks/resources/useReward";
@@ -150,13 +150,13 @@ export { default as ProtocolFilters } from "./components/element/protocol/Protoc
 /**
  * components/element/campaign
  */
-export * from "./components/element/campaign/CampaignTooltipDates";
-export { default as CampaignTooltipDates } from "./components/element/campaign/CampaignTooltipDates";
-export * from "./components/element/campaign/CampaignLibrary";
-export { default as CampaignLibrary } from "./components/element/campaign/CampaignLibrary";
-export * from "./components/element/campaign/CampaignTableRow";
-export { default as CampaignTableRow } from "./components/element/campaign/CampaignTableRow";
-export * from "./components/element/campaign/CampaignTable";
+export * from "./modules/campaigns/components/CampaignTooltipDates";
+export { default as CampaignTooltipDates } from "./modules/campaigns/components/CampaignTooltipDates";
+export * from "./modules/campaigns/components/library/CampaignLibrary";
+export { default as CampaignLibrary } from "./modules/campaigns/components/library/CampaignLibrary";
+export * from "./modules/campaigns/components/element/CampaignTableRow";
+export { default as CampaignTableRow } from "./modules/campaigns/components/element/CampaignTableRow";
+export * from "./modules/campaigns/components/library/CampaignTable";
 
 /**
  * components/element/leaderboard
@@ -245,22 +245,16 @@ export { default as OpportunityFilters } from "./modules/opportunity/components/
 /**
  * components/element/campaign/rules
  */
-export * from "./components/element/campaign/rules/Rule";
-export { default as Rule } from "./components/element/campaign/rules/Rule";
-export * from "./components/element/campaign/rules/LiquidityTokenRule";
-export { default as LiquidityTokenRule } from "./components/element/campaign/rules/LiquidityTokenRule";
-export * from "./components/element/campaign/rules/AddressListRule";
-export { default as AddressListRule } from "./components/element/campaign/rules/AddressListRule";
-export * from "./components/element/campaign/rules/LiquidityRule";
-export { default as LiquidityRule } from "./components/element/campaign/rules/LiquidityRule";
-export * from "./components/element/campaign/rules/BooleanRule";
-export { default as BooleanRule } from "./components/element/campaign/rules/BooleanRule";
-
-/**
- * components/element/campaign/tableCollumns
- */
-export * from "./components/element/campaign/tableCollumns/RestrictionsCollumn";
-export { default as RestrictionsCollumn } from "./components/element/campaign/tableCollumns/RestrictionsCollumn";
+export * from "./modules/campaigns/components/rules/Rule";
+export { default as Rule } from "./modules/campaigns/components/rules/Rule";
+export * from "./modules/campaigns/components/rules/LiquidityTokenRule";
+export { default as LiquidityTokenRule } from "./modules/campaigns/components/rules/LiquidityTokenRule";
+export * from "./modules/campaigns/components/rules/AddressListRule";
+export { default as AddressListRule } from "./modules/campaigns/components/rules/AddressListRule";
+export * from "./modules/campaigns/components/rules/LiquidityRule";
+export { default as LiquidityRule } from "./modules/campaigns/components/rules/LiquidityRule";
+export * from "./modules/campaigns/components/rules/BooleanRule";
+export { default as BooleanRule } from "./modules/campaigns/components/rules/BooleanRule";
 
 /**
  * components/element/rewards/byOpportunity

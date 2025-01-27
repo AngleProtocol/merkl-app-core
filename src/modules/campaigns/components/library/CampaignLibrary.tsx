@@ -3,8 +3,8 @@ import type { Opportunity } from "@merkl/api";
 import { Box, Button, Group, Icon, Text, Title } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
+import CampaignTableRow from "../element/CampaignTableRow";
 import { CampaignTable } from "./CampaignTable";
-import CampaignTableRow from "./CampaignTableRow";
 
 export type CampaignLibraryProps = {
   opportunity: Opportunity & { campaigns: Campaign[] };

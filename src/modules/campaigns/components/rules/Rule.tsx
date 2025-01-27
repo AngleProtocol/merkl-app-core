@@ -10,16 +10,16 @@ export const RULES = {
 };
 export type Rules = typeof RULES;
 
-export type RuleType<T extends keyof Rules = keyof Rules> = PrimitiveTagProps & {
+export type RuleType<T extends keyof Rules = keyof Rules> = {
   type: T;
   value: Parameters<Rules[T]>[0]["value"];
-};
+} & Omit<PrimitiveTagProps, "type" | "value">;
 
 export default function Rule<T extends keyof Rules>({
   type,
   value,
   ...props
-}: { type: T; value: RuleType<T>["value"] }) {
+}: { type: T; value: RuleType<T>["value"] } & Omit<PrimitiveTagProps, "type" | "value">) {
   switch (type) {
     case "liquidity":
       return <LiquidityRule value={value as RuleType<"liquidity">["value"]} {...props} />;
