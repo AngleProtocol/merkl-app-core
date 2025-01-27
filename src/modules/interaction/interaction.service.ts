@@ -1,6 +1,5 @@
 import { api as clientApi } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
-import { ZyfiService } from "../zyfi/zyfi.service";
 
 export abstract class InteractionService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -49,31 +48,6 @@ export abstract class InteractionService {
 
     //TODO: opportunity/:id/target instead of taking the first result and expecting unique
     return targets;
-  }
-
-  /**
-   * Client side
-   */
-  static async getTransaction(
-    payload: Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"],
-    sponsor?: boolean,
-  ) {
-    const transaction = await InteractionService.#fetch(() =>
-      clientApi.v4.interaction.transaction.get({
-        query: payload,
-      }),
-    );
-
-    if (sponsor && !transaction.approved) {
-      transaction.approval = await ZyfiService.wrapAndPrepareTx({ ...transaction.approval, from: payload.userAddress });
-    } else if (sponsor) {
-      transaction.transaction = await ZyfiService.wrapAndPrepareTx({
-        ...transaction.transaction,
-        from: payload.userAddress,
-      });
-    }
-
-    return transaction;
   }
 
   static async getBalances(chainId: number, address: string) {
