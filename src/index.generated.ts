@@ -62,8 +62,8 @@ export { default as useSearchParamState } from "./hooks/filtering/useSearchParam
  */
 export * from "./modules/campaigns/hooks/useCampaignMetadata";
 export { default as useCampaign } from "./modules/campaigns/hooks/useCampaignMetadata";
-export * from "./hooks/resources/useProtocols";
-export { default as useProtocols } from "./hooks/resources/useProtocols";
+export * from "./modules/protocol/hooks/useProtocols";
+export { default as useProtocols } from "./modules/protocol/hooks/useProtocols";
 export * from "./hooks/resources/useReward";
 export { default as useReward } from "./hooks/resources/useReward";
 export * from "./modules/opportunity/hooks/useOpportunityMetadata";
@@ -140,12 +140,12 @@ export * from "./modules/token/components/library/TokenTable";
 /**
  * components/element/protocol
  */
-export * from "./components/element/protocol/ProtocolCell";
-export { default as ProtocolCell } from "./components/element/protocol/ProtocolCell";
-export * from "./components/element/protocol/ProtocolLibrary";
-export { default as ProtocolLibrary } from "./components/element/protocol/ProtocolLibrary";
-export * from "./components/element/protocol/ProtocolFilters";
-export { default as ProtocolFilters } from "./components/element/protocol/ProtocolFilters";
+export * from "./modules/protocol/components/element/ProtocolCell";
+export { default as ProtocolCell } from "./modules/protocol/components/element/ProtocolCell";
+export * from "./modules/protocol/components/ProtocolLibrary";
+export { default as ProtocolLibrary } from "./modules/protocol/components/ProtocolLibrary";
+export * from "./modules/protocol/components/ProtocolFilters";
+export { default as ProtocolFilters } from "./modules/protocol/components/ProtocolFilters";
 
 /**
  * components/element/campaign

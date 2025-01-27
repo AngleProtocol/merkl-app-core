@@ -1,12 +1,13 @@
+import { I18n } from "@core/I18n";
+import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import { Cache } from "@core/modules/cache/cache.service";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
+import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
-import { I18n } from "../../../I18n";
-import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
-import { Cache } from "../../../modules/cache/cache.service";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
-import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
 export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   if (!id) throw new Error("Protocol not found");
@@ -42,19 +43,17 @@ export type OutletContextProtocol = {
 
 export default function Index() {
   const { opportunities, count, protocol, liveOpportunityCount, maxApr, dailyRewards } = useLoaderData<typeof loader>();
+  const { icon, name, description, link } = useProtocolMetadata(protocol);
 
   return (
     <Hero
-      icons={[{ src: protocol?.icon }]}
-      title={<Group className="items-center">{protocol?.name}</Group>}
+      icons={[{ src: icon }]}
+      title={<Group className="items-center">{name}</Group>}
       breadcrumbs={[
         { link: "/protocols", name: "Protocols" },
-        { link: `/protocols/${protocol?.id}`, name: protocol?.name },
+        { link, name },
       ]}
-      description={
-        (protocol?.description !== "" && protocol?.description) ||
-        `Earn rewards by supplying liquidity on ${protocol?.name}`
-      }
+      description={description}
       sideDatas={defaultHeroSideDatas(liveOpportunityCount, maxApr, Number.parseFloat(dailyRewards))}>
       <Outlet context={{ opportunities, count }} />
     </Hero>

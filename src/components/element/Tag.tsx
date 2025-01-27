@@ -1,22 +1,14 @@
 import ChainTag from "@core/modules/chain/components/element/ChainTag";
+import ProtocolTag from "@core/modules/protocol/components/element/ProtocolTag";
 import type { Chain, Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import {
   Button,
-  type Component,
-  Divider,
-  Dropdown,
-  EventBlocker,
-  Group,
-  Hash,
-  Icon,
+  type Component, EventBlocker, Icon,
   PrimitiveTag,
-  type PrimitiveTagProps,
-  Text,
-  useWalletContext,
+  type PrimitiveTagProps, useWalletContext
 } from "dappkit";
-import merklConfig from "../../config";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
 import TokenChainTag from "../../modules/token/components/element/TokenChainTag";
@@ -78,11 +70,11 @@ export default function Tag<T extends keyof TagTypes>({
     }
     case "action": {
       const action = actions[value as TagTypes["action"]];
-      if (!action) return <Button {...props}>{value}</Button>;
+      if (!action) return <Button {...props}>{value as string}</Button>;
       return (
         <EventBlocker>
           <PrimitiveTag
-            className={!filter && "pointer-events-none"}
+            className={!filter ? "pointer-events-none" : ""}
             onClick={() =>
               setSearchParams(s => {
                 s.set("action", value as TagTypes["action"]);
@@ -90,7 +82,7 @@ export default function Tag<T extends keyof TagTypes>({
               })
             }
             look="tint"
-            key={value}
+            key={action.label}
             {...props}>
             <Icon size={props?.size} {...action.icon} />
             {action?.label}
@@ -107,45 +99,10 @@ export default function Tag<T extends keyof TagTypes>({
     case "protocol": {
       const protocol = value as TagTypes["protocol"];
 
-      if (!protocol) return <Button {...props}>{value}</Button>;
-      return (
-        <EventBlocker>
-          <Dropdown
-            size="lg"
-            padding="xs"
-            content={
-              <Group className="flex-col">
-                <Group size="sm">
-                  <Icon size={props?.size} src={protocol?.icon} />
-                  <Text size="sm" className="text-main-12" bold>
-                    {value?.name}
-                  </Text>
-                </Group>
-                <Divider className="border-main-6" horizontal />
-                {/* <Text size="xs">{token?.description}</Text> */}
-                <Group className="flex-col" size="md">
-                  <Button to={`/protocols/${protocol?.id}`} size="xs" look="soft">
-                    <Icon remix="RiArrowRightLine" />
-                    Check opportunities on {protocol?.name}
-                  </Button>
-                  {protocol.url && (
-                    <Button external to={protocol.url} size="xs" look="soft">
-                      <Icon remix="RiArrowRightLine" />
-                      Visit {protocol?.name}
-                    </Button>
-                  )}
-                </Group>
-              </Group>
-            }>
-            <PrimitiveTag look="base" key={value} {...props}>
-              <Icon src={protocol?.icon} />
-              {value?.name}
-            </PrimitiveTag>
-          </Dropdown>
-        </EventBlocker>
-      );
+      if (!protocol) return;
+      return <ProtocolTag protocol={protocol} {...props} />;
     }
     default:
-      return <PrimitiveTag {...props}>{value}</PrimitiveTag>;
+      return <PrimitiveTag {...props}>{value as string}</PrimitiveTag>;
   }
 }
