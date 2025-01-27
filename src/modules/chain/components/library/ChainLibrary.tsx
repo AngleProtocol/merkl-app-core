@@ -1,7 +1,7 @@
+import ChainTableRow from "@core/modules/chain/components/element/ChainTableRow";
+import { ChainTable } from "@core/modules/chain/components/library/ChainTable";
 import type { Chain } from "@merkl/api";
 import { useMemo } from "react";
-import { ChainTable } from "./ChainTable";
-import ChainTableRow from "./ChainTableRow";
 
 export type ChainLibraryProps = {
   chains: Chain[];

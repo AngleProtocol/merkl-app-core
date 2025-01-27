@@ -2,8 +2,8 @@ import { Button, type Component, Icon, mergeClass } from "dappkit";
 import { Time } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
+import Chain from "../../../modules/chain/components/element/Chain";
 import type { ClaimsService } from "../../../modules/claim/claim.service";
-import Chain from "../chain/Chain";
 import Token from "../token/Token";
 import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 

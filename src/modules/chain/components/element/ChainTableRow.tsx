@@ -1,8 +1,8 @@
 import type { TagTypes } from "@core/components/element/Tag";
+import { ChainRow } from "@core/modules/chain/components/library/ChainTable";
 import type { Chain } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { type BoxProps, Group, Icon, Title, mergeClass } from "dappkit";
-import { ChainRow } from "./ChainTable";
 
 export type ChainTableRowProps = {
   hideTags?: (keyof TagTypes)[];

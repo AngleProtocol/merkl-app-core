@@ -1,12 +1,12 @@
+import merklConfig from "@core/config";
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
-import merklConfig from "../../../config";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
-import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
 export async function loader({ params: { id: chainId }, request }: LoaderFunctionArgs) {
   const chain = await ChainService.get({ name: chainId });

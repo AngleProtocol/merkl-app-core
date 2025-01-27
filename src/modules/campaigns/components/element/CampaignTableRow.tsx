@@ -36,7 +36,7 @@ export type CampaignTableRowProps = Component<{
   opportunity?: Opportunity;
   startsOpen?: boolean;
   chain: ChainType;
-  size: Parameters<typeof CampaignRow>["0"]["size"]
+  size?: Parameters<typeof CampaignRow>["0"]["size"]
 }>;
 
 export default function CampaignTableRow({
@@ -45,6 +45,7 @@ export default function CampaignTableRow({
   startsOpen,
   className,
   chain,
+  size,
   ...props
 }: CampaignTableRowProps) {
   const { time, dailyRewards, active, amount } = useCampaignMetadata(campaign);
@@ -129,6 +130,7 @@ export default function CampaignTableRow({
   return (
     <CampaignRow
       {...props}
+      size={size}
       className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
       chainColumn={distributionChain && <Tag type="chain" value={distributionChain} />}

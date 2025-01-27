@@ -70,8 +70,8 @@ export * from "./modules/opportunity/hooks/useOpportunityMetadata";
 export { default as useOpportunity } from "./modules/opportunity/hooks/useOpportunityMetadata";
 export * from "./hooks/resources/useRewards";
 export { default as useRewards } from "./hooks/resources/useRewards";
-export * from "./hooks/resources/useChains";
-export { default as useChains } from "./hooks/resources/useChains";
+export * from "./modules/chain/hooks/useChains";
+export { default as useChains } from "./modules/chain/hooks/useChains";
 
 /**
  * components/element
@@ -182,13 +182,13 @@ export { default as TooltipLayout } from "./components/element/tooltip/TooltipLa
 /**
  * components/element/chain
  */
-export * from "./components/element/chain/ChainTable";
-export * from "./components/element/chain/Chain";
-export { default as Chain } from "./components/element/chain/Chain";
-export * from "./components/element/chain/ChainTableRow";
-export { default as ChainTableRow } from "./components/element/chain/ChainTableRow";
-export * from "./components/element/chain/ChainLibrary";
-export { default as ChainLibrary } from "./components/element/chain/ChainLibrary";
+export * from "./modules/chain/components/library/ChainTable";
+export * from "./modules/chain/components/element/Chain";
+export { default as Chain } from "./modules/chain/components/element/Chain";
+export * from "./modules/chain/components/element/ChainTableRow";
+export { default as ChainTableRow } from "./modules/chain/components/element/ChainTableRow";
+export * from "./modules/chain/components/library/ChainLibrary";
+export { default as ChainLibrary } from "./modules/chain/components/library/ChainLibrary";
 
 /**
  * components/element/apr

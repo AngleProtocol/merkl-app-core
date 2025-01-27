@@ -1,19 +1,9 @@
+import { api } from "@core/api";
+import { type ApiResponse, fetchResource } from "@core/api/utils";
 import type { Chain } from "@merkl/api";
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
 
 export abstract class ChainService {
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Chain",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
-
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
+  static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
 
   static async getAll() {
     const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query: {} }));
