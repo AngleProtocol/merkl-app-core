@@ -1,6 +1,6 @@
-import TransactionOverview from "@core/components/element/transaction/TransactionOverview";
 import useBalances from "@core/hooks/useBalances";
 import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
+import TransactionOverview from "@core/modules/interaction/components/TransactionOverview";
 import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";

@@ -1,9 +1,19 @@
+import merklConfig from "@core/config";
+import TokenTooltip from "@core/modules/token/components/TokenTooltip";
 import type { Chain, Token as TokenType } from "@merkl/api";
-import { Button, type ButtonProps, Dropdown, Group, Icon, type IconProps, PrimitiveTag, Value, sizeScale } from "dappkit";
+import {
+  Button,
+  type ButtonProps,
+  Dropdown,
+  Group,
+  Icon,
+  type IconProps,
+  PrimitiveTag,
+  Value,
+  sizeScale,
+} from "dappkit";
 import { Fragment, useMemo } from "react";
 import { formatUnits } from "viem";
-import merklConfig from "../../../../config";
-import TokenTooltip from "../../../components/element/token/TokenTooltip";
 
 export type TokenProps = Omit<ButtonProps, "value"> & {
   token: TokenType;

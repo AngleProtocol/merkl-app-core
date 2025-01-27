@@ -231,8 +231,8 @@ export { default as Participate } from "./modules/interaction/components/Partici
 /**
  * components/element/transaction
  */
-export * from "./components/element/transaction/TransactionOverview";
-export { default as TransactionOverview } from "./components/element/transaction/TransactionOverview";
+export * from "./modules/interaction/components/TransactionOverview";
+export { default as TransactionOverview } from "./modules/interaction/components/TransactionOverview";
 
 /**
  * modules/opportunity/components

@@ -46,7 +46,7 @@ export default function TokenSelect({ tokens, balances, ...props }: TokenSelectP
           if (a.price) return -1;
           if (b.price) return 1;
 
-          return a.balance - b.balance;
+          return Number(a.balance - b.balance);
         })
         ?.reduce(
           (obj, token) =>
