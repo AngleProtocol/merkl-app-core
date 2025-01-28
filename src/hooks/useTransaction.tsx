@@ -21,7 +21,8 @@ export default function useTransaction(chainId: number, payload: any, txFunction
       if (!payload) return;
       setLoading(true);
       try {
-        const tx = await InteractionService.get(txFunctionName, payload, {
+        // biome-ignore lint/suspicious/noExplicitAny: @TODO: type correctly the txFunctionName
+        const tx = await InteractionService.get(txFunctionName as any, payload, {
           sponsor: sponsorTransactions && chainId === 324,
         });
         setTransactions(txns => {
