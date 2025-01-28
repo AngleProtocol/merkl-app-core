@@ -35,17 +35,23 @@ export default function Index() {
   return (
     <Container>
       <Space size="md" />
-      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > 0 && <ReinvestBanner />}
-      <Space size="md" />
-      {!!I18n.trad.get.pages.dashboard.explanation && (
-        <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">
-          <Icon remix="RiInformation2Fill" className="text-lg text-accent-11 flex-shrink-0" />
-          <Text look="bold" size="sm">
-            {I18n.trad.get.pages.dashboard.explanation}
-          </Text>
-        </Group>
+      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > 0 && (
+        <>
+          <ReinvestBanner />
+          <Space size="md" />
+        </>
       )}
-      <Space size="md" />
+      {!!I18n.trad.get.pages.dashboard.explanation && (
+        <>
+          <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">
+            <Icon remix="RiInformation2Fill" className="text-lg text-accent-11 flex-shrink-0" />
+            <Text look="bold" size="sm">
+              {I18n.trad.get.pages.dashboard.explanation}
+            </Text>
+          </Group>
+          <Space size="md" />
+        </>
+      )}
       <ClaimRewardsLibrary from={address} rewards={sortedRewards} onClaimSuccess={onClaimSuccess} />
     </Container>
   );

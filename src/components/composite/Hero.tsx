@@ -20,6 +20,7 @@ import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
+  compact?: boolean;
   title: ReactNode;
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
@@ -37,6 +38,7 @@ export type HeroInformations = {
 
 export default function Hero({
   navigation,
+  compact = false,
   breadcrumbs,
   icons,
   title,
@@ -59,7 +61,7 @@ export default function Hero({
               : location?.pathname === "/" || location?.pathname === "/opportunities"
                 ? "bg-cover"
                 : "bg-main-6"
-          } flex-row justify-between bg-no-repeat xl:aspect-auto xl:min-h-[350px] aspect-[1440/300]`}
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}
           style={{
             backgroundImage: !!merklConfig.hero.bannerOnAllPages
               ? `url('${merklConfig.images.hero}')`
@@ -68,7 +70,7 @@ export default function Hero({
                 : "none",
           }}>
           <Container>
-            <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
+            <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
                 <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
                   Home
@@ -84,24 +86,20 @@ export default function Hero({
                 })}
               </Group>
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
-                <Group className="flex-col flex-1 gap-lg">
-                  <Group className="gap-0 md:gap-lg flex-nowrap w-full items-center">
+                <Group className={`${compact ? "py-xl md:py-xl*2" : ""} flex-col flex-1 gap-lg`}>
+                  <Group
+                    className="gap-0 md:gap-lg flex-nowrap w-full items-center"
+                    style={{
+                      wordBreak: "break-word",
+                    }}>
                     {!!icons && (
-                      <Icons size="lg">
+                      <Icons size="lg" containerClassName="hidden md:flex">
                         {icons?.length > 1
                           ? icons?.map(icon => (
-                              <Icon
-                                className="hidden md:block text-main-12 !w-lg*4 !h-lg*4"
-                                key={`${Object.values(icon)}`}
-                                {...icon}
-                              />
+                              <Icon className="text-main-12 !w-lg*4 !h-lg*4" key={`${Object.values(icon)}`} {...icon} />
                             ))
                           : icons?.map(icon => (
-                              <Icon
-                                className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
-                                key={`${Object.values(icon)}`}
-                                {...icon}
-                              />
+                              <Icon className="text-main-12 !w-xl*4 !h-xl*4" key={`${Object.values(icon)}`} {...icon} />
                             ))}
                       </Icons>
                     )}

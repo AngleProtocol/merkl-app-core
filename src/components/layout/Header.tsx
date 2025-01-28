@@ -14,7 +14,7 @@ import {
   useWalletContext,
 } from "dappkit";
 import { motion } from "framer-motion";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import merklConfig from "../../config";
 import useChains from "../../modules/chain/hooks/useChains";
@@ -44,6 +44,7 @@ export default function Header() {
   const { mode } = useTheme();
   const { chainId, address: user, chains, switchChain } = useWalletContext();
   const [open, setOpen] = useState<boolean>(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -85,12 +86,42 @@ export default function Header() {
     return <Select placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
   }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
 
+  const isClient = typeof window !== "undefined";
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        // Use requestAnimationFrame to ensure we get the final layout
+        requestAnimationFrame(() => {
+          const height = headerRef.current?.offsetHeight;
+          if (height) {
+            document.documentElement.style.setProperty("--header-height", `${height}px`);
+          }
+        });
+      }
+    };
+
+    // Initial measurement with a small delay to ensure everything is loaded
+    const timeoutId = setTimeout(updateHeaderHeight, 100);
+
+    // Update on resize
+    window.addEventListener("resize", updateHeaderHeight);
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      clearTimeout(timeoutId);
+    };
+  }, [isClient]);
+
   return (
     <motion.header
+      ref={headerRef}
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full sticky left-0 top-0 z-20 backdrop-blur">
+      className="w-full fixed left-0 top-0 z-20 backdrop-blur">
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item} className="cursor-pointer">

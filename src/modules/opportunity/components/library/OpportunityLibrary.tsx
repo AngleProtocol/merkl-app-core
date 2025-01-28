@@ -1,7 +1,7 @@
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Box, Group, type Order, Title } from "dappkit";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
@@ -60,6 +60,12 @@ export default function OpportunityLibrary({
 
   const [view, setView] = useState<OpportunityView>(forceView ?? merklConfig.opportunityLibrary.defaultView ?? "table");
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleClearFilters = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  }, []);
+
   const display = useMemo(() => {
     switch (view) {
       case "table":
@@ -89,7 +95,7 @@ export default function OpportunityLibrary({
         );
       case "cells":
         return (
-          <Group className="flew-col">
+          <Group>
             <Group className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
               {opportunities?.map(o => (
                 <OpportunityCell
@@ -111,16 +117,21 @@ export default function OpportunityLibrary({
   }, [opportunities, view, count, sortable, onSort, sortIdAndOrder]);
 
   return (
-    <Group className="flex-col w-full">
+    <div className="flex flex-col w-full">
       {!hideFilters && (
-        <Box content="sm" className="justify-between w-full overflow-x-scroll">
-          <OpportunityFilters
-            {...{ only, chains, protocols, view, setView }}
-            exclude={mergedExclusions} // Pass merged exclusions
-          />
-        </Box>
+        <div className="overflow-x-visible -mx-lg md:-mx-xl lg:mx-0" ref={scrollContainerRef}>
+          <div className="min-w-min max-w-full px-lg md:px-xl lg:px-0">
+            <Box content="sm" className="mb-lg justify-between w-full">
+              <OpportunityFilters
+                {...{ only, chains, protocols, view, setView }}
+                exclude={mergedExclusions}
+                onClear={handleClearFilters}
+              />
+            </Box>
+          </div>
+        </div>
       )}
       {display}
-    </Group>
+    </div>
   );
 }

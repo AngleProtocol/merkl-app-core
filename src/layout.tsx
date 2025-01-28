@@ -7,7 +7,7 @@ export default function Index() {
   return (
     <Group size="xl" className="!gap-0 min-h-screen !flex-nowrap flex-col">
       <Header />
-      <main className="flex-1 h-full">
+      <main className="flex-1 h-full" style={{ marginTop: "var(--header-height)" }}>
         <Outlet />
       </main>
       <Footer />

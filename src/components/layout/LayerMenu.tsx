@@ -14,7 +14,7 @@ export const LayerMenu: FC<{
   return (
     <div className="layermenu z-50 min-w-64 bg-main-2 flex flex-col">
       <main className="flex-1 overflow-y-scroll w-full">
-        <ul className="min-w-max list-none flex gap-lg flex-col">
+        <ul className="min-w-max list-none flex gap-md md:gap-lg flex-col">
           {Object.entries(nav)
             .filter(([_, value]) => value)
             .map(([key, value]) => (

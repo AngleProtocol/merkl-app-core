@@ -79,7 +79,7 @@ export default function Token({
   if (value) return display;
 
   return (
-    <Dropdown content={<TokenTooltip {...{ token, amount, chain, size }} />}>
+    <Dropdown className="flex flex-col" content={<TokenTooltip {...{ token, amount, chain, size }} />}>
       <Button {...props} size={size} look="soft">
         {display}
       </Button>

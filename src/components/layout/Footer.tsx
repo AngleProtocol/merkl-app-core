@@ -12,15 +12,17 @@ export default function Footer() {
   return (
     <footer className="relative backdrop-blur py-lg lg:py-xl flex flex-nowrap justify-between items-center w-full">
       <Container className="relative z-10">
-        <Group className="justify-between gap-xl*2">
-          <Group className="gap-xl*2 lg:ml-xl*2 items-center">
-            <Button to="/" look="soft" className="hidden md:flex">
-              <Image
-                imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
-                alt={`${merklConfig.appName} logo`}
-                src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
-              />
-            </Button>
+        <Group className="justify-between gap-xl md:gap-xl*2">
+          <Group className="gap-xl md:gap-xl*2 items-center">
+            <div className="hidden md:block">
+              <Button to="/" look="soft" className="flex justify-start">
+                <Image
+                  imgClassName="max-w-[140px] md:max-w-[200px] max-h-[2.5rem] object-contain object-left"
+                  alt={`${merklConfig.appName} logo`}
+                  src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
+                />
+              </Button>
+            </div>
             <Socials />
             {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
               Object.entries(merklConfig.footerNavLinks ?? {}).map(([key, route]) => (
@@ -35,7 +37,7 @@ export default function Footer() {
                 </Button>
               ))}
           </Group>
-          <Group className="items-center gap-xl*2">
+          <Group className="items-center gap-xl md:gap-xl*2">
             <Group className="items-center" size="xl">
               <Text size="sm" className="text-main-11">
                 ©{new Date().getFullYear()} Merkl. All rights reserved.

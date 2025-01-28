@@ -38,7 +38,7 @@ export default function OpportunityCell({ opportunity, hideTags, navigationMode 
   const cell = useMemo(
     () => (
       <Box className="flex-col hover:bg-main-2 bg-main-3 ease !gap-0 h-full cursor-pointer">
-        <Group className="p-xl justify-between items-end">
+        <Group className="p-md md:p-xl justify-between items-end">
           <Group className="flex-col">
             <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
             <Text bold look="bold">
@@ -56,7 +56,7 @@ export default function OpportunityCell({ opportunity, hideTags, navigationMode 
           </Dropdown>
         </Group>
         <Divider className="my-0" look="soft" />
-        <Group className="flex-col p-xl flex-1">
+        <Group className="flex-col p-md md:p-xl flex-1">
           <Group className="justify-between flex-col flex-1">
             <Group className="flex-nowrap">
               <Text className="text-3xl">
