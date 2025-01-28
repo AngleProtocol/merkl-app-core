@@ -1,10 +1,10 @@
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
-import Token from "@core/components/element/token/Token";
 import merklConfig from "@core/config";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
+import Token from "@core/modules/token/components/element/Token";
 import type { Campaign } from "@merkl/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";

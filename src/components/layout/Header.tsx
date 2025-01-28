@@ -17,7 +17,7 @@ import { motion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import merklConfig from "../../config";
-import useChains from "../../hooks/resources/useChains";
+import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 import { LayerMenu } from "./LayerMenu";
@@ -53,7 +53,7 @@ export default function Header() {
   const routes = useMemo(() => {
     const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
     const filteredRoutes = Object.fromEntries(
-      Object.entries(routes).filter(([key, route]) => route.enabled && route.inHeader === true),
+      Object.entries(routes).filter(([_, route]) => route.enabled && route.inHeader === true),
     );
 
     if (!!filteredRoutes.dashboard && !!user) {

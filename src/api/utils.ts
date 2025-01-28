@@ -18,6 +18,11 @@ function logSize(bytes: number) {
   return `[${kb}kb]`;
 }
 
+/**
+ * Eden response structure for a given return type
+ */
+export type ApiResponse<R> = { data: R; status: number; response: Response };
+
 export async function fetchWithLogs<R, T extends { data: R; status: number; response: Response }>(
   call: () => Promise<T>,
 ) {
@@ -33,4 +38,31 @@ export async function fetchWithLogs<R, T extends { data: R; status: number; resp
     );
 
   return response;
+}
+
+/**
+ * Fetch resource or throw appropriate error
+ * @param call callback to api call i.e. () => api.v4.campaigns.index.get()
+ * @param resource to insert name in errors i.e. Campaigns not found (404)
+ * @returns return type of api call
+ */
+export async function safeFetch<R, T extends ApiResponse<R>>(
+  call: () => Promise<T>,
+  resource = "Campaign",
+): Promise<NonNullable<T["data"]>> {
+  const { data, status } = await fetchWithLogs(call);
+
+  if (status === 404) throw new Response(`${resource} not found`, { status });
+  if (status === 500) throw new Response(`${resource} unavailable`, { status });
+  if (data == null) throw new Response(`${resource} unavailable`, { status });
+  return data;
+}
+
+/**
+ * Wraps the safeFetch function to always declare the same resource name
+ * @param resourceName i.e. Campaigns
+ * @returns a safeFetch function without resource name parameters
+ */
+export function fetchResource<R, T extends ApiResponse<R>>(resourceName: string) {
+  return (call: () => Promise<T>) => safeFetch<R, T>(call, resourceName);
 }

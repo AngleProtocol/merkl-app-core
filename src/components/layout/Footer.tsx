@@ -1,9 +1,9 @@
+import merklConfig from "@core/config";
 import { Container, useTheme } from "dappkit";
 import { Button, Group, Text } from "dappkit";
-import Image from "../../../packages/dappkit/src/components/primitives/Image";
+import { Image } from "dappkit";
 import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
 import merklLogo from "../../assets/images/by-merkl.svg";
-import merklConfig from "../../config";
 import Socials from "../element/Socials";
 
 export default function Footer() {
@@ -23,7 +23,7 @@ export default function Footer() {
             </Button>
             <Socials />
             {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
-              Object.entries(merklConfig.footerNavLinks).map(([key, route]) => (
+              Object.entries(merklConfig.footerNavLinks ?? {}).map(([key, route]) => (
                 <Button
                   look="soft"
                   className="capitalize"

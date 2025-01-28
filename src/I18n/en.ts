@@ -1,3 +1,5 @@
+//TODO: embed this in merkl config
+//@ts-ignore
 import clientEn from "../../../../I18n/en";
 
 const en = {

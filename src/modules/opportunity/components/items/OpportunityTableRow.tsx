@@ -1,12 +1,12 @@
 import type { TagTypes } from "@core/components/element/Tag";
 import AprModal from "@core/components/element/apr/AprModal";
-import TokenAmountModal from "@core/components/element/token/TokenAmountModal";
 import merklConfig from "@core/config";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import { OpportunityRow } from "@core/modules/opportunity/components/library/OpportunityTable";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
+import TokenAmountModal from "@core/modules/token/components/TokenAmountModal";
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";

@@ -60,18 +60,18 @@ export { default as useSearchParamState } from "./hooks/filtering/useSearchParam
 /**
  * hooks/resources
  */
-export * from "./hooks/resources/useCampaign";
-export { default as useCampaign } from "./hooks/resources/useCampaign";
-export * from "./hooks/resources/useProtocols";
-export { default as useProtocols } from "./hooks/resources/useProtocols";
+export * from "./modules/campaigns/hooks/useCampaignMetadata";
+export { default as useCampaign } from "./modules/campaigns/hooks/useCampaignMetadata";
+export * from "./modules/protocol/hooks/useProtocols";
+export { default as useProtocols } from "./modules/protocol/hooks/useProtocols";
 export * from "./hooks/resources/useReward";
 export { default as useReward } from "./hooks/resources/useReward";
 export * from "./modules/opportunity/hooks/useOpportunityMetadata";
 export { default as useOpportunity } from "./modules/opportunity/hooks/useOpportunityMetadata";
 export * from "./hooks/resources/useRewards";
 export { default as useRewards } from "./hooks/resources/useRewards";
-export * from "./hooks/resources/useChains";
-export { default as useChains } from "./hooks/resources/useChains";
+export * from "./modules/chain/hooks/useChains";
+export { default as useChains } from "./modules/chain/hooks/useChains";
 
 /**
  * components/element
@@ -121,42 +121,42 @@ export * from "./modules/opportunity/opportunity.service";
 /**
  * components/element/token
  */
-export * from "./components/element/token/TokenFilters";
-export { default as TokenFilters } from "./components/element/token/TokenFilters";
-export * from "./components/element/token/TokenSelect";
-export { default as TokenSelect } from "./components/element/token/TokenSelect";
-export * from "./components/element/token/TokenTooltip";
-export { default as TokenTooltip } from "./components/element/token/TokenTooltip";
-export * from "./components/element/token/TokenAmountModal";
-export { default as TokenAmountModal } from "./components/element/token/TokenAmountModal";
-export * from "./components/element/token/Token";
-export { default as Token } from "./components/element/token/Token";
-export * from "./components/element/token/TokenLibrary";
-export { default as TokenLibrary } from "./components/element/token/TokenLibrary";
-export * from "./components/element/token/TokenTableRow";
-export { default as TokenTableRow } from "./components/element/token/TokenTableRow";
-export * from "./components/element/token/TokenTable";
+export * from "./modules/token/components/TokenFilters";
+export { default as TokenFilters } from "./modules/token/components/TokenFilters";
+export * from "./modules/token/components/element/TokenSelect";
+export { default as TokenSelect } from "./modules/token/components/element/TokenSelect";
+export * from "./modules/token/components/TokenTooltip";
+export { default as TokenTooltip } from "./modules/token/components/TokenTooltip";
+export * from "./modules/token/components/TokenAmountModal";
+export { default as TokenAmountModal } from "./modules/token/components/TokenAmountModal";
+export * from "./modules/token/components/element/Token";
+export { default as Token } from "./modules/token/components/element/Token";
+export * from "./modules/token/components/library/TokenLibrary";
+export { default as TokenLibrary } from "./modules/token/components/library/TokenLibrary";
+export * from "./modules/token/components/element/TokenTableRow";
+export { default as TokenTableRow } from "./modules/token/components/element/TokenTableRow";
+export * from "./modules/token/components/library/TokenTable";
 
 /**
  * components/element/protocol
  */
-export * from "./components/element/protocol/ProtocolCell";
-export { default as ProtocolCell } from "./components/element/protocol/ProtocolCell";
-export * from "./components/element/protocol/ProtocolLibrary";
-export { default as ProtocolLibrary } from "./components/element/protocol/ProtocolLibrary";
-export * from "./components/element/protocol/ProtocolFilters";
-export { default as ProtocolFilters } from "./components/element/protocol/ProtocolFilters";
+export * from "./modules/protocol/components/element/ProtocolCell";
+export { default as ProtocolCell } from "./modules/protocol/components/element/ProtocolCell";
+export * from "./modules/protocol/components/library/ProtocolLibrary";
+export { default as ProtocolLibrary } from "./modules/protocol/components/library/ProtocolLibrary";
+export * from "./modules/protocol/components/ProtocolFilters";
+export { default as ProtocolFilters } from "./modules/protocol/components/ProtocolFilters";
 
 /**
  * components/element/campaign
  */
-export * from "./components/element/campaign/CampaignTooltipDates";
-export { default as CampaignTooltipDates } from "./components/element/campaign/CampaignTooltipDates";
-export * from "./components/element/campaign/CampaignLibrary";
-export { default as CampaignLibrary } from "./components/element/campaign/CampaignLibrary";
-export * from "./components/element/campaign/CampaignTableRow";
-export { default as CampaignTableRow } from "./components/element/campaign/CampaignTableRow";
-export * from "./components/element/campaign/CampaignTable";
+export * from "./modules/campaigns/components/CampaignTooltipDates";
+export { default as CampaignTooltipDates } from "./modules/campaigns/components/CampaignTooltipDates";
+export * from "./modules/campaigns/components/library/CampaignLibrary";
+export { default as CampaignLibrary } from "./modules/campaigns/components/library/CampaignLibrary";
+export * from "./modules/campaigns/components/element/CampaignTableRow";
+export { default as CampaignTableRow } from "./modules/campaigns/components/element/CampaignTableRow";
+export * from "./modules/campaigns/components/library/CampaignTable";
 
 /**
  * components/element/leaderboard
@@ -182,13 +182,13 @@ export { default as TooltipLayout } from "./components/element/tooltip/TooltipLa
 /**
  * components/element/chain
  */
-export * from "./components/element/chain/ChainTable";
-export * from "./components/element/chain/Chain";
-export { default as Chain } from "./components/element/chain/Chain";
-export * from "./components/element/chain/ChainTableRow";
-export { default as ChainTableRow } from "./components/element/chain/ChainTableRow";
-export * from "./components/element/chain/ChainLibrary";
-export { default as ChainLibrary } from "./components/element/chain/ChainLibrary";
+export * from "./modules/chain/components/library/ChainTable";
+export * from "./modules/chain/components/element/Chain";
+export { default as Chain } from "./modules/chain/components/element/Chain";
+export * from "./modules/chain/components/element/ChainTableRow";
+export { default as ChainTableRow } from "./modules/chain/components/element/ChainTableRow";
+export * from "./modules/chain/components/library/ChainLibrary";
+export { default as ChainLibrary } from "./modules/chain/components/library/ChainLibrary";
 
 /**
  * components/element/apr
@@ -224,15 +224,15 @@ export * from "./components/element/position/PositionTable";
 /**
  * components/element/participate
  */
-export * from "./components/element/participate/Interact.client";
-export * from "./components/element/participate/Participate";
-export { default as Participate } from "./components/element/participate/Participate";
+export * from "./modules/interaction/components/Interact.client";
+export * from "./modules/interaction/components/Participate";
+export { default as Participate } from "./modules/interaction/components/Participate";
 
 /**
  * components/element/transaction
  */
-export * from "./components/element/transaction/TransactionOverview";
-export { default as TransactionOverview } from "./components/element/transaction/TransactionOverview";
+export * from "./modules/interaction/components/TransactionOverview";
+export { default as TransactionOverview } from "./modules/interaction/components/TransactionOverview";
 
 /**
  * modules/opportunity/components
@@ -245,22 +245,14 @@ export { default as OpportunityFilters } from "./modules/opportunity/components/
 /**
  * components/element/campaign/rules
  */
-export * from "./components/element/campaign/rules/Rule";
-export { default as Rule } from "./components/element/campaign/rules/Rule";
-export * from "./components/element/campaign/rules/LiquidityTokenRule";
-export { default as LiquidityTokenRule } from "./components/element/campaign/rules/LiquidityTokenRule";
-export * from "./components/element/campaign/rules/AddressListRule";
-export { default as AddressListRule } from "./components/element/campaign/rules/AddressListRule";
-export * from "./components/element/campaign/rules/LiquidityRule";
-export { default as LiquidityRule } from "./components/element/campaign/rules/LiquidityRule";
-export * from "./components/element/campaign/rules/BooleanRule";
-export { default as BooleanRule } from "./components/element/campaign/rules/BooleanRule";
-
-/**
- * components/element/campaign/tableCollumns
- */
-export * from "./components/element/campaign/tableCollumns/RestrictionsCollumn";
-export { default as RestrictionsCollumn } from "./components/element/campaign/tableCollumns/RestrictionsCollumn";
+export * from "./modules/campaigns/components/rules/Rule";
+export { default as Rule } from "./modules/campaigns/components/rules/Rule";
+export * from "./modules/campaigns/components/rules/AddressListRule";
+export { default as AddressListRule } from "./modules/campaigns/components/rules/AddressListRule";
+export * from "./modules/campaigns/components/rules/LiquidityRule";
+export { default as LiquidityRule } from "./modules/campaigns/components/rules/LiquidityRule";
+export * from "./modules/campaigns/components/rules/BooleanRule";
+export { default as BooleanRule } from "./modules/campaigns/components/rules/BooleanRule";
 
 /**
  * components/element/rewards/byOpportunity

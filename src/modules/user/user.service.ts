@@ -8,7 +8,7 @@ export abstract class UserService {
    * @param b address
    */
   static isSame(a?: string, b?: string): boolean {
-    if (a?.startsWith("0x") && b.startsWith("0x")) return isAddressEqual(a as `0x${string}`, b as `0x${string}`);
+    if (a?.startsWith("0x") && b?.startsWith("0x")) return isAddressEqual(a as `0x${string}`, b as `0x${string}`);
     return false;
   }
 }

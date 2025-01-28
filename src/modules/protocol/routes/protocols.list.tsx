@@ -1,9 +1,9 @@
+import { Cache } from "@core/modules/cache/cache.service";
+import ProtocolLibrary from "@core/modules/protocol/components/library/ProtocolLibrary";
+import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
-import ProtocolLibrary from "../../../components/element/protocol/ProtocolLibrary";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);

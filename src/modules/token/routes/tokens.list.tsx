@@ -3,10 +3,10 @@ import { useLoaderData } from "@remix-run/react";
 import { useNavigate } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import { useEffect } from "react";
-import TokenLibrary from "../../../components/element/token/TokenLibrary";
 import merklConfig from "../../../config";
 import { Cache } from "../../../modules/cache/cache.service";
 import { TokenService } from "../../../modules/token/token.service";
+import TokenLibrary from "../components/library/TokenLibrary";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { tokens, count } = await TokenService.getManyFromRequest(request);

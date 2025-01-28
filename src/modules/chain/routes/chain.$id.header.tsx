@@ -1,9 +1,9 @@
+import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const chain = await ChainService.get({ name: id });

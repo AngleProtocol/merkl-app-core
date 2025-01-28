@@ -1,7 +1,7 @@
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { Reward } from "@merkl/api";
-import { type Component, Divider, type GetSet } from "dappkit";
-import Token from "../../token/Token";
+import { type Component, Divider, type GetSet, type ListProps } from "dappkit";
+import Token from "../../../../modules/token/components/element/Token";
 import { ClaimRewardsByOpportunityRow } from "./ClaimRewardsTableByOpportunity";
 
 export type ClaimRewardsTokenTableRowByOpportunityProps = Component<{
@@ -11,7 +11,8 @@ export type ClaimRewardsTokenTableRowByOpportunityProps = Component<{
   showCheckbox?: boolean;
   from: string;
   distributor: string;
-}>;
+}> &
+  ListProps;
 
 export default function ClaimRewardsTokenTableRowByOpportunity({
   breakdown,

@@ -3,8 +3,8 @@ import { Button, Divider, Group, Image, Modal, Text, Title } from "dappkit";
 import type { PropsWithChildren } from "react";
 import React from "react";
 
-import Participate from "@core/components/element/participate/Participate";
 import merklConfig from "@core/config";
+import Participate from "@core/modules/interaction/components/Participate";
 
 export type OpportunityParticipateModalProps = {
   opportunity: Opportunity;

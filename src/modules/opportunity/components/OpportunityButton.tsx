@@ -1,14 +1,13 @@
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
-import type { Opportunity } from "@merkl/api";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import { Button, Icon } from "dappkit";
 import { blockEvent } from "dappkit";
 
 export type OpportuntiyButtonProps = {
-  opportunity: Opportunity;
+  opportunity: Parameters<typeof useOpportunityMetadata>["0"];
 };
 
 export default function OpportunityButton({ opportunity }: OpportuntiyButtonProps) {
-  const { name, Icons, link } = useOpportunityData(opportunity);
+  const { name, Icons, link } = useOpportunityMetadata(opportunity);
 
   return (
     <Button to={link} onClick={blockEvent(() => {})} look="soft">

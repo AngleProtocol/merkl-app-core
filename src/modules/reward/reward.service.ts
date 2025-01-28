@@ -1,7 +1,7 @@
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
-import merklConfig from "../../config";
-import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
+import { api } from "@core/api";
+import { fetchWithLogs } from "@core/api/utils";
+import merklConfig from "@core/config";
+import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 
 export abstract class RewardService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -68,7 +68,7 @@ export abstract class RewardService {
 
   static #getTokenLeaderboardQueryFromRequest(
     request: Request,
-    override?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+    override?: Parameters<typeof api.v4.rewards.token.index.get>[0]["query"],
   ) {
     const page = new URL(request.url).searchParams.get("page");
     const items = new URL(request.url).searchParams.get("items");
@@ -92,13 +92,13 @@ export abstract class RewardService {
 
   static async getTokenLeaderboard(
     request: Request,
-    overrides?: Parameters<typeof api.v4.rewards.token.get>[0]["query"],
+    overrides?: Parameters<typeof api.v4.rewards.token.index.get>[0]["query"],
   ) {
     const query = Object.assign(RewardService.#getTokenLeaderboardQueryFromRequest(request), overrides ?? undefined);
 
     const promises = [
       RewardService.#fetch(async () =>
-        api.v4.rewards.token.get({
+        api.v4.rewards.token.index.get({
           query,
         }),
       ),

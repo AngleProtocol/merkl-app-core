@@ -88,7 +88,7 @@ export abstract class TokenService {
         if (a.price && a.balance && Fmt.toPrice(a.balance, a)) return -1;
         if (b.price && b.balance && Fmt.toPrice(b.balance, b)) return 1;
 
-        return b.balance - a.balance;
+        return Number(b.balance - a.balance);
       });
     const tokensWithNoBalance = tokens.filter(({ balance }) => !balance || BigInt(balance) <= 0n);
 
@@ -98,7 +98,7 @@ export abstract class TokenService {
           .map(s => tokensWithNoBalance.find(({ symbol }) => symbol === s))
           .filter(t => t !== undefined);
 
-    const otherTokens = tokensWithNoBalance.filter(s => merklConfig?.tokenSymbolPriority?.includes(s));
+    const otherTokens = tokensWithNoBalance.filter(s => merklConfig?.tokenSymbolPriority?.includes(s.symbol));
 
     return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
   }

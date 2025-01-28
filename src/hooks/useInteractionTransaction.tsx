@@ -3,7 +3,7 @@ import type { Token } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { api as clientApi } from "../api/index.client";
+import type { api as clientApi } from "../api/index";
 import { InteractionService } from "../modules/interaction/interaction.service";
 
 type Payload = Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"];
@@ -30,7 +30,7 @@ export default function useInteractionTransaction(
       protocolId,
       identifier: target?.identifier,
       userAddress: address,
-      slippage: slippage ? slippage.toString() : undefined,
+      slippage: slippage ? Number.parseInt(slippage.toString()) : undefined,
       fromAmount: amount?.toString(),
       fromTokenAddress: tokenIn?.address,
     };

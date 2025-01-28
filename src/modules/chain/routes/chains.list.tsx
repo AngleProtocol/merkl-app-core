@@ -1,12 +1,12 @@
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
+import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
+import useChains from "@core/modules/chain/hooks/useChains";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useNavigate } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 import { useEffect } from "react";
-import ChainLibrary from "../../../components/element/chain/ChainLibrary";
-import useChains from "../../../hooks/resources/useChains";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
 
 export async function loader(_args: LoaderFunctionArgs) {
   const chains = await ChainService.getAll();

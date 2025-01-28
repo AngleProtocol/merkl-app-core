@@ -16,7 +16,7 @@ export function filterColumns<T extends Record<string, any>>(columns: T): T {
   return filteredColumns;
 }
 
-export const opportunityColumns = {
+export const columns = {
   opportunity: {
     name: (
       <Title h={5} look="soft">
@@ -54,5 +54,5 @@ export const opportunityColumns = {
   },
 };
 
-const filteredOpportunityColumns = filterColumns(opportunityColumns);
-export const [OpportunityTable, OpportunityRow, filteredColumns] = createTable(filteredOpportunityColumns);
+const filteredOpportunityColumns = filterColumns(columns);
+export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTable(filteredOpportunityColumns);

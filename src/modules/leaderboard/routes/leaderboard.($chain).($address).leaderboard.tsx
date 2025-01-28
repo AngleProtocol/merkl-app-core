@@ -1,3 +1,4 @@
+import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
@@ -78,7 +79,8 @@ export default function Index() {
       {token && (
         <LeaderboardLibrary
           reason={false}
-          leaderboard={rewards}
+          //TODO: unionize or abstract leaderboard type, or recreate a leaderboard component to handle type
+          leaderboard={rewards as BreakdownForCampaignsRaw[]}
           token={token}
           chain={chain}
           count={count?.count ?? 0}
