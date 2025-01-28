@@ -44,7 +44,7 @@ jobs:
   check-lint:
     name: 'Linting'
     needs: install-dependencies
-    runs-on: ${{needs.get-runner.outputs.RUNNER}}
+    runs-on: ${{needs.install-dependencies.outputs.RUNNER}}
     steps:
       - name: Check codebase linting
         run: bun lint:ci
@@ -52,7 +52,7 @@ jobs:
   check-type:
     name: 'Typing'
     needs: install-dependencies
-    runs-on: ${{needs.get-runner.outputs.RUNNER}}
+    runs-on: ${{needs.install-dependencies.outputs.RUNNER}}
     steps:
       - name: Check codebase typing
         run: bun typecheck
