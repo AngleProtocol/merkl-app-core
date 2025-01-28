@@ -115,6 +115,7 @@ export default function Index() {
 
   return (
     <Hero
+      compact
       breadcrumbs={[
         { link: "/users/", name: "Users" },
         {
@@ -138,7 +139,7 @@ export default function Index() {
       title={
         <Group className="w-full items-center flex justify-between gap-xl md:gap-x-xl*4">
           <Group className="flex-1 gap-xl md:gap-x-xl*4 items-center">
-            <Group className="flex-col">
+            <Group className="flex-col gap-sm md:gap-md">
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
               ) : (
@@ -146,11 +147,11 @@ export default function Index() {
                   {rewards.unclaimed}
                 </Value>
               )}
-              <Text size={"xl"} bold className="not-italic">
+              <Text size={"xl"} bold className="text-lg md:text-xl not-italic">
                 Total Claimable
               </Text>
             </Group>
-            <Group className="flex-col">
+            <Group className="flex-col gap-sm md:gap-md">
               {isAbleToClaim && (
                 <TransactionButton
                   name="Claim Rewards"
@@ -170,8 +171,8 @@ export default function Index() {
           <Divider vertical className="m-0 hidden lg:block" look="bold" />
           <Divider horizontal className="m-0 lg:hidden" look="bold" />
 
-          <Group className="flex-1 gap-xl md:gap-xl*4 items-center lg:justify-end">
-            <Group className="flex-col">
+          <Group className="flex-1 gap-lg md:gap-xl*4 items-center lg:justify-end">
+            <Group className="flex-col gap-sm md:gap-md">
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
               ) : (
@@ -179,12 +180,12 @@ export default function Index() {
                   {rewards.pending}
                 </Value>
               )}
-              <Text size="xl" bold className="not-italic">
+              <Text size="xl" bold className="text-lg md:text-xl not-italic">
                 Pending Rewards
               </Text>
             </Group>
 
-            <Group className="flex-col">
+            <Group className="flex-col gap-sm md:gap-md">
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
               ) : (
@@ -192,7 +193,7 @@ export default function Index() {
                   {rewards.earned + rewards.pending}
                 </Value>
               )}
-              <Text size="xl" bold className="not-italic">
+              <Text size="xl" bold className="text-lg md:text-xl not-italic">
                 Lifetime Earned
               </Text>
             </Group>
