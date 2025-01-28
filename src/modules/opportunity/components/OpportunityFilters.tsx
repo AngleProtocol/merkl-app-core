@@ -18,6 +18,7 @@ export type OpportunityFilterProps = {
   setView?: (v: OpportunityView) => void;
   protocols?: Protocol[];
   exclude?: OpportunityFilter[];
+  onClear?: () => void;
 };
 
 //TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
@@ -28,6 +29,7 @@ export default function OpportunityFilters({
   chains,
   view,
   setView,
+  onClear,
 }: OpportunityFilterProps) {
   const [_, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
@@ -54,37 +56,37 @@ export default function OpportunityFilters({
 
   const sortOptions = {
     "apr-asc": (
-      <Group>
+      <Group className="flex-nowrap">
         By APR
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "apr-desc": (
-      <Group>
+      <Group className="flex-nowrap">
         By APR
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "tvl-asc": (
-      <Group>
+      <Group className="flex-nowrap">
         By TVL
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "tvl-desc": (
-      <Group>
+      <Group className="flex-nowrap">
         By TVL
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "rewards-asc": (
-      <Group>
+      <Group className="flex-nowrap">
         By rewards
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "rewards-desc": (
-      <Group>
+      <Group className="flex-nowrap">
         By rewards
         <Icon remix="RiArrowDownLine" />
       </Group>
@@ -249,6 +251,7 @@ export default function OpportunityFilters({
     setTvlInput("");
     setInnerSearch("");
     setSortInput("");
+    onClear?.();
   }
 
   useEffect(() => {
@@ -278,8 +281,8 @@ export default function OpportunityFilters({
           </Form>
         )}
         <Group
-          className={`items-center ${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
-          <Group className="items-center">
+          className={`items-center flex-nowrap ${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
+          <Group className="items-center flex-nowrap">
             {fields.includes("action") && (
               <Select
                 state={[actionsInput, setActionsInput]}
@@ -329,7 +332,7 @@ export default function OpportunityFilters({
                   look="base"
                   name="tvl"
                   value={tvlInput}
-                  className="min-w-[4ch]"
+                  className="min-w-[11ch]"
                   suffix={<Icon remix="RiFilter2Line" />}
                   placeholder="Minimum TVL"
                 />
@@ -340,7 +343,7 @@ export default function OpportunityFilters({
             )}
           </Group>
           <Group
-            className={`${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} items-center`}>
+            className={`${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} flex-nowrap items-center`}>
             {((canApply && !clearing && navigation.state === "idle") ||
               (applying && !clearing && navigation.state === "loading")) && (
               <Button onClick={onApplyFilters} look="bold">
@@ -352,7 +355,7 @@ export default function OpportunityFilters({
                 )}
               </Button>
             )}
-            <Button onClick={onClearFilters} look="soft">
+            <Button onClick={onClearFilters} look="soft" className="text-nowrap">
               {merklConfig.opportunityLibrary?.views?.length !== 1 && <Icon remix="RiCloseLine" />}
               Clear filters
               {merklConfig.opportunityLibrary?.views?.length === 1 && <Icon remix="RiCloseLine" />}
