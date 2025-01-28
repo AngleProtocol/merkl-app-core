@@ -1,5 +1,5 @@
 import type { Chain, Token as TokenType } from "@merkl/api";
-import { type Component, Group, PrimitiveTag, Text, Value, mergeClass } from "dappkit";
+import { type Component, Group, type ListProps, PrimitiveTag, Text, Value, mergeClass } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
 import type { RewardService } from "../../../modules/reward/reward.service";
@@ -14,7 +14,7 @@ export type LeaderboardTableRowProps = Component<{
   token: TokenType;
   chain: Chain;
   showreason: boolean;
-}>;
+}> & ListProps;
 
 export default function LeaderboardTableRow({
   row,

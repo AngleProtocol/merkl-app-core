@@ -1,7 +1,7 @@
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
-import merklConfig from "../../config";
-import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
+import { api } from "@core/api";
+import { fetchWithLogs } from "@core/api/utils";
+import merklConfig from "@core/config";
+import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 
 export abstract class RewardService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(

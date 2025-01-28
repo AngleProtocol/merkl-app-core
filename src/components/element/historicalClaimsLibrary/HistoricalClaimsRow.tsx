@@ -1,9 +1,9 @@
-import { Button, Icon, type ListProps, mergeClass } from "dappkit";
-import { Time } from "dappkit";
 import Chain from "@core/modules/chain/components/element/Chain";
 import useChain from "@core/modules/chain/hooks/useChain";
 import type { ClaimsService } from "@core/modules/claim/claim.service";
 import Token from "@core/modules/token/components/element/Token";
+import { Button, Icon, type ListProps, mergeClass } from "dappkit";
+import { Time } from "dappkit";
 import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 
 export type HistoricalClaimsRowProps = {

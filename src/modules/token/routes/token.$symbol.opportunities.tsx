@@ -1,11 +1,11 @@
+import merklConfig from "@core/config";
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
-import merklConfig from "../../../config";
-import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 
 export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { tokens: symbol } as const;
