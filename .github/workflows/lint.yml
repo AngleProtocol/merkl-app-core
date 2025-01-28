@@ -7,11 +7,18 @@ defaults:
   run:
     shell: bash
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  check-lint:
+  install-dependencies:
+    if: ${{ always() }}
     runs-on: ubuntu-latest
+    name: 'Dependencies'
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository 
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -23,8 +30,16 @@ jobs:
       - name: Check dependencies
         run: bun install
 
+  check-lint:
+    name: 'Linting'
+    runs-on: ubuntu-latest
+    steps:
       - name: Check codebase linting
         run: bun lint:ci
 
+  check-type:
+    name: 'Typing'
+    runs-on: ubuntu-latest
+    steps:
       - name: Check codebase typing
         run: bun typecheck
