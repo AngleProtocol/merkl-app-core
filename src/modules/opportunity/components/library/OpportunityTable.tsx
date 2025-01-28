@@ -24,32 +24,27 @@ export const columns = {
       </Title>
     ),
     size: "minmax(400px,1fr)",
-    compact: "1fr",
     className: "justify-start",
     main: true,
   },
   action: {
     name: "Action",
     size: "minmax(50px,150px)",
-    compactSize: "minmax(50px,50px)",
     className: "justify-end",
   },
   apr: {
     name: "APR",
     size: "minmax(min-content,150px)",
-    compactSize: "minmax(min-content,1fr)",
     className: "md:justify-center",
   },
   tvl: {
     name: "TVL",
     size: "minmax(min-content,150px)",
-    compactSize: "minmax(min-content,1fr)",
     className: "md:justify-center",
   },
   rewards: {
     name: "Daily rewards",
     size: "minmax(min-content,150px)",
-    compactSize: "minmax(min-content,1fr)",
     className: "md:justify-center",
   },
 };

@@ -5,7 +5,6 @@ export const [ClaimRewardsTableByOpportunity, ClaimRewardsByOpportunityRow, clai
     positions: {
       name: "Positions",
       size: "minmax(250px,1fr)",
-      compact: "1fr",
       className: "justify-start",
       main: true,
     },
