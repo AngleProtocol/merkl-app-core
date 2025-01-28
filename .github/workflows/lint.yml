@@ -14,7 +14,7 @@ concurrency:
 jobs:
   install-dependencies:
     if: ${{ always() }}
-    runs-on: custom-runner
+    runs-on: ubuntu-latest
     name: 'Dependencies'
     outputs:
      RUNNER: ${{ runner.name }}
