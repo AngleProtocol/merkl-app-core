@@ -14,9 +14,13 @@ concurrency:
 jobs:
   install-dependencies:
     if: ${{ always() }}
-    runs-on: ubuntu-latest
+    runs-on: custom-runner
     name: 'Dependencies'
+    outputs:
+     RUNNER: ${{ runner.name }}
     steps:
+      - run: echo "Using runner ${{ runner.name }}"
+
       - name: Checkout repository 
         uses: actions/checkout@v3
         with:
@@ -32,14 +36,16 @@ jobs:
 
   check-lint:
     name: 'Linting'
-    runs-on: ubuntu-latest
+    needs: install-dependencies
+    runs-on: ${{needs.install-dependencies.outputs.RUNNER}}
     steps:
       - name: Check codebase linting
         run: bun lint:ci
 
   check-type:
     name: 'Typing'
-    runs-on: ubuntu-latest
+    needs: install-dependencies
+    runs-on: ${{needs.install-dependencies.outputs.RUNNER}}
     steps:
       - name: Check codebase typing
         run: bun typecheck
