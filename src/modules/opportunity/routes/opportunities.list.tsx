@@ -28,7 +28,6 @@ export default function Index() {
 
   return (
     <Container>
-      <Space size="xl" />
       <CustomBanner />
       <Group size="xl" className="py-xl">
         <Show if={merklConfig.opportunity.featured.enabled}>
