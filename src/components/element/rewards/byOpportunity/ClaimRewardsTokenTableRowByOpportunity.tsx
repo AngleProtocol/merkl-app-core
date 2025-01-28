@@ -1,5 +1,5 @@
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
-import type { Opportunity, Reward } from "@merkl/api";
+import type { Reward } from "@merkl/api";
 import { type Component, Divider, type GetSet, type ListProps } from "dappkit";
 import Token from "../../../../modules/token/components/element/Token";
 import { ClaimRewardsByOpportunityRow } from "./ClaimRewardsTableByOpportunity";

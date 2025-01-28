@@ -14,7 +14,8 @@ export type LeaderboardTableRowProps = Component<{
   token: TokenType;
   chain: Chain;
   showreason: boolean;
-}> & ListProps;
+}> &
+  ListProps;
 
 export default function LeaderboardTableRow({
   row,

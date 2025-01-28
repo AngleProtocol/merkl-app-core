@@ -17,7 +17,7 @@ export abstract class CampaignService {
     const action = new URL(request.url).searchParams.get("action");
     const chainId = new URL(request.url).searchParams.get("chain");
     const page = new URL(request.url).searchParams.get("page");
-    const test = merklConfig.alwaysShowTestTokens ? true : new URL(request.url).searchParams.get("test") ?? false;
+    const test = merklConfig.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
     const items = new URL(request.url).searchParams.get("items");
     const search = new URL(request.url).searchParams.get("search");
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];

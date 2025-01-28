@@ -11,7 +11,7 @@ import {
   Icon,
   PrimitiveTag,
   type PrimitiveTagProps,
-  Text
+  Text,
 } from "dappkit";
 
 export default function TokenTag({ token, ...props }: { token: Token } & PrimitiveTagProps) {
@@ -49,22 +49,22 @@ export default function TokenTag({ token, ...props }: { token: Token } & Primiti
                     </Button>
                   )}
                   {chain?.explorers?.map(explorer => (
-                      <Button
-                        key={`${explorer.url}`}
-                        to={`${explorer.url}/token/${token.address}`}
-                        external
-                        size="xs"
-                        look="soft">
-                        <Icon remix="RiArrowRightLine" />
-                        Visit explorer
-                      </Button>
-                    ))}
+                    <Button
+                      key={`${explorer.url}`}
+                      to={`${explorer.url}/token/${token.address}`}
+                      external
+                      size="xs"
+                      look="soft">
+                      <Icon remix="RiArrowRightLine" />
+                      Visit explorer
+                    </Button>
+                  ))}
                 </Group>
               </>
             )}
           </Group>
         }>
-        <PrimitiveTag look="base" key={[token.address, token.symbol, token.chainId].join(' ')} {...props}>
+        <PrimitiveTag look="base" key={[token.address, token.symbol, token.chainId].join(" ")} {...props}>
           <Icon size={props?.size} src={token.icon} />
           {token?.symbol}
         </PrimitiveTag>

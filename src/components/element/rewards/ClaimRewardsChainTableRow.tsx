@@ -1,6 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import type { Reward } from "@merkl/api";
-import { Button, type Component, Icon, ListProps, Space, Value, mergeClass } from "dappkit";
+import { Button, type Component, Icon, type ListProps, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
@@ -18,7 +18,8 @@ export type ClaimRewardsChainTableRowProps = Component<{
   from: string;
   reward: Reward;
   onClaimSuccess: TransactionButtonProps["onSuccess"];
-}> & ListProps;
+}> &
+  ListProps;
 
 export default function ClaimRewardsChainTableRow({
   from,

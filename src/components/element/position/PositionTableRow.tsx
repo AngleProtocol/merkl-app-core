@@ -1,6 +1,6 @@
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
-import { type Component, ListProps, PrimitiveTag, Value, sizeScale } from "dappkit";
+import { type Component, type ListProps, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import merklConfig from "../../../config";
@@ -9,7 +9,8 @@ import { PositionRow } from "./PositionTable";
 
 export type PositionRowProps = Component<{
   row: PositionT;
-}> & ListProps;
+}> &
+  ListProps;
 
 // Commented code can be implemented when we get breakdowns positions for CLAMM (subPositions)
 export default function PositionTableRow({ row, className, ...props }: PositionRowProps) {

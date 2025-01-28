@@ -15,9 +15,10 @@ import {
   Icon,
   Image,
   OverrideTheme,
-  PrimitiveTag, Space,
+  PrimitiveTag,
+  Space,
   Text,
-  mergeClass
+  mergeClass,
 } from "dappkit";
 import { Collapsible } from "dappkit";
 import { Time } from "dappkit";
@@ -36,7 +37,7 @@ export type CampaignTableRowProps = Component<{
   opportunity?: Opportunity;
   startsOpen?: boolean;
   chain: ChainType;
-  size?: Parameters<typeof CampaignRow>["0"]["size"]
+  size?: Parameters<typeof CampaignRow>["0"]["size"];
 }>;
 
 export default function CampaignTableRow({
@@ -49,7 +50,7 @@ export default function CampaignTableRow({
   ...props
 }: CampaignTableRowProps) {
   const { time, dailyRewards, active, amount } = useCampaignMetadata(campaign);
-  const {chain: distributionChain} = useChain(campaign.distributionChain);
+  const { chain: distributionChain } = useChain(campaign.distributionChain);
   const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
 

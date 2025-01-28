@@ -3,12 +3,7 @@ import ProtocolTag from "@core/modules/protocol/components/element/ProtocolTag";
 import type { Chain, Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
-import {
-  Button,
-  type Component, EventBlocker, Icon,
-  PrimitiveTag,
-  type PrimitiveTagProps, useWalletContext
-} from "dappkit";
+import { Button, type Component, EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
 import TokenChainTag from "../../modules/token/components/element/TokenChainTag";
@@ -41,7 +36,6 @@ export default function Tag<T extends keyof TagTypes>({
   value,
   ...props
 }: Component<TagProps<T>, HTMLButtonElement>) {
-  const { chains } = useWalletContext();
   const [_searchParams, setSearchParams] = useSearchParams();
 
   switch (type) {

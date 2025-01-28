@@ -1,13 +1,14 @@
 import type { Protocol } from "@merkl/api";
 import {
-    Button,
-    Divider,
-    Dropdown,
-    EventBlocker,
-    Group, Icon,
-    PrimitiveTag,
-    type PrimitiveTagProps,
-    Text
+  Button,
+  Divider,
+  Dropdown,
+  EventBlocker,
+  Group,
+  Icon,
+  PrimitiveTag,
+  type PrimitiveTagProps,
+  Text,
 } from "dappkit";
 import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 

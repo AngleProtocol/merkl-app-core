@@ -22,6 +22,6 @@ export default function useChain(chainId?: { id: number }) {
 
   return {
     chain,
-    link
+    link,
   };
 }

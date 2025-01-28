@@ -1,4 +1,4 @@
-import { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
+import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";

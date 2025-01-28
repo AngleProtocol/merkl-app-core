@@ -1,9 +1,9 @@
 import type { Chain } from "@merkl/api";
-import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag } from "dappkit";
+import { Divider, Dropdown, Group, Hash, Icon, PrimitiveTag } from "dappkit";
 
 export type UserProps = { address: string; chain: Chain };
 
-export default function User({ address, chain }: UserProps) {
+export default function User({ address }: UserProps) {
   return (
     <Dropdown
       size="lg"

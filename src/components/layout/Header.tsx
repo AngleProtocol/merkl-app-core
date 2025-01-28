@@ -53,7 +53,7 @@ export default function Header() {
   const routes = useMemo(() => {
     const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
     const filteredRoutes = Object.fromEntries(
-      Object.entries(routes).filter(([key, route]) => route.enabled && route.inHeader === true),
+      Object.entries(routes).filter(([_, route]) => route.enabled && route.inHeader === true),
     );
 
     if (!!filteredRoutes.dashboard && !!user) {

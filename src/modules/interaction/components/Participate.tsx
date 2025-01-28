@@ -181,7 +181,8 @@ export default function Participate({
   ]);
 
   useEffect(() => {
-    if (!tokenAddress || tokenAddress === "") setTokenAddress((balance && TokenService.sortForUser(balance)?.[0]?.address) ?? "");
+    if (!tokenAddress || tokenAddress === "")
+      setTokenAddress((balance && TokenService.sortForUser(balance)?.[0]?.address) ?? "");
   }, [balance, tokenAddress]);
 
   return (

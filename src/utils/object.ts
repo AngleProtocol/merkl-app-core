@@ -1,4 +1,3 @@
-
 /**
  * Pick keys and more some optional
  * @param T object to strip keys from
