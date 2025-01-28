@@ -4,7 +4,7 @@ export const [ClaimRewardsTableByOpportunity, ClaimRewardsByOpportunityRow, clai
   createTable({
     positions: {
       name: "Positions",
-      size: "minmax(100px,1fr)",
+      size: "minmax(250px,1fr)",
       compact: "1fr",
       className: "justify-start",
       main: true,
@@ -12,32 +12,27 @@ export const [ClaimRewardsTableByOpportunity, ClaimRewardsByOpportunityRow, clai
     // action: {
     //   name: "Actions",
     //   size: "minmax(min-content,200px)",
-    //   compactSize: "minmax(min-content,200px)",
     //   className: "justify-end",
     // },
     unclaimed: {
       name: "Unclaimed",
-      size: "minmax(min-content,0.5fr)",
-      compactSize: "minmax(min-content,200px)",
-      className: "justify-end",
+      size: "minmax(100px,1fr)",
+      className: "justify-end text-right",
     },
     pending: {
       name: "Claimable Soon",
-      size: "minmax(min-content,0.5fr)",
-      compactSize: "minmax(min-content,200px)",
-      className: "justify-end",
+      size: "minmax(150px,1fr)",
+      className: "justify-end text-right",
     },
     claimed: {
       name: "Claimed",
-      size: "minmax(min-content,0.5fr)",
-      compactSize: "minmax(min-content,200px)",
-      className: "justify-end",
+      size: "minmax(100px,1fr)",
+      className: "justify-end text-right",
     },
     /*
     button: {
       name: "",
       size: "minmax(min-content,100px)",
-      compactSize: "minmax(min-content,200px)",
       className: "justify-end",
     },
     */

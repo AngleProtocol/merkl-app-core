@@ -87,9 +87,13 @@ export default function Hero({
               </Group>
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
                 <Group className={`${compact ? "py-xl md:py-xl*2" : ""} flex-col flex-1 gap-lg`}>
-                  <Group className="gap-0 md:gap-lg flex-nowrap w-full items-center">
+                  <Group
+                    className="gap-0 md:gap-lg flex-nowrap w-full items-center"
+                    style={{
+                      wordBreak: "break-word",
+                    }}>
                     {!!icons && (
-                      <Icons size="lg" containerClassName="hidden md:block">
+                      <Icons size="lg" containerClassName="hidden md:flex">
                         {icons?.length > 1
                           ? icons?.map(icon => (
                               <Icon className="text-main-12 !w-lg*4 !h-lg*4" key={`${Object.values(icon)}`} {...icon} />

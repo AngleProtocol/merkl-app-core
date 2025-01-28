@@ -23,7 +23,7 @@ export const columns = {
         Opportunities
       </Title>
     ),
-    size: "minmax(350px,1fr)",
+    size: "minmax(400px,1fr)",
     compact: "1fr",
     className: "justify-start",
     main: true,

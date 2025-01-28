@@ -147,7 +147,7 @@ export default function OpportunityTableRow({
             tvlColumn={tvlColumn}
             rewardsColumn={rewardsColumn}
             opportunityColumn={
-              <Group className="flex-col w-full text-nowrap whitespace-nowrap text-ellipsis">
+              <Group className="flex-col w-full lg:text-nowrap lg:whitespace-nowrap lg:text-ellipsis">
                 <Group className="text-nowrap whitespace-nowrap min-w-0 flex-nowrap items-center overflow-hidden max-w-full">
                   {formattedDailyRewards}
                 </Group>

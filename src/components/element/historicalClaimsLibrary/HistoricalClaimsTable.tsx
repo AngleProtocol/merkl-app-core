@@ -8,7 +8,7 @@ export const [HistoricalClaimsTable, HistoricalClaimsRow, HistoricalClaimsColumn
   },
   token: {
     name: "Token",
-    size: "minmax(150px, 1fr)",
+    size: "minmax(250px, 1fr)",
     className: "justify-start",
   },
   date: {

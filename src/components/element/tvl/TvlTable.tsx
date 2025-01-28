@@ -2,7 +2,7 @@ import { createTable } from "dappkit";
 
 export const [TvlTable, TvlRow, tvlColumns] = createTable({
   name: {
-    name: "TVL DETAILS",
+    name: "TVL details",
     size: "minmax(350px,1fr)",
     compact: "1fr",
     className: "justify-start",

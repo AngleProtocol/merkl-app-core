@@ -119,8 +119,8 @@ export default function OpportunityLibrary({
   return (
     <div className="flex flex-col w-full">
       {!hideFilters && (
-        <div className="overflow-x-auto -mx-lg md:-mx-xl lg:mx-0" ref={scrollContainerRef}>
-          <div className="min-w-min px-lg md:px-xl lg:px-0">
+        <div className="overflow-x-visible -mx-lg md:-mx-xl lg:mx-0" ref={scrollContainerRef}>
+          <div className="min-w-min max-w-full px-lg md:px-xl lg:px-0">
             <Box content="sm" className="mb-lg justify-between w-full">
               <OpportunityFilters
                 {...{ only, chains, protocols, view, setView }}
