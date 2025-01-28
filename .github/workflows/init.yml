@@ -1,0 +1,49 @@
+name: Check code quality
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install-dependencies:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: 'Dependencies'
+    outputs:
+     RUNNER: ${{ runner.name }}
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Check dependencies
+        run: bun install
+
+  check-lint:
+    name: 'Linting'
+    needs: install-dependencies
+    runs-on: ${{needs.get-runner.outputs.RUNNER}}
+    steps:
+      - name: Check codebase linting
+        run: bun lint:ci
+
+  check-type:
+    name: 'Typing'
+    needs: install-dependencies
+    runs-on: ${{needs.get-runner.outputs.RUNNER}}
+    steps:
+      - name: Check codebase typing
+        run: bun typecheck
