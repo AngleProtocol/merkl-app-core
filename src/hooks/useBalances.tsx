@@ -38,14 +38,14 @@ export default function useBalances(chainId?: number, userAddress?: string) {
   const address = useMemo(() => userAddress ?? connectedAddress, [userAddress, connectedAddress]);
   const chain = useMemo(() => chainId ?? connectedChainId, [chainId, connectedChainId]);
   const { update } = useBalanceStore();
-  const balance = useBalanceStore(state => state.balance);
-
+  const balance = useBalanceStore(state => state?.balance);
   const [loading, setLoading] = useState(false);
 
   const balances = useMemo(() => {
-    if (!chainId || !address) return;
-    return balance?.[chainId]?.[address];
-  }, [chainId, address, balance]);
+    if (!chain || !address || !balance || typeof balance !== "object") return;
+    const userBalance = balance[chain]?.[address];
+    return userBalance;
+  }, [chain, address, balance]);
 
   const reload = useCallback(async () => {
     if (!chain || !address) return;

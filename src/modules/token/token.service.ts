@@ -61,6 +61,11 @@ export abstract class TokenService {
     return tokens;
   }
 
+  static async getValidRewardTokenByChain(chainId: number): Promise<Token[]> {
+    const tokens = await TokenService.#fetch(async () => api.v4.tokens.reward({ chainId }).get());
+    return tokens;
+  }
+
   static async findUniqueOrThrow(chainId: number, address: string) {
     return await TokenService.#fetch(async () => api.v4.tokens({ id: `${chainId}-${address}` }).get());
   }
@@ -72,6 +77,12 @@ export abstract class TokenService {
 
     if (tokens.length === 0) throw new Response("Token not found", { status: 404 });
     return tokens;
+  }
+
+  static async getAllowance(chainId: number, address: string, owner: string, spender: string) {
+    const id = `${chainId}-${address}`;
+
+    return await TokenService.#fetch(async () => api.v4.tokens({ id }).allowance({ owner })({ spender }).get());
   }
 
   /**
