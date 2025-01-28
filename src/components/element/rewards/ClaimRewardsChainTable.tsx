@@ -15,7 +15,7 @@ export const [ClaimRewardsChainTable, ClaimRewardsChainRow, claimRewardsChainCol
   // pending: {
   //   name: "Claimable Soon",
   //   size: "minmax(min-content,150px)",
- //   className: "justify-end",
+  //   className: "justify-end",
   // },
   // claimed: {
   //   name: "Claimed",

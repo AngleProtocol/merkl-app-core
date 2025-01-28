@@ -29,13 +29,13 @@ export const [LeaderboardTableWithoutReason, LeaderboardRowWithoutReason, Leader
     rank: {
       name: "Rank",
       size: "minmax(120px,150px)",
-       className: "justify-start",
+      className: "justify-start",
       main: true,
     },
     address: {
       name: "Address",
       size: "minmax(170px,1fr)",
-      
+
       className: "justify-start",
     },
     rewards: {
