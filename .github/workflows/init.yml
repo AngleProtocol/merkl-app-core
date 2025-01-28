@@ -12,22 +12,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  get-runner:
-    if: ${{ always() }}
-    runs-on: custom-runner
-    outputs:
-     RUNNER: ${{ runner.name }}
-    steps:
-      - run: echo "selected runner = ${{ runner.name }}"
-
   install-dependencies:
     if: ${{ always() }}
-    needs: get-runner
-    runs-on: ${{needs.get-runner.outputs.RUNNER}}
+    runs-on: custom-runner
     name: 'Dependencies'
     outputs:
      RUNNER: ${{ runner.name }}
     steps:
+      - run: echo "Using runner ${{ runner.name }}"
+
       - name: Checkout repository 
         uses: actions/checkout@v3
         with:
