@@ -1,5 +1,6 @@
 import { createTable } from "dappkit";
 
+// TEST
 export const [HistoricalClaimsTable, HistoricalClaimsRow, HistoricalClaimsColumns] = createTable({
   chain: {
     name: "Chain",
