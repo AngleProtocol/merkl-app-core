@@ -5,6 +5,7 @@ import type { api as clientApi } from "./../api";
 
 type Transaction = Awaited<ReturnType<typeof clientApi.v4.interaction.transaction.get>>["data"];
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function useTransaction(chainId: number, payload: any, txFunctionName: "deposit" | "approve") {
   const { sponsorTransactions } = useWalletContext();
 

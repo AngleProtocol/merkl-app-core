@@ -190,11 +190,9 @@ export default function Participate({
       {displayOpportunity && <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />}
 
       {displayLinks && !isOnOpportunityPage && (
-        <Group className="w-full py-md">
-          <Button to={link} look="soft" size="sm">
-            Opportunity overview <Icon remix="RiArrowRightLine" />
-          </Button>
-        </Group>
+        <Button to={link} className="mt-sm" look="soft" size="sm">
+          Opportunity overview <Icon remix="RiArrowRightLine" />
+        </Button>
       )}
 
       {!loading && !!interactor && (
@@ -210,22 +208,24 @@ export default function Participate({
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>
       )}
-      <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
-      <Collapsible state={[success, () => {}]}>
-        <Box look="soft" className="gap-xs bg-main-5">
-          <Group>
-            <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
-            <Text look="bold" className="font-bold">
-              Deposit successful !
+      {!!interactor && <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>}
+      {!!success && (
+        <Collapsible state={[success, () => {}]}>
+          <Box look="soft" className="gap-xs bg-main-5">
+            <Group>
+              <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
+              <Text look="bold" className="font-bold">
+                Deposit successful !
+              </Text>
+            </Group>
+            <Text size="sm">
+              Your liquidity is now earning rewards (if any are currently being distributed to this opportunity). You'll
+              soon be able to claim them directly from your dashboard. You can monitor your positions and withdraw your
+              liquidity anytime directly through the protocol app.
             </Text>
-          </Group>
-          <Text size="sm">
-            Your liquidity is now earning rewards (if any are currently being distributed to this opportunity). You'll
-            soon be able to claim them directly from your dashboard. You can monitor your positions and withdraw your
-            liquidity anytime directly through the protocol app.
-          </Text>
-        </Box>
-      </Collapsible>
+          </Box>
+        </Collapsible>
+      )}
     </>
   );
 }
