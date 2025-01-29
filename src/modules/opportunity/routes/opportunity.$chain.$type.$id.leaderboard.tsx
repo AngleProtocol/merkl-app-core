@@ -94,15 +94,13 @@ export default function Index() {
             <Icon className={isActive ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
 
-          <PrimitiveTag look={isActive ? "bold" : "soft"}>
+          <PrimitiveTag size="sm" look={isActive ? "bold" : "soft"}>
             {isActive && <Icon remix="RiFlashlightFill" />}
             {"End "}
             <Time timestamp={Number(campaign.endTimestamp) * 1000} />
           </PrimitiveTag>
 
-          <Group>
-            <Token token={campaign.rewardToken} amount={dailyRewards(campaign)} format="amount_price" value />
-          </Group>
+          <Token token={campaign.rewardToken} amount={dailyRewards(campaign)} format="amount_price" value />
         </Group>
       );
       return options;
@@ -157,15 +155,15 @@ export default function Index() {
 
   return (
     <Container>
-      <Box content="xl" size="md">
-        <Select
-          size="xl"
-          look="bold"
-          options={campaignsOptions}
-          state={[campaignId, id => setCampaignIds(id as string)]}
-          placeholder={!!campaignId ? "Campaign Selected" : "Please select a campaign"}
-        />
-      </Box>
+      <Select
+        className="w-full"
+        size="xl"
+        look="tint"
+        options={campaignsOptions}
+        state={[campaignId, id => setCampaignIds(id as string)]}
+        placeholder={!!campaignId ? "Campaign Selected" : "Please select a campaign"}
+      />
+
       <Space size="lg" />
       <Group size="lg">{metrics}</Group>
       <Space size="lg" />

@@ -19,7 +19,7 @@ export const [LeaderboardTable, LeaderboardRow, LeaderboardColumns] = createTabl
   },
   protocol: {
     name: "Via",
-    size: "minmax(100px,1fr)",
+    size: "minmax(200px,1fr)",
     className: "justify-end",
   },
 });
