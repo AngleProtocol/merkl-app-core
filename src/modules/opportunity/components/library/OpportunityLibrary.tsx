@@ -71,6 +71,7 @@ export default function OpportunityLibrary({
       case "table":
         return (
           <OpportunityTable
+          responsive
             exclude={["tvl"]}
             opportunityHeader={
               <Title className="!text-main-11" h={5}>

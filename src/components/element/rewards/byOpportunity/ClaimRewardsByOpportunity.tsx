@@ -56,6 +56,7 @@ export default function ClaimRewardsByOpportunity({ from, rewards }: claimReward
 
   return (
     <ClaimRewardsTableByOpportunity
+    responsive
       className="[&>*]:bg-main-4"
       look="soft"
       dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}

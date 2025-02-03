@@ -7,7 +7,7 @@ import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
-import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
+import { Button, Group, Icon, Input, PrimitiveTag, Space, Text, Value } from "dappkit";
 import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
@@ -187,45 +187,53 @@ export default function Participate({
 
   return (
     <>
-      {displayOpportunity && <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />}
-
-      {displayLinks && !isOnOpportunityPage && (
-        <Button to={link} className="mt-sm" look="soft" size="sm">
-          Opportunity overview <Icon remix="RiArrowRightLine" />
-        </Button>
+      {displayOpportunity && (
+        <>
+          <Space />
+          <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />
+        </>
       )}
 
-      {!loading && !!interactor && (
+      {displayLinks && !isOnOpportunityPage && (
+        <>
+        <Space />
+         <Button to={link} className="mt-sm" look="soft" size="sm">
+          Opportunity overview <Icon remix="RiArrowRightLine" />
+        </Button>
+        </>
+      )}
+
+      {!loading && !!interactor && (<>
+        <Space />
         <Box look="soft" className="gap-xs bg-main-5">
           <Group className="flex flex-nowrap">
             <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
             <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
           </Group>
-        </Box>
+        </Box></>
       )}
       {loading && !!merklConfig.deposit && (
-        <Group className="w-full justify-center">
+        <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>
       )}
-      {!!interactor && <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>}
-      {!!success && (
-        <Collapsible state={[success, () => {}]}>
-          <Box look="soft" className="gap-xs bg-main-5">
-            <Group>
-              <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
-              <Text look="bold" className="font-bold">
-                Deposit successful !
-              </Text>
-            </Group>
-            <Text size="sm">
-              Your liquidity is now earning rewards (if any are currently being distributed to this opportunity). You'll
-              soon be able to claim them directly from your dashboard. You can monitor your positions and withdraw your
-              liquidity anytime directly through the protocol app.
+      <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
+
+      <Collapsible state={[success, () => {}]}>
+        <Box look="soft" className="gap-xs bg-main-5">
+          <Group>
+            <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
+            <Text look="bold" className="font-bold">
+              Deposit successful !
             </Text>
-          </Box>
-        </Collapsible>
-      )}
+          </Group>
+          <Text size="sm">
+            Your liquidity is now earning rewards (if any are currently being distributed to this opportunity). You'll
+            soon be able to claim them directly from your dashboard. You can monitor your positions and withdraw your
+            liquidity anytime directly through the protocol app.
+          </Text>
+        </Box>
+      </Collapsible>
     </>
   );
 }
