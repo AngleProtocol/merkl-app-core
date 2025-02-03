@@ -61,10 +61,12 @@ export default function TokenSelect({ tokens, balances, ...props }: TokenSelectP
                       <Text look="bold" bold>
                         {token.name}
                       </Text>
-                      <Text look="soft" className="flex gap-sm">
-                        {token.symbol} -{" "}
-                        <Value format={merklConfig.decimalFormat.dollar}>{Fmt.toPrice(token.balance, token)}</Value> -{" "}
-                        <Value format="0,0.###a">{Fmt.toNumber(token.balance, token.decimals)}</Value>{" "}
+                      <Text look="soft" className="flex">
+                        <Text look="soft" className="flex gap-sm">
+                          <Value format="0,0.###a">{Fmt.toNumber(token.balance, token.decimals)}</Value> {token.symbol}
+                        </Text>
+                        <span className="mr-sm" />(
+                        <Value format={merklConfig.decimalFormat.dollar}>{Fmt.toPrice(token.balance, token)}</Value>)
                       </Text>
                     </Group>
                   </Group>
