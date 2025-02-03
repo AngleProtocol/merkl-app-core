@@ -55,7 +55,7 @@ export default function ReinvestBanner() {
   if (!merklConfig.dashboard?.reinvestTokenAddress) return;
   return (
     <Group
-      className="rounded-md p-md bg-main-5 flex-nowrap items-start flex-col cursor-pointer !gap-0"
+      className="rounded-md p-md bg-main-8 flex-nowrap items-start flex-col cursor-pointer !gap-0"
       onClick={() => setIsOpen(!isOpen)}>
       <Group className="w-full justify-between">
         <Group>

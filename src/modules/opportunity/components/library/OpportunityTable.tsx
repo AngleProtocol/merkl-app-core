@@ -29,7 +29,7 @@ export const columns = {
   },
   action: {
     name: "Action",
-    size: "minmax(50px,150px)",
+    size: "minmax(min-content,150px)",
     className: "justify-end",
   },
   apr: {

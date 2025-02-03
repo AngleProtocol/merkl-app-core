@@ -91,6 +91,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
         },
       },
     },
+    minWalletBalance: 100,
   },
   bridge: {
     helperLink: "",

@@ -49,6 +49,10 @@ export type MerklConfig<T extends Themes> = {
    */
   deposit?: boolean;
   /**
+   * Allows to override the token name displayed in the supply modal for idle tokens
+   */
+  clientTokenName?: string;
+  /**
    * Chains that can be connected to the dapp
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
@@ -142,6 +146,8 @@ export type MerklConfig<T extends Themes> = {
         };
       };
     };
+    // Minimum idle token balance to display the idle token modal for an opportunity
+    minWalletBalance: number;
   };
   opportunityLibrary: {
     defaultView?: OpportunityView;

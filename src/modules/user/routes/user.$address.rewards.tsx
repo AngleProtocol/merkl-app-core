@@ -35,12 +35,6 @@ export default function Index() {
   return (
     <Container>
       <Space size="md" />
-      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > 0 && (
-        <>
-          <ReinvestBanner />
-          <Space size="md" />
-        </>
-      )}
       {!!I18n.trad.get.pages.dashboard.explanation && (
         <>
           <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">
@@ -49,6 +43,12 @@ export default function Index() {
               {I18n.trad.get.pages.dashboard.explanation}
             </Text>
           </Group>
+          <Space size="md" />
+        </>
+      )}
+      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > merklConfig.opportunity?.minWalletBalance && (
+        <>
+          <ReinvestBanner />
           <Space size="md" />
         </>
       )}
