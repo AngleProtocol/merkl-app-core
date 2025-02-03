@@ -196,21 +196,23 @@ export default function Participate({
 
       {displayLinks && !isOnOpportunityPage && (
         <>
-        <Space />
-         <Button to={link} className="mt-sm" look="soft" size="sm">
-          Opportunity overview <Icon remix="RiArrowRightLine" />
-        </Button>
+          <Space />
+          <Button to={link} className="mt-sm" look="soft" size="sm">
+            Opportunity overview <Icon remix="RiArrowRightLine" />
+          </Button>
         </>
       )}
 
-      {!loading && !!interactor && (<>
-        <Space />
-        <Box look="soft" className="gap-xs bg-main-5">
-          <Group className="flex flex-nowrap">
-            <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
-            <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
-          </Group>
-        </Box></>
+      {!loading && !!interactor && (
+        <>
+          <Space />
+          <Box look="soft" className="gap-xs bg-main-5">
+            <Group className="flex flex-nowrap">
+              <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
+              <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
+            </Group>
+          </Box>
+        </>
       )}
       {loading && !!merklConfig.deposit && (
         <Group className="w-full justify-center mt-md">
