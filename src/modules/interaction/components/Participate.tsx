@@ -7,7 +7,7 @@ import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
-import { Button, Group, Icon, Input, PrimitiveTag, Text, Value } from "dappkit";
+import { Button, Group, Icon, Input, PrimitiveTag, Space, Text, Value } from "dappkit";
 import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
@@ -187,30 +187,40 @@ export default function Participate({
 
   return (
     <>
-      {displayOpportunity && <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />}
+      {displayOpportunity && (
+        <>
+          <Space />
+          <OpportunityShortCard opportunity={opportunity} displayLinks={displayLinks} />
+        </>
+      )}
 
       {displayLinks && !isOnOpportunityPage && (
-        <Group className="w-full py-md">
-          <Button to={link} look="soft" size="sm">
+        <>
+          <Space />
+          <Button to={link} className="mt-sm" look="soft" size="sm">
             Opportunity overview <Icon remix="RiArrowRightLine" />
           </Button>
-        </Group>
+        </>
       )}
 
       {!loading && !!interactor && (
-        <Box look="soft" className="gap-xs bg-main-5">
-          <Group className="flex flex-nowrap">
-            <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
-            <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
-          </Group>
-        </Box>
+        <>
+          <Space />
+          <Box look="soft" className="gap-xs bg-main-5">
+            <Group className="flex flex-nowrap">
+              <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
+              <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
+            </Group>
+          </Box>
+        </>
       )}
       {loading && !!merklConfig.deposit && (
-        <Group className="w-full justify-center">
+        <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>
       )}
       <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
+
       <Collapsible state={[success, () => {}]}>
         <Box look="soft" className="gap-xs bg-main-5">
           <Group>
