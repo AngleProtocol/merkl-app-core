@@ -46,7 +46,7 @@ export default function Index() {
           <Space size="md" />
         </>
       )}
-      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > 100 && (
+      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > merklConfig.opportunity?.minWalletBalance && (
         <>
           <ReinvestBanner />
           <Space size="md" />
