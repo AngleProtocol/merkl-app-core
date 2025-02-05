@@ -73,7 +73,7 @@ export default function Participate({
   const interactor = useMemo(() => {
     if (hideInteractor || loading || !targets?.length) return;
     return (
-      <Group className="mt-lg !gap-0">
+      <Group className="mt-md !gap-0">
         <Input.BigInt
           className="w-full gap-xs"
           inputClassName="font-title font-bold italic text-[clamp(38px,0.667vw+1.125rem,46px)] !leading-none"
@@ -222,7 +222,7 @@ export default function Participate({
       <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
 
       <Collapsible state={[success, () => {}]}>
-        <Box look="soft" className="gap-xs bg-main-5">
+        <Box look="soft" className="gap-xs bg-main-5 mt-md">
           <Group>
             <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
             <Text look="bold" className="font-bold">
