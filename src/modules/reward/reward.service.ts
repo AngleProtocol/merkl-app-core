@@ -132,6 +132,29 @@ export abstract class RewardService {
     return { count, rewards, total: total.amount };
   }
 
+  static async getCampaignLeaderboardAggregate(
+    campaignId: string,
+    request: Request,
+    overrides?: Parameters<ReturnType<typeof api.v4.rewards.campaign>["index"]["get"]>[0]["query"],
+  ) {
+    const query = Object.assign(RewardService.#getCampaignLeaderboardQueryFromRequest(request), overrides ?? undefined);
+    const rewardsCampaignApi = api.v4.rewards.campaign({ campaignId });
+
+    const promises = [
+      RewardService.#fetch(async () =>
+        rewardsCampaignApi.index.get({
+          query,
+        }),
+      ),
+      RewardService.#fetch(async () => rewardsCampaignApi.count.get({ query })),
+      RewardService.#fetch(async () => rewardsCampaignApi.total.get({ query })),
+    ] as const;
+
+    const [rewards, count, total] = await Promise.all(promises);
+
+    return { count, rewards, total: total.amount };
+  }
+
   static async total(query: { chainId: number; campaignId: string }) {
     const total = await RewardService.#fetch(async () =>
       api.v4.rewards.total.get({

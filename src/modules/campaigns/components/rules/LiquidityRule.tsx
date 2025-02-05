@@ -11,7 +11,10 @@ export default function LiquidityRule({ value, ...props }: LiquidityRuleProps) {
       content={<Group className="flex-col text-wrap max-w-[42ch]">{value.description}</Group>}>
       <PrimitiveTag look="soft" {...props}>
         {value.label}
-        <Value format="0.#%">{value.percentage / 10000}</Value>
+        {/* biome-ignore lint/suspicious/noExplicitAny: TODO: type this*/}
+        <Value size={(props as any).size} format="0.#%">
+          {value.percentage / 10000}
+        </Value>
       </PrimitiveTag>
     </Dropdown>
   );

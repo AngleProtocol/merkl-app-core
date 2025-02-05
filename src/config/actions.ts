@@ -32,6 +32,16 @@ export const actions = {
     description: "Earn rewards by depositiong liquidity in this pool.",
     icon: { remix: "RiCoinFill" },
   },
+  LONG: {
+    label: "Long",
+    description: "Earn rewards by depositiong liquidity in this pool.",
+    icon: { remix: "RiCoinFill" },
+  },
+  SHORT: {
+    label: "Short",
+    description: "Earn rewards by depositiong liquidity in this pool.",
+    icon: { remix: "RiCoinFill" },
+  },
 } satisfies { [S in Opportunity["action"]]: { label: string; icon: IconProps; description: string } };
 
 export type Action = keyof typeof actions;

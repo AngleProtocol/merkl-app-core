@@ -1,9 +1,13 @@
+import Tag, { type TagProps, type TagType, type TagTypes } from "@core/components/element/Tag";
+import type { Status } from "@core/config/status";
+import useChain from "@core/modules/chain/hooks/useChain";
 import type { Campaign as CampaignFromApi } from "@merkl/api";
-import { Bar } from "dappkit";
+import { Bar, type Component, type Look } from "dappkit";
 import { Group, Text } from "dappkit";
 import { Time } from "dappkit";
 import moment from "moment";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { parseUnits } from "viem";
 
 /**
@@ -11,6 +15,8 @@ import { parseUnits } from "viem";
  */
 
 export default function useCampaignMetadata(campaign: CampaignFromApi) {
+  const { chain: computeChain } = useChain({ id: campaign.computeChainId });
+
   if (!campaign)
     return {
       amount: undefined,
@@ -27,15 +33,20 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     return parseUnits(campaign.amount, 0);
   }, [campaign?.amount]);
 
-  const dailyRewards = useMemo(() => {
+  const dayspan = useMemo(() => {
     const duration = campaign.endTimestamp - campaign.startTimestamp;
     const oneDayInSeconds = BigInt(3600 * 24);
     const dayspan = BigInt(duration) / BigInt(oneDayInSeconds) || BigInt(1);
+
+    return dayspan;
+  }, [campaign.startTimestamp, campaign.endTimestamp]);
+
+  const dailyRewards = useMemo(() => {
     const amountInUnits = parseUnits(amount.toString(), 0);
     const dailyReward = amountInUnits / dayspan;
 
     return dailyReward;
-  }, [campaign, amount]);
+  }, [amount, dayspan]);
 
   // ─── Campaign Amount Time displaying ──────────────────────────────────
 
@@ -57,15 +68,14 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     const startsThisYear = isThisYear(Number(campaign.startTimestamp));
     const endsThisYear = isThisYear(Number(campaign.startTimestamp));
     const ended = now >= campaign.endTimestamp;
-    const started = now >= campaign.startTimestamp;
 
     return (
       <Group className="w-full items-center">
         <Text size="sm">
-          {started ? "started" : "starts"}{" "}
+          {/* {started ? "started" : "starts"}{" "} */}
           {moment(Number(campaign.startTimestamp) * 1000)
             .local()
-            .format(startsThisYear ? "DD MMM" : "DD MMM YYYY")}
+            .format(startsThisYear ? "DD MMM" : "DD MMM YYYY ha")}
         </Text>
         <Bar
           className="grow"
@@ -74,7 +84,7 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
           values={[{ value: elapsed, className: ended ? "bg-main-6" : "bg-accent-10" }]}
         />
         <Text size="sm">
-          {ended ? "ended" : "ends"}{" "}
+          {/* {ended ? "ended" : "ends"}{" "} */}
           {moment(Number(campaign.endTimestamp) * 1000)
             .local()
             .format(endsThisYear ? "DD MMM" : "DD MMM YYYY ha")}
@@ -87,11 +97,73 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     return Number(campaign.endTimestamp) > moment().unix();
   }, [campaign.endTimestamp]);
 
+  const link = useMemo(
+    () => campaign && `/campaign/${campaign.chain?.name?.toLowerCase?.().replace(" ", "-")}/${campaign?.campaignId}`,
+    [campaign],
+  );
+
+  const status: Status = useMemo(() => {
+    if (Number(campaign.endTimestamp) < moment().unix()) return "PAST";
+    if (Number(campaign.startTimestamp) > moment().unix()) return "SOON";
+    return "LIVE";
+  }, [campaign.endTimestamp, campaign.startTimestamp]);
+
+  /**
+   * TagProps for each metadata that can be represented as a tag
+   */
+  const tags = useMemo(() => {
+    const tag = <T extends keyof TagTypes>(tagType: T, value: TagType<T>["value"]) =>
+      !!value
+        ? {
+            type: tagType,
+            value,
+            key: `${tagType}_${
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+              (value as any)?.address ?? (value as any)?.name ?? value
+            }`,
+          }
+        : undefined;
+    const isSameChain = campaign.chain.id === computeChain?.id;
+    const chains = isSameChain
+      ? [tag("chain", campaign.chain)]
+      : [tag("chain", campaign.chain), tag("chain", computeChain!)];
+
+    return [...chains, tag("token", campaign.rewardToken), tag("status", status)].filter(a => a !== undefined);
+  }, [computeChain, status, campaign]);
+
+  /**
+   * Extensible tags components that can be filtered
+   * @param hide which tags to filers out
+   * @param props tag item props
+   */
+  const Tags = useCallback(
+    function TagsComponent({
+      hide,
+      only,
+      ...props
+    }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[]; look?: Look } & Omit<
+      Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
+      "value" | "type"
+    >) {
+      return tags
+        ?.filter(a => a !== undefined)
+        ?.filter(({ type }) => !hide || !hide.includes(type))
+        ?.filter(({ type }) => !only || only.includes(type))
+        .map(tag => <Tag {...tag} key={tag.key ?? uuidv4()} size="sm" {...props} />);
+    },
+    [tags],
+  );
+
   return {
     amount,
     dailyRewards,
     time,
     progressBar,
+    link,
+    tags,
+    status,
+    Tags,
+    dayspan,
     active,
   };
 }

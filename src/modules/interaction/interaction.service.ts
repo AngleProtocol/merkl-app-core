@@ -29,6 +29,8 @@ export abstract class InteractionService {
       body: JSON.stringify({ ...payload, ...options }),
     });
 
+    console.log("res", response);
+
     //TODO: use template type to get correct response type
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return (await response.json()) as any;

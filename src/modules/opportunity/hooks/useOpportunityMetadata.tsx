@@ -3,7 +3,7 @@ import Tag from "@core/components/element/Tag";
 import merklConfig from "@core/config";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps } from "dappkit";
+import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps, type Look } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { OpportunityService } from "../opportunity.service";
@@ -107,7 +107,7 @@ export default function useOpportunityMetadata({
       hide,
       only,
       ...props
-    }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[] } & Omit<
+    }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[]; look?: Look } & Omit<
       Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
       "value" | "type"
     >) {

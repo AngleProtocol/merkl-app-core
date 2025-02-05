@@ -38,7 +38,6 @@ import {
   xLayer,
 } from "viem/chains";
 import { eip712WalletActions, zksync } from "viem/zksync";
-import { walletConnect } from "wagmi/connectors";
 //TODO: find a better way to handle importing the client config, this works
 //@ts-ignore
 import merklClientConfig from "../../../../../merkl.config";
@@ -409,16 +408,16 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     },
     ssr: true,
     connectors: [
-      walletConnect({
-        customStoragePrefix: "wagmi",
-        projectId: "26c912aadd2132cd869a5edc00aeea0f",
-        metadata: {
-          name: "Merkl Lite",
-          description: "Merkl Lite",
-          url: "https://app.merkl.xyz",
-          icons: [],
-        },
-      }),
+      // walletConnect({
+      //   customStoragePrefix: "wagmi",
+      //   projectId: "26c912aadd2132cd869a5edc00aeea0f",
+      //   metadata: {
+      //     name: "Merkl Lite",
+      //     description: "Merkl Lite",
+      //     url: "https://app.merkl.xyz",
+      //     icons: [],
+      //   },
+      // }),
     ],
   },
 };

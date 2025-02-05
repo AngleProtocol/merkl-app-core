@@ -2,7 +2,7 @@ import { api } from "@core/api";
 import { fetchWithLogs } from "@core/api/utils";
 import merklConfig from "@core/config";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
-import type { Opportunity } from "@merkl/api";
+import type { Campaign, Opportunity } from "@merkl/api";
 
 export abstract class OpportunityService {
   static async getManyFromRequest(
@@ -71,6 +71,26 @@ export abstract class OpportunityService {
     return opportunityWithCampaigns;
   }
 
+  // ─── Get Opportunities with campaign ──────────────────────────────────────────────
+
+  static async getCampaignsByCreator(creatorId: string) {
+    const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
+      api.v4.opportunities.campaigns.get({ query: { creatorId } }),
+    );
+
+    return opportunityWithCampaigns;
+  }
+
+  // ─── Get Opportunities with campaign ──────────────────────────────────────────────
+
+  static async getCampaign(chainId: number, campaignId: string): Promise<Opportunity & { campaigns: Campaign[] }> {
+    const [opportunityWithCampaigns] = await OpportunityService.#fetch(async () =>
+      api.v4.opportunities.campaigns.get({ query: { campaignId, chainId } }),
+    );
+
+    return opportunityWithCampaigns;
+  }
+
   // ─── Get Aggregate ──────────────────────────────────────────────
 
   static async getAggregate(
@@ -94,12 +114,6 @@ export abstract class OpportunityService {
     return data;
   }
 
-  /**
-   * Retrieves opportunities query params from page request
-   * @param request request containing query params such as chains, status, pagination...
-   * @param override params for which to override value
-   * @returns query
-   */
   /**
    * Retrieves opportunities query params from page request
    * @param request request containing query params such as chains, status, pagination...

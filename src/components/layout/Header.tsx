@@ -1,12 +1,15 @@
 import type { routesType } from "@core/config/type";
+import useUserCreator from "@core/modules/user/hooks/useUserCreator";
 import { useNavigate } from "@remix-run/react";
 import {
   Button,
   Container,
   Dropdown,
+  Fmt,
   Group,
   Icon,
   Image,
+  List,
   SCREEN_BREAKDOWNS,
   Select,
   WalletButton,
@@ -42,7 +45,7 @@ const item = {
 
 export default function Header() {
   const { mode } = useTheme();
-  const { chainId, address: user, chains, switchChain } = useWalletContext();
+  const { chainId, address: user, chains, switchChain, address } = useWalletContext();
   const [open, setOpen] = useState<boolean>(false);
   const headerRef = useRef<HTMLElement>(null);
 
@@ -115,6 +118,21 @@ export default function Header() {
     };
   }, [isClient]);
 
+  const { creator } = useUserCreator();
+  const creatorButton = useMemo(
+    () =>
+      creator && (
+        <List flex="row" look="hype">
+          <Button to={`/${creator.id}`}>
+            <Icon rounded src={creator.icon} />
+            {creator.name}
+          </Button>
+          <Button>{Fmt.address(address, "short")}</Button>
+        </List>
+      ),
+    [creator, address],
+  );
+
   return (
     <motion.header
       ref={headerRef}
@@ -174,7 +192,10 @@ export default function Header() {
               </Group>
 
               <Group className="flex">
-                <WalletButton select={chainSwitcher} hideSpyMode={merklConfig.hideSpyMode}>
+                <WalletButton
+                  status={creatorButton || undefined}
+                  select={chainSwitcher}
+                  hideSpyMode={merklConfig.hideSpyMode}>
                   <Button to={`/users/${user}`} size="sm" look="soft">
                     <Icon remix="RiArrowRightLine" /> Check claims
                   </Button>

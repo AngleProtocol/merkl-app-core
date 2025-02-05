@@ -12,6 +12,24 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
   const payload = await request.json();
 
   switch (name) {
+    case "reallocate": {
+      const abi = parseAbi([
+        "function reallocateCampaignRewards(bytes32 _campaignId, address[] memory froms, address to)",
+      ]);
+      const tx = {
+        to: payload.distributionCreator,
+        from: payload.userAddress,
+        data: encodeFunctionData({
+          abi,
+          functionName: "reallocateCampaignRewards",
+          args: [payload.campaignId, payload.from, payload.to],
+        }),
+      };
+
+      if (payload.sponsor) return await ZyfiService.wrapAndPrepareTx(tx);
+
+      return tx;
+    }
     case "claim": {
       const abi = parseAbi(["function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)"]);
       const tx = {
