@@ -25,7 +25,6 @@ import { Time } from "dappkit";
 import { Tooltip } from "dappkit";
 import moment from "moment";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import useChain from "../../../chain/hooks/useChain";
 import Token from "../../../token/components/element/Token";
 import CampaignTooltipDates from "../CampaignTooltipDates";
@@ -179,7 +178,7 @@ export default function CampaignTableRow({
               </Group>
               <Group>
                 {rules?.map(rule => (
-                  <Rule size="md" key={uuidv4()} type={rule.type} value={rule.value} />
+                  <Rule size="md" key={`${rule.type}_${rule.value.label}`} type={rule.type} value={rule.value} />
                 ))}
               </Group>
             </Group>

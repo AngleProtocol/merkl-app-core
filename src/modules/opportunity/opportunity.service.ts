@@ -73,9 +73,9 @@ export abstract class OpportunityService {
 
   // ─── Get Opportunities with campaign ──────────────────────────────────────────────
 
-  static async getCampaignsByCreator(creatorId: string) {
+  static async getCampaignsByCreator(query: { creatorId?: string; creatorAddress?: string }) {
     const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
-      api.v4.opportunities.campaigns.get({ query: { creatorId } }),
+      api.v4.opportunities.campaigns.get({ query }),
     );
 
     return opportunityWithCampaigns;
@@ -136,7 +136,7 @@ export abstract class OpportunityService {
       sort: url.searchParams.get("sort")?.split("-")[0],
       order: url.searchParams.get("sort")?.split("-")[1],
       name: url.searchParams.get("search") ?? undefined,
-      test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+      test: merklConfig.alwaysShowTestTokens ? true : url.searchParams.get("test") ?? false,
       page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
       ...override,
     };

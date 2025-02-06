@@ -7,7 +7,6 @@ import { Group, Text } from "dappkit";
 import { Time } from "dappkit";
 import moment from "moment";
 import { useCallback, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { parseUnits } from "viem";
 
 /**
@@ -106,7 +105,7 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     if (Number(campaign.endTimestamp) < moment().unix()) return "PAST";
     if (Number(campaign.startTimestamp) > moment().unix()) return "SOON";
     return "LIVE";
-  }, [campaign.endTimestamp, campaign.startTimestamp]);
+  }, [campaign]);
 
   /**
    * TagProps for each metadata that can be represented as a tag
@@ -149,7 +148,7 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
         ?.filter(a => a !== undefined)
         ?.filter(({ type }) => !hide || !hide.includes(type))
         ?.filter(({ type }) => !only || only.includes(type))
-        .map(tag => <Tag {...tag} key={tag.key ?? uuidv4()} size="sm" {...props} />);
+        .map(tag => <Tag {...tag} key={tag.key} size="sm" {...props} />);
     },
     [tags],
   );

@@ -30,7 +30,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
   const rows = useMemo(() => {
     return leaderboard?.map((row, index) => (
       <LeaderboardTableRow
-        key={uuidv4()}
+        key={`${row.recipient}_${row.reason}_${row.amount}`}
         total={BigInt(total ?? 0n)}
         row={row}
         showreason={reason}

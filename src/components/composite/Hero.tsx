@@ -15,7 +15,6 @@ import {
   useTheme,
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
-import { v4 as uuidv4 } from "uuid";
 import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
@@ -155,7 +154,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Live opportunities",
-      key: uuidv4(),
+      key: "live-opoportunities",
     },
     !!dailyRewards && {
       data: (
@@ -164,7 +163,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Daily rewards",
-      key: uuidv4(),
+      key: "daily-rewards",
     },
     !!maxApr && {
       data: (
@@ -173,7 +172,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Max APR",
-      key: uuidv4(),
+      key: "max-apr",
     },
   ].filter(data => !!data);
 }

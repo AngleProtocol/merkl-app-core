@@ -155,6 +155,16 @@ export abstract class RewardService {
     return { count, rewards, total: total.amount };
   }
 
+  /**
+   * Gets the number of individual users for a given campaign
+   * @param campaignId chain-campaignId
+   */
+  static async getCampaignUsers(campaignId: string) {
+    const rewardsCampaignApi = api.v4.rewards.campaign({ campaignId });
+
+    return RewardService.#fetch(async () => rewardsCampaignApi.count.get({ query: {} }));
+  }
+
   static async total(query: { chainId: number; campaignId: string }) {
     const total = await RewardService.#fetch(async () =>
       api.v4.rewards.total.get({

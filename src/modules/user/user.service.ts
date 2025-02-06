@@ -1,6 +1,7 @@
 import { api } from "@core/api";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import { isAddressEqual } from "viem";
+import { isAddressEqual, isAddress } from "viem";
+import type { Creator } from "@merkl/api";
 
 export abstract class UserService {
   static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Campaigns")(call);
@@ -29,5 +30,24 @@ export abstract class UserService {
    */
   static async getCreator(id: string) {
     return UserService.#fetch(() => api.v4.creators({ id }).get());
+  }
+
+  /**
+   * Gets either the creator from its id (i.e. "uniswap") or by its address
+   * @param creatorIdOrAddress 
+   * @returns an object with either creator or address defined
+   */
+  static async getCreatorOrAddress(
+    creatorIdOrAddress: string,
+  ): Promise<{ creator: Creator; address: undefined } | { creator: undefined; address: string }> {
+    try {
+      const creator = await UserService.getCreator(creatorIdOrAddress!);
+      return { creator, address: undefined };
+    } catch (err) {
+      const address = isAddress(creatorIdOrAddress);
+
+      if (!address) throw err;
+      return { creator: undefined, address: creatorIdOrAddress };
+    }
   }
 }

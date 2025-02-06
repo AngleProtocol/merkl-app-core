@@ -5,7 +5,6 @@ import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
 import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps, type Look } from "dappkit";
 import { useCallback, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { OpportunityService } from "../opportunity.service";
 
 const metadata = [
@@ -52,7 +51,7 @@ export default function useOpportunityMetadata({
 
     return spaced
       .map(str => {
-        const key = str + uuidv4();
+        const key = str
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
             <span key={key} className="text-main-11">
@@ -115,7 +114,7 @@ export default function useOpportunityMetadata({
         ?.filter(a => a !== undefined)
         ?.filter(({ type }) => !hide || !hide.includes(type))
         ?.filter(({ type }) => !only || only.includes(type))
-        .map(tag => <Tag {...tag} key={tag.key ?? uuidv4()} size="sm" {...props} />);
+        .map(tag => <Tag {...tag} key={tag.key} size="sm" {...props} />);
     },
     [tags],
   );
@@ -157,7 +156,7 @@ export default function useOpportunityMetadata({
       return (
         <IconGroup {...groupProps}>
           {icons.map(icon => (
-            <Icon key={uuidv4()} {...icon} {...props} />
+            <Icon key={icon.src} {...icon} {...props} />
           ))}
         </IconGroup>
       );
