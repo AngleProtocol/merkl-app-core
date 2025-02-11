@@ -47,23 +47,27 @@ import { type MerklConfig, createConfig } from "./type";
 const defaultMerklConfig: MerklConfig<Themes> = {
   appName: "Merkl",
   modes: ["dark", "light"],
-  defaultTheme: "ignite",
+  defaultTheme: "merkl",
   metaDatasGlobal: url => [
     {
+      name: "twitter:site",
+      content: "@Merkl",
+    },
+    {
+      name: "twitter:creator",
+      content: "@Merkl",
+    },
+    {
+      name: "twitter:title",
+      content: "Merkl",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
       property: "og:image:alt",
-      content: "Welcome to ZKsync Ignite!",
-    },
-    {
-      property: "twitter:site",
-      content: "@ZKsyncIgnite",
-    },
-    {
-      property: "twitter:creator",
-      content: "@ZKsyncIgnite",
-    },
-    {
-      property: "twitter:title",
-      content: "ZKsync Ignite",
+      content: "Welcome to Merkl!",
     },
     {
       property: "og:url",
@@ -85,24 +89,20 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       property: "og:type",
       content: "website",
     },
-    {
-      property: "twitter:card",
-      content: "summary_large_image",
-    },
   ],
   metaDatas: {
     home: (url, config) => [
-      { property: "title", content: `${config?.appName}` },
-      { property: "description", content: "" },
+      { title: `${config?.appName}` },
+      { name: "description", content: "" },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     opportunities: (url, config) => [
-      { property: "title", content: `${config?.appName} | Opportunities` },
+      { title: `${config?.appName} | Opportunities` },
       {
-        property: "description",
+        name: "description",
         content: `Add liquidity to our top DeFi DEX, lending and perp protocols, and earn ${config.clientTokenName}`,
       },
       {
@@ -111,8 +111,8 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     opportunity: (url, config, opportunity) => [
-      { property: "title", content: `${config?.appName} | ${opportunity?.name}` },
-      { property: "description", content: OpportunityService.getDescription(opportunity) || "" },
+      { title: `${config?.appName} | ${opportunity?.name}` },
+      { name: "description", content: OpportunityService.getDescription(opportunity) || "" },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
@@ -120,82 +120,81 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     ],
     dashboard: (url, config, address) => [
       {
-        property: "title",
-        content: `${config?.appName} | ${address?.substring(0, 6)}…${address.substring(address.length - 4)} dashboard`,
+        title: `${config?.appName} | ${address?.substring(0, 6)}…${address.substring(address.length - 4)} dashboard`,
       },
-      { property: "description", content: "" },
+      { name: "description", content: "" },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     chains: (url, config) => [
-      { property: "title", content: `${config?.appName} | Chains` },
-      { property: "description", content: `Chains integrated by ${config?.appName}` },
+      { title: `${config?.appName} | Chains` },
+      { name: "description", content: `Chains integrated by ${config?.appName}` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     chain: (url, config, chain) => [
-      { property: "title", content: `${config?.appName} | ${chain.name}` },
-      { property: "description", content: `Earn rewards by supplying liquidity on ${chain.name} chain` },
+      { title: `${config?.appName} | ${chain.name}` },
+      { name: "description", content: `Earn rewards by supplying liquidity on ${chain.name} chain` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     bridge: (url, config) => [
-      { property: "title", content: `${config?.appName} | Bridge` },
-      { property: "description", content: "Bridge" },
+      { title: `${config?.appName} | Bridge` },
+      { name: "description", content: "Bridge" },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     protocols: (url, config) => [
-      { property: "title", content: `${config?.appName} | Protocols` },
-      { property: "description", content: `Explore protocols incentivized on ${config?.appName}` },
+      { title: `${config?.appName} | Protocols` },
+      { name: "description", content: `Explore protocols incentivized on ${config?.appName}` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     protocol: (url, config, protocol) => [
-      { property: "title", content: `${config?.appName} | ${protocol.name}` },
-      { property: "description", content: `Explore all opportunities availables on the ${protocol?.name} protocol` },
+      { title: `${config?.appName} | ${protocol.name}` },
+      { name: "description", content: `Explore all opportunities availables on the ${protocol?.name} protocol` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     tokens: (url, config) => [
-      { property: "title", content: `${config?.appName} | Tokens` },
-      { property: "description", content: `Tokens indexed by ${config?.appName}` },
+      { title: `${config?.appName} | Tokens` },
+      { name: "description", content: `Tokens indexed by ${config?.appName}` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     token: (url, config, token) => [
-      { property: "title", content: `${config?.appName} | ${token?.symbol}` },
-      { property: "description", content: `All opportunities availables on the ${token?.symbol} token` },
+      { title: `${config?.appName} | ${token?.symbol}` },
+      { name: "description", content: `All opportunities availables on the ${token?.symbol} token` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     "opportunity/leaderboard": (url, config) => [
-      { property: "title", content: `${config?.appName} | Leaderboard per token` },
-      { property: "description", content: "" },
+      { title: `${config?.appName} | Leaderboard per token` },
+      { name: "description", content: "" },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
       },
     ],
     faq: (url, config) => [
-      { property: "title", content: `${config?.appName} | FAQ` },
-      { property: "description", content: `Welcome to ${config?.appName}!` },
+      { title: `${config?.appName} | FAQ` },
+      { name: "description", content: `Welcome to ${config?.appName}!` },
       {
         property: "og:image",
         content: `${url}/preview.jpg`,
