@@ -17,6 +17,9 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   console.log(MetadataService.wrapMetadata("opportunities", [data?.url, config]));
   
 
+  console.log(MetadataService.wrapMetadata("opportunities", [data?.url, config]));
+  
+
   return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
 };
 

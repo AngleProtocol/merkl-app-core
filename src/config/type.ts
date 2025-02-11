@@ -1,5 +1,6 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
+import { MetaDescriptor } from "@remix-run/react";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
@@ -36,23 +37,23 @@ export type MerklConfig<T extends Themes> = {
   metaDatasGlobal: (url: string) => Record<string, string>[];
 
   metaDatas: {
-    home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     opportunity: (
       url: string,
       config: Omit<MerklConfig<T>, "wagmi">,
       opportunity: Opportunity,
-    ) => Record<string, string>[];
-    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => Record<string, string>[];
-    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => Record<string, string>[];
-    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi">, chain: Chain) => Record<string, string>[];
-    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
-    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi">, protocol: Protocol) => Record<string, string>[];
-    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    ) => MetaDescriptor[];
+    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
+    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => MetaDescriptor[];
+    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi">, chain: Chain) => MetaDescriptor[];
+    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi">, protocol: Protocol) => MetaDescriptor[];
+    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
   };
 
   /**
