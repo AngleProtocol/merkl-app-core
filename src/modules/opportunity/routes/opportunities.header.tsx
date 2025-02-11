@@ -14,12 +14,6 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error}];
 
-  console.log(MetadataService.wrapMetadata("opportunities", [data?.url, config]));
-  
-
-  console.log(MetadataService.wrapMetadata("opportunities", [data?.url, config]));
-  
-
   return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
 };
 
