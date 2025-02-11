@@ -1,4 +1,5 @@
 import config from "@core/config";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
@@ -6,7 +7,6 @@ import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
-import { MetadataService } from "@core/modules/metadata/metadata.service";
 
 export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService.getSymbol(symbol);
