@@ -7,6 +7,7 @@ import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
+import { withUrl } from "@core/utils/url";
 
 export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService.getSymbol(symbol);
@@ -27,7 +28,7 @@ export async function loader({ params: { symbol }, request }: LoaderFunctionArgs
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
     count,
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
+    url: withUrl(request),
   };
 }
 
@@ -40,7 +41,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("token", [data?.url, config, data?.tokens?.[0]]);
+  return MetadataService.wrapMetadata("token", [data?.url.url, config, data?.tokens?.[0]]);
 };
 
 export default function Index() {

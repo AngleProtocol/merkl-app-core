@@ -3,11 +3,10 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
+import { withUrl } from "../../../utils/url";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return {
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
-  };
+  return withUrl(request);
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

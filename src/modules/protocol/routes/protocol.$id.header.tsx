@@ -5,6 +5,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
+import { withUrl } from "@core/utils/url";
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -32,7 +33,7 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
+    url: withUrl(request),
   };
 }
 
@@ -66,5 +67,5 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocol", [data?.url, config, data?.protocol]);
+  return MetadataService.wrapMetadata("protocol", [data?.url.url, config, data?.protocol]);
 };

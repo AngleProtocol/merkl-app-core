@@ -5,11 +5,10 @@ import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
 import merklConfig from "../../../config";
+import { withUrl } from "@core/utils/url";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return {
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
-  };
+  return withUrl(request);
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

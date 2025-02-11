@@ -1,4 +1,5 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
@@ -29,14 +30,14 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
       )?.[0]
     : null;
 
-  return { rewards, address, token, url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}` };
+  return { rewards, address, token, url: withUrl(request) };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("dashboard", [data?.url, merklConfig, data?.address]);
+  return MetadataService.wrapMetadata("dashboard", [data?.url.url, merklConfig, data?.address]);
 };
 
 export type OutletContextRewards = {

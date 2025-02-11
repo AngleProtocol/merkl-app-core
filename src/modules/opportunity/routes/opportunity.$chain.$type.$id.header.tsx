@@ -9,6 +9,7 @@ import OpportunityParticipateModal from "@core/modules/opportunity/components/el
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityMetrics from "@core/modules/opportunity/hooks/useOpportunityMetrics";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import { withUrl } from "@core/utils/url";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
@@ -31,7 +32,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
+    url: withUrl(request),
   };
 }
 
@@ -41,7 +42,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
+  return MetadataService.wrapMetadata("opportunity", [data?.url.url, config, data?.opportunity]);
 };
 
 export type OutletContextOpportunity = {

@@ -7,6 +7,7 @@ import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
 import { ChainService } from "../../chain/chain.service";
 import { TokenService } from "../../token/token.service";
+import { withUrl } from "@core/utils/url";
 
 export const extractChainAndTokenFromParams = async (address: string | undefined, chainName: string | undefined) => {
   if (!chainName && !merklConfig.leaderboard) throw "";
@@ -27,7 +28,7 @@ export async function loader({ params: { address, chain: chainName }, request }:
   return {
     token,
     chain,
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
+    url: withUrl(request),
   };
 }
 
@@ -35,7 +36,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url, merklConfig]);
+  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url.url, merklConfig]);
 };
 
 export default function Index() {

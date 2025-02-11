@@ -1,8 +1,10 @@
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import config from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
@@ -23,7 +25,7 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
     count,
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
-    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
+    url: withUrl(request),
   };
 }
 
@@ -33,7 +35,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("chain", [data?.url, config, data?.chain]);
+  return MetadataService.wrapMetadata("chain", [data?.url.url, config, data?.chain]);
 };
 
 export default function Index() {
