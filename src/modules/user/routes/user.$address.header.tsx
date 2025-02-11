@@ -85,7 +85,7 @@ export default function Index() {
           </>
         ),
         link: `/users/${address}`,
-        key: crypto.randomUUID(),
+        key: "user-link",
       },
       {
         label: (
@@ -105,7 +105,7 @@ export default function Index() {
           </>
         ),
         link: `/users/${address}/claims`,
-        key: crypto.randomUUID(),
+        key: "user-claims",
       },
     ];
 
