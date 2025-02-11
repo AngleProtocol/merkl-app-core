@@ -1,6 +1,9 @@
 import { I18n } from "@core/I18n";
 import Hero from "@core/components/composite/Hero";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c5a01a (add config to wrapMetadata)
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
@@ -25,10 +28,14 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (!data) return [{ title: error }];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
 =======
   return MetadataService.wrapMetadata("opportunities", [data?.url]);
 >>>>>>> 2cbb690 (adjust metadatas)
+=======
+  return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
+>>>>>>> 5c5a01a (add config to wrapMetadata)
 };
 
 export default function Index() {
@@ -40,10 +47,14 @@ export default function Index() {
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={I18n.trad.get.pages.opportunities.title}
 <<<<<<< HEAD
+<<<<<<< HEAD
       description={MetadataService.getDescription("opportunities", [data?.url, config])}>
 =======
       description={MetadataService.getDescription("opportunities", [data?.url])}>
 >>>>>>> 2cbb690 (adjust metadatas)
+=======
+      description={MetadataService.getDescription("opportunities", [data?.url, config])}>
+>>>>>>> 5c5a01a (add config to wrapMetadata)
       <Outlet />
     </Hero>
   );

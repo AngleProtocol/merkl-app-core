@@ -1,5 +1,8 @@
 import Hero from "@core/components/composite/Hero";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c5a01a (add config to wrapMetadata)
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
