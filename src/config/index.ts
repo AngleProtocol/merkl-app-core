@@ -1,3 +1,4 @@
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import { type Themes, createColoring } from "dappkit";
 import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
@@ -43,11 +44,165 @@ import { walletConnect } from "wagmi/connectors";
 import merklClientConfig from "../../../../../merkl.config";
 import { type MerklConfig, createConfig } from "./type";
 
-//TODO: import default config
 const defaultMerklConfig: MerklConfig<Themes> = {
   appName: "Merkl",
   modes: ["dark", "light"],
   defaultTheme: "ignite",
+  metaDatasGlobal: url => [
+    {
+      property: "og:image:alt",
+      content: "Welcome to ZKsync Ignite!",
+    },
+    {
+      property: "twitter:site",
+      content: "@ZKsyncIgnite",
+    },
+    {
+      property: "twitter:creator",
+      content: "@ZKsyncIgnite",
+    },
+    {
+      property: "twitter:title",
+      content: "ZKsync Ignite",
+    },
+    {
+      property: "og:url",
+      content: url,
+    },
+    {
+      property: "og:image:type",
+      content: "image/jpeg",
+    },
+    {
+      property: "og:image:width",
+      content: "1200",
+    },
+    {
+      property: "og:image:height",
+      content: "630",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image",
+    },
+  ],
+  metaDatas: {
+    home: (url, config) => [
+      { property: "title", content: `${config?.appName}` },
+      { property: "description", content: "" },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    opportunities: (url, config) => [
+      { property: "title", content: `${config?.appName} | Opportunities` },
+      {
+        property: "description",
+        content: `Add liquidity to our top DeFi DEX, lending and perp protocols, and earn ${config.clientTokenName}`,
+      },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    opportunity: (url, config, opportunity) => [
+      { property: "title", content: `${config?.appName} | ${opportunity?.name}` },
+      { property: "description", content: OpportunityService.getDescription(opportunity) || "" },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    dashboard: (url, config, address) => [
+      {
+        property: "title",
+        content: `${config?.appName} | ${address?.substring(0, 6)}…${address.substring(address.length - 4)} dashboard`,
+      },
+      { property: "description", content: "" },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    chains: (url, config) => [
+      { property: "title", content: `${config?.appName} | Chains` },
+      { property: "description", content: `Chains integrated by ${config?.appName}` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    chain: (url, config, chain) => [
+      { property: "title", content: `${config?.appName} | ${chain.name}` },
+      { property: "description", content: `Earn rewards by supplying liquidity on ${chain.name} chain` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    bridge: (url, config) => [
+      { property: "title", content: `${config?.appName} | Bridge` },
+      { property: "description", content: "Bridge" },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    protocols: (url, config) => [
+      { property: "title", content: `${config?.appName} | Protocols` },
+      { property: "description", content: `Explore protocols incentivized on ${config?.appName}` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    protocol: (url, config, protocol) => [
+      { property: "title", content: `${config?.appName} | ${protocol.name}` },
+      { property: "description", content: `Explore all opportunities availables on the ${protocol?.name} protocol` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    tokens: (url, config) => [
+      { property: "title", content: `${config?.appName} | Tokens` },
+      { property: "description", content: `Tokens indexed by ${config?.appName}` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    token: (url, config, token) => [
+      { property: "title", content: `${config?.appName} | ${token?.symbol}` },
+      { property: "description", content: `All opportunities availables on the ${token?.symbol} token` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    "opportunity/leaderboard": (url, config) => [
+      { property: "title", content: `${config?.appName} | Leaderboard per token` },
+      { property: "description", content: "" },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+    faq: (url, config) => [
+      { property: "title", content: `${config?.appName} | FAQ` },
+      { property: "description", content: `Welcome to ${config?.appName}!` },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
+  },
+  fonts: { italic: false },
   opportunityNavigationMode: "supply",
   tokenSymbolPriority: ["ZK", "USDC", "USDC.e", "ETH", "WETH", "WBTC", "wstETH", "USDT", "USDe", "weETH", "DAI"],
   rewardsNavigationMode: "chain",
@@ -113,13 +268,6 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     dollar: "$0,0.##a",
   },
   themes: {
-    ignite: {
-      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    },
     merkl: {
       base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
@@ -127,15 +275,8 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
-    backoffice: {
-      base: createColoring(["#8B8D98", "#9984D2", "#000000"], ["#8B8D98", "#9984D2", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    },
-    puffer: {
-      base: createColoring(["#2A35BD", "#BFFF38", "#FFFFFF"], ["#2A35BD", "#BFFF38", "#FFFFFF"]),
+    ignite: {
+      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),

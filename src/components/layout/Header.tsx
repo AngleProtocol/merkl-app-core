@@ -129,7 +129,7 @@ export default function Header() {
               <Image
                 imgClassName="w-[200px] max-h-[2.5rem]"
                 alt={`${merklConfig.appName} logo`}
-                src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
+                src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 onClick={navigateToHomepage}
               />
             ) : (
@@ -142,7 +142,7 @@ export default function Header() {
                 <Image
                   imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
                   alt={`${merklConfig.appName} logo`}
-                  src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
+                  src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 />
                 <Icon className="text-main-12" remix="RiArrowDownSLine" />
               </Dropdown>

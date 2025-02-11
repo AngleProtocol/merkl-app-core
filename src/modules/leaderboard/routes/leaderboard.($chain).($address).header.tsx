@@ -1,7 +1,7 @@
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
 import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
@@ -21,17 +21,21 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
   return { chain, token };
 };
 
-export async function loader({ params: { address, chain: chainName } }: LoaderFunctionArgs) {
+export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
   return {
     token,
     chain,
+    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
   };
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data: _data }) => {
-  return [{ title: I18n.trad.get.pages.leaderboard.headTitle }];
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (error) return [{ title: error }];
+  if (!data) return [{ title: error }];
+
+  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url]);
 };
 
 export default function Index() {

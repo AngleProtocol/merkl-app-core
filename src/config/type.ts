@@ -1,8 +1,9 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
-import type { Chain } from "viem";
+import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
 import type {
@@ -31,6 +32,25 @@ export type MerklConfig<T extends Themes> = {
    * @notice the first theme is the default one by default
    */
   themes: T;
+
+  metaDatasGlobal: (url: string) => Record<string, string>[];
+
+  metaDatas: {
+    home: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    opportunities: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    opportunity: (url: string, config: MerklConfig<T>, opportunity: Opportunity) => Record<string, string>[];
+    "opportunity/leaderboard": (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    bridge: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    dashboard: (url: string, config: MerklConfig<T>, address: string) => Record<string, string>[];
+    tokens: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    token: (url: string, config: MerklConfig<T>, token: Token) => Record<string, string>[];
+    chains: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    chain: (url: string, config: MerklConfig<T>, chain: Chain) => Record<string, string>[];
+    protocols: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    protocol: (url: string, config: MerklConfig<T>, protocol: Protocol) => Record<string, string>[];
+    faq: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+  };
+
   /**
    * Sizing theme, influences the padding, gaps & radius.
    */
@@ -56,7 +76,7 @@ export type MerklConfig<T extends Themes> = {
    * Chains that can be connected to the dapp
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
-  chains?: Chain[];
+  chains?: viemChain[];
   /**
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
@@ -130,7 +150,7 @@ export type MerklConfig<T extends Themes> = {
    * App name reflected in the app titles & descriptions
    */
   appName: string;
-  fonts?: { title: string[]; text: string[]; mono: string[] };
+  fonts?: { italic?: boolean };
   routes: routesType;
   opportunity: {
     featured: {

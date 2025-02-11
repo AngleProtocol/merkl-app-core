@@ -3,6 +3,7 @@ import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityMetrics from "@core/modules/opportunity/hooks/useOpportunityMetrics";
@@ -14,7 +15,7 @@ import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
 
-export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ name: chainId });
@@ -29,6 +30,7 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
+    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
   };
 }
 
@@ -36,11 +38,9 @@ export const clientLoader = Cache.wrap("opportunity", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
-  return [
-    {
-      title: `${data?.opportunity.name}`,
-    },
-  ];
+  if (!data) return [{ title: error }];
+
+  return MetadataService.wrapMetadata("opportunity", [data?.url, data?.opportunity]);
 };
 
 export type OutletContextOpportunity = {

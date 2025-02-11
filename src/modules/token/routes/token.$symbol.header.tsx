@@ -1,13 +1,14 @@
+import config from "@core/config";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { I18n } from "../../../I18n";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 
-export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
+export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService.getSymbol(symbol);
   const chains = await ChainService.getAll();
 
@@ -26,17 +27,20 @@ export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
     count,
+    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
   };
 }
 
 export const clientLoader = Cache.wrap("token", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   const symbol = data?.tokens?.[0]?.symbol;
 
-  if (!symbol) return [{ title: I18n.trad.get.pages.tokens.headTitle }];
+  if (!symbol) return [{ title: `${config?.appName} | Token` }];
+  if (error) return [{ title: error }];
+  if (!data) return [{ title: error }];
 
-  return [{ title: `${symbol}` }];
+  return MetadataService.wrapMetadata("token", [data?.url, data?.tokens?.[0]]);
 };
 
 export default function Index() {

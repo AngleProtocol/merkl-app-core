@@ -1,6 +1,6 @@
-import { I18n } from "@core/I18n";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
 import { Cache } from "@core/modules/cache/cache.service";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
@@ -31,6 +31,7 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
+    url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
   };
 }
 
@@ -60,8 +61,9 @@ export default function Index() {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  if (!data?.protocol) return [{ title: I18n.trad.get.pages.protocols.headTitle }];
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (error) return [{ title: error }];
+  if (!data) return [{ title: error }];
 
-  return [{ title: `${data?.protocol?.name}` }];
+  return MetadataService.wrapMetadata("protocol", [data?.url, data?.protocol]);
 };
