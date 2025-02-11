@@ -20,13 +20,12 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
 
-  return {
+  return withUrl(request, {
     chain,
     count,
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
-    url: withUrl(request),
-  };
+  });
 }
 
 export const clientLoader = Cache.wrap("chain", 300);
@@ -35,7 +34,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("chain", [data?.url.url, config, data?.chain]);
+  return MetadataService.wrapMetadata("chain", [data?.url, config, data?.chain]);
 };
 
 export default function Index() {

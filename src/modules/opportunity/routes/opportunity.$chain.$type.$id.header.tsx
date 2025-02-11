@@ -28,12 +28,11 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     identifier: id,
   });
 
-  return {
+  return withUrl(request, {
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
-    url: withUrl(request),
-  };
+  });
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
@@ -42,7 +41,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url.url, config, data?.opportunity]);
+  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
 };
 
 export type OutletContextOpportunity = {

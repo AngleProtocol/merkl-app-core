@@ -7,7 +7,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request);
+  return withUrl(request,{});
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

@@ -12,14 +12,14 @@ import { ProtocolService } from "../../../modules/protocol/protocol.service";
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
 
-  return { protocols, count, url: withUrl(request) };
+  return withUrl(request, { protocols, count });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocols", [data?.url.url, config]);
+  return MetadataService.wrapMetadata("protocols", [data?.url, config]);
 };
 
 export default function Index() {
@@ -32,7 +32,7 @@ export default function Index() {
       icons={[{ remix: "RiCommandLine", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
       title={I18n.trad.get.pages.protocols.title}
       breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
-      description={MetadataService.getDescription("protocols", [data?.url.url, config])}
+      description={MetadataService.getDescription("protocols", [data?.url, config])}
       sideDatas={[
         {
           data: count,

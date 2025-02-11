@@ -1,6 +1,6 @@
 import merklConfig from "@core/config";
 import type { MerklConfig } from "@core/config/type";
-import type { Themes } from "packages/dappkit/src";
+import type { Themes } from "dappkit/src";
 
 export abstract class MetadataService {
   static wrapMetadata<

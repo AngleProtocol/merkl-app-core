@@ -22,14 +22,13 @@ export async function loader({ params: { symbol }, request }: LoaderFunctionArgs
 
   const { sum: dailyRewards } = await OpportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
 
-  return {
+  return withUrl(request, {
     tokens,
     chains,
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
     count,
-    url: withUrl(request),
-  };
+  });
 }
 
 export const clientLoader = Cache.wrap("token", 300);
@@ -41,7 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("token", [data?.url.url, config, data?.tokens?.[0]]);
+  return MetadataService.wrapMetadata("token", [data?.url, config, data?.tokens?.[0]]);
 };
 
 export default function Index() {

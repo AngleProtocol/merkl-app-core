@@ -6,7 +6,7 @@ import Hero from "../../../components/composite/Hero";
 import { withUrl } from "../../../utils/url";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request);
+  return withUrl(request, {});
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

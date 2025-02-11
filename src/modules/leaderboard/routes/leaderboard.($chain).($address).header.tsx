@@ -25,18 +25,17 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
 export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  return {
+  return withUrl(request, {
     token,
     chain,
-    url: withUrl(request),
-  };
+  });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url.url, merklConfig]);
+  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url, merklConfig]);
 };
 
 export default function Index() {

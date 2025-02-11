@@ -26,15 +26,14 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
-  return {
+  return withUrl(request, {
     opportunities,
     count,
     protocol,
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
-    url: withUrl(request),
-  };
+  });
 }
 
 export const clientLoader = Cache.wrap("protocol", 300);
@@ -67,5 +66,5 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocol", [data?.url.url, config, data?.protocol]);
+  return MetadataService.wrapMetadata("protocol", [data?.url, config, data?.protocol]);
 };

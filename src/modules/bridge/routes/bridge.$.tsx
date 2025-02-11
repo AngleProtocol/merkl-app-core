@@ -8,7 +8,7 @@ import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
 import merklConfig from "../../../config";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request);
+  return withUrl(request, {});
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
