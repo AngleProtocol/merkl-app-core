@@ -1,8 +1,8 @@
+import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
-import config from "@core/config";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return {
