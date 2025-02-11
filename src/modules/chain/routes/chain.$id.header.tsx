@@ -34,7 +34,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("chain", [data?.url.url, config, data?.chain]);
+  return MetadataService.wrapMetadata("chain", [data?.url, config, data?.chain]);
 };
 
 export default function Index() {
