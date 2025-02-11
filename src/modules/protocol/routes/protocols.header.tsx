@@ -1,10 +1,6 @@
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
-<<<<<<< HEAD
-import { withUrl } from "@core/utils/url";
-=======
->>>>>>> e8e0597 (lint)
 import type { MetaFunction } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
