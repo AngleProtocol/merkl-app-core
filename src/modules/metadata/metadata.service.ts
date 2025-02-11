@@ -20,8 +20,10 @@ export abstract class MetadataService {
   >(ressource: Ressource, args: Args) {
     // @ts-ignore
     const localMetadatas = merklConfig.metaDatas[ressource](...args);
-    const description = localMetadatas.find(metadata => metadata.property === "description");
+    // biome-ignore lint/suspicious/noExplicitAny: templated type
+    const description = localMetadatas.find((metadata) => (metadata as any).name === "description");
 
-    return description?.content;
+    // biome-ignore lint/suspicious/noExplicitAny: templated type
+    return (description as any)?.content;
   }
 }
