@@ -1,8 +1,6 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-<<<<<<< HEAD
 import { withUrl } from "@core/utils/url";
-=======
->>>>>>> 2cbb690 (adjust metadatas)
+import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Button, Container, Group, Icon, Space, Text } from "dappkit";
 import { Suspense } from "react";

@@ -41,7 +41,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
+  return MetadataService.wrapMetadata("opportunity", [data?.url.url, config, data?.opportunity]);
 };
 
 export type OutletContextOpportunity = {

@@ -66,5 +66,5 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocol", [data?.url, config, data?.protocol]);
+  return MetadataService.wrapMetadata("protocol", [data?.url.url, config, data?.protocol]);
 };

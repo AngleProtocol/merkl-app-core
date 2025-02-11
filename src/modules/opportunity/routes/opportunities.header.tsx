@@ -7,13 +7,17 @@ import Hero from "@core/components/composite/Hero";
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
+<<<<<<< HEAD
 =======
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 >>>>>>> 2cbb690 (adjust metadatas)
+=======
+>>>>>>> 1223716 (change url)
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
+<<<<<<< HEAD
 <<<<<<< HEAD
   return withUrl(request, {});
 =======
@@ -21,6 +25,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     url: `${request.url.split("/")?.[0]}//${request.headers.get("host")}`,
   };
 >>>>>>> 2cbb690 (adjust metadatas)
+=======
+  return withUrl(request);
+>>>>>>> 1223716 (change url)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {

@@ -1,8 +1,5 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-<<<<<<< HEAD
 import { withUrl } from "@core/utils/url";
-=======
->>>>>>> 2cbb690 (adjust metadatas)
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -38,7 +35,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url, merklConfig]);
+  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url.url, merklConfig]);
 };
 
 export default function Index() {
