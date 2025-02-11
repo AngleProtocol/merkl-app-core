@@ -1,7 +1,11 @@
 import Hero from "@core/components/composite/Hero";
+<<<<<<< HEAD
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
+=======
+import { MetadataService } from "@core/modules/metadata/metadata.service";
+>>>>>>> 2cbb690 (adjust metadatas)
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 

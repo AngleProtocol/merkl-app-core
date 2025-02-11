@@ -1,5 +1,8 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+<<<<<<< HEAD
 import { withUrl } from "@core/utils/url";
+=======
+>>>>>>> 2cbb690 (adjust metadatas)
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
