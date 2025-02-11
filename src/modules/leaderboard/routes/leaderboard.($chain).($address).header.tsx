@@ -1,4 +1,5 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -7,7 +8,6 @@ import { ErrorHeading } from "../../../components/layout/ErrorHeading";
 import merklConfig from "../../../config";
 import { ChainService } from "../../chain/chain.service";
 import { TokenService } from "../../token/token.service";
-import { withUrl } from "@core/utils/url";
 
 export const extractChainAndTokenFromParams = async (address: string | undefined, chainName: string | undefined) => {
   if (!chainName && !merklConfig.leaderboard) throw "";

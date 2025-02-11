@@ -1,5 +1,6 @@
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { withUrl } from "@core/utils/url";
 import type { MetaFunction } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -7,7 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
-import { withUrl } from "@core/utils/url";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
