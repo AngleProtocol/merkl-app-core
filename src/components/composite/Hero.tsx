@@ -64,9 +64,9 @@ export default function Hero({
           } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}
           style={{
             backgroundImage: !!merklConfig.hero.bannerOnAllPages
-              ? `url('${merklConfig.images.hero}')`
+              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
               : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? `url('${merklConfig.images.hero}')`
+                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
                 : "none",
           }}>
           <Container>

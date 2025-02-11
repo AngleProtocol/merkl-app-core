@@ -1,8 +1,9 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
-import type { Chain } from "viem";
+import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
 import type {
@@ -31,6 +32,29 @@ export type MerklConfig<T extends Themes> = {
    * @notice the first theme is the default one by default
    */
   themes: T;
+
+  metaDatasGlobal: (url: string) => Record<string, string>[];
+
+  metaDatas: {
+    home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    opportunity: (
+      url: string,
+      config: Omit<MerklConfig<T>, "wagmi">,
+      opportunity: Opportunity,
+    ) => Record<string, string>[];
+    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => Record<string, string>[];
+    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => Record<string, string>[];
+    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi">, chain: Chain) => Record<string, string>[];
+    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi">, protocol: Protocol) => Record<string, string>[];
+    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+  };
+
   /**
    * Sizing theme, influences the padding, gaps & radius.
    */
@@ -56,7 +80,7 @@ export type MerklConfig<T extends Themes> = {
    * Chains that can be connected to the dapp
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
-  chains?: Chain[];
+  chains?: viemChain[];
   /**
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
@@ -130,7 +154,7 @@ export type MerklConfig<T extends Themes> = {
    * App name reflected in the app titles & descriptions
    */
   appName: string;
-  fonts?: { title: string[]; text: string[]; mono: string[] };
+  fonts?: { italic?: boolean };
   routes: routesType;
   opportunity: {
     featured: {

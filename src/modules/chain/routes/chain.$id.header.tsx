@@ -1,11 +1,14 @@
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import config from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
-export async function loader({ params: { id } }: LoaderFunctionArgs) {
+export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   const chain = await ChainService.get({ name: id });
 
   const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
@@ -17,13 +20,21 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 
   const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
 
-  return { chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr };
+  return withUrl(request, {
+    chain,
+    count,
+    dailyRewards,
+    maxApr: opportunitiesByApr?.[0]?.apr,
+  });
 }
 
 export const clientLoader = Cache.wrap("chain", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: `${data?.chain?.name}` }];
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (error) return [{ title: error }];
+  if (!data) return [{ title: error }];
+
+  return MetadataService.wrapMetadata("chain", [data?.url, config, data?.chain]);
 };
 
 export default function Index() {

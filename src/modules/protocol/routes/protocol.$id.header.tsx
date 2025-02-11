@@ -1,9 +1,11 @@
-import { I18n } from "@core/I18n";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import config from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
+import { withUrl } from "@core/utils/url";
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -24,14 +26,14 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
-  return {
+  return withUrl(request, {
     opportunities,
     count,
     protocol,
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
-  };
+  });
 }
 
 export const clientLoader = Cache.wrap("protocol", 300);
@@ -60,8 +62,9 @@ export default function Index() {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  if (!data?.protocol) return [{ title: I18n.trad.get.pages.protocols.headTitle }];
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (error) return [{ title: error }];
+  if (!data) return [{ title: error }];
 
-  return [{ title: `${data?.protocol?.name}` }];
+  return MetadataService.wrapMetadata("protocol", [data?.url, config, data?.protocol]);
 };

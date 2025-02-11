@@ -6,6 +6,7 @@ import type { Opportunity } from "@merkl/api";
 import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { OpportunityService } from "../opportunity.service";
 
 const metadata = [
   "name",
@@ -166,24 +167,10 @@ export default function useOpportunityMetadata({
   /**
    * Explainer for the opportunity
    */
-  const description = useMemo(() => {
-    const symbols = tokens?.map(t => t.symbol).join("-");
-
-    switch (action) {
-      case "POOL":
-        return `Earn rewards by providing liquidity to the ${protocol?.name} ${symbols} pool on ${chain.name}, or through a liquidity manager supported by Merkl`;
-      case "HOLD":
-        return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
-      case "LEND":
-        return `Earn rewards by supplying liquidity to the ${protocol?.name} ${symbols} on ${chain.name}`;
-      case "BORROW":
-        return `Earn rewards by borrowing liquidity to the ${protocol?.name} ${symbols} on ${chain.name}`;
-      case "DROP":
-        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
-      default:
-        break;
-    }
-  }, [tokens, protocol, chain, action]);
+  const description = useMemo(
+    () => OpportunityService.getDescription({ tokens, protocol, chain, action }),
+    [tokens, protocol, chain, action],
+  );
 
   return {
     name: configuredName,

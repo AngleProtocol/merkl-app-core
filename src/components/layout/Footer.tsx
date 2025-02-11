@@ -19,7 +19,7 @@ export default function Footer() {
                 <Image
                   imgClassName="max-w-[140px] md:max-w-[200px] max-h-[2.5rem] object-contain object-left"
                   alt={`${merklConfig.appName} logo`}
-                  src={mode !== "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
+                  src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 />
               </Button>
             </div>
