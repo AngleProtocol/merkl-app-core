@@ -2,6 +2,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
+import config from "@core/config";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return {
@@ -13,7 +14,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("tokens", [data?.url]);
+  return MetadataService.wrapMetadata("tokens", [data?.url, config]);
 };
 
 export default function Index() {
@@ -24,7 +25,7 @@ export default function Index() {
       icons={[{ remix: "RiCoinFill" }]}
       title={"Tokens"}
       breadcrumbs={[{ link: "/tokens", name: "Tokens" }]}
-      description={MetadataService.getDescription("tokens", [data?.url])}>
+      description={MetadataService.getDescription("tokens", [data?.url, config])}>
       <Outlet />
     </Hero>
   );

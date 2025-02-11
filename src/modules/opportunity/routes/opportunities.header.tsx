@@ -1,5 +1,6 @@
 import { I18n } from "@core/I18n";
 import Hero from "@core/components/composite/Hero";
+import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -14,7 +15,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunities", [data?.url]);
+  return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
 };
 
 export default function Index() {
@@ -25,7 +26,7 @@ export default function Index() {
       icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={I18n.trad.get.pages.opportunities.title}
-      description={MetadataService.getDescription("opportunities", [data?.url])}>
+      description={MetadataService.getDescription("opportunities", [data?.url, config])}>
       <Outlet />
     </Hero>
   );

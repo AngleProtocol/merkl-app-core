@@ -1,5 +1,6 @@
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
+import config from "@core/config";
 import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
@@ -40,7 +41,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url, data?.opportunity]);
+  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
 };
 
 export type OutletContextOpportunity = {

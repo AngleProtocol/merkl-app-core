@@ -36,7 +36,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("dashboard", [data?.url, data?.address]);
+  return MetadataService.wrapMetadata("dashboard", [data?.url, merklConfig, data?.address]);
 };
 
 export type OutletContextRewards = {

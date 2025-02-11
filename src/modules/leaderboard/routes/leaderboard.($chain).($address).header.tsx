@@ -35,7 +35,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url]);
+  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url, merklConfig]);
 };
 
 export default function Index() {

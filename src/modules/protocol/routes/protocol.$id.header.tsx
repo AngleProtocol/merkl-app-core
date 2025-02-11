@@ -1,4 +1,5 @@
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import config from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
@@ -65,5 +66,5 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocol", [data?.url, data?.protocol]);
+  return MetadataService.wrapMetadata("protocol", [data?.url, config, data?.protocol]);
 };

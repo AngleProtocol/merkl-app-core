@@ -40,7 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("token", [data?.url, data?.tokens?.[0]]);
+  return MetadataService.wrapMetadata("token", [data?.url, config, data?.tokens?.[0]]);
 };
 
 export default function Index() {

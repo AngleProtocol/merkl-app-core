@@ -1,3 +1,4 @@
+import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { MetaFunction } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -17,7 +18,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("protocols", [data?.url]);
+  return MetadataService.wrapMetadata("protocols", [data?.url, config]);
 };
 
 export default function Index() {
@@ -30,7 +31,7 @@ export default function Index() {
       icons={[{ remix: "RiCommandLine", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
       title={I18n.trad.get.pages.protocols.title}
       breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
-      description={MetadataService.getDescription("protocols", [data?.url])}
+      description={MetadataService.getDescription("protocols", [data?.url, config])}
       sideDatas={[
         {
           data: count,

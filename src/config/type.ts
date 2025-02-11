@@ -36,19 +36,23 @@ export type MerklConfig<T extends Themes> = {
   metaDatasGlobal: (url: string) => Record<string, string>[];
 
   metaDatas: {
-    home: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    opportunities: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    opportunity: (url: string, config: MerklConfig<T>, opportunity: Opportunity) => Record<string, string>[];
-    "opportunity/leaderboard": (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    bridge: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    dashboard: (url: string, config: MerklConfig<T>, address: string) => Record<string, string>[];
-    tokens: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    token: (url: string, config: MerklConfig<T>, token: Token) => Record<string, string>[];
-    chains: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    chain: (url: string, config: MerklConfig<T>, chain: Chain) => Record<string, string>[];
-    protocols: (url: string, config: MerklConfig<T>) => Record<string, string>[];
-    protocol: (url: string, config: MerklConfig<T>, protocol: Protocol) => Record<string, string>[];
-    faq: (url: string, config: MerklConfig<T>) => Record<string, string>[];
+    home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    opportunity: (
+      url: string,
+      config: Omit<MerklConfig<T>, "wagmi">,
+      opportunity: Opportunity,
+    ) => Record<string, string>[];
+    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => Record<string, string>[];
+    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => Record<string, string>[];
+    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi">, chain: Chain) => Record<string, string>[];
+    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
+    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi">, protocol: Protocol) => Record<string, string>[];
+    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => Record<string, string>[];
   };
 
   /**
