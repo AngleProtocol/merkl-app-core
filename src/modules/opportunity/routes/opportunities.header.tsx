@@ -12,7 +12,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
-  if (!data) return [{ title: error}];
+  if (!data) return [{ title: error }];
 
   return MetadataService.wrapMetadata("opportunities", [data?.url, config]);
 };

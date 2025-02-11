@@ -1,6 +1,6 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
-import { MetaDescriptor } from "@remix-run/react";
+import type { MetaDescriptor } from "@remix-run/react";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { WalletOptions } from "dappkit";
@@ -39,11 +39,7 @@ export type MerklConfig<T extends Themes> = {
   metaDatas: {
     home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    opportunity: (
-      url: string,
-      config: Omit<MerklConfig<T>, "wagmi">,
-      opportunity: Opportunity,
-    ) => MetaDescriptor[];
+    opportunity: (url: string, config: Omit<MerklConfig<T>, "wagmi">, opportunity: Opportunity) => MetaDescriptor[];
     "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
