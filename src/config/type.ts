@@ -34,7 +34,7 @@ export type MerklConfig<T extends Themes> = {
    */
   themes: T;
 
-  metaDatasGlobal: (url: string) => Record<string, string>[];
+  metaDatasGlobal: (url: string) => MetaDescriptor[];
 
   metaDatas: {
     home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
