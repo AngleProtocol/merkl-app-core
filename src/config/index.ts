@@ -47,23 +47,23 @@ import { type MerklConfig, createConfig } from "./type";
 const defaultMerklConfig: MerklConfig<Themes> = {
   appName: "Merkl",
   modes: ["dark", "light"],
-  defaultTheme: "ignite",
+  defaultTheme: "merkl",
   metaDatasGlobal: url => [
     {
       property: "og:image:alt",
-      content: "Welcome to ZKsync Ignite!",
+      content: "Welcome to Merkl!",
     },
     {
       property: "twitter:site",
-      content: "@ZKsyncIgnite",
+      content: "@Merkl",
     },
     {
       property: "twitter:creator",
-      content: "@ZKsyncIgnite",
+      content: "@Merkl",
     },
     {
       property: "twitter:title",
-      content: "ZKsync Ignite",
+      content: "Merkl",
     },
     {
       property: "og:url",
@@ -92,7 +92,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   ],
   metaDatas: {
     home: (url, config) => [
-      { property: "title", content: `${config?.appName}` },
+      { title: `${config?.appName}` },
       { property: "description", content: "" },
       {
         property: "og:image",
@@ -100,7 +100,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     opportunities: (url, config) => [
-      { property: "title", content: `${config?.appName} | Opportunities` },
+      { title: `${config?.appName} | Opportunities` },
       {
         property: "description",
         content: `Add liquidity to our top DeFi DEX, lending and perp protocols, and earn ${config.clientTokenName}`,
@@ -111,7 +111,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     opportunity: (url, config, opportunity) => [
-      { property: "title", content: `${config?.appName} | ${opportunity?.name}` },
+      { title: `${config?.appName} | ${opportunity?.name}` },
       { property: "description", content: OpportunityService.getDescription(opportunity) || "" },
       {
         property: "og:image",
@@ -130,7 +130,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     chains: (url, config) => [
-      { property: "title", content: `${config?.appName} | Chains` },
+      { title: `${config?.appName} | Chains` },
       { property: "description", content: `Chains integrated by ${config?.appName}` },
       {
         property: "og:image",
@@ -138,7 +138,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     chain: (url, config, chain) => [
-      { property: "title", content: `${config?.appName} | ${chain.name}` },
+      { title: `${config?.appName} | ${chain.name}` },
       { property: "description", content: `Earn rewards by supplying liquidity on ${chain.name} chain` },
       {
         property: "og:image",
@@ -146,7 +146,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     bridge: (url, config) => [
-      { property: "title", content: `${config?.appName} | Bridge` },
+      { title: `${config?.appName} | Bridge` },
       { property: "description", content: "Bridge" },
       {
         property: "og:image",
@@ -154,7 +154,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     protocols: (url, config) => [
-      { property: "title", content: `${config?.appName} | Protocols` },
+      { title: `${config?.appName} | Protocols` },
       { property: "description", content: `Explore protocols incentivized on ${config?.appName}` },
       {
         property: "og:image",
@@ -162,7 +162,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     protocol: (url, config, protocol) => [
-      { property: "title", content: `${config?.appName} | ${protocol.name}` },
+      { title: `${config?.appName} | ${protocol.name}` },
       { property: "description", content: `Explore all opportunities availables on the ${protocol?.name} protocol` },
       {
         property: "og:image",
@@ -170,7 +170,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     tokens: (url, config) => [
-      { property: "title", content: `${config?.appName} | Tokens` },
+      { title: `${config?.appName} | Tokens` },
       { property: "description", content: `Tokens indexed by ${config?.appName}` },
       {
         property: "og:image",
@@ -178,7 +178,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     token: (url, config, token) => [
-      { property: "title", content: `${config?.appName} | ${token?.symbol}` },
+      { title: `${config?.appName} | ${token?.symbol}` },
       { property: "description", content: `All opportunities availables on the ${token?.symbol} token` },
       {
         property: "og:image",
@@ -186,7 +186,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     "opportunity/leaderboard": (url, config) => [
-      { property: "title", content: `${config?.appName} | Leaderboard per token` },
+      { title: `${config?.appName} | Leaderboard per token` },
       { property: "description", content: "" },
       {
         property: "og:image",
@@ -194,7 +194,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
     faq: (url, config) => [
-      { property: "title", content: `${config?.appName} | FAQ` },
+      { title: `${config?.appName} | FAQ` },
       { property: "description", content: `Welcome to ${config?.appName}!` },
       {
         property: "og:image",
