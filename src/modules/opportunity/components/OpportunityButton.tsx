@@ -1,3 +1,4 @@
+import merklConfig from "@core/config";
 import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import { Button, Icon } from "dappkit";
 import { blockEvent } from "dappkit";
@@ -10,7 +11,11 @@ export default function OpportunityButton({ opportunity }: OpportuntiyButtonProp
   const { name, Icons, link } = useOpportunityMetadata(opportunity);
 
   return (
-    <Button to={link} onClick={blockEvent(() => {})} look="soft">
+    <Button
+      disabled={merklConfig.tags && !opportunity.tags.some(t => merklConfig?.tags?.includes(t))}
+      to={link}
+      onClick={blockEvent(() => {})}
+      look="soft">
       <Icons groupProps={{ className: "flex-nowrap" }} />
       {name}
       <Icon remix="RiArrowRightLine" />
