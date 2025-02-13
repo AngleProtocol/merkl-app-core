@@ -20,18 +20,12 @@ export abstract class OpportunityService {
     const overrideQuery = { ...query, sort: query.sort ?? merklConfig.opportunity.library.sortedBy };
     const opportunities = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.index.get({
-        query: Object.assign(
-          { ...overrideQuery },
-          merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {},
-        ),
+        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
       }),
     );
     const count = await OpportunityService.#fetch(async () =>
       api.v4.opportunities.count.get({
-        query: Object.assign(
-          { ...overrideQuery },
-          merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {},
-        ),
+        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
       }),
     );
 
