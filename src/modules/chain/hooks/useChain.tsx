@@ -1,3 +1,4 @@
+import type { Chain } from "@merkl/api";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 
@@ -23,5 +24,5 @@ export default function useChain(chainId?: { id: number }) {
   return {
     chain,
     link,
-  };
+  } as { chain?: Chain; link: string };
 }
