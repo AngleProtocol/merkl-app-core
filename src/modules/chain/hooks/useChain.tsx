@@ -11,17 +11,20 @@ export default function useChain(chainId?: { id: number }) {
    * Chain found from the local chain cache
    */
   const chain = useMemo(() => {
-    if (!chainId) return;
+    if (!chainId) return undefined;
     return chains.find(({ id }) => id === chainId.id)!;
   }, [chainId, chains]);
 
   /**
    * Internal link to the chain's page
    */
-  const link = useMemo(() => `/chains/${chain?.name.replace(" ", "-").toLowerCase()}`, [chain]);
+  const link = useMemo(() => {
+    if (!chain) return "";
+    return `/chains/${chain.name.replace(" ", "-").toLowerCase()}`;
+  }, [chain]);
 
   return {
-    chain,
+    chain: chain || undefined,
     link,
   };
 }
