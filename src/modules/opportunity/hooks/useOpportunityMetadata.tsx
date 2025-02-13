@@ -18,6 +18,7 @@ const metadata = [
   "depositUrl",
   "chain",
   "tokens",
+  "tags",
 ] satisfies (keyof Opportunity)[];
 
 /**
