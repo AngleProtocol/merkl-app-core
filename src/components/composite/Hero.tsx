@@ -54,20 +54,7 @@ export default function Hero({
     <>
       <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`${
-            !!merklConfig.hero.bannerOnAllPages
-              ? "bg-cover"
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover"
-                : "bg-main-6"
-          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}
-          style={{
-            backgroundImage: !!merklConfig.hero.bannerOnAllPages
-              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-                : "none",
-          }}>
+          className={`bg-main-6 flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}>
           <Container>
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">

@@ -1,3 +1,4 @@
+import merklConfig from "@core/config";
 import type { Chain } from "@merkl/api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 
@@ -19,10 +20,10 @@ export default function User({ address, chain, ...props }: UserProps) {
           <Divider className="border-main-6" horizontal />
           {/* <Text size="xs">{token?.description}</Text> */}
           <Group className="flex-col" size="md">
-            <Button to={`/users/${address}`} size="xs" look="soft">
+            {merklConfig.disableNavigation || <Button to={`/users/${address}`} size="xs" look="soft">
               <Icon remix="RiArrowRightLine" />
               Check user claims
-            </Button>
+            </Button>}
             {chain?.explorers?.map(explorer => {
               return (
                 <Button

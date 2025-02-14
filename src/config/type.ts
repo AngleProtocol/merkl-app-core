@@ -230,6 +230,10 @@ export type MerklConfig<T extends Themes> = {
   };
   footerLinks: { image: string; link: string; key: string }[];
   footerNavLinks?: routesType;
+  /**
+   * Removes links to other pages of the app
+   */
+  disableNavigation?: boolean;
 };
 
 export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
