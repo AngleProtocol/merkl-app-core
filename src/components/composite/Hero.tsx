@@ -15,6 +15,7 @@ import {
   useTheme,
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
+import { v4 as uuidv4 } from "uuid";
 import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
@@ -54,7 +55,20 @@ export default function Hero({
     <>
       <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`bg-main-6 flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}>
+          className={`${
+            !!merklConfig.hero.bannerOnAllPages
+              ? "bg-cover"
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
+                ? "bg-cover"
+                : "bg-main-6"
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}
+          style={{
+            backgroundImage: !!merklConfig.hero.bannerOnAllPages
+              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
+                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
+                : "none",
+          }}>
           <Container>
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
@@ -141,7 +155,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Live opportunities",
-      key: "live-opoportunities",
+      key: uuidv4(),
     },
     !!dailyRewards && {
       data: (
@@ -150,7 +164,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Daily rewards",
-      key: "daily-rewards",
+      key: uuidv4(),
     },
     !!maxApr && {
       data: (
@@ -159,7 +173,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Max APR",
-      key: "max-apr",
+      key: uuidv4(),
     },
   ].filter(data => !!data);
 }
