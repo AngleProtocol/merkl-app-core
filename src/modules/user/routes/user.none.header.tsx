@@ -1,4 +1,7 @@
-import { Outlet } from "@remix-run/react";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { withUrl } from "@core/utils/url";
+import type { LoaderFunctionArgs  } from "@remix-run/node";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
@@ -6,7 +9,13 @@ import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
 import merklConfig from "../../../config";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  return withUrl(request, {});
+}
+
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
+
   const [_isEditingAddress] = useState(false);
   const { address } = useWalletContext();
   // Dynamically compute tabs based on config and address validity
@@ -56,7 +65,7 @@ export default function Index() {
       breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={!!merklConfig.dashboardPageName ? merklConfig.dashboardPageName : "Claims"}
-      description={"Claim and monitor the rewards awarded through Merkl"}
+      description={MetadataService.getDescription("dashboard/connect", [data.url, merklConfig])}
       tabs={tabs}>
       <Outlet />
     </Hero>

@@ -43,6 +43,7 @@ export type MerklConfig<T extends Themes> = {
     "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
+    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
     tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
     token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => MetaDescriptor[];
     chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];

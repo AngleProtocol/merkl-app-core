@@ -118,6 +118,16 @@ const defaultMerklConfig: MerklConfig<Themes> = {
         content: `${url}/preview.jpg`,
       },
     ],
+    "dashboard/connect": (url) => [
+      {
+        title: "Claims",
+      },
+      { name: "description", content: "Claims rewards earned through Merkl." },
+      {
+        property: "og:image",
+        content: `${url}/preview.jpg`,
+      },
+    ],
     dashboard: (url, config, address) => [
       {
         title: `${config?.appName} | ${address?.substring(0, 6)}…${address.substring(address.length - 4)} dashboard`,
