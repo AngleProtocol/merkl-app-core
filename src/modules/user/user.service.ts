@@ -1,7 +1,7 @@
 import { api } from "@core/api";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import { isAddressEqual, isAddress } from "viem";
 import type { Creator } from "@merkl/api";
+import { isAddress, isAddressEqual } from "viem";
 
 export abstract class UserService {
   static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Campaigns")(call);
@@ -34,7 +34,7 @@ export abstract class UserService {
 
   /**
    * Gets either the creator from its id (i.e. "uniswap") or by its address
-   * @param creatorIdOrAddress 
+   * @param creatorIdOrAddress
    * @returns an object with either creator or address defined
    */
   static async getCreatorOrAddress(

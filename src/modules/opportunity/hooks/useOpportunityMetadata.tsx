@@ -51,7 +51,7 @@ export default function useOpportunityMetadata({
 
     return spaced
       .map(str => {
-        const key = str
+        const key = str;
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
             <span key={key} className="text-main-11">
