@@ -8,10 +8,7 @@ import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interacti
 import {
   Button,
   type ButtonProps,
-  Divider,
-  Dropdown,
   Fmt,
-  Group,
   Icon,
   List,
   OverrideTheme,
@@ -175,8 +172,8 @@ export default function Interact({
 
   const providerIcon = useMemo(() => {
     if (!target) return;
-    return <RouterStatus name={target.provider} loading={txLoading}/>
-  }, [target, txLoading]);
+    return <RouterStatus name={target.provider} loading={txLoading} error={error} />;
+  }, [target, txLoading, error]);
 
   const canTransactionBeSponsored = opportunity.chainId === 324;
   const priceImpactLevel = useMemo(() => {
