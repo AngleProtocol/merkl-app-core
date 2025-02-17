@@ -22,7 +22,7 @@ export type TagType<T extends keyof TagTypes = keyof TagTypes> = {
   type: T;
   value: TagTypes[T];
 };
-export type TagProps<T extends keyof TagTypes> = {
+export type TagProps<T extends keyof TagTypes = keyof TagTypes> = {
   type: T;
   look?: PrimitiveTagProps["look"];
   value: TagTypes[T];
@@ -34,6 +34,7 @@ export default function Tag<T extends keyof TagTypes>({
   type,
   filter,
   value,
+  look,
   ...props
 }: Component<TagProps<T>, HTMLButtonElement>) {
   const [_searchParams, setSearchParams] = useSearchParams();
@@ -51,7 +52,7 @@ export default function Tag<T extends keyof TagTypes>({
                 return s;
               });
             }}
-            look="soft"
+            look={look ?? "soft"}
             {...props}>
             <Icon size={props?.size} {...status.icon} />
             {status?.label}
@@ -75,7 +76,7 @@ export default function Tag<T extends keyof TagTypes>({
                 return s;
               })
             }
-            look="tint"
+            look={look ?? "tint"}
             key={action.label}
             {...props}>
             <Icon size={props?.size} {...action.icon} />
@@ -85,16 +86,16 @@ export default function Tag<T extends keyof TagTypes>({
       );
     }
     case "token": {
-      return <TokenTag token={value as TagTypes["token"]} {...props} />;
+      return <TokenTag look={look} token={value as TagTypes["token"]} {...props} />;
     }
     case "tokenChain": {
-      return <TokenChainTag token={value as TagTypes["tokenChain"]} />;
+      return <TokenChainTag look={look} token={value as TagTypes["tokenChain"]} />;
     }
     case "protocol": {
       const protocol = value as TagTypes["protocol"];
 
       if (!protocol) return;
-      return <ProtocolTag protocol={protocol} {...props} />;
+      return <ProtocolTag look={look} protocol={protocol} {...props} />;
     }
     default:
       return <PrimitiveTag {...props}>{value as string}</PrimitiveTag>;

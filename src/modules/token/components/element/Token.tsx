@@ -58,7 +58,7 @@ export default function Token({
           )}{" "}
         {format !== "symbol" && icon && <Icon size={size} rounded src={token?.icon} />}
         {symbol && token?.symbol}
-        {(format === "price" || format === "amount_price") && !!amount && (
+        {(format === "price" || format === "amount_price") && (!!amount || showZero) && (
           <Group className="shrink block">
             <PrimitiveTag noClick size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}>
               <Value

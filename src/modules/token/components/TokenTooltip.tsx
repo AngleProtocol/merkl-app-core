@@ -37,15 +37,16 @@ export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) 
         {((merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) ||
           (chain?.explorers?.length ?? 0) > 0) && (
           <>
-            <Divider look="soft" horizontal />
+            {merklConfig.disableNavigation || <Divider look="soft" horizontal />}
             <Group className="flex-col" size="md">
               {/* Conditionally render the "Check opportunities" link */}
-              {(merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) && (
-                <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
-                  <Icon remix="RiArrowRightLine" />
-                  Check opportunities with {token?.symbol}
-                </Button>
-              )}
+              {(merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) &&
+                (merklConfig.disableNavigation || (
+                  <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
+                    <Icon remix="RiArrowRightLine" />
+                    Check opportunities with {token?.symbol}
+                  </Button>
+                ))}
               {chain?.explorers?.map(explorer => (
                 <Button
                   key={`${explorer.url}`}

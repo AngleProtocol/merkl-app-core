@@ -1,6 +1,5 @@
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import { type Themes, createColoring } from "dappkit";
-import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
@@ -38,7 +37,6 @@ import {
   xLayer,
 } from "viem/chains";
 import { eip712WalletActions, zksync } from "viem/zksync";
-import { walletConnect } from "wagmi/connectors";
 //TODO: find a better way to handle importing the client config, this works
 //@ts-ignore
 import merklClientConfig from "../../../../../merkl.config";
@@ -305,28 +303,28 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       route: "/",
       enabled: true,
       inHeader: false,
-      key: uuidv4(),
+      key: "home-link",
     },
     opportunities: {
       icon: "RiPlanetFill",
       route: "/opportunities",
       enabled: true,
       inHeader: true,
-      key: uuidv4(),
+      key: "opportunities-link",
     },
     protocols: {
       icon: "RiVipCrown2Fill",
       route: "/protocols",
       enabled: true,
       inHeader: true,
-      key: uuidv4(),
+      key: "protocols-link",
     },
     bridge: {
       icon: "RiCompassesLine",
       route: "/bridge",
       enabled: true,
       inHeader: true,
-      key: uuidv4(),
+      key: "bridge-link",
     },
     docs: {
       icon: "RiFile4Fill",
@@ -334,14 +332,14 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       external: true,
       enabled: true,
       inHeader: true,
-      key: uuidv4(),
+      key: "docs-link",
     },
     faq: {
       icon: "RiQuestionFill",
       route: "/faq",
       enabled: true,
       inHeader: true,
-      key: uuidv4(),
+      key: "faq-link",
     },
   },
   header: {
@@ -409,16 +407,16 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     },
     ssr: true,
     connectors: [
-      walletConnect({
-        customStoragePrefix: "wagmi",
-        projectId: "26c912aadd2132cd869a5edc00aeea0f",
-        metadata: {
-          name: "Merkl Lite",
-          description: "Merkl Lite",
-          url: "https://app.merkl.xyz",
-          icons: [],
-        },
-      }),
+      // walletConnect({
+      //   customStoragePrefix: "wagmi",
+      //   projectId: "26c912aadd2132cd869a5edc00aeea0f",
+      //   metadata: {
+      //     name: "Merkl Lite",
+      //     description: "Merkl Lite",
+      //     url: "https://app.merkl.xyz",
+      //     icons: [],
+      //   },
+      // }),
     ],
   },
 };

@@ -4,7 +4,6 @@ import type { Chain, Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Text, Title } from "dappkit";
 import { useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
 import Pagination from "../Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
@@ -30,7 +29,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
   const rows = useMemo(() => {
     return leaderboard?.map((row, index) => (
       <LeaderboardTableRow
-        key={uuidv4()}
+        key={`${row.recipient}_${row.reason}_${row.amount}`}
         total={BigInt(total ?? 0n)}
         row={row}
         showreason={reason}
