@@ -3,13 +3,22 @@ import useBalances from "@core/hooks/useBalances";
 import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
 import TransactionOverview from "@core/modules/interaction/components/TransactionOverview";
 import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+<<<<<<< HEAD
+=======
+import Token from "@core/modules/token/components/element/Token";
+>>>>>>> d138141 (improve: swap flow)
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
+  Box,
   Button,
   type ButtonProps,
   Dropdown,
   Fmt,
+<<<<<<< HEAD
+=======
+  Group,
+>>>>>>> d138141 (improve: swap flow)
   Icon,
   List,
   OverrideTheme,
@@ -74,7 +83,11 @@ export default function Interact({
   );
   const priceImpact = useMemo(
     () => amount && inputToken && (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken),
+<<<<<<< HEAD
     [priceImpactValue, amount, inputToken],
+=======
+    [priceImpactValue, transaction, amount],
+>>>>>>> d138141 (improve: swap flow)
   );
 
   const currentInteraction = useMemo(() => {
@@ -202,6 +215,7 @@ export default function Interact({
               <>
                 <Icon remix="RiArrowRightLine" />
                 <OverrideTheme coloring={priceImpactLevel}>
+<<<<<<< HEAD
                   <Dropdown
                     className="group"
                     content={"Estimated value ($) and price impact (%) of the tokens deposited into the protocol"}>
@@ -221,11 +235,65 @@ export default function Interact({
                       </PrimitiveTag>
                     </List>
                   </Dropdown>
+=======
+                  <List size="sm" flex="row">
+                    <PrimitiveTag size="sm">
+                      <Icon src={opportunity?.protocol?.icon}/>
+                      <Icons />
+                      <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+                        {transaction.depositValue}
+                      </Value>
+                    </PrimitiveTag>
+                    <PrimitiveTag size="sm">
+                      {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
+                      <Value size="sm" format="0.###%">
+                        {priceImpact}
+                      </Value>
+                    </PrimitiveTag>
+                  </List>
+>>>>>>> d138141 (improve: swap flow)
                 </OverrideTheme>
               </>
             )}
           </Text>
         )}
+        <OverrideTheme coloring={priceImpactLevel}>
+          <Dropdown
+            content={
+              <Group className="flex-col">
+                {transaction?.actions?.map(({ action, tokens, from, to }) => {
+                  switch (action) {
+                    case "fee":
+                      return (
+                        <Group>
+                          Fee:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                    case "swap":
+                      return (
+                        <Group>
+                          Swap: <Token token={from} amount={from.amount} />
+                          <Icon remix="RiArrowRightLine" />
+                          <Token token={to} amount={to.amount} />
+                        </Group>
+                      );
+                    case "deposit":
+                      return (
+                        <Group>
+                          Deposit:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                  }
+                })}
+              </Group>
+            }></Dropdown>
+        </OverrideTheme>
       </TransactionOverview>
       <Space size="xl" />
       {currentInteraction}
