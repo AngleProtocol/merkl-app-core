@@ -22,6 +22,7 @@ export default function useInteractionTransaction(
   const address = useMemo(() => userAddress ?? connectedAddress, [userAddress, connectedAddress]);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [transactions, setTransactions] = useState<{ [payload: string]: Transaction }>();
   const payload: Payload | undefined = useMemo(() => {
     if (!chainId || !protocolId || !address || !amount || !tokenIn || !target?.identifier) return;
@@ -46,13 +47,18 @@ export default function useInteractionTransaction(
       if (!payload) return;
 
       setLoading(true);
+      setError(false);
       try {
         const tx = await InteractionService.get("supply", payload, { sponsor: sponsorTransactions && chainId === 324 });
 
+        console.log("tx", tx);
+        
         setTransactions(txns => {
           return { ...txns, [JSON.stringify(payload)]: tx };
         });
-      } catch {}
+      } catch {
+        setError(true);
+      }
       setLoading(false);
     },
     [payload, sponsorTransactions, chainId],
@@ -62,5 +68,5 @@ export default function useInteractionTransaction(
     reload();
   }, [reload]);
 
-  return { transaction, reload, loading };
+  return { transaction, reload, loading, error };
 }

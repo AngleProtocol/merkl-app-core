@@ -1,6 +1,6 @@
 import merklConfig from "@core/config";
 import type { Chain, Explorer, Token } from "@merkl/api";
-import { Button, Divider, Group, Hash, Icon, Text } from "dappkit";
+import { Button, Divider, Group, Hash, Icon, Text, Value } from "dappkit";
 
 export type TokenTooltipProps = {
   token: Token;
@@ -25,6 +25,11 @@ export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) 
             </Hash>
           </Text>
         </Group>
+        {token.price !== null && token.price !== undefined && <>
+          <Divider look="soft" horizontal />
+          <Group>
+          <Text>Price:</Text><Value format={"$0.######"}>{token.price}</Value></Group>
+        </>}
         {((merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) ||
           (chain?.explorers?.length ?? 0) > 0) && (
           <>

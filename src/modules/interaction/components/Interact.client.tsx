@@ -1,19 +1,26 @@
+import merklConfig from "@core/config";
 import useBalances from "@core/hooks/useBalances";
 import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
 import TransactionOverview from "@core/modules/interaction/components/TransactionOverview";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
+  Box,
   Button,
   type ButtonProps,
   Divider,
   Dropdown,
+  Fmt,
   Group,
   Icon,
+  List,
+  OverrideTheme,
   PrimitiveTag,
   Space,
   Text,
+  Value,
   WalletButton,
 } from "dappkit";
 import { TransactionButton } from "dappkit";
@@ -32,6 +39,9 @@ export type InteractProps = {
   onSuccess?: (hash: string) => void;
 };
 
+const PRICE_IMPACT_WARN_LEVEL = -0.05; //5%
+const PRICE_IMPACT_FORBID_LEVEL = -0.5; //50%
+
 export default function Interact({
   opportunity,
   onSuccess,
@@ -47,6 +57,7 @@ export default function Interact({
     transaction,
     reload,
     loading: txLoading,
+    error,
   } = useInteractionTransaction(
     opportunity.chainId,
     opportunity.protocol?.id,
@@ -58,6 +69,16 @@ export default function Interact({
   );
   const [_approvalHash, setApprovalHash] = useState<string>();
   const { reload: reloadBalances } = useBalances();
+  const { Icons } = useOpportunityMetadata(opportunity);
+
+  const priceImpactValue = useMemo(
+    () => transaction && inputToken && transaction.depositValue - Fmt.toPrice(BigInt(amount ?? 0), inputToken),
+    [transaction, amount, inputToken],
+  );
+  const priceImpact = useMemo(
+    () => amount && inputToken && (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken),
+    [priceImpactValue, transaction, amount],
+  );
 
   const currentInteraction = useMemo(() => {
     let buttonProps: ButtonProps | undefined = undefined;
@@ -68,6 +89,8 @@ export default function Interact({
 
     if (disabled) createProps({ disabled: true, children: "Cannot interact" });
     else if (!user) return <WalletButton {...commonProps} />;
+    else if (priceImpact && priceImpact <= PRICE_IMPACT_FORBID_LEVEL)
+      createProps({ disabled: true, children: "Price impact too high" });
     else if (chainId !== opportunity.chainId)
       createProps({ children: `Switch to ${opportunity.chain.name}`, onClick: () => switchChain(opportunity.chainId) });
     else if (!inputToken) createProps({ disabled: true, children: "Select a token" });
@@ -163,6 +186,41 @@ export default function Interact({
                   routes to interact with other protocols.
                 </Text>
                 <Divider look="soft" horizontal />
+                {transaction?.actions?.map(({ action, tokens, from, to, ...t }) => {
+                  switch (action) {
+                    case "fee":
+                      return (
+                        <Group>
+                          Fee:{" "}
+                          {tokens.map(token => (
+                            <Token format="amount_price" token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                    case "swap":
+                      return (
+                        <Group>
+                          Swap: <Token token={from} amount={from.amount} />
+                          <Icon remix="RiArrowRightLine" />
+                          <Token token={to} format="amount_price" amount={to.amount} />
+                        </Group>
+                      );
+                    case "deposit":
+                      return (
+                        <Group>
+                          Deposit:{" "}
+                          {tokens.map(token => (
+                            <Token format="amount_price" token={token} amount={token.amount} />
+                          ))}
+                          {t.tokensOut?.length && <Icon remix="RiArrowRightLine" />}
+                          {t.tokensOut?.map(token => (
+                            <Token format="amount_price" token={token} amount={token.amount || undefined} />
+                          ))}
+                        </Group>
+                      );
+                  }
+                })}
+                <Divider look="soft" horizontal />
                 <Group className="flex-col">
                   <Button to={"https://www.enso.build/"} size="xs" look="soft">
                     <Icon remix="RiArrowRightLine" /> Visit Enso
@@ -170,9 +228,13 @@ export default function Interact({
                 </Group>
               </Group>
             }>
-            <PrimitiveTag size="sm">
+              <OverrideTheme coloring={(!txLoading && error) ? "harm" : undefined}>
+            <PrimitiveTag size="sm" className="items-center">
               <Icon src="https://framerusercontent.com/images/19ye5oms8sG6XHF1K8p03vLNkg.png" /> Enso
+              {txLoading && <Icon remix="RiLoader2Fill" className="animate-spin" />}
+              {!txLoading && error && <Icon remix="RiCloseFill" className="animate-drop" />}
             </PrimitiveTag>
+              </OverrideTheme>
           </Dropdown>
         </>
       );
@@ -187,6 +249,37 @@ export default function Interact({
                   tokens, thanks to the KyberSwap aggregator.
                 </Text>
                 <Divider look="soft" horizontal />
+                {transaction?.actions?.map(({ action, tokens, from, to }) => {
+                  switch (action) {
+                    case "fee":
+                      return (
+                        <Group>
+                          Fee:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                    case "swap":
+                      return (
+                        <Group>
+                          Swap: <Token token={from} amount={from.amount} />
+                          <Icon remix="RiArrowRightLine" />
+                          <Token token={to} amount={to.amount} />
+                        </Group>
+                      );
+                    case "deposit":
+                      return (
+                        <Group>
+                          Deposit:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                  }
+                })}
+                <Divider look="soft" horizontal />
                 <Group className="flex-col">
                   <Button
                     to={"https://docs.kyberswap.com/kyberswap-solutions/kyberswap-zap-as-a-service"}
@@ -200,25 +293,97 @@ export default function Interact({
             <PrimitiveTag size="sm">
               <Icon src="https://docs.kyberswap.com/~gitbook/image?url=https%3A%2F%2F1368568567-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Fw1XgQJc40kVeGUIxgI7c%252Ficon%252FYl1TDE5MQwDPbEsfCerK%252Fimage%2520%281%29.png%3Falt%3Dmedia%26token%3D3f984a53-8b11-4d1b-b550-193d82610e7b&width=32&dpr=1&quality=100&sign=a7af3e95&sv=2" />{" "}
               Kyberswap Zap
+              {txLoading && <Icon remix="RiLoader2Fill" className="animate-spin" />}
             </PrimitiveTag>
           </Dropdown>
         </>
       );
-  }, [target]);
+  }, [target, txLoading, transaction, error]);
 
   const canTransactionBeSponsored = opportunity.chainId === 324;
+  const priceImpactLevel = useMemo(() => {
+
+    if (!priceImpact) return "warn";
+    if (priceImpact <= PRICE_IMPACT_FORBID_LEVEL) return "harm";
+    if (priceImpact <= PRICE_IMPACT_WARN_LEVEL) return "warn";
+    return;
+  }, [priceImpact]);
 
   return (
     <>
       <Space size="sm" />
       <TransactionOverview settings={settings} allowTxSponsoring={canTransactionBeSponsored}>
         {!!amount && !!inputToken && (
-          <Text className="flex animate-drop grow flex-nowrap items-center gap-md" size={6}>
-            Supply
-            <Token key={amount} className="animate-drop" token={inputToken} amount={amount} format="price" /> with{" "}
+          <Text className="flex animate-drop grow flex-nowrap items-center gap-sm" size={6}>
+            <PrimitiveTag size="sm">
+              <Icon src={inputToken.icon} />
+              <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+                {Fmt.toPrice(amount, inputToken)}
+              </Value>
+            </PrimitiveTag>
+            <Icon remix="RiArrowRightLine" />
             {providerIcon}
+            {transaction && (
+              <>
+                <Icon remix="RiArrowRightLine" />
+                <OverrideTheme coloring={priceImpactLevel}>
+                  <List size="sm" flex="row">
+                    <PrimitiveTag size="sm">
+                      <Icon src={opportunity?.protocol?.icon}/>
+                      <Icons />
+                      <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+                        {transaction.depositValue}
+                      </Value>
+                    </PrimitiveTag>
+                    <PrimitiveTag size="sm">
+                      {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
+                      <Value size="sm" format="0.###%">
+                        {priceImpact}
+                      </Value>
+                    </PrimitiveTag>
+                  </List>
+                </OverrideTheme>
+              </>
+            )}
           </Text>
         )}
+        <OverrideTheme coloring={priceImpactLevel}>
+          <Dropdown
+            content={
+              <Group className="flex-col">
+                {transaction?.actions?.map(({ action, tokens, from, to }) => {
+                  switch (action) {
+                    case "fee":
+                      return (
+                        <Group>
+                          Fee:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                    case "swap":
+                      return (
+                        <Group>
+                          Swap: <Token token={from} amount={from.amount} />
+                          <Icon remix="RiArrowRightLine" />
+                          <Token token={to} amount={to.amount} />
+                        </Group>
+                      );
+                    case "deposit":
+                      return (
+                        <Group>
+                          Deposit:{" "}
+                          {tokens.map(token => (
+                            <Token token={token} amount={token.amount} />
+                          ))}
+                        </Group>
+                      );
+                  }
+                })}
+              </Group>
+            }></Dropdown>
+        </OverrideTheme>
       </TransactionOverview>
       <Space size="xl" />
       {currentInteraction}
