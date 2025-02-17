@@ -81,6 +81,15 @@ export default function Participate({
           size="lg"
           state={[amount, a => setAmount(a)]}
           base={inputToken?.decimals ?? 18}
+          footer={
+            <Group className="justify-between w-full">
+              {inputToken && (
+                <Value className="animate-drop" format={merklConfig.decimalFormat.dollar}>
+                  {Fmt.toPrice(amount ?? 0n, inputToken)}
+                </Value>
+              )}
+            </Group>
+          }
           header={
             <Group className="justify-between w-full">
               <Text size={5}>{mode === "deposit" ? "Supply" : "Withdraw"}</Text>
