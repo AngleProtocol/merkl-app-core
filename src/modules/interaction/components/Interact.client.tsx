@@ -8,6 +8,7 @@ import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interacti
 import {
   Button,
   type ButtonProps,
+  Dropdown,
   Fmt,
   Icon,
   List,
@@ -201,21 +202,25 @@ export default function Interact({
               <>
                 <Icon remix="RiArrowRightLine" />
                 <OverrideTheme coloring={priceImpactLevel}>
-                  <List size="sm" flex="row">
-                    <PrimitiveTag size="sm">
-                      <Icon src={opportunity?.protocol?.icon} />
-                      <Icons />
-                      <Value size="sm" format={merklConfig.decimalFormat.dollar}>
-                        {transaction.depositValue}
-                      </Value>
-                    </PrimitiveTag>
-                    <PrimitiveTag size="sm">
-                      {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
-                      <Value size="sm" format="0.###%">
-                        {priceImpact ?? 0}
-                      </Value>
-                    </PrimitiveTag>
-                  </List>
+                  <Dropdown
+                    className="group"
+                    content={"Estimated value ($) and price impact (%) of the tokens deposited into the protocol"}>
+                    <List size="sm" flex="row">
+                      <PrimitiveTag size="sm">
+                        <Icon src={opportunity?.protocol?.icon} />
+                        <Icons />
+                        <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+                          {transaction.depositValue}
+                        </Value>
+                      </PrimitiveTag>
+                      <PrimitiveTag size="sm">
+                        {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
+                        <Value size="sm" format="0.###%">
+                          {priceImpact ?? 0}
+                        </Value>
+                      </PrimitiveTag>
+                    </List>
+                  </Dropdown>
                 </OverrideTheme>
               </>
             )}
