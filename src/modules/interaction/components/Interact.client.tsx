@@ -76,7 +76,7 @@ export default function Interact({
   );
   const priceImpact = useMemo(
     () => amount && inputToken && (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken),
-    [priceImpactValue, transaction, amount],
+    [priceImpactValue, amount, inputToken],
   );
 
   const currentInteraction = useMemo(() => {
@@ -165,6 +165,7 @@ export default function Interact({
     amount,
     transaction,
     disabled,
+    priceImpact,
     switchChain,
     user,
     txLoading,
@@ -184,21 +185,22 @@ export default function Interact({
                   Enso provides abstract on-chain actions, shortcuts and routes that allows dApps to find the best
                   routes to interact with other protocols.
                 </Text>
-                <Divider look="soft" horizontal />
-                {transaction?.actions?.map(({ action, tokens, from, to, ...t }) => {
+                {/* TODO: parse actions and find a way to display them better than following: */}
+                {/* <Divider look="soft" horizontal /> */}
+                {/* {transaction?.actions?.map(({ action, tokens, from, to, ...t }) => {
                   switch (action) {
                     case "fee":
                       return (
-                        <Group>
+                        <Group className="items-center">
                           Fee:{" "}
-                          {tokens.map(token => (
-                            <Token format="amount_price" token={token} amount={token.amount} />
+                          {tokens.map((token) => (
+                            <Token className="items-center" key={token.symbol} format="amount_price" token={token} amount={token.amount} />
                           ))}
                         </Group>
                       );
                     case "swap":
                       return (
-                        <Group>
+                        <Group className="items-center">
                           Swap: <Token token={from} amount={from.amount} />
                           <Icon remix="RiArrowRightLine" />
                           <Token token={to} format="amount_price" amount={to.amount} />
@@ -206,7 +208,7 @@ export default function Interact({
                       );
                     case "deposit":
                       return (
-                        <Group>
+                        <Group className="items-center">
                           Deposit:{" "}
                           {tokens.map(token => (
                             <Token format="amount_price" token={token} amount={token.amount} />
@@ -218,7 +220,7 @@ export default function Interact({
                         </Group>
                       );
                   }
-                })}
+                })} */}
                 <Divider look="soft" horizontal />
                 <Group className="flex-col">
                   <Button to={"https://www.enso.build/"} size="xs" look="soft">
@@ -247,8 +249,9 @@ export default function Interact({
                   Zap enables users to effortlessly add liquidity into any concentrated liquidity protocol using any
                   tokens, thanks to the KyberSwap aggregator.
                 </Text>
-                <Divider look="soft" horizontal />
-                {transaction?.actions?.map(({ action, tokens, from, to }) => {
+                {/* TODO: parse actions and find a way to display them better than following: */}
+                {/* <Divider look="soft" horizontal /> */}
+                {/* {transaction?.actions?.map(({ action, tokens, from, to }) => {
                   switch (action) {
                     case "fee":
                       return (
@@ -277,7 +280,7 @@ export default function Interact({
                         </Group>
                       );
                   }
-                })}
+                })} */}
                 <Divider look="soft" horizontal />
                 <Group className="flex-col">
                   <Button
@@ -336,7 +339,7 @@ export default function Interact({
                     <PrimitiveTag size="sm">
                       {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
                       <Value size="sm" format="0.###%">
-                        {priceImpact}
+                        {priceImpact ?? 0}
                       </Value>
                     </PrimitiveTag>
                   </List>
@@ -345,43 +348,6 @@ export default function Interact({
             )}
           </Text>
         )}
-        <OverrideTheme coloring={priceImpactLevel}>
-          <Dropdown
-            content={
-              <Group className="flex-col">
-                {transaction?.actions?.map(({ action, tokens, from, to }) => {
-                  switch (action) {
-                    case "fee":
-                      return (
-                        <Group>
-                          Fee:{" "}
-                          {tokens.map(token => (
-                            <Token token={token} amount={token.amount} />
-                          ))}
-                        </Group>
-                      );
-                    case "swap":
-                      return (
-                        <Group>
-                          Swap: <Token token={from} amount={from.amount} />
-                          <Icon remix="RiArrowRightLine" />
-                          <Token token={to} amount={to.amount} />
-                        </Group>
-                      );
-                    case "deposit":
-                      return (
-                        <Group>
-                          Deposit:{" "}
-                          {tokens.map(token => (
-                            <Token token={token} amount={token.amount} />
-                          ))}
-                        </Group>
-                      );
-                  }
-                })}
-              </Group>
-            }></Dropdown>
-        </OverrideTheme>
       </TransactionOverview>
       <Space size="xl" />
       {currentInteraction}
