@@ -7,7 +7,6 @@ import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
-  Box,
   Button,
   type ButtonProps,
   Divider,
@@ -228,13 +227,13 @@ export default function Interact({
                 </Group>
               </Group>
             }>
-              <OverrideTheme coloring={(!txLoading && error) ? "harm" : undefined}>
-            <PrimitiveTag size="sm" className="items-center">
-              <Icon src="https://framerusercontent.com/images/19ye5oms8sG6XHF1K8p03vLNkg.png" /> Enso
-              {txLoading && <Icon remix="RiLoader2Fill" className="animate-spin" />}
-              {!txLoading && error && <Icon remix="RiCloseFill" className="animate-drop" />}
-            </PrimitiveTag>
-              </OverrideTheme>
+            <OverrideTheme coloring={!txLoading && error ? "harm" : undefined}>
+              <PrimitiveTag size="sm" className="items-center">
+                <Icon src="https://framerusercontent.com/images/19ye5oms8sG6XHF1K8p03vLNkg.png" /> Enso
+                {txLoading && <Icon remix="RiLoader2Fill" className="animate-spin" />}
+                {!txLoading && error && <Icon remix="RiCloseFill" className="animate-drop" />}
+              </PrimitiveTag>
+            </OverrideTheme>
           </Dropdown>
         </>
       );
@@ -302,7 +301,6 @@ export default function Interact({
 
   const canTransactionBeSponsored = opportunity.chainId === 324;
   const priceImpactLevel = useMemo(() => {
-
     if (!priceImpact) return "warn";
     if (priceImpact <= PRICE_IMPACT_FORBID_LEVEL) return "harm";
     if (priceImpact <= PRICE_IMPACT_WARN_LEVEL) return "warn";
@@ -329,7 +327,7 @@ export default function Interact({
                 <OverrideTheme coloring={priceImpactLevel}>
                   <List size="sm" flex="row">
                     <PrimitiveTag size="sm">
-                      <Icon src={opportunity?.protocol?.icon}/>
+                      <Icon src={opportunity?.protocol?.icon} />
                       <Icons />
                       <Value size="sm" format={merklConfig.decimalFormat.dollar}>
                         {transaction.depositValue}

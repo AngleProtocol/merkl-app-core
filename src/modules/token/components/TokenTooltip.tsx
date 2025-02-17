@@ -25,11 +25,15 @@ export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) 
             </Hash>
           </Text>
         </Group>
-        {token.price !== null && token.price !== undefined && <>
-          <Divider look="soft" horizontal />
-          <Group>
-          <Text>Price:</Text><Value format={"$0.######"}>{token.price}</Value></Group>
-        </>}
+        {token.price !== null && token.price !== undefined && (
+          <>
+            <Divider look="soft" horizontal />
+            <Group>
+              <Text>Price:</Text>
+              <Value format={"$0.######"}>{token.price}</Value>
+            </Group>
+          </>
+        )}
         {((merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) ||
           (chain?.explorers?.length ?? 0) > 0) && (
           <>
