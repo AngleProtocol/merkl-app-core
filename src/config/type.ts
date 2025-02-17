@@ -39,11 +39,19 @@ export type MerklConfig<T extends Themes> = {
   metaDatas: {
     home: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
     opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    opportunity: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, opportunity: Opportunity) => MetaDescriptor[];
+    opportunity: (
+      url: string,
+      config: Omit<MerklConfig<T>, "wagmi" | "themes">,
+      opportunity: Opportunity,
+    ) => MetaDescriptor[];
     "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
     bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
     dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, address: string) => MetaDescriptor[];
-    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, address: string) => MetaDescriptor[];
+    "dashboard/connect": (
+      url: string,
+      config: Omit<MerklConfig<T>, "wagmi" | "themes">,
+      address: string,
+    ) => MetaDescriptor[];
     tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
     token: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, token: Token) => MetaDescriptor[];
     chains: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
