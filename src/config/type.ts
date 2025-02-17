@@ -37,20 +37,24 @@ export type MerklConfig<T extends Themes> = {
   metaDatasGlobal: (url: string) => MetaDescriptor[];
 
   metaDatas: {
-    home: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    opportunity: (url: string, config: Omit<MerklConfig<T>, "wagmi">, opportunity: Opportunity) => MetaDescriptor[];
-    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
-    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi">, address: string) => MetaDescriptor[];
-    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    token: (url: string, config: Omit<MerklConfig<T>, "wagmi">, token: Token) => MetaDescriptor[];
-    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi">, chain: Chain) => MetaDescriptor[];
-    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
-    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi">, protocol: Protocol) => MetaDescriptor[];
-    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi">) => MetaDescriptor[];
+    home: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    opportunity: (
+      url: string,
+      config: Omit<MerklConfig<T>, "wagmi" | "themes">,
+      opportunity: Opportunity,
+    ) => MetaDescriptor[];
+    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, address: string) => MetaDescriptor[];
+    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    token: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, token: Token) => MetaDescriptor[];
+    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, chain: Chain) => MetaDescriptor[];
+    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, protocol: Protocol) => MetaDescriptor[];
+    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
   };
 
   /**

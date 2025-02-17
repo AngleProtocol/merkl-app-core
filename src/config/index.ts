@@ -118,7 +118,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
         content: `${url}/preview.jpg`,
       },
     ],
-    "dashboard/connect": (url) => [
+    "dashboard/connect": url => [
       {
         title: "Claims",
       },
