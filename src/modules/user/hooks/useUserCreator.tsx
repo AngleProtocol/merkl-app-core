@@ -8,7 +8,7 @@ export default function useUserCreator(userAddress?: string) {
   const [creators, setCreators] = useState<{ [address: string]: Creator["model"] }>({});
 
   const address = useMemo(() => userAddress ?? connectedAddress, [userAddress, connectedAddress]);
-  const creator = useMemo(() => address ? creators?.[address] : undefined, [address, creators]);
+  const creator = useMemo(() => (address ? creators?.[address] : undefined), [address, creators]);
 
   useEffect(() => {
     async function fetchCreator() {

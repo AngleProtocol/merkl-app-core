@@ -20,10 +20,12 @@ export default function User({ address, chain, ...props }: UserProps) {
           <Divider className="border-main-6" horizontal />
           {/* <Text size="xs">{token?.description}</Text> */}
           <Group className="flex-col" size="md">
-            {merklConfig.disableNavigation || <Button to={`/users/${address}`} size="xs" look="soft">
-              <Icon remix="RiArrowRightLine" />
-              Check user claims
-            </Button>}
+            {merklConfig.disableNavigation || (
+              <Button to={`/users/${address}`} size="xs" look="soft">
+                <Icon remix="RiArrowRightLine" />
+                Check user claims
+              </Button>
+            )}
             {chain?.explorers?.map(explorer => {
               return (
                 <Button
