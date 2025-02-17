@@ -19,15 +19,6 @@ export const clientLoader = Cache.wrap("tokens", 300);
 export default function Index() {
   const { tokens, count } = useLoaderData<typeof loader>();
 
-  const isSingleChain = merklConfig?.chains?.length === 1;
-  const navigate = useNavigate();
-
-  // TODO: need to be refacto when we refactor the custom router
-  useEffect(() => {
-    if (!isSingleChain) return;
-    navigate("/");
-  }, [isSingleChain, navigate]);
-
   return (
     <Container>
       <Space size="xl" />
