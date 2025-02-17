@@ -52,7 +52,7 @@ export default function useInteractionTransaction(
         const tx = await InteractionService.get("supply", payload, { sponsor: sponsorTransactions && chainId === 324 });
 
         console.log("tx", tx);
-        
+
         setTransactions(txns => {
           return { ...txns, [JSON.stringify(payload)]: tx };
         });

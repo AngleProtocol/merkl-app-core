@@ -10,7 +10,6 @@ import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import {
-  Box,
   Button,
   type ButtonProps,
   Dropdown,
@@ -238,7 +237,7 @@ export default function Interact({
 =======
                   <List size="sm" flex="row">
                     <PrimitiveTag size="sm">
-                      <Icon src={opportunity?.protocol?.icon}/>
+                      <Icon src={opportunity?.protocol?.icon} />
                       <Icons />
                       <Value size="sm" format={merklConfig.decimalFormat.dollar}>
                         {transaction.depositValue}
