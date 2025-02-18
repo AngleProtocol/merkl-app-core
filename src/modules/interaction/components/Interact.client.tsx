@@ -73,7 +73,7 @@ export default function Interact({
     [transaction, amount, inputToken],
   );
   const priceImpact = useMemo(
-    () => (amount && inputToken) ? (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken) : undefined,
+    () => (amount && inputToken ? (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken) : undefined),
     [priceImpactValue, amount, inputToken],
   );
 
