@@ -73,7 +73,7 @@ export default function Interact({
     [transaction, amount, inputToken],
   );
   const priceImpact = useMemo(
-    () => amount && inputToken && (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken),
+    () => (amount && inputToken) ? (priceImpactValue ?? 0) / Fmt.toPrice(BigInt(amount ?? 0), inputToken) : undefined,
     [priceImpactValue, amount, inputToken],
   );
 
@@ -210,7 +210,7 @@ export default function Interact({
                         <Icon src={opportunity?.protocol?.icon} />
                         <Icons />
                         <Value size="sm" format={merklConfig.decimalFormat.dollar}>
-                          {transaction.depositValue}
+                          {transaction?.depositValue}
                         </Value>
                       </PrimitiveTag>
                       <PrimitiveTag size="sm">
