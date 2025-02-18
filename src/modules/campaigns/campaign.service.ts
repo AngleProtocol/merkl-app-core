@@ -42,9 +42,15 @@ export abstract class CampaignService {
    * @param query of api route (might get overwritten by request)
    * @returns an arr
    */
-  static async getByOpportunity(request: Request, query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
+  static async getByOpportunity(
+    request: Request | undefined,
+    query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"],
+  ) {
     return await CampaignService.#fetch(
-      async () => await api.v4.campaigns.index.get({ query: CampaignService.#getQueryFromRequest(request, query) }),
+      async () =>
+        await api.v4.campaigns.index.get({
+          query: request ? CampaignService.#getQueryFromRequest(request, query) : query,
+        }),
     );
   }
 

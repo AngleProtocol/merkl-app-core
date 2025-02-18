@@ -32,7 +32,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
   const chain = await ChainService.get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
-  const campaigns = await CampaignService.getByOpportunity(request, {
+  const campaigns = await CampaignService.getByOpportunity(undefined, {
     chainId: chain.id,
     type: type as Campaign["type"],
     mainParameter: id,
