@@ -12,7 +12,9 @@ export abstract class CampaignService {
    * @param override params for which to override value
    * @returns query
    */
-  static #getQueryFromRequest(request: Request, override?: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
+  static #getQueryFromRequest(request: Request | undefined, override?: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
+    if (!request) return {};
+
     const status = new URL(request.url).searchParams.get("status");
     const action = new URL(request.url).searchParams.get("action");
     const chainId = new URL(request.url).searchParams.get("chain");
@@ -42,7 +44,7 @@ export abstract class CampaignService {
    * @param query of api route (might get overwritten by request)
    * @returns an arr
    */
-  static async getByOpportunity(request: Request, query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
+  static async getByOpportunity(request: Request | undefined, query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
     return await CampaignService.#fetch(
       async () => await api.v4.campaigns.index.get({ query: CampaignService.#getQueryFromRequest(request, query) }),
     );
