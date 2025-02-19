@@ -124,7 +124,7 @@ export default function ClaimRewardsChainTableRow({
       }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
-        <ClaimRewardsTokenTable dividerClassName={() => "!bg-accent-8"} className="[&>*]:bg-accent-4" look="soft">
+        <ClaimRewardsTokenTable dividerClassName={() => "!bg-main-8"} className="[&>*]:bg-main-4" look="soft">
           {renderTokenRewards}
         </ClaimRewardsTokenTable>
       </Collapsible>

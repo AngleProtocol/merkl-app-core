@@ -12,7 +12,7 @@ export const LayerMenu: FC<{
   setOpen: (open: boolean) => void;
 }> = ({ nav, setOpen }) => {
   return (
-    <div className="layermenu z-50 min-w-64 bg-accent-2 flex flex-col">
+    <div className="layermenu z-50 min-w-64 bg-main-2 flex flex-col">
       <main className="flex-1 overflow-y-scroll w-full">
         <ul className="min-w-max list-none flex gap-md md:gap-lg flex-col">
           {Object.entries(nav)
@@ -26,8 +26,8 @@ export const LayerMenu: FC<{
                     rel="noopener noreferrer"
                     onClick={() => window.open(value.route, "_blank", "noopener noreferrer")}
                     className={`dim flex items-center gap-md ${["faq"].includes(key) ? "uppercase" : "capitalize"}`}>
-                    <Icon remix={value.icon} className="text-xl text-accent-11" />
-                    <Text size="lg" bold className="text-accent-12">
+                    <Icon remix={value.icon} className="text-xl text-main-11" />
+                    <Text size="lg" bold className="text-main-12">
                       {key}
                     </Text>
                   </a>
@@ -36,8 +36,8 @@ export const LayerMenu: FC<{
                     onClick={() => setOpen(false)}
                     to={value.route}
                     className={`dim flex items-center gap-md ${["faq"].includes(key) ? "uppercase" : "capitalize"}`}>
-                    <Icon remix={value.icon} className="text-xl text-accent-11" />
-                    <Text size="lg" bold className="text-accent-12">
+                    <Icon remix={value.icon} className="text-xl text-main-11" />
+                    <Text size="lg" bold className="text-main-12">
                       {key}
                     </Text>
                   </NavLink>

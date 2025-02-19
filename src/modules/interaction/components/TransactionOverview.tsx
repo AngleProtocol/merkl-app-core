@@ -26,7 +26,7 @@ export default function TransactionOverview({ allowTxSponsoring, settings, child
   const [settingsCollapsed, setSettingsCollapsed] = useState<boolean>(false);
 
   return (
-    <Box content="sm" className="w-full !gap-0 !bg-accent-2" look="base">
+    <Box content="sm" className="w-full !gap-0 !bg-main-2" look="base">
       <Group className="w-full flex-nowrap">
         <Group className="grow items-center flex-nowrap overflow-x-scroll">{children}</Group>
         <PrimitiveTag

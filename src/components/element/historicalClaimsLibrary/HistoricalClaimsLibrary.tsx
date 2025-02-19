@@ -21,9 +21,9 @@ export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryPr
       {rows?.length > 0 ? (
         <HistoricalClaimsTable
           responsive
-          dividerClassName={index => (index < 2 ? "bg-gray-8" : "bg-accent-8")}
+          dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
           header={
-            <Title h={5} className="!text-accent-11 w-full">
+            <Title h={5} className="!text-main-11 w-full">
               Past Claims
             </Title>
           }>

@@ -33,7 +33,7 @@ export default function TokenChainTag({ token, ...props }: { token: Token } & Pr
               </Group>
               <Group size="sm">
                 <Icon size={props?.size} src={token.icon} />
-                <Text size="sm" className="text-accent-12" bold>
+                <Text size="sm" className="text-main-12" bold>
                   {token?.name}
                 </Text>
               </Group>

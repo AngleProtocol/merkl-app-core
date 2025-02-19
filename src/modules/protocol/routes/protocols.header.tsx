@@ -29,7 +29,7 @@ export default function Index() {
   return (
     <Hero
       compact
-      icons={[{ remix: "RiCommandLine", className: "text-accent-11 !w-lg*4 !h-lg*4" }]}
+      icons={[{ remix: "RiCommandLine", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
       title={I18n.trad.get.pages.protocols.title}
       breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
       description={MetadataService.getDescription("protocols", [data?.url, config])}

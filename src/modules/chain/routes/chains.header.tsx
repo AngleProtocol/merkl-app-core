@@ -21,7 +21,7 @@ export default function Index() {
 
   return (
     <Hero
-      icons={[{ remix: "RiExchange2Line", className: "text-accent-11 !w-lg*4 !h-lg*4" }]}
+      icons={[{ remix: "RiExchange2Line", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
       title={"Chains"}
       breadcrumbs={[{ link: "/chains", name: "Chains" }]}
       description={MetadataService.getDescription("chains", [data?.url, config])}>

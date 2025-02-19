@@ -215,9 +215,9 @@ export default function Participate({
       {!loading && !!interactor && (
         <>
           <Space />
-          <Box look="soft" className="gap-xs bg-accent-5">
+          <Box look="soft" className="gap-xs bg-main-5">
             <Group className="flex flex-nowrap">
-              <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-gray-11 flex-shrink-0" />
+              <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
               <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
             </Group>
           </Box>
@@ -231,9 +231,9 @@ export default function Participate({
       <Collapsible state={[!!interactor, () => {}]}>{interactor}</Collapsible>
 
       <Collapsible state={[success, () => {}]}>
-        <Box look="soft" className="gap-xs bg-accent-5 mt-md">
+        <Box look="soft" className="gap-xs bg-main-5 mt-md">
           <Group>
-            <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-gray-12" />
+            <Icon coloring={"good"} remix="RiCheckboxCircleFill" className="text-accent-12" />
             <Text look="bold" className="font-bold">
               Deposit successful !
             </Text>

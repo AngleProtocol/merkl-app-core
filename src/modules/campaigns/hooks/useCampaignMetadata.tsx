@@ -71,7 +71,7 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
           className="grow"
           accent={"good"}
           total={duration}
-          values={[{ value: elapsed, className: ended ? "bg-accent-6" : "bg-gray-10" }]}
+          values={[{ value: elapsed, className: ended ? "bg-main-6" : "bg-accent-10" }]}
         />
         <Text size="sm">
           {ended ? "ended" : "ends"}{" "}

@@ -20,7 +20,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
           <Group className="items-center">
             Campaign
             <PrimitiveTag look="soft" size="xs">
-              <Hash size="xs" format="short" copy className="text-accent-12">
+              <Hash size="xs" format="short" copy className="text-main-12">
                 {breakdown.identifier}
               </Hash>
             </PrimitiveTag>
@@ -51,7 +51,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
   return (
     <Group className="flex-col mt-md">
       <Group className="items-center" size="sm">
-        <Icon className="text-accent-11" remix="RiFileList3Line" />
+        <Icon className="text-main-11" remix="RiFileList3Line" />
         <Text size="sm" bold>
           APR details
         </Text>
