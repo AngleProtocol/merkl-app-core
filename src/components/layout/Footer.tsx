@@ -10,7 +10,7 @@ export default function Footer() {
   const { mode } = useTheme();
 
   return (
-    <footer className="relative backdrop-blur py-lg lg:py-xl flex flex-nowrap justify-between items-center w-full">
+    <footer className="relative backdrop-blur py-lg lg:py-lg*2 flex flex-nowrap justify-between items-center w-full">
       <Container className="relative z-10">
         <Group className="justify-between gap-xl md:gap-xl*2">
           <Group className="gap-xl md:gap-xl*2 items-center">

@@ -37,7 +37,7 @@ export default function OpportunityTableRow({
     () => (
       <EventBlocker>
         <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
-          <PrimitiveTag look="hype" size="lg">
+          <PrimitiveTag look="hype">
             <Value value format="0a%">
               {opportunity.apr / 100}
             </Value>
@@ -52,7 +52,7 @@ export default function OpportunityTableRow({
     () => (
       <EventBlocker>
         <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
-          <PrimitiveTag look="base" className="font-mono">
+          <PrimitiveTag look="base">
             <Value value format={merklConfig.decimalFormat.dollar}>
               {opportunity.tvl ?? 0}
             </Value>
@@ -81,7 +81,7 @@ export default function OpportunityTableRow({
               }
             />
           }>
-          <PrimitiveTag look="base" className="font-mono">
+          <PrimitiveTag look="base">
             <Value value format={merklConfig.decimalFormat.dollar}>
               {opportunity.dailyRewards ?? 0}
             </Value>
@@ -111,7 +111,7 @@ export default function OpportunityTableRow({
             tvlColumn={tvlColumn}
             rewardsColumn={rewardsColumn}
             opportunityColumn={
-              <Group className="flex-col w-full">
+              <Group className="flex-col w-full" size="lg">
                 <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
                   <Group className="text-xl items-center">
                     <Icons groupProps={{ className: "flex-nowrap" }} />
