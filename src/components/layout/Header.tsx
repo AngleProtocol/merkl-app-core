@@ -127,7 +127,7 @@ export default function Header() {
           <motion.div variants={item} className="cursor-pointer">
             {media || merklConfig.hideLayerMenuHomePage ? (
               <Image
-                imgClassName="w-[200px] max-h-[2.5rem]"
+                imgClassName="max-w-[200px] max-h-[2rem]"
                 alt={`${merklConfig.appName} logo`}
                 src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 onClick={navigateToHomepage}
@@ -140,7 +140,7 @@ export default function Header() {
                 content={<LayerMenu nav={routes} setOpen={setOpen} />}
                 className="flex gap-sm md:gap-lg items-center">
                 <Image
-                  imgClassName="!w-[140px] md:!w-[200px] max-h-[2.5rem]"
+                  imgClassName="!max-w-[140px] md:!max-w-[200px] max-h-[2rem]"
                   alt={`${merklConfig.appName} logo`}
                   src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 />
