@@ -156,7 +156,6 @@ export type MerklConfig<T extends Themes> = {
    * App name reflected in the app titles & descriptions
    */
   appName: string;
-  fonts?: { italic?: boolean };
   routes: routesType;
   opportunity: {
     featured: {

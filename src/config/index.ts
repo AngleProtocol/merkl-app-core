@@ -211,7 +211,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       },
     ],
   },
-  fonts: { italic: false },
+
   opportunityNavigationMode: "supply",
   tokenSymbolPriority: ["ZK", "USDC", "USDC.e", "ETH", "WETH", "WBTC", "wstETH", "USDT", "USDe", "weETH", "DAI"],
   rewardsNavigationMode: "chain",

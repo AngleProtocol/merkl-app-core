@@ -14,6 +14,18 @@ export abstract class MetadataService {
     return [...globalMetadatas, ...localMetadatas];
   }
 
+  static getTitle<
+    Ressource extends keyof MerklConfig<Themes>["metaDatas"],
+    Args extends Parameters<MerklConfig<Themes>["metaDatas"][Ressource]>,
+  >(ressource: Ressource, args: Args) {
+    // @ts-ignore
+    const localMetadatas = merklConfig.metaDatas[ressource](...args);
+    const title = localMetadatas.find(metadata => "title" in metadata);
+
+    // biome-ignore lint/suspicious/noExplicitAny: templated type
+    return (title as any)?.title;
+  }
+
   static getDescription<
     Ressource extends keyof MerklConfig<Themes>["metaDatas"],
     Args extends Parameters<MerklConfig<Themes>["metaDatas"][Ressource]>,
