@@ -51,7 +51,7 @@ export default function Index() {
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <>
-          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
+          {token.name} <span className="font-mono text-accent-8">({token.symbol})</span>
         </>
       }
       description={`Leaderboard of all ${token.symbol} rewards earned through Merkl`}>

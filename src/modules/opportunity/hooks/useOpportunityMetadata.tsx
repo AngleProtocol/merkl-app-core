@@ -55,18 +55,18 @@ export default function useOpportunityMetadata({
         const key = str + uuidv4();
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
-            <span key={key} className="text-main-11">
+            <span key={key} className="text-accent-11">
               {str}
             </span>,
           ];
         if (str.includes("-"))
           return str
             .split("-")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">-</span>]);
+            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-accent-11">-</span>]);
         if (str.includes("/"))
           return str
             .split("/")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>]);
+            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-accent-11">/</span>]);
         return [<span key={key}>{str}</span>];
       })
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);

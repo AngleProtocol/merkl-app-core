@@ -37,7 +37,7 @@ export default function LoadingIndicator() {
       <Bar
         className={mergeClass("!p-0 !h-[3px]", progress === 0 && "opacity-0")}
         total={100}
-        values={[{ value: progress, className: "bg-accent-8 transition-all duration-100" }]}
+        values={[{ value: progress, className: "bg-gray-8 transition-all duration-100" }]}
       />
     </div>
   );

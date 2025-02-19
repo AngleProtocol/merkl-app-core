@@ -10,7 +10,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
   return (
-    <Box look="soft" size="lg" className="rounded-sm bg-main-0 border-main-6 border-1">
+    <Box look="soft" size="lg" className="rounded-sm bg-accent-0 border-accent-6 border-1">
       <Group className="items-center">
         {formattedDailyRewards}
         <Tags

@@ -29,11 +29,11 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
   return (
     <CampaignTable
       className="w-full"
-      dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
+      dividerClassName={index => (index < 2 ? "bg-gray-8" : "bg-accent-8")}
       hideLabels={!rows?.length}
       header={
         <Group className="justify-between items-center w-full">
-          <Title className="!text-main-11" h={5}>
+          <Title className="!text-accent-11" h={5}>
             Campaigns
           </Title>
           <Group>

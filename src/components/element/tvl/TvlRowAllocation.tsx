@@ -77,7 +77,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   return (
     <Group className="flex-col">
       <Group className="items-center" size="sm">
-        <Icon className="text-main-11" remix="RiContractRightFill" />
+        <Icon className="text-accent-11" remix="RiContractRightFill" />
         <Text size="sm" bold>
           TVL allocation
         </Text>

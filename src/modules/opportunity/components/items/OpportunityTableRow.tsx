@@ -74,7 +74,7 @@ export default function OpportunityTableRow({
               label={
                 <Group size="sm">
                   <Icon remix="RiGift2Fill" />
-                  <Text size="sm" className="text-main-12" bold>
+                  <Text size="sm" className="text-accent-12" bold>
                     Daily Rewards
                   </Text>
                 </Group>

@@ -214,7 +214,7 @@ export default function Interact({
                         </Value>
                       </PrimitiveTag>
                       <PrimitiveTag size="sm">
-                        {priceImpactLevel !== undefined && <Icon className="text-main-11" remix="RiAlertFill" />}
+                        {priceImpactLevel !== undefined && <Icon className="text-accent-11" remix="RiAlertFill" />}
                         <Value size="sm" format="0.###%">
                           {priceImpact ?? 0}
                         </Value>

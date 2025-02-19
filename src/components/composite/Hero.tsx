@@ -59,7 +59,7 @@ export default function Hero({
               ? "bg-cover xl:bg-auto bg-right-bottom"
               : location?.pathname === "/" || location?.pathname === "/opportunities"
                 ? "bg-cover xl:bg-auto bg-right-bottom"
-                : "bg-main-6"
+                : "bg-accent-6"
           } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
             backgroundImage: !!merklConfig.hero.bannerOnAllPages
@@ -95,10 +95,18 @@ export default function Hero({
                       <Icons size="lg" containerClassName="hidden md:flex">
                         {icons?.length > 1
                           ? icons?.map(icon => (
-                              <Icon className="text-main-12 !w-lg*4 !h-lg*4" key={`${Object.values(icon)}`} {...icon} />
+                              <Icon
+                                className="text-accent-12 !w-lg*4 !h-lg*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
                             ))
                           : icons?.map(icon => (
-                              <Icon className="text-main-12 !w-xl*4 !h-xl*4" key={`${Object.values(icon)}`} {...icon} />
+                              <Icon
+                                className="text-accent-12 !w-xl*4 !h-xl*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
                             ))}
                       </Icons>
                     )}
@@ -118,7 +126,7 @@ export default function Hero({
                   <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="lg">
                     {sideDatas.map(data => (
                       <Group key={data.key} className="flex-col" size="xs">
-                        <Text size={4} className="!text-main-12">
+                        <Text size={4} className="!text-accent-12">
                           {data.data}
                         </Text>
 
@@ -146,7 +154,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
   return [
     !!count && {
       data: (
-        <Value format="0" size={4} className="!text-main-12">
+        <Value format="0" size={4} className="!text-accent-12">
           {count}
         </Value>
       ),
@@ -155,7 +163,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
     },
     !!dailyRewards && {
       data: (
-        <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
+        <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-accent-12">
           {dailyRewards}
         </Value>
       ),
@@ -164,7 +172,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
     },
     !!maxApr && {
       data: (
-        <Value format="0a%" size={4} className="!text-main-12">
+        <Value format="0a%" size={4} className="!text-accent-12">
           {maxApr / 100}
         </Value>
       ),

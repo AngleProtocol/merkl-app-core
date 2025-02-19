@@ -365,14 +365,14 @@ export default function OpportunityFilters({
         <Group className="flex-nowrap">
           <Button
             disabled={view === "cells"}
-            className={view === "cells" ? "text-accent-11 !opacity-100" : ""}
+            className={view === "cells" ? "text-gray-11 !opacity-100" : ""}
             look="soft"
             onClick={() => setView?.("cells")}>
             <Icon remix="RiDashboardFill" />
           </Button>
           <Button
             disabled={view === "table"}
-            className={view === "table" ? "text-accent-11 !opacity-100" : ""}
+            className={view === "table" ? "text-gray-11 !opacity-100" : ""}
             look="soft"
             onClick={() => setView?.("table")}>
             <Icon remix="RiSortDesc" />
