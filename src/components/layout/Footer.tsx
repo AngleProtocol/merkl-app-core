@@ -39,7 +39,7 @@ export default function Footer() {
           </Group>
           <Group className="items-center gap-xl md:gap-xl*2">
             <Group className="items-center" size="xl">
-              <Text size="sm" className="text-accent-11">
+              <Text size="sm" className="text-main-11">
                 ©{new Date().getFullYear()} Merkl. All rights reserved.
               </Text>
 

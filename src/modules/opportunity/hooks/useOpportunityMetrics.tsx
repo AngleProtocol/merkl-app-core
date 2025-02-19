@@ -25,7 +25,7 @@ export default function useOpportunityMetrics({ dailyRewards, apr, tvl }: Pick<O
       .filter(([, [value]]) => !!value)
       .map(([label, [value, props]]) => ({
         label,
-        data: <Value children={value} size={4} className="!text-accent-12" {...props} />,
+        data: <Value children={value} size={4} className="!text-main-12" {...props} />,
         key: uuidv4(),
       }));
   }, [dailyRewards, apr, tvl]);

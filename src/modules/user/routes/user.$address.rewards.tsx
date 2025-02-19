@@ -37,8 +37,8 @@ export default function Index() {
       <Space size="md" />
       {!!I18n.trad.get.pages.dashboard.explanation && (
         <>
-          <Group className="rounded-md p-md bg-accent-5 flex-nowrap items-start">
-            <Icon remix="RiInformation2Fill" className="text-lg text-gray-11 flex-shrink-0" />
+          <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">
+            <Icon remix="RiInformation2Fill" className="text-lg text-accent-11 flex-shrink-0" />
             <Text look="bold" size="sm">
               {I18n.trad.get.pages.dashboard.explanation}
             </Text>

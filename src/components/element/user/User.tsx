@@ -16,7 +16,7 @@ export default function User({ address, chain }: UserProps) {
               {address}
             </Hash>
           </Group>
-          <Divider className="border-accent-6" horizontal />
+          <Divider className="border-main-6" horizontal />
           {/* <Text size="xs">{token?.description}</Text> */}
           <Group className="flex-col" size="md">
             <Button to={`/users/${address}`} size="xs" look="soft">

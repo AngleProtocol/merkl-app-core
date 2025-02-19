@@ -30,7 +30,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
         return <ClaimRewardsByOpportunity from={from} rewards={flatenedRewards} />;
       default:
         return (
-          <ClaimRewardsChainTable dividerClassName={index => (index === 1 ? "bg-gray-10" : "bg-accent-7")}>
+          <ClaimRewardsChainTable dividerClassName={index => (index === 1 ? "bg-accent-10" : "bg-main-7")}>
             {rewards?.map((reward, index) => (
               <ClaimRewardsChainTableRow
                 {...{ from, reward }}

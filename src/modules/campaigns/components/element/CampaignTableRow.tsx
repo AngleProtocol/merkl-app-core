@@ -138,7 +138,7 @@ export default function CampaignTableRow({
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
-            <Icon className={active ? "text-gray-10" : "text-accent-10"} remix="RiCircleFill" />
+            <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
           <Token
             size="xl"
@@ -162,7 +162,7 @@ export default function CampaignTableRow({
       }>
       <Collapsible state={[isOpen, setIsOpen]}>
         <Space size="md" />
-        <Box size="md" className="p-0 bg-accent-4 !rounded-md">
+        <Box size="md" className="p-0 bg-main-4 !rounded-md">
           <Group className="flex-nowrap p-lg" size="lg">
             <Group className="justify-between flex-grow flex-col size-full">
               <Text size="sm" look="soft">
@@ -170,7 +170,7 @@ export default function CampaignTableRow({
               </Text>
               {campaignInformation}
             </Group>
-            <Divider look="bold" vertical className="bg-accent-6 border-accent-6" />
+            <Divider look="bold" vertical className="bg-main-6 border-main-6" />
             <Group className="justify-between flex-col size-full">
               <Group className="flex justify-between item-center">
                 <Text size="sm" look="soft">

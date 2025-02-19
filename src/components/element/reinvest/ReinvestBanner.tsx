@@ -55,18 +55,18 @@ export default function ReinvestBanner() {
   if (!merklConfig.dashboard?.reinvestTokenAddress) return;
   return (
     <Group
-      className="rounded-md p-md bg-accent-8 flex-nowrap items-start flex-col cursor-pointer !gap-0"
+      className="rounded-md p-md bg-main-8 flex-nowrap items-start flex-col cursor-pointer !gap-0"
       onClick={() => setIsOpen(!isOpen)}>
       <Group className="w-full justify-between">
         <Group>
-          <Icon coloring={"good"} className={"text-lg text-gray-11"} remix="RiInformation2Fill" />
+          <Icon coloring={"good"} className={"text-lg text-accent-11"} remix="RiInformation2Fill" />
           <Text look="bold" size="sm">
             {I18n.trad.get.pages.dashboard.reinvest}
           </Text>
         </Group>
         <Icon
           data-state={!isOpen ? "closed" : "opened"}
-          className={"transition duration-150 ease-out data-[state=opened]:rotate-180 text-lg text-accent-12"}
+          className={"transition duration-150 ease-out data-[state=opened]:rotate-180 text-lg text-main-12"}
           remix="RiArrowDownSLine"
         />
       </Group>

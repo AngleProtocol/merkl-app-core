@@ -91,7 +91,7 @@ export default function Index() {
       options[campaign.campaignId] = (
         <Group className="items-center">
           <OverrideTheme accent={"good"}>
-            <Icon className={isActive ? "text-gray-10" : "text-accent-10"} remix="RiCircleFill" />
+            <Icon className={isActive ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
 
           <PrimitiveTag size="sm" look={isActive ? "bold" : "soft"}>
@@ -142,8 +142,8 @@ export default function Index() {
           look="soft"
           size="lg"
           content="xs"
-          className="justify-between !p-xl items-center flex-row border-2 bg-accent-0 border-accent-8 flex-1">
-          <Title h={3} size="lg" className="!text-accent-11 uppercase font-bold">
+          className="justify-between !p-xl items-center flex-row border-2 bg-main-0 border-main-8 flex-1">
+          <Title h={3} size="lg" className="!text-main-11 uppercase font-bold">
             {label}
           </Title>
           {/* Probably a count from api */}

@@ -25,9 +25,9 @@ export default function Index() {
         {!!I18n.trad.get.pages.bridge.helper && (
           <>
             <Space size="lg" />
-            <Group className="border-1 rounded-lg p-md border-gray-8 flex-wrap text-center items-center w-fit m-auto justify-center">
+            <Group className="border-1 rounded-lg p-md border-accent-8 flex-wrap text-center items-center w-fit m-auto justify-center">
               <Text look="bold">
-                <Icon remix="RiInformation2Fill" className="inline mr-md text-2xl text-gray-11" />
+                <Icon remix="RiInformation2Fill" className="inline mr-md text-2xl text-accent-11" />
                 {I18n.trad.get.pages.bridge.helper}
               </Text>
               {!!merklConfig.bridge.helperLink && (
@@ -42,7 +42,7 @@ export default function Index() {
         <Suspense
           fallback={
             <Group className="justify-center w-full">
-              <Icon remix="RiLoader2Line" className="animate-spin text-accent-12" />
+              <Icon remix="RiLoader2Line" className="animate-spin text-main-12" />
             </Group>
           }>
           <LiFiWidget />

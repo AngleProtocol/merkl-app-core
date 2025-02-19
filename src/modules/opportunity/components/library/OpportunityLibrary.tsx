@@ -74,11 +74,11 @@ export default function OpportunityLibrary({
             responsive
             exclude={["tvl"]}
             opportunityHeader={
-              <Title className="!text-accent-11" h={5}>
+              <Title className="!text-main-11" h={5}>
                 Opportunities
               </Title>
             }
-            dividerClassName={index => (index < 2 ? "bg-gray-11" : "bg-accent-8")}
+            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
             sortable={sortable}
             order={(sortIdAndOrder ?? [])?.[1]}
             sort={(sortIdAndOrder ?? [])?.[0] ?? "rewards"}

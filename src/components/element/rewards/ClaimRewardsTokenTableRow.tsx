@@ -35,7 +35,7 @@ export default function ClaimRewardsTokenTableRow({
           <Tag type="token" value={reward.token} />
           <Icon
             data-state={!open ? "closed" : "opened"}
-            className="text-accent-10 transition duration-150 ease-out data-[state=opened]:rotate-180"
+            className="text-main-10 transition duration-150 ease-out data-[state=opened]:rotate-180"
             remix={"RiArrowDropDownLine"}
           />
         </Group>
@@ -72,7 +72,7 @@ export default function ClaimRewardsTokenTableRow({
                   {...props}
                   key={b.opportunity.identifier}
                   data-look={props?.look ?? "none"}
-                  className="!px-0 py-xl  !m-0 border-none bg-accent-0"
+                  className="!px-0 py-xl  !m-0 border-none bg-main-0"
                   onClick={() => setOpen(o => !o)}
                   tokenColumn={
                     <Group className="flex-col justify-center">

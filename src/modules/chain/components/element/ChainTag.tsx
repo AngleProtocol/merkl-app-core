@@ -26,7 +26,7 @@ export default function ChainTag({ chain: { id }, ...props }: { chain: { id: num
             <Group className="w-full justify-between items-center" size="xl">
               <Group size="sm">
                 <Icon src={chain?.icon} />
-                <Text size="sm" className="text-accent-12" bold>
+                <Text size="sm" className="text-main-12" bold>
                   {chain?.name}
                 </Text>
               </Group>
