@@ -22,7 +22,7 @@ export default function Index() {
 
   return (
     <Hero
-      icons={[{ remix: "RiPlanetFill" }]}
+      // icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={I18n.trad.get.pages.opportunities.title}
       description={MetadataService.getDescription("opportunities", [data?.url, config])}>
