@@ -144,7 +144,7 @@ export default function Header() {
                   alt={`${merklConfig.appName} logo`}
                   src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
                 />
-                <Icon className="text-main-12" remix="RiArrowDownSLine" />
+                <Icon className="text-accent-12" remix="RiArrowDownSLine" />
               </Dropdown>
             )}
           </motion.div>

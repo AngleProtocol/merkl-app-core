@@ -27,7 +27,7 @@ export default function TokenTag({ token, ...props }: { token: Token } & Primiti
             <Group className="w-full justify-between items-center" size="xl">
               <Group size="sm">
                 <Icon size={props?.size} src={token.icon} />
-                <Text size="sm" className="text-main-12" bold>
+                <Text size="sm" className="text-accent-12" bold>
                   {token?.name}
                 </Text>
               </Group>

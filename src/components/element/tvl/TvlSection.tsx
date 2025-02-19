@@ -63,7 +63,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
               gridTemplateColumns: "minmax(350px, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
             }}>
             <Group className="items-center" size="sm">
-              <Icon className="text-main-11" remix="RiForwardEndFill" />
+              <Icon className="text-accent-11" remix="RiForwardEndFill" />
               <Text size="sm" bold>
                 Forwarder details
               </Text>

@@ -77,7 +77,7 @@ export default function Index() {
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <>
-          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
+          {token.name} <span className="font-mono text-accent-8">({token.symbol})</span>
         </>
       }
       description={`Earn rewards by using ${token.symbol} as liquidity, or directly earn ${token.symbol} as rewards`}

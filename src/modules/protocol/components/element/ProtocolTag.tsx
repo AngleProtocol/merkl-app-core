@@ -24,11 +24,11 @@ export default function ProtocolTag({ protocol, ...props }: { protocol: Protocol
           <Group className="flex-col">
             <Group size="sm">
               <Icon size={props?.size} src={protocol?.icon} />
-              <Text size="sm" className="text-main-12" bold>
+              <Text size="sm" className="text-accent-12" bold>
                 {name}
               </Text>
             </Group>
-            <Divider className="border-main-6" horizontal />
+            <Divider className="border-accent-6" horizontal />
             {/* <Text size="xs">{token?.description}</Text> */}
             <Group className="flex-col" size="md">
               <Button to={link} size="xs" look="soft">

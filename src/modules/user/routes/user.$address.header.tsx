@@ -122,8 +122,8 @@ export default function Index() {
           link: `/users/${address ?? ""}`,
           component: (
             <>
-              <Icon remix="RiArrowRightSLine" className="text-main-12" />
-              <Hash copy format="full" size="xs" className="text-main-12">
+              <Icon remix="RiArrowRightSLine" className="text-accent-12" />
+              <Hash copy format="full" size="xs" className="text-accent-12">
                 {address}
               </Hash>
               <Dropdown size="md" padding="xs" content={<AddressEdit />}>
@@ -143,7 +143,7 @@ export default function Index() {
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
               ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-accent-12">
                   {rewards.unclaimed}
                 </Value>
               )}
@@ -176,7 +176,7 @@ export default function Index() {
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
               ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-accent-12">
                   {rewards.pending}
                 </Value>
               )}
@@ -189,7 +189,7 @@ export default function Index() {
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
               ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-accent-12">
                   {rewards.earned + rewards.pending}
                 </Value>
               )}

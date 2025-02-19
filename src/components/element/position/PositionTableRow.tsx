@@ -47,7 +47,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
     // Implement this when we handle different display logic for different campaign types (as it should be collapsible for CLAMM example on figma) can be copy past as a child element of PositionRow
     /* <Collapsible state={[open, setOpen]}>
           <Space size="md" />
-          <SubPositionTable dividerClassName={() => "!bg-main-8"} className="[&>*]:bg-main-4" look="soft">
+          <SubPositionTable dividerClassName={() => "!bg-accent-8"} className="[&>*]:bg-accent-4" look="soft">
             {subPositions}
           </SubPositionTable>
         </Collapsible> */

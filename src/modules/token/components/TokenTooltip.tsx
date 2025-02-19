@@ -15,7 +15,7 @@ export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) 
         <Group className="w-full justify-between items-center" size="xl">
           <Group size="sm">
             <Icon size={size} src={token.icon} />
-            <Text size="sm" className="text-main-12" bold>
+            <Text size="sm" className="text-accent-12" bold>
               {token?.name}
             </Text>
           </Group>

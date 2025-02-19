@@ -110,7 +110,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
             look="base"
             state={[searchInput, setSearchInput]}
             placeholder="Search"
-            suffix={<Icon className="text-main-12" remix="RiSearchLine" />}
+            suffix={<Icon className="text-accent-12" remix="RiSearchLine" />}
           />
           {Results}
         </>
@@ -118,7 +118,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
       <Form>
         {icon ? (
           <Button look="base">
-            <Icon className="text-main-12" remix="RiSearchLine" />
+            <Icon className="text-accent-12" remix="RiSearchLine" />
           </Button>
         ) : (
           <Input
@@ -126,7 +126,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
             value={searchInput}
             state={[searchInput, setSearchInput]}
             placeholder="Search"
-            suffix={<Icon className="text-main-12" remix="RiSearchLine" />}
+            suffix={<Icon className="text-accent-12" remix="RiSearchLine" />}
           />
         )}
       </Form>
