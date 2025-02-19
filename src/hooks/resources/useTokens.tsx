@@ -17,7 +17,7 @@ export default function useTokens(tokenData?: Token[]) {
       tokenData.reduce(
         (obj, token) =>
           Object.assign(obj, {
-            [token.id]: (
+            [token.address]: (
               <>
                 <Icon size="sm" src={token?.icon} />
                 {token.name}
