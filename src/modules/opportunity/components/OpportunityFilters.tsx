@@ -275,7 +275,6 @@ export default function OpportunityFilters({
               state={[innerSearch, v => setInnerSearch(v ?? "")]}
               suffix={<Icon remix="RiSearchLine" />}
               onClick={onSearchSubmit}
-              size="sm"
               placeholder="Search"
             />
           </Form>
@@ -332,8 +331,8 @@ export default function OpportunityFilters({
                   look="base"
                   name="tvl"
                   value={tvlInput}
-                  className="min-w-[11ch]"
-                  suffix={<Icon remix="RiFilter2Line" />}
+                  className="min-w-[10ch] !max-w-[15ch]"
+                  suffix={<Icon remix="RiFilterFill" />}
                   placeholder="Minimum TVL"
                 />
               </Form>
@@ -355,20 +354,27 @@ export default function OpportunityFilters({
                 )}
               </Button>
             )}
-            <Button onClick={onClearFilters} look="soft" className="text-nowrap">
-              {merklConfig.opportunityLibrary?.views?.length !== 1 && <Icon remix="RiCloseLine" />}
+            <Button onClick={onClearFilters} look="soft" size="xs" className="text-nowrap">
               Clear filters
-              {merklConfig.opportunityLibrary?.views?.length === 1 && <Icon remix="RiCloseLine" />}
+              <Icon remix="RiCloseLine" />{" "}
             </Button>
           </Group>
         </Group>
       </Group>
       {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) && view && (
         <Group className="flex-nowrap">
-          <Button disabled={view === "cells"} look="soft" onClick={() => setView?.("cells")}>
+          <Button
+            disabled={view === "cells"}
+            className={view === "cells" ? "text-accent-11 !opacity-100" : ""}
+            look="soft"
+            onClick={() => setView?.("cells")}>
             <Icon remix="RiDashboardFill" />
           </Button>
-          <Button disabled={view === "table"} look="soft" onClick={() => setView?.("table")}>
+          <Button
+            disabled={view === "table"}
+            className={view === "table" ? "text-accent-11 !opacity-100" : ""}
+            look="soft"
+            onClick={() => setView?.("table")}>
             <Icon remix="RiSortDesc" />
           </Button>
         </Group>

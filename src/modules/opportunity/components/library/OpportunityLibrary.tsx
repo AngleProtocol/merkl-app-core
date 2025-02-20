@@ -78,7 +78,7 @@ export default function OpportunityLibrary({
                 Opportunities
               </Title>
             }
-            dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
+            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
             sortable={sortable}
             order={(sortIdAndOrder ?? [])?.[1]}
             sort={(sortIdAndOrder ?? [])?.[0] ?? "rewards"}

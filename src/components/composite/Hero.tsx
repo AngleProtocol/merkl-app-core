@@ -2,7 +2,6 @@ import { useLocation } from "@remix-run/react";
 import {
   Button,
   Container,
-  Divider,
   Group,
   Icon,
   type IconProps,
@@ -57,11 +56,11 @@ export default function Hero({
         <Group
           className={`${
             !!merklConfig.hero.bannerOnAllPages
-              ? "bg-cover"
+              ? "bg-cover xl:bg-auto bg-right-bottom"
               : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover"
+                ? "bg-cover xl:bg-auto bg-right-bottom"
                 : "bg-main-6"
-          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "xl:min-h-[350px] aspect-[1440/300]"}`}
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
             backgroundImage: !!merklConfig.hero.bannerOnAllPages
               ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
@@ -109,12 +108,9 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <>
-                      <Divider look="base" />
-                      <Text size="lg" bold>
-                        {description}
-                      </Text>
-                    </>
+                    <Text size="lg" bold>
+                      {description}
+                    </Text>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>
