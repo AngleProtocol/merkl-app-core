@@ -34,17 +34,22 @@ export const columns = {
   },
   apr: {
     name: "APR",
-    size: "minmax(min-content,150px)",
+    size: "minmax(min-content,80px)",
     className: "md:justify-center",
   },
   tvl: {
     name: "TVL",
-    size: "minmax(min-content,150px)",
+    size: "minmax(min-content,100px)",
     className: "md:justify-center",
   },
   rewards: {
     name: "Daily rewards",
-    size: "minmax(min-content,150px)",
+    size: "minmax(min-content,120px)",
+    className: "md:justify-center",
+  },
+  cta: {
+    name: "",
+    size: "36px",
     className: "md:justify-center",
   },
 };
