@@ -95,7 +95,7 @@ export default function OpportunityLibrary({
       case "cells":
         return (
           <List dividerClassName={() => "bg-accent-11"}>
-            <Box container size="lg" content="lg">
+            <Box size="lg" className="!p-lg !rounded-lg+md">
               <Group className="justify-between">
                 <Text size={5}>Opportunities</Text>
                 {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&

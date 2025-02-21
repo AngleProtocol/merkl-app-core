@@ -116,7 +116,7 @@ export default function OpportunityTableRow({
           <OpportunityRow
             size="lg"
             content="sm"
-            className={mergeClass("cursor-pointer", className)}
+            className={mergeClass("cursor-pointer ease hover:bg-main-2", className)}
             {...props}
             aprColumn={aprColumn}
             tvlColumn={tvlColumn}
