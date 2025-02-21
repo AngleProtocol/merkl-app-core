@@ -10,7 +10,18 @@ import TokenAmountModal from "@core/modules/token/components/TokenAmountModal";
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Dropdown, Group, Icon, Icons as IconGroup, PrimitiveTag, Text, Title, Value, mergeClass } from "dappkit";
+import {
+  Button,
+  Dropdown,
+  Group,
+  Icon,
+  Icons as IconGroup,
+  PrimitiveTag,
+  Text,
+  Title,
+  Value,
+  mergeClass,
+} from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
@@ -133,6 +144,11 @@ export default function OpportunityTableRow({
                   <Tags hide={hideTags} size="sm" />
                 </Group>
               </Group>
+            }
+            ctaColumn={
+              <Button look="hype">
+                <Icon remix="RiArrowRightLine" />
+              </Button>
             }
           />
         );

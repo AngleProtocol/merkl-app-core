@@ -1,15 +1,14 @@
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Box, Group, type Order, Title } from "dappkit";
+import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useMemo, useRef, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
-import useSearchParamState from "../../../../hooks/filtering/useSearchParamState";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
 import OpportunityCell from "../items/OpportunityCell";
 import OpportunityTableRow from "../items/OpportunityTableRow";
-import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";
+import { OpportunityTable } from "./OpportunityTable";
 
 export type Displays = "grid" | "list";
 
@@ -31,8 +30,6 @@ export default function OpportunityLibrary({
   hideFilters,
   forceView,
 }: OpportunityLibrary) {
-  const sortable = ["apr", "tvl", "rewards"] as const satisfies typeof opportunityColumns;
-
   // Merge global and local exclusions
   const mergedExclusions = useMemo(() => {
     // Get global exclusions from config
@@ -42,21 +39,6 @@ export default function OpportunityLibrary({
     // Remove duplicates
     return Array.from(new Set(combinedExclusions));
   }, [exclude]);
-
-  const [sortIdAndOrder, setSortIdAndOrder] = useSearchParamState<[id: (typeof sortable)[number], order: Order]>(
-    "sort",
-    v => v?.join("-"),
-    v => v?.split("-") as [(typeof sortable)[number], order: Order],
-  );
-
-  const onSort = useCallback(
-    (column: (typeof opportunityColumns)[number], order: Order) => {
-      if (!sortable.some(s => s === column)) return;
-
-      setSortIdAndOrder([column as (typeof sortable)[number], order]);
-    },
-    [sortable, setSortIdAndOrder],
-  );
 
   const [view, setView] = useState<OpportunityView>(forceView ?? merklConfig.opportunityLibrary.defaultView ?? "table");
 
@@ -79,10 +61,26 @@ export default function OpportunityLibrary({
               </Title>
             }
             dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
-            sortable={sortable}
-            order={(sortIdAndOrder ?? [])?.[1]}
-            sort={(sortIdAndOrder ?? [])?.[0] ?? "rewards"}
-            onSort={onSort}
+            ctaHeader={
+              (merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
+              view && (
+                <Group className="flex-nowrap" size="sm">
+                  <Button
+                    // className={"text-accent-11 !opacity-100"}
+                    look="soft"
+                    onClick={() => setView?.("cells")}>
+                    <Icon remix="RiDashboardFill" />
+                  </Button>
+                  <Button
+                    disabled={view === "table"}
+                    className={view === "table" ? "text-accent-11 !opacity-100" : ""}
+                    look="soft"
+                    onClick={() => setView?.("table")}>
+                    <Icon remix="RiSortDesc" />
+                  </Button>
+                </Group>
+              )
+            }
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
               <OpportunityTableRow
@@ -96,26 +94,50 @@ export default function OpportunityLibrary({
         );
       case "cells":
         return (
-          <Group>
-            <Group className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
-              {opportunities?.map(o => (
-                <OpportunityCell
-                  navigationMode={merklConfig.opportunityNavigationMode}
-                  hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
-                  key={`${o.chainId}_${o.type}_${o.identifier}`}
-                  opportunity={o}
-                />
-              ))}
-            </Group>
+          <List dividerClassName={() => "bg-accent-11"}>
+            <Box container size="lg" content="lg">
+              <Group className="justify-between">
+                <Text size={5}>Opportunities</Text>
+                {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
+                  view && (
+                    <Group className="flex-nowrap" size="sm">
+                      <Button
+                        className={"text-accent-11 !opacity-100"}
+                        disabled
+                        look="soft"
+                        onClick={() => setView?.("cells")}>
+                        <Icon remix="RiDashboardFill" />
+                      </Button>
+                      <Button look="soft" onClick={() => setView?.("table")}>
+                        <Icon remix="RiSortDesc" />
+                      </Button>
+                    </Group>
+                  )}
+              </Group>
+            </Box>
+            <Box>
+              <Group>
+                <Group className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
+                  {opportunities?.map(o => (
+                    <OpportunityCell
+                      navigationMode={merklConfig.opportunityNavigationMode}
+                      hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
+                      key={`${o.chainId}_${o.type}_${o.identifier}`}
+                      opportunity={o}
+                    />
+                  ))}
+                </Group>
+              </Group>
+            </Box>
             {count !== undefined && (
               <Box content="sm" className="w-full">
                 <Pagination count={count} />
               </Box>
             )}
-          </Group>
+          </List>
         );
     }
-  }, [opportunities, view, count, sortable, onSort, sortIdAndOrder]);
+  }, [opportunities, view, count]);
 
   return (
     <div className="flex flex-col w-full">
