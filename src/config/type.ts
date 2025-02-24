@@ -3,7 +3,7 @@ import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type { MetaDescriptor } from "@remix-run/react";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
-import type { WalletOptions } from "dappkit";
+import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
@@ -24,6 +24,22 @@ export type routesType = {
     enabled?: boolean;
     inHeader?: boolean;
   };
+};
+
+/**
+ * Route entry in the links menu, either an external link or internal route
+ */
+export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
+  icon: IconProps;
+  name: string;
+} & (L extends "link" ? { link: string; external?: boolean; disabled?: boolean } : { routes: NavigationMenuRoutes });
+
+/**
+ * Collection of routes
+ * {@link NavigationMenuRoute }
+ */
+export type NavigationMenuRoutes = {
+  [key: string]: NavigationMenuRoute;
 };
 
 // TODO: groups by entity
@@ -70,6 +86,10 @@ export type MerklConfig<T extends Themes> = {
    */
   tags?: string[];
   defaultTheme: keyof T;
+  navigation: {
+    brand?: () => JSX.Element;
+    routes: NavigationMenuRoutes;
+  };
   /**
    * Toggle supply modal allowing users to deposit/withdraw directly on opportunities
    */

@@ -1,26 +1,13 @@
 import type { routesType } from "@core/config/type";
-import { useNavigate } from "@remix-run/react";
-import {
-  Button,
-  Container,
-  Dropdown,
-  Group,
-  Icon,
-  Image,
-  SCREEN_BREAKDOWNS,
-  Select,
-  WalletButton,
-  useTheme,
-  useWalletContext,
-} from "dappkit";
+import { useLocation } from "@remix-run/react";
+import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useMediaQuery } from "react-responsive";
+import { useEffect, useMemo, useRef, useState } from "react";
 import merklConfig from "../../config";
 import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
-import { LayerMenu } from "./LayerMenu";
+import BrandNavigationMenu from "./BrandNavigationMenu";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -33,18 +20,10 @@ const container = {
   },
 };
 
-const item = {
-  hidden: { y: "-100%" },
-  visible: {
-    y: 0,
-  },
-};
-
 export default function Header() {
-  const { mode } = useTheme();
   const { chainId, address: user, chains, switchChain } = useWalletContext();
-  const [open, setOpen] = useState<boolean>(false);
-  const headerRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -63,12 +42,34 @@ export default function Header() {
     return filteredRoutes;
   }, [user]);
 
-  const navigate = useNavigate();
-  const navigateToHomepage = useCallback(() => navigate("/"), [navigate]);
+  const [height, setHeight] = useState(0);
 
-  const media = useMediaQuery({
-    query: `(min-width: ${SCREEN_BREAKDOWNS.LG}px)`,
-  });
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        // Use requestAnimationFrame to ensure we get the final layout
+        requestAnimationFrame(() => {
+          const height = headerRef.current?.offsetHeight;
+          if (height) {
+            setHeight(height);
+          }
+        });
+      }
+    };
+
+    // Initial measurement with a small delay to ensure everything is loaded
+    const timeoutId = setTimeout(updateHeaderHeight, 100);
+
+    // Update on resize
+    window.addEventListener("resize", updateHeaderHeight);
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const {
     singleChain,
@@ -86,109 +87,63 @@ export default function Header() {
     return <Select placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
   }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
 
-  const isClient = typeof window !== "undefined";
-
-  useEffect(() => {
-    if (!isClient) return;
-
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        // Use requestAnimationFrame to ensure we get the final layout
-        requestAnimationFrame(() => {
-          const height = headerRef.current?.offsetHeight;
-          if (height) {
-            document.documentElement.style.setProperty("--header-height", `${height}px`);
-          }
-        });
-      }
-    };
-
-    // Initial measurement with a small delay to ensure everything is loaded
-    const timeoutId = setTimeout(updateHeaderHeight, 100);
-
-    // Update on resize
-    window.addEventListener("resize", updateHeaderHeight);
-
-    return () => {
-      window.removeEventListener("resize", updateHeaderHeight);
-      clearTimeout(timeoutId);
-    };
-  }, [isClient]);
-
   return (
-    <motion.header
-      ref={headerRef}
-      variants={container}
-      initial="hidden"
-      whileInView="visible"
-      className="w-full fixed left-0 top-0 z-20 backdrop-blur">
-      <Container className="py-xl">
-        <Group className="justify-between items-center">
-          <motion.div variants={item} className="cursor-pointer">
-            {media || merklConfig.hideLayerMenuHomePage ? (
-              <Image
-                imgClassName="max-w-[200px] max-h-[2rem]"
-                alt={`${merklConfig.appName} logo`}
-                src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
-                onClick={navigateToHomepage}
-              />
-            ) : (
-              <Dropdown
-                size="md"
-                padding="xs"
-                state={[open, setOpen]}
-                content={<LayerMenu nav={routes} setOpen={setOpen} />}
-                className="flex gap-sm md:gap-lg items-center">
-                <Image
-                  imgClassName="!max-w-[140px] md:!max-w-[200px] max-h-[2rem]"
-                  alt={`${merklConfig.appName} logo`}
-                  src={mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight}
-                />
-                <Icon className="text-main-12" remix="RiArrowDownSLine" />
-              </Dropdown>
-            )}
-          </motion.div>
+    <div ref={headerRef} style={{ minHeight: height }}>
+      <motion.header
+        variants={container}
+        whileInView="visible"
+        className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
+        <Container className="py-xl">
+          <Group className="justify-between items-center">
+            <BrandNavigationMenu routes={merklConfig.navigation.routes} footer={<SwitchMode />} />
+            <Group>
+              <Group className="items-center" size="xl">
+                <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
+                  {Object.entries(routes)
+                    .filter(([key]) => !["home", "docs"].includes(key))
+                    .map(([key, route]) => {
+                      return (
+                        <Group
+                          key={`${key}-link`}
+                          className={mergeClass(
+                            "h-full",
+                            location.pathname === route?.route && "border-accent-11 border-b-2",
+                          )}>
+                          <Button
+                            className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
+                            look="soft"
+                            size="lg"
+                            key={`${key}-link`}
+                            to={route?.route}
+                            external={route?.external}>
+                            {key}
+                          </Button>
+                        </Group>
+                      );
+                    })}
+                  <Group className="items-center">
+                    <SwitchMode />
+                    {merklConfig.header.searchbar.enabled && <SearchBar icon={true} />}
+                  </Group>
+                </Group>
 
-          <motion.div variants={item}>
-            <Group className="items-center" size="xl">
-              <Group className="hidden lg:flex items-center" size="xl">
-                {Object.entries(routes)
-                  .filter(([key]) => !["home", "docs"].includes(key))
-                  .map(([key, route]) => {
-                    return (
-                      <Button
-                        className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
-                        look="soft"
-                        size="lg"
-                        key={`${key}-link`}
-                        to={route?.route}
-                        external={route?.external}>
-                        {key}
+                <Group className="flex">
+                  <WalletButton select={chainSwitcher} hideSpyMode={merklConfig.hideSpyMode}>
+                    <Button to={`/users/${user}`} size="sm" look="soft">
+                      <Icon remix="RiArrowRightLine" /> Check claims
+                    </Button>
+                    {chain?.explorers?.map(explorer => (
+                      <Button external key={explorer.url} to={`${explorer.url}/address/${user}`} size="sm" look="soft">
+                        <Icon remix="RiArrowRightLine" /> Visit explorer
                       </Button>
-                    );
-                  })}
-                <Group className="items-center">
-                  <SwitchMode />
-                  {merklConfig.header.searchbar.enabled && <SearchBar icon={true} />}
+                    ))}
+                  </WalletButton>
                 </Group>
               </Group>
-
-              <Group className="flex">
-                <WalletButton select={chainSwitcher} hideSpyMode={merklConfig.hideSpyMode}>
-                  <Button to={`/users/${user}`} size="sm" look="soft">
-                    <Icon remix="RiArrowRightLine" /> Check claims
-                  </Button>
-                  {chain?.explorers?.map(explorer => (
-                    <Button external key={explorer.url} to={`${explorer.url}/address/${user}`} size="sm" look="soft">
-                      <Icon remix="RiArrowRightLine" /> Visit explorer
-                    </Button>
-                  ))}
-                </WalletButton>
-              </Group>
             </Group>
-          </motion.div>
-        </Group>
-      </Container>
-    </motion.header>
+          </Group>
+        </Container>
+      </motion.header>
+    </div>
   );
 }

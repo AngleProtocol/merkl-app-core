@@ -33,11 +33,11 @@ export default function LoadingIndicator() {
   }, [navigation.state, previous]);
 
   return (
-    <div className="absolute z-50 w-[100vw]">
+    <div className="absolute z-[1000] w-[100vw]">
       <Bar
-        className={mergeClass("!p-0 !h-[3px]", progress === 0 && "opacity-0")}
+        className={mergeClass("!p-0 !h-[2px]", progress === 0 && "opacity-0")}
         total={100}
-        values={[{ value: progress, className: "bg-accent-8 transition-all duration-100" }]}
+        values={[{ value: progress, className: "bg-accent-11 transition-all duration-100" }]}
       />
     </div>
   );
