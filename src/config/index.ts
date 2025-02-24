@@ -48,6 +48,52 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   appName: "Merkl",
   modes: ["dark", "light"],
   defaultTheme: "merkl",
+  navigation: {
+    routes: {
+      dashboard: {
+        icon: { remix: "RiDashboardFill" },
+        link: "/users/",
+        name: "Claims",
+      },
+      opportunities: {
+        icon: { remix: "RiPlanetFill" },
+        link: "/",
+        name: "Claims",
+      },
+      documentation: {
+        icon: { remix: "RiFile4Fill" },
+        link: "https://docs.merkl.xyz/",
+        external: true,
+        name: "Docs",
+      },
+      faq: {
+        icon: { remix: "RiQuestionFill" },
+        link: "/faq",
+        name: "FAQ",
+      },
+      advanced: {
+        icon: { remix: "RiSettings2Fill" },
+        name: "Advanced",
+        routes: {
+          statistics: {
+            icon: { remix: "RiDashboardFill" },
+            name: "Statistics",
+            link: "/statistics",
+          },
+          status: {
+            icon: { remix: "RiPlanetFill" },
+            name: "Status",
+            link: "/statistics",
+          },
+          integrations: {
+            icon: { remix: "RiFile4Fill" },
+            name: "Integrations",
+            link: "/integrations",
+          },
+        },
+      },
+    },
+  },
   metaDatasGlobal: url => [
     {
       name: "twitter:site",
