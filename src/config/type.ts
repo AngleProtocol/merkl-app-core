@@ -3,7 +3,7 @@ import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type { MetaDescriptor } from "@remix-run/react";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
-import type { WalletOptions, IconProps } from "dappkit";
+import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { TagTypes } from "../components/element/Tag";
@@ -14,7 +14,6 @@ import type {
   OpportunityView,
 } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
-import type { ReactNode } from "react";
 
 export type routesType = {
   [key: string]: {

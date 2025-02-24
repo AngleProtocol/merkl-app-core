@@ -3,7 +3,7 @@ import { Group } from "dappkit";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 
-const HEADER_SIZE = 60
+const HEADER_SIZE = 60;
 
 export default function Index() {
   return (

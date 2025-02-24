@@ -5,7 +5,6 @@ import { Image } from "dappkit";
 import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
 import merklLogo from "../../assets/images/by-merkl.svg";
 import Socials from "../element/Socials";
-import BrandNavigationMenu from "./BrandNavigationMenu";
 
 export default function Footer() {
   const { mode } = useTheme();
