@@ -36,7 +36,6 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
           {...(hasLink(nav) ? { to: userDashboardLink || nav.link, external: nav.external, disabled: (isDashboard && !userDashboardLink) || nav.disabled } : {})}
           look="soft"
           size="lg"
-          data-disabled={!userDashboardLink || nav.disabled}
           className={"dim flex items-center gap-md"}>
           <Icon {...nav.icon} className="text-xl text-main-11" />
           <Text size="lg" bold className="text-main-12"> 
