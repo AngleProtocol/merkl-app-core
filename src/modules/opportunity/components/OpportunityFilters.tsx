@@ -7,7 +7,7 @@ import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-const filters = ["search", "action", "status", "chain", "protocol", "sort"] as const;
+const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
@@ -17,16 +17,17 @@ export type OpportunityFilterProps = {
   protocols?: Protocol[];
   exclude?: OpportunityFilter[];
   onClear?: () => void;
+  clearing?: boolean;
 };
 
 //TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
-export default function OpportunityFilters({ only, protocols, exclude, chains, onClear }: OpportunityFilterProps) {
+export default function OpportunityFilters({ only, protocols, exclude, chains, onClear, clearing }: OpportunityFilterProps) {
   const [_, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const location = useLocation();
   const [applying, setApplying] = useState(false);
-  const [clearing, setClearing] = useState(false);
+  const [clearingState, setClearing] = useState(false);
 
   //TODO: componentify theses
   const actionOptions = Object.entries(actions)
@@ -232,6 +233,18 @@ export default function OpportunityFilters({ only, protocols, exclude, chains, o
       setClearing(false);
     }
   }, [navigation]);
+
+  useEffect(() => {
+    if (clearing) {
+      setChainIdsInput([]);
+      setProtocolInput([]);
+      setStatusInput([]);
+      setActionsInput([]);
+      setInnerSearch("");
+      setSortInput("");
+      onClear?.();
+    }
+  }, [clearing, onClear]);
 
   const onSortByChange = useCallback(
     (sort: FormEvent<HTMLDivElement>) => {

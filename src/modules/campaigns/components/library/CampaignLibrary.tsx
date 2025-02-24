@@ -33,7 +33,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
       hideLabels={!rows?.length}
       header={
         <Group className="justify-between items-center w-full">
-          <Title className="!text-main-11" h={5}>
+          <Title look="soft" h={5}>
             Campaigns
           </Title>
           <Group>
