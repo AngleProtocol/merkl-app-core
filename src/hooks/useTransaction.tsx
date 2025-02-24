@@ -30,7 +30,7 @@ export default function useTransaction(chainId: number, payload: any, txFunction
           return { ...txns, [JSON.stringify(payload)]: tx };
         });
       } catch (e) {
-        console.log("ERRROR >", { e });
+        console.error({ e });
       }
       setLoading(false);
     },
