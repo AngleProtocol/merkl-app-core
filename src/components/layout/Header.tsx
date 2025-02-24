@@ -1,4 +1,5 @@
 import type { routesType } from "@core/config/type";
+import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -7,7 +8,6 @@ import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 import BrandNavigationMenu from "./BrandNavigationMenu";
-import { useLocation } from "@remix-run/react";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -26,7 +26,6 @@ export default function Header() {
   const location = useLocation();
 
   console.log("loc", location);
-  
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -106,7 +105,12 @@ export default function Header() {
                     .filter(([key]) => !["home", "docs"].includes(key))
                     .map(([key, route]) => {
                       return (
-                        <Group className={mergeClass("h-full", location.pathname === route?.route && "border-accent-11 border-b-2")}>
+                        <Group
+                          key={`${key}-link`}
+                          className={mergeClass(
+                            "h-full",
+                            location.pathname === route?.route && "border-accent-11 border-b-2",
+                          )}>
                           <Button
                             className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
                             look="soft"
