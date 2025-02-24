@@ -28,16 +28,12 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
 
     const convert = (nav: NavigationMenuRoutes[string], key: string): MenuOptions => {
-      const isDashboard = key === "dashboard";
-      const userDashboardLink = isDashboard && address && `${hasLink(nav) && nav.link!}${address}`;
-
       const label = (
         <Button
           {...(hasLink(nav)
             ? {
-                to: userDashboardLink || nav.link,
+                to: nav.link,
                 external: nav.external,
-                disabled: (isDashboard && !userDashboardLink) || nav.disabled,
               }
             : {})}
           look="soft"
@@ -64,21 +60,17 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
     };
 
     return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }), {});
-  }, [routes, address]);
+  }, [routes]);
 
   /**
    * Navigation + Footer elements
    */
   const options = useMemo(() => {
-    const baseOptions = navigationOptions;
-
-    if (baseOptions.dashboard) baseOptions.dashboard.disabled = !!address;
-
     return {
       ...navigationOptions,
       ...(!footer ? {} : { footer: { label: <Group>{footer}</Group> } }),
     } satisfies MenuProps["options"];
-  }, [navigationOptions, footer, address]);
+  }, [navigationOptions, footer]);
 
   /**
    * Brand logo
