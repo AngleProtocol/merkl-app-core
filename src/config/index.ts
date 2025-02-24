@@ -48,7 +48,11 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   modes: ["dark", "light"],
   defaultTheme: "merkl",
   navigation: {
+<<<<<<< HEAD
     menu: {
+=======
+    routes: {
+>>>>>>> ce2988a (update: layermenu & header)
       dashboard: {
         icon: { remix: "RiDashboardFill" },
         link: "/users/",
@@ -91,6 +95,15 @@ const defaultMerklConfig: MerklConfig<Themes> = {
           },
         },
       },
+<<<<<<< HEAD
+=======
+    },
+  },
+  metaDatasGlobal: url => [
+    {
+      name: "twitter:site",
+      content: "@Merkl",
+>>>>>>> ce2988a (update: layermenu & header)
     },
   },
   fonts: { italic: false },
