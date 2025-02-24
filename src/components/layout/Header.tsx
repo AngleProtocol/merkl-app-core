@@ -7,6 +7,7 @@ import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 import BrandNavigationMenu from "./BrandNavigationMenu";
+import { useLocation } from "@remix-run/react";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -22,6 +23,10 @@ const container = {
 export default function Header() {
   const { chainId, address: user, chains, switchChain } = useWalletContext();
   const headerRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  console.log("loc", location);
+  
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -94,22 +99,24 @@ export default function Header() {
         <Container className="py-xl">
           <Group className="justify-between items-center">
             <BrandNavigationMenu routes={merklConfig.navigation.routes} footer={<SwitchMode />} />
-            <div>
+            <Group>
               <Group className="items-center" size="xl">
-                <Group className="hidden lg:flex items-center" size="xl">
+                <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
                   {Object.entries(routes)
                     .filter(([key]) => !["home", "docs"].includes(key))
                     .map(([key, route]) => {
                       return (
-                        <Button
-                          className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          to={route?.route}
-                          external={route?.external}>
-                          {key}
-                        </Button>
+                        <Group className={mergeClass("h-full", location.pathname === route?.route && "border-accent-11 border-b-2")}>
+                          <Button
+                            className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
+                            look="soft"
+                            size="lg"
+                            key={`${key}-link`}
+                            to={route?.route}
+                            external={route?.external}>
+                            {key}
+                          </Button>
+                        </Group>
                       );
                     })}
                   <Group className="items-center">
@@ -131,7 +138,7 @@ export default function Header() {
                   </WalletButton>
                 </Group>
               </Group>
-            </div>
+            </Group>
           </Group>
         </Container>
       </motion.header>
