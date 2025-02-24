@@ -1,5 +1,5 @@
 import merklConfig from "@core/config";
-import { Button, Group, Icon, Image, Text, useTheme } from "packages/dappkit/src";
+import { Button, Group, Icon, Image, Text, useTheme, useWalletContext} from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
 import { type ReactNode, useMemo } from "react";
@@ -18,6 +18,7 @@ export interface BrandNavigationMenuProps {
  */
 export default function BrandNavigationMenu({ routes, footer }: BrandNavigationMenuProps) {
   const { mode } = useTheme();
+  const {address} = useWalletContext();
   const navigation = useNavigation();
 
   /**
@@ -26,14 +27,19 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
   const navigationOptions: MenuProps["options"] = useMemo(() => {
     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
 
-    const convert = (nav: NavigationMenuRoutes[string]): MenuOptions => {
+    const convert = (nav: NavigationMenuRoutes[string], key: string): MenuOptions => {
+      const isDashboard =  (key === "dashboard");
+      const userDashboardLink = isDashboard && address && `${hasLink(nav) && nav.link!}${address}`
+
       const label = (
         <Button
-          {...(hasLink(nav) ? { to: nav.link, external: nav.external } : {})}
+          {...(hasLink(nav) ? { to: userDashboardLink || nav.link, external: nav.external, disabled: (isDashboard && !userDashboardLink) || nav.disabled } : {})}
           look="soft"
+          size="lg"
+          data-disabled={!userDashboardLink || nav.disabled}
           className={"dim flex items-center gap-md"}>
           <Icon {...nav.icon} className="text-xl text-main-11" />
-          <Text size="lg" bold className="text-main-12">
+          <Text size="lg" bold className="text-main-12"> 
             {nav.name}
           </Text>
         </Button>
@@ -46,24 +52,29 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
       return {
         label,
         options: Object.entries(nav.routes).reduce(
-          (opt, [key, route]) => Object.assign(opt, { [key]: convert(route) }),
+          (opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }),
           {},
         ),
       } satisfies MenuOptions;
     };
 
-    return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route) }), {});
-  }, [routes]);
+    return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }), {});
+  }, [routes, address]);
 
   /**
    * Navigation + Footer elements
    */
   const options = useMemo(() => {
+
+    const baseOptions = navigationOptions;
+
+    if (baseOptions.dashboard) baseOptions.dashboard.disabled = !!address;
+    
     return {
       ...navigationOptions,
       ...(!footer ? {} : { footer: { label: <Group>{footer}</Group> } }),
     } satisfies MenuProps["options"];
-  }, [navigationOptions, footer]);
+  }, [navigationOptions, footer, address]);
 
   /**
    * Brand logo
