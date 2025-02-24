@@ -61,6 +61,10 @@ export abstract class TokenService {
     return tokens;
   }
 
+  static async getCompoundV2(query: Parameters<typeof api.v3.compoundV2.get>[0]["query"]) {
+    return await TokenService.#fetch(async () => api.v3.compoundV2.get({ query }));
+  }
+
   static async getValidRewardTokenByChain(chainId: number): Promise<Token[]> {
     const tokens = await TokenService.#fetch(async () => api.v4.tokens.reward({ chainId }).get());
     return tokens;
