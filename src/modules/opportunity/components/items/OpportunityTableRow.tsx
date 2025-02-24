@@ -6,11 +6,21 @@ import OpportunityParticipateModal from "@core/modules/opportunity/components/el
 import { OpportunityRow } from "@core/modules/opportunity/components/library/OpportunityTable";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
-import TokenAmountModal from "@core/modules/token/components/TokenAmountModal";
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Dropdown, Group, Icon, Icons as IconGroup, PrimitiveTag, Text, Title, Value, mergeClass } from "dappkit";
+import {
+  Button,
+  Dropdown,
+  Group,
+  Icon,
+  Icons as IconGroup,
+  PrimitiveTag,
+  Text,
+  Title,
+  Value,
+  mergeClass,
+} from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
@@ -50,49 +60,29 @@ export default function OpportunityTableRow({
 
   const tvlColumn = useMemo(
     () => (
-      <EventBlocker>
-        <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
-          <PrimitiveTag look="base">
-            <Value value format={merklConfig.decimalFormat.dollar}>
-              {opportunity.tvl ?? 0}
-            </Value>
-          </PrimitiveTag>
-        </Dropdown>
-      </EventBlocker>
+      <Text bold look="tint">
+        <Value value format={merklConfig.decimalFormat.dollar}>
+          {opportunity.tvl ?? 0}
+        </Value>
+      </Text>
     ),
     [opportunity],
   );
 
   const rewardsColumn = useMemo(
     () => (
-      <EventBlocker>
-        <Dropdown
-          className="py-xl"
-          content={
-            <TokenAmountModal
-              tokens={rewardsBreakdown}
-              label={
-                <Group size="sm">
-                  <Icon remix="RiGift2Fill" />
-                  <Text size="sm" className="text-main-12" bold>
-                    Daily Rewards
-                  </Text>
-                </Group>
-              }
-            />
-          }>
-          <PrimitiveTag look="base">
-            <Value value format={merklConfig.decimalFormat.dollar}>
-              {opportunity.dailyRewards ?? 0}
-            </Value>
-            <IconGroup>
-              {rewardsBreakdown.map(({ token: { icon } }) => (
-                <Icon key={icon} src={icon} />
-              ))}
-            </IconGroup>
-          </PrimitiveTag>
-        </Dropdown>
-      </EventBlocker>
+      <Group size="sm">
+        <Text look="hype" bold>
+          <Value value format={merklConfig.decimalFormat.dollar}>
+            {opportunity.dailyRewards ?? 0}
+          </Value>
+        </Text>
+        <IconGroup>
+          {rewardsBreakdown.map(({ token: { icon } }) => (
+            <Icon key={icon} src={icon} />
+          ))}
+        </IconGroup>
+      </Group>
     ),
     [opportunity, rewardsBreakdown],
   );
@@ -105,7 +95,7 @@ export default function OpportunityTableRow({
           <OpportunityRow
             size="lg"
             content="sm"
-            className={mergeClass("cursor-pointer", className)}
+            className={mergeClass("cursor-pointer ease hover:bg-main-2", className)}
             {...props}
             aprColumn={aprColumn}
             tvlColumn={tvlColumn}
@@ -133,6 +123,11 @@ export default function OpportunityTableRow({
                   <Tags hide={hideTags} size="sm" />
                 </Group>
               </Group>
+            }
+            ctaColumn={
+              <Button look="hype">
+                <Icon remix="RiArrowRightLine" />
+              </Button>
             }
           />
         );

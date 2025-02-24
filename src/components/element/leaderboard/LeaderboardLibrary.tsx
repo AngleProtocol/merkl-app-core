@@ -48,7 +48,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
           responsive
           dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
           header={
-            <Title h={5} className="!text-main-11 w-full">
+            <Title h={5} look="soft" className="w-full">
               Leaderboard
             </Title>
           }

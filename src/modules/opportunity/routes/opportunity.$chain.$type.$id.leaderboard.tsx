@@ -143,7 +143,7 @@ export default function Index() {
           size="lg"
           content="xs"
           className="justify-between !p-xl items-center flex-row border-2 bg-main-0 border-main-8 flex-1">
-          <Title h={3} size="lg" className="!text-main-11 uppercase font-bold">
+          <Title h={3} size="lg" look="soft" className="uppercase font-bold">
             {label}
           </Title>
           {/* Probably a count from api */}

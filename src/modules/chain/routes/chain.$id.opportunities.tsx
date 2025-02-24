@@ -33,12 +33,12 @@ export default function Index() {
       <Group size="xl" className="py-xl flex-col">
         {merklConfig.opportunity.featured.enabled && (
           <>
-            <Title className="!text-main-11" h={3}>
+            <Title look="soft" h={3}>
               BEST OPPORTUNITIES
             </Title>
             <OpportunityLibrary forceView={"cells"} hideFilters opportunities={featuredOpportunities} />
             <Space size="xl" />
-            <Title className="!text-main-11" h={3}>
+            <Title look="soft" h={3}>
               ALL OPPORTUNITIES
             </Title>
           </>

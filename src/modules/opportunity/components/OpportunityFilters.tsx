@@ -1,4 +1,3 @@
-import merklConfig from "@core/config";
 import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
@@ -7,18 +6,18 @@ import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
-import { useCallback, useEffect, useMemo, useState } from "react";
-const filters = ["search", "action", "status", "chain", "protocol", "tvl", "sort"] as const;
+import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
   only?: OpportunityFilter[];
   chains?: Chain[];
-  view?: OpportunityView;
   setView?: (v: OpportunityView) => void;
   protocols?: Protocol[];
   exclude?: OpportunityFilter[];
   onClear?: () => void;
+  clearing?: boolean;
 };
 
 //TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
@@ -27,16 +26,14 @@ export default function OpportunityFilters({
   protocols,
   exclude,
   chains,
-  view,
-  setView,
   onClear,
+  clearing,
 }: OpportunityFilterProps) {
   const [_, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const location = useLocation();
   const [applying, setApplying] = useState(false);
-  const [clearing, setClearing] = useState(false);
 
   //TODO: componentify theses
   const actionOptions = Object.entries(actions)
@@ -81,13 +78,13 @@ export default function OpportunityFilters({
     ),
     "rewards-asc": (
       <Group className="flex-nowrap">
-        By rewards
+        By Daily Rewards
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "rewards-desc": (
       <Group className="flex-nowrap">
-        By rewards
+        By Daily Rewards
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
@@ -151,14 +148,6 @@ export default function OpportunityFilters({
 
   const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
 
-  const [tvlFilter] = useSearchParamState<string>(
-    "tvl",
-    v => v,
-    v => v,
-  );
-
-  const [tvlInput, setTvlInput] = useState<string>(tvlFilter ?? "");
-
   const [protocolFilter] = useSearchParamState<string[]>(
     "protocol",
     v => v?.join(","),
@@ -196,26 +185,20 @@ export default function OpportunityFilters({
     const sameActions = isSameArray(actionsInput, actionsFilter);
     const sameStatus = isSameArray(statusInput, statusFilter);
     const sameProtocols = isSameArray(protocolInput, protocolFilter);
-    const sameTvl = tvlFilter === tvlInput || tvlInput === "";
-    const sameSort = sortFilter === sortInput || sortInput === "";
     const sameSearch = (search ?? "") === innerSearch;
 
-    return [sameChains, sameActions, sameTvl, sameStatus, sameSearch, sameProtocols, sameSort].some(v => v === false);
+    return [sameChains, sameActions, sameStatus, sameSearch, sameProtocols].some(v => v === false);
   }, [
     chainIdsInput,
     chainIdsFilter,
     actionsInput,
     actionsFilter,
     statusFilter,
-    tvlFilter,
-    tvlInput,
     protocolInput,
     protocolFilter,
     statusInput,
     search,
     innerSearch,
-    sortFilter,
-    sortInput,
   ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
@@ -226,29 +209,23 @@ export default function OpportunityFilters({
 
   function onApplyFilters() {
     setApplying(true);
-    setClearing(false);
     setSearchParams(params => {
       updateParams("chain", chainIdsInput, params);
       updateParams("action", actionsInput, params);
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
-      tvlInput && updateParams("tvl", [tvlInput], params);
-      sortInput && updateParams("sort", [sortInput], params);
-
       return params;
     });
   }
 
   function onClearFilters() {
     setApplying(false);
-    setClearing(true);
 
     navigate(location.pathname, { replace: true });
     setChainIdsInput([]);
     setProtocolInput([]);
     setStatusInput([]);
     setActionsInput([]);
-    setTvlInput("");
     setInnerSearch("");
     setSortInput("");
     onClear?.();
@@ -257,14 +234,34 @@ export default function OpportunityFilters({
   useEffect(() => {
     if (navigation.state === "idle") {
       setApplying(false);
-      setClearing(false);
     }
   }, [navigation]);
 
+  useEffect(() => {
+    if (clearing) {
+      setChainIdsInput([]);
+      setProtocolInput([]);
+      setStatusInput([]);
+      setActionsInput([]);
+      setInnerSearch("");
+      setSortInput("");
+      onClear?.();
+    }
+  }, [clearing, onClear]);
+
+  const onSortByChange = useCallback(
+    (sort: FormEvent<HTMLDivElement>) => {
+      setSearchParams(params => {
+        updateParams("sort", [sort.toString()], params);
+        return params;
+      });
+    },
+    [updateParams, setSearchParams],
+  );
+
   return (
-    <Group className="justify-between flex-nowrap">
-      <Group
-        className={`items-center flex-nowrap w-full ${merklConfig.opportunityLibrary?.views?.length === 1 ? "justify-between" : ""}`}>
+    <Group className="justify-between flex-nowrap overflow-x-scroll">
+      <Group className="items-center flex-nowrap">
         {fields.includes("search") && (
           <Form>
             <Input
@@ -279,17 +276,17 @@ export default function OpportunityFilters({
             />
           </Form>
         )}
-        <Group
-          className={`items-center flex-nowrap ${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
+        <Group size="lg" className="items-center flex-nowrap">
           <Group className="items-center flex-nowrap">
             {fields.includes("action") && (
               <Select
                 state={[actionsInput, setActionsInput]}
-                allOption={"All actions"}
+                allOption={"All categories"}
                 multiple
                 options={actionOptions}
                 look="tint"
-                placeholder="Actions"
+                placeholder="Category"
+                placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
               />
             )}
             {fields.includes("status") && (
@@ -300,6 +297,7 @@ export default function OpportunityFilters({
                 options={statusOptions}
                 look="tint"
                 placeholder="Status"
+                placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
               />
             )}
             {fields.includes("chain") && !isSingleChain && (
@@ -310,7 +308,8 @@ export default function OpportunityFilters({
                 search
                 options={chainOptions}
                 look="tint"
-                placeholder="Chains"
+                placeholder="Chain"
+                placeholderIcon={<Icon remix="RiLink" />}
               />
             )}
             {fields.includes("protocol") && (
@@ -321,32 +320,16 @@ export default function OpportunityFilters({
                 search
                 options={protocolOptions}
                 look="tint"
-                placeholder="Protocols"
+                placeholder="Protocol"
+                placeholderIcon={<Icon remix="RiShapesFill" />}
               />
             )}
-            {fields.includes("tvl") && (
-              <Form>
-                <Input
-                  state={[tvlInput, n => (/^\d+$/.test(n ?? "") || !n) && setTvlInput(n ?? "")]}
-                  look="base"
-                  name="tvl"
-                  value={tvlInput}
-                  className="min-w-[10ch] !max-w-[15ch]"
-                  suffix={<Icon remix="RiFilterFill" />}
-                  placeholder="Minimum TVL"
-                />
-              </Form>
-            )}
-            {view === "cells" && (
-              <Select state={[sortInput, setSortInput]} options={sortOptions} look="tint" placeholder="Sort by" />
-            )}
           </Group>
-          <Group
-            className={`${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} flex-nowrap items-center`}>
+          <Group size="lg" className="flex-nowrap items-center">
             {((canApply && !clearing && navigation.state === "idle") ||
               (applying && !clearing && navigation.state === "loading")) && (
-              <Button onClick={onApplyFilters} look="bold">
-                Apply
+              <Button onClick={onApplyFilters} look="hype">
+                Check
                 {navigation.state === "loading" ? (
                   <Icon className="animate-spin" remix="RiLoader2Line" />
                 ) : (
@@ -355,30 +338,19 @@ export default function OpportunityFilters({
               </Button>
             )}
             <Button onClick={onClearFilters} look="soft" size="xs" className="text-nowrap">
-              Clear filters
+              Clear all filters
               <Icon remix="RiCloseLine" />{" "}
             </Button>
           </Group>
         </Group>
       </Group>
-      {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) && view && (
-        <Group className="flex-nowrap">
-          <Button
-            disabled={view === "cells"}
-            className={view === "cells" ? "text-accent-11 !opacity-100" : ""}
-            look="soft"
-            onClick={() => setView?.("cells")}>
-            <Icon remix="RiDashboardFill" />
-          </Button>
-          <Button
-            disabled={view === "table"}
-            className={view === "table" ? "text-accent-11 !opacity-100" : ""}
-            look="soft"
-            onClick={() => setView?.("table")}>
-            <Icon remix="RiSortDesc" />
-          </Button>
-        </Group>
-      )}
+      <Select
+        onChange={onSortByChange}
+        state={[sortInput, setSortInput]}
+        options={sortOptions}
+        look="tint"
+        placeholder="Sort by"
+      />
     </Group>
   );
 }
