@@ -53,10 +53,7 @@ export default function OpportunityLibrary({
     }
   }, [clearing]);
 
-  // const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const handleClearFilters = useCallback(() => {
-    // scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     setClearing(true);
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
