@@ -2,7 +2,7 @@ import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useLocation, useNavigate } from "@remix-run/react";
 import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
@@ -53,10 +53,10 @@ export default function OpportunityLibrary({
     }
   }, [clearing]);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  // const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClearFilters = useCallback(() => {
-    scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+    // scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     setClearing(true);
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
@@ -154,18 +154,14 @@ export default function OpportunityLibrary({
   return (
     <div className="flex flex-col w-full">
       {!hideFilters && (
-        <div className="overflow-x-visible -mx-[clamp(0.5rem,3vw,5rem)] lg:mx-0" ref={scrollContainerRef}>
-          <div className="min-w-min max-w-full px-[clamp(0.5rem,3vw,5rem)] lg:px-0">
-            <Box content="sm" className="mb-lg justify-between w-full">
-              <OpportunityFilters
-                {...{ only, chains, protocols, view, setView }}
-                exclude={mergedExclusions}
-                onClear={handleClearFilters}
-                clearing={clearing}
-              />
-            </Box>
-          </div>
-        </div>
+        <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
+          <OpportunityFilters
+            {...{ only, chains, protocols, view, setView }}
+            exclude={mergedExclusions}
+            onClear={handleClearFilters}
+            clearing={clearing}
+          />
+        </Box>
       )}
 
       {count === 0 ? (

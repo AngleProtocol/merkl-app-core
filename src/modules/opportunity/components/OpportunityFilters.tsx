@@ -21,13 +21,19 @@ export type OpportunityFilterProps = {
 };
 
 //TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
-export default function OpportunityFilters({ only, protocols, exclude, chains, onClear, clearing }: OpportunityFilterProps) {
+export default function OpportunityFilters({
+  only,
+  protocols,
+  exclude,
+  chains,
+  onClear,
+  clearing,
+}: OpportunityFilterProps) {
   const [_, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const location = useLocation();
   const [applying, setApplying] = useState(false);
-  const [clearingState, setClearing] = useState(false);
 
   //TODO: componentify theses
   const actionOptions = Object.entries(actions)
@@ -203,7 +209,6 @@ export default function OpportunityFilters({ only, protocols, exclude, chains, o
 
   function onApplyFilters() {
     setApplying(true);
-    setClearing(false);
     setSearchParams(params => {
       updateParams("chain", chainIdsInput, params);
       updateParams("action", actionsInput, params);
@@ -215,7 +220,6 @@ export default function OpportunityFilters({ only, protocols, exclude, chains, o
 
   function onClearFilters() {
     setApplying(false);
-    setClearing(true);
 
     navigate(location.pathname, { replace: true });
     setChainIdsInput([]);
@@ -230,7 +234,6 @@ export default function OpportunityFilters({ only, protocols, exclude, chains, o
   useEffect(() => {
     if (navigation.state === "idle") {
       setApplying(false);
-      setClearing(false);
     }
   }, [navigation]);
 
@@ -257,8 +260,8 @@ export default function OpportunityFilters({ only, protocols, exclude, chains, o
   );
 
   return (
-    <Group className="justify-between flex-nowrap">
-      <Group className="items-center flex-nowrap w-full">
+    <Group className="justify-between flex-nowrap overflow-x-scroll">
+      <Group className="items-center flex-nowrap">
         {fields.includes("search") && (
           <Form>
             <Input
