@@ -1,7 +1,7 @@
 import merklConfig from "@core/config";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/config/type";
 import { useNavigation } from "@remix-run/react";
-import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
+import { Button, Group, Icon, Image, Text, useTheme } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
 import { type ReactNode, useMemo } from "react";
@@ -18,7 +18,6 @@ export interface BrandNavigationMenuProps {
  */
 export default function BrandNavigationMenu({ routes, footer }: BrandNavigationMenuProps) {
   const { mode } = useTheme();
-  const { address } = useWalletContext();
   const navigation = useNavigation();
 
   /**
@@ -27,7 +26,7 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
   const navigationOptions: MenuProps["options"] = useMemo(() => {
     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
 
-    const convert = (nav: NavigationMenuRoutes[string], key: string): MenuOptions => {
+    const convert = (nav: NavigationMenuRoutes[string], key?: string): MenuOptions => {
       const label = (
         <Button
           {...(hasLink(nav)
@@ -38,6 +37,7 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
             : {})}
           look="soft"
           size="lg"
+          key={key}
           className={"dim flex items-center gap-md"}>
           <Icon {...nav.icon} className="text-xl text-main-11" />
           <Text size="lg" bold className="text-main-12">
