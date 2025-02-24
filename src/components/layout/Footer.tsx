@@ -5,6 +5,7 @@ import { Image } from "dappkit";
 import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
 import merklLogo from "../../assets/images/by-merkl.svg";
 import Socials from "../element/Socials";
+import BrandNavigationMenu from "./BrandNavigationMenu";
 
 export default function Footer() {
   const { mode } = useTheme();
@@ -16,7 +17,7 @@ export default function Footer() {
           <Group className="gap-xl md:gap-xl*2 items-center">
             <div className="hidden md:block">
               <Button to="/" look="soft" className="flex justify-start">
-                {/* <BrandNavigationMenu routes={merklConfig.navigation.routes}/> */}
+                <BrandNavigationMenu routes={merklConfig.navigation.routes} disabled/>
               </Button>
             </div>
             <Socials />

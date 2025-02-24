@@ -25,8 +25,6 @@ export default function Header() {
   const headerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  console.log("loc", location);
-
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
   }, [chains, chainId]);

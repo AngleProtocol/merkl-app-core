@@ -9,6 +9,7 @@ import { type ReactNode, useMemo } from "react";
 export interface BrandNavigationMenuProps {
   routes: NavigationMenuRoutes;
   footer?: ReactNode;
+  disabled?: boolean;
 }
 
 /**
@@ -16,7 +17,7 @@ export interface BrandNavigationMenuProps {
  * @param routes {@link NavigationMenuRoutes}
  * @param footer last row of navigation menu
  */
-export default function BrandNavigationMenu({ routes, footer }: BrandNavigationMenuProps) {
+export default function BrandNavigationMenu({ routes, footer , disabled}: BrandNavigationMenuProps) {
   const { mode } = useTheme();
   const navigation = useNavigation();
 
@@ -81,7 +82,7 @@ export default function BrandNavigationMenu({ routes, footer }: BrandNavigationM
     return <Image imgClassName="max-w-[200px] max-h-[2rem]" alt={`${merklConfig.appName} logo`} src={logo} />;
   }, [mode]);
 
-  if (merklConfig.hideLayerMenuHomePage) return brand;
+  if (merklConfig.hideLayerMenuHomePage || disabled) return brand;
   return (
     <Menu options={options}>
       <Group>
