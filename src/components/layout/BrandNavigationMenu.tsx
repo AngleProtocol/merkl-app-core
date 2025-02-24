@@ -17,7 +17,7 @@ export interface BrandNavigationMenuProps {
  * @param routes {@link NavigationMenuRoutes}
  * @param footer last row of navigation menu
  */
-export default function BrandNavigationMenu({ routes, footer , disabled}: BrandNavigationMenuProps) {
+export default function BrandNavigationMenu({ routes, footer, disabled }: BrandNavigationMenuProps) {
   const { mode } = useTheme();
   const navigation = useNavigation();
 
