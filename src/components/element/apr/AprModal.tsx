@@ -17,7 +17,7 @@ export default function AprModal(props: AprModalProps) {
         <Title look="soft" h={5}>
           AVERAGE APR
         </Title>
-        <PrimitiveTag noClick look="tint" size="lg">
+        <PrimitiveTag look="tint" size="lg">
           <Value value format="0a%">
             {opportunity.apr / 100}
           </Value>

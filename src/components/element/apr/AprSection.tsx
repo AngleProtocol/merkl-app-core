@@ -64,7 +64,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
             <Text size="sm" look="bold">
               {getAprName(breakdown)}
             </Text>
-            <PrimitiveTag noClick look="bold" size="sm">
+            <PrimitiveTag look="bold" size="sm">
               <Value value format="0a%">
                 {breakdown.value / 100}
               </Value>

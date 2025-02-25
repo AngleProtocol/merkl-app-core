@@ -6,7 +6,6 @@ import type { Themes, sizeScale } from "dappkit";
 import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
-import type { TagTypes } from "../components/element/Tag";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
@@ -199,9 +198,6 @@ export type MerklConfig<T extends Themes> = {
     defaultView?: OpportunityView;
     views?: OpportunityView[];
     rowView?: OpportunityRowView;
-    cells?: {
-      hideTags?: (keyof TagTypes)[];
-    };
     excludeFilters?: OpportunityFilter[];
   };
   bridge: {

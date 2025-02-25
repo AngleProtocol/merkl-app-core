@@ -27,13 +27,10 @@ For detailed terms and conditions, refer to the [`LICENSE`](./LICENSE) file in t
 
 ## Installation
 
-1. Go to `cd packages/dappkit`
-2. `git submodule init`
-3. `git submodule update`
-4. `bun i`
-5. `cd ../..`
-6. `bun i`
-7. `bun dev`
+1. `git submodule update --init --recursive`
+2. `bun i`
+3. `bun dev`
+
 
 ## Development
 

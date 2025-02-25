@@ -1,5 +1,5 @@
 import type { TagTypes } from "@core/components/element/Tag";
-import AprModal from "@core/components/element/apr/AprModal";
+import config from "@core/config";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
@@ -7,88 +7,79 @@ import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunit
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import {
-  Box,
-  Button,
-  Divider,
-  Dropdown,
-  Group,
-  Icon,
-  PrimitiveTag,
-  Text,
-  Title,
-  Value,
-  mergeClass,
-  useOverflowingRef,
-} from "dappkit";
+import { Box, Button, Divider, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 
 export type OpportunityCellProps = {
-  hideTags?: (keyof TagTypes)[];
   opportunity: Opportunity;
-
+  tags?: (keyof TagTypes)[];
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 
-export default function OpportunityCell({ opportunity, hideTags, navigationMode }: OpportunityCellProps) {
+export default function OpportunityCell({ opportunity, navigationMode, tags }: OpportunityCellProps) {
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
 
   const cell = useMemo(
     () => (
-      <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer">
-        <Group className="p-md md:p-xl justify-between items-end">
-          <Group className="flex-col">
-            <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
-            <Text bold look="bold">
-              Total daily rewards
+      <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0">
+        <Group className="p-md md:p-xl justify-between flex-1 items-end">
+          <Group className="flex-nowrap">
+            <Text className="text-3xl">
+              <Icons groupProps={{ className: "flex-nowrap" }} />
             </Text>
+            <Title
+              h={3}
+              size={4}
+              ref={ref}
+              className={mergeClass(
+                "[overflow-wrap:anywhere]",
+                overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
+              )}>
+              {name}
+            </Title>
           </Group>
+          <Group className="justify-between flex-nowrap">
+            <Group className="items-center">
+              <Tags tags={tags ?? ["chain", "protocol", "action"]} size="xs" />
+            </Group>
+          </Group>
+        </Group>
+        <Divider className="my-0" look="soft" />
+        <Group className="flex-nowrap p-md md:p-xl justify-between">
+          <div>
+            <Group className="flex-nowrap items-center" size="sm">
+              <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
+              <Text bold look="soft">
+                Daily Rewards
+              </Text>
+            </Group>
 
-          <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
-            <PrimitiveTag look="hype" size="lg">
+            <Group className="items-center">
               <Value value format="0a%">
                 {opportunity.apr / 100}
               </Value>{" "}
-              <span className="font-normal">APR</span>
-            </PrimitiveTag>
-          </Dropdown>
-        </Group>
-        <Divider className="my-0" look="soft" />
-        <Group className="flex-col p-md md:p-xl flex-1">
-          <Group className="justify-between flex-col flex-1">
-            <Group className="flex-nowrap">
-              <Text className="text-3xl">
-                <Icons groupProps={{ className: "flex-nowrap" }} />
-              </Text>
-              <Title
-                h={3}
-                size={4}
-                ref={ref}
-                className={mergeClass(
-                  "font-medium [overflow-wrap:anywhere]",
-                  overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
-                )}>
-                {name}
-              </Title>
+              APR
             </Group>
+            <Text look="base">
+              <Value value format={config.decimalFormat.dollar}>
+                {opportunity.tvl ?? 0}
+              </Value>{" "}
+              TVL
+            </Text>
+          </div>
 
-            <Group className="justify-between flex-nowrap">
-              <Group className="items-center">
-                <Tags hide={hideTags} size="sm" />
-              </Group>
-              <Group className="flex-col justify-end">
-                <Button className="hidden lg:block" look="base">
-                  <Icon remix="RiArrowRightLine" />
-                </Button>
-              </Group>
-            </Group>
+          <Group className="flex-col justify-end">
+            <Button look="hype" size="lg">
+              Explore
+              <Icon remix="RiArrowRightLine" />
+            </Button>
           </Group>
         </Group>
       </Box>
     ),
-    [opportunity, Icons, name, overflowing, ref, Tags, hideTags, formattedDailyRewards],
+    [opportunity, Icons, name, overflowing, ref, Tags, tags, formattedDailyRewards],
   );
 
   if (navigationMode === "supply")

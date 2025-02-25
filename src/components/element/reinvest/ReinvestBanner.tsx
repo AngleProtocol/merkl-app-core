@@ -42,11 +42,7 @@ export default function ReinvestBanner() {
     () =>
       opportunities?.map(o => (
         <EventBlocker key={`${o.chainId}_${o.type}_${o.identifier}`}>
-          <OpportunityCell
-            navigationMode={"supply"}
-            hideTags={["action", "chain", "status", "token", "tokenChain"]}
-            opportunity={o}
-          />
+          <OpportunityCell navigationMode={"supply"} tags={[]} opportunity={o} />
         </EventBlocker>
       )),
     [opportunities],

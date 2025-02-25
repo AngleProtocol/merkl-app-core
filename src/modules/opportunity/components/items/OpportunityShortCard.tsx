@@ -14,7 +14,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
       <Group className="items-center">
         {formattedDailyRewards}
         <Tags
-          only={["protocol"]}
+          tags={["protocol"]}
           size="sm"
           look="base"
           style={{

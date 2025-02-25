@@ -1,7 +1,7 @@
 import merklConfig from "@core/config";
 import type { Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Fmt, Icon, Icons, Text, Title, Value } from "dappkit";
+import { Fmt, Icon, Text, Value } from "dappkit";
 import { useMemo } from "react";
 
 const rewards = ["dailyRewards", "rewardsRecord"] satisfies (keyof Opportunity)[];
@@ -58,14 +58,14 @@ export default function useOpportunityRewards({
 
       return (
         <>
-          <Title h={3} size={3} look="soft">
+          <Text bold look="soft">
             <Value value format={"0,0.##a"}>
               {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
             </Value>
 
             {token?.symbol && ` ${token?.symbol}`}
-          </Title>
-          <Text className="text-xl">
+          </Text>
+          <Text className="text-lg">
             <Icon key={token?.icon} src={token?.icon} />
           </Text>
         </>
@@ -73,14 +73,11 @@ export default function useOpportunityRewards({
     }
     return (
       <>
-        <Title h={3} size={3} look="soft">
+        <Text bold look="soft">
           <Value value format={merklConfig.decimalFormat.dollar}>
             {dailyRewards ?? 0}
           </Value>
-        </Title>
-        <Title h={4}>
-          <Icons>{rewardIcons}</Icons>
-        </Title>
+        </Text>
       </>
     );
   }, [rewardsRecord, dailyRewards, rewardIcons]);
