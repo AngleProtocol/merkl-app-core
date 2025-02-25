@@ -65,6 +65,10 @@ export abstract class TokenService {
     return await TokenService.#fetch(async () => api.v3.compoundV2.get({ query }));
   }
 
+  static async getRadiant(query: Parameters<typeof api.v3.radiant.get>[0]["query"]) {
+    return await TokenService.#fetch(async () => api.v3.radiant.get({ query }));
+  }
+
   static async getDolomite(query: Parameters<typeof api.v3.dolomite.get>[0]["query"]) {
     return await TokenService.#fetch(async () => api.v3.dolomite.get({ query }));
   }
