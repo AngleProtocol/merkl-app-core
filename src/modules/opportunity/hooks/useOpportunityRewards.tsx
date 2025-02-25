@@ -14,17 +14,6 @@ export default function useOpportunityRewards({
   rewardsRecord,
 }: Pick<Opportunity, (typeof rewards)[number]>) {
   /**
-   * Icons for each rewarded tokens of the opportunity
-   */
-  const rewardIcons = useMemo(
-    () =>
-      rewardsRecord?.breakdowns?.map(({ token: { icon, address } }) => {
-        return <Icon key={address} rounded src={icon} />;
-      }) ?? [],
-    [rewardsRecord],
-  );
-
-  /**
    * Picks tokens and amounts from the rewards breakdown
    */
   const rewardsBreakdown = useMemo(() => {
@@ -80,10 +69,9 @@ export default function useOpportunityRewards({
         </Text>
       </>
     );
-  }, [rewardsRecord, dailyRewards, rewardIcons]);
+  }, [rewardsRecord, dailyRewards]);
 
   return {
-    rewardIcons,
     rewardsBreakdown,
     formattedDailyRewards,
   };
