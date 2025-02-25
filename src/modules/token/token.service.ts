@@ -73,6 +73,10 @@ export abstract class TokenService {
     return await TokenService.#fetch(async () => api.v3.dolomite.get({ query }));
   }
 
+  static async getSilo(query: Parameters<typeof api.v3.silo.get>[0]["query"]) {
+    return await TokenService.#fetch(async () => api.v3.silo.get({ query }));
+  }
+
   static async getValidRewardTokenByChain(chainId: number): Promise<Token[]> {
     const tokens = await TokenService.#fetch(async () => api.v4.tokens.reward({ chainId }).get());
     return tokens;
