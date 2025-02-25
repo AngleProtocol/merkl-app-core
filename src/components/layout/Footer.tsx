@@ -20,19 +20,21 @@ export default function Footer() {
                 <BrandNavigationMenu routes={merklConfig.navigation.routes} disabled />
               </Button>
             </div>
-            <Socials />
-            {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
-              Object.entries(merklConfig.footerNavLinks ?? {}).map(([key, route]) => (
-                <Button
-                  look="soft"
-                  className="capitalize"
-                  size="lg"
-                  key={route.key}
-                  external={route.external}
-                  to={route.route}>
-                  {key}
-                </Button>
-              ))}
+            <Group size="lg">
+              <Socials />
+              {Object.keys(merklConfig.footerNavLinks ?? {}).length > 0 &&
+                Object.entries(merklConfig.footerNavLinks ?? {}).map(([key, route]) => (
+                  <Button
+                    look="soft"
+                    className="capitalize"
+                    size="lg"
+                    key={route.key}
+                    external={route.external}
+                    to={route.route}>
+                    {key}
+                  </Button>
+                ))}
+            </Group>
           </Group>
           <Group className="items-center gap-xl md:gap-xl*2">
             <Group className="items-center" size="xl">
