@@ -1,15 +1,15 @@
 import Pagination from "@core/components/element/Pagination";
+import type { OpportunityView } from "@core/config/opportunity";
 import ProtocolFilters from "@core/modules/protocol/components/ProtocolFilters";
 // import ProtocolCell from "@core/modules/protocol/components/element/ProtocolCell";
-import type { Protocol, Chain } from "@merkl/api";
-import { Box, Group, List, Title, Text, Button, Icon } from "dappkit";
+import type { Chain, Protocol } from "@merkl/api";
 import { useLocation, useNavigate } from "@remix-run/react";
+import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import merklConfig from "../../../../config";
-import type { OpportunityView } from "@core/config/opportunity";
 import ProtocolCell from "../element/ProtocolCell";
-import { ProtocolTable } from "./ProtocolTable";
 import ProtocolTableRow from "../element/ProtocolTableRow";
+import { ProtocolTable } from "./ProtocolTable";
 
 export type ProtocolLibraryProps = {
   protocols: Protocol[];

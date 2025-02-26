@@ -1,5 +1,5 @@
-import type { Protocol } from "@merkl/api";
 import type { TagTypes } from "@core/components/element/Tag";
+import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import { Box, Divider, Group, Image, Text, Title, mergeClass, useOverflowingRef } from "dappkit";

@@ -1,11 +1,11 @@
+import merklConfig from "@core/config";
+import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import { Button, Group, Icon, Image, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import { ProtocolRow } from "../library/ProtocolTable";
-import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
-import merklConfig from "@core/config";
 
 export type ProtocolTableRowProps = {
   protocol: Protocol;

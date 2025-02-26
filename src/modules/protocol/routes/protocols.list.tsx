@@ -1,10 +1,10 @@
 import { Cache } from "@core/modules/cache/cache.service";
+import useChains from "@core/modules/chain/hooks/useChains";
 import ProtocolLibrary from "@core/modules/protocol/components/library/ProtocolLibrary";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
-import useChains from "@core/modules/chain/hooks/useChains";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { protocols, count } = await ProtocolService.getManyFromRequest(request);
