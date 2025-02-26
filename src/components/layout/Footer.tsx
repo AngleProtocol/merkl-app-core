@@ -17,7 +17,7 @@ export default function Footer() {
           <Group className="gap-xl md:gap-xl*2 items-center">
             <div className="hidden md:block">
               <Button to="/" look="soft" className="flex justify-start">
-                <BrandNavigationMenu routes={merklConfig.navigation.routes} disabled />
+                <BrandNavigationMenu routes={merklConfig.navigation.menu} disabled />
               </Button>
             </div>
             <Group size="lg">

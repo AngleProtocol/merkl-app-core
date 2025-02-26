@@ -1,8 +1,5 @@
-import type { routesType } from "@core/config/type";
-<<<<<<< HEAD
+import type { NavigationMenuRoute, routesType } from "@core/config/type";
 import { useLocation } from "@remix-run/react";
-=======
->>>>>>> 3cbe6d0 (add: new route pattern)
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -11,6 +8,7 @@ import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 import BrandNavigationMenu from "./BrandNavigationMenu";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -98,27 +96,33 @@ export default function Header() {
         className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
         <Container className="py-xl">
           <Group className="justify-between items-center">
-            <BrandNavigationMenu routes={merklConfig.navigation.routes} footer={<SwitchMode />} />
+            <BrandNavigationMenu routes={merklConfig.navigation.menu} footer={<SwitchMode />} />
             <Group>
               <Group className="items-center" size="xl">
                 <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
-                  {Object.entries(routes)
-                    .filter(([key]) => !["home", "docs"].includes(key))
+                  {Object.entries(merklConfig.navigation.header)
                     .map(([key, route]) => {
+
+                      const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
                       return (
                         <Group
                           key={`${key}-link`}
                           className={mergeClass(
                             "h-full",
-                            location.pathname === route?.route && "border-accent-11 border-b-2",
+                            hasLink(route) && location.pathname === route.link && "border-accent-11 border-b-2",
                           )}>
                           <Button
                             className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
                             look="soft"
                             size="lg"
                             key={`${key}-link`}
-                            to={route?.route}
-                            external={route?.external}>
+                            {...(hasLink(route)
+                              ? {
+                                  to: route.link,
+                                  external: route.external,
+                                }
+                              : {})}
+                            >
                             {key}
                           </Button>
                         </Group>

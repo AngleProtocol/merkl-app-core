@@ -1,15 +1,7 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import type { IconProps, WalletOptions } from "dappkit";
-=======
-import type { WalletOptions, IconProps } from "dappkit";
->>>>>>> ce2988a (update: layermenu & header)
-=======
-import type { IconProps, WalletOptions } from "dappkit";
->>>>>>> 3cbe6d0 (add: new route pattern)
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type {
