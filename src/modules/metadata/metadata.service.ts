@@ -38,14 +38,6 @@ export abstract class MetadataService {
     for (const [route, value] of Object.entries(routes)) {
       const matches = MetadataService.matchRoute(location, value.routes ?? {}, parentRoute + route);
 
-      MetadataService.compareRoute(parentRoute + route, location) &&
-        console.log(
-          matches.length > 0,
-          parentRoute + route,
-          location,
-          MetadataService.compareRoute(parentRoute + route, location),
-        );
-
       if (matches.length > 0) return matches.concat(value);
       if (MetadataService.compareRoute(parentRoute + route, location)) return [value];
     }
