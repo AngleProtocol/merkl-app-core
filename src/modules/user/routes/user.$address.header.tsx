@@ -33,11 +33,11 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
   return withUrl(request, { rewards, address, token });
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("dashboard", [data?.url, merklConfig, data?.address]);
+  return MetadataService.wrap(data?.url, location.pathname, "user", { address: data?.address });
 };
 
 export type OutletContextRewards = {

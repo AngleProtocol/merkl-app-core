@@ -1,5 +1,8 @@
 import type { routesType } from "@core/config/type";
+<<<<<<< HEAD
 import { useLocation } from "@remix-run/react";
+=======
+>>>>>>> 3cbe6d0 (add: new route pattern)
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";

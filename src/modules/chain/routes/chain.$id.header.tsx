@@ -1,6 +1,4 @@
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
-import config from "@core/config";
-import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
@@ -28,13 +26,13 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   });
 }
 
-export const clientLoader = Cache.wrap("chain", 300);
+// export const clientLoader = Cache.wrap("chain", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("chain", [data?.url, config, data?.chain]);
+  return MetadataService.wrap(data?.url, location.pathname, "chain", data?.chain);
 };
 
 export default function Index() {

@@ -1,6 +1,5 @@
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
-import config from "@core/config";
 import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
@@ -37,11 +36,11 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
+  return MetadataService.wrap(data?.url, location.pathname, "opportunity", data?.opportunity);
 };
 
 export type OutletContextOpportunity = {
@@ -64,13 +63,6 @@ export default function Index() {
       <Meta />
       <Hero
         icons={icons}
-        breadcrumbs={[
-          { link: merklConfig.routes.opportunities?.route ?? "/", name: "Opportunities" },
-          {
-            link: "/",
-            name: opportunity.name,
-          },
-        ]}
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>

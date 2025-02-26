@@ -33,14 +33,14 @@ export async function loader({ params: { symbol }, request }: LoaderFunctionArgs
 
 export const clientLoader = Cache.wrap("token", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   const symbol = data?.tokens?.[0]?.symbol;
 
   if (!symbol) return [{ title: `${config?.appName} | Token` }];
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("token", [data?.url, config, data?.tokens?.[0]]);
+  return MetadataService.wrap(data?.url, location.pathname, "token", data?.tokens?.[0]);
 };
 
 export default function Index() {
@@ -82,8 +82,7 @@ export default function Index() {
       }
       description={`Earn rewards by using ${token.symbol} as liquidity, or directly earn ${token.symbol} as rewards`}
       sideDatas={defaultHeroSideDatas(count, maxApr, Number.parseFloat(dailyRewards))}
-      // tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}
-    >
+      tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}>
       <Outlet />
     </Hero>
   );
