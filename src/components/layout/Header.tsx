@@ -1,4 +1,4 @@
-import type { NavigationMenuRoute, routesType } from "@core/config/type";
+import type { NavigationMenuRoute } from "@core/config/type";
 import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
@@ -8,7 +8,6 @@ import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 import BrandNavigationMenu from "./BrandNavigationMenu";
-import { MetadataService } from "@core/modules/metadata/metadata.service";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -29,19 +28,6 @@ export default function Header() {
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
   }, [chains, chainId]);
-
-  // Dynamically filter routes based on the config
-  const routes = useMemo(() => {
-    const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
-    const filteredRoutes = Object.fromEntries(
-      Object.entries(routes).filter(([_, route]) => route.enabled && route.inHeader === true),
-    );
-
-    if (!!filteredRoutes.dashboard && !!user) {
-      filteredRoutes.dashboard.route = filteredRoutes.dashboard.route.concat(`/${user}`);
-    }
-    return filteredRoutes;
-  }, [user]);
 
   const [height, setHeight] = useState(0);
 
@@ -100,34 +86,32 @@ export default function Header() {
             <Group>
               <Group className="items-center" size="xl">
                 <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
-                  {Object.entries(merklConfig.navigation.header)
-                    .map(([key, route]) => {
-
-                      const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
-                      return (
-                        <Group
+                  {Object.entries(merklConfig.navigation.header).map(([key, route]) => {
+                    const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> =>
+                      "link" in route;
+                    return (
+                      <Group
+                        key={`${key}-link`}
+                        className={mergeClass(
+                          "h-full",
+                          hasLink(route) && location.pathname === route.link && "border-accent-11 border-b-2",
+                        )}>
+                        <Button
+                          className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
+                          look="soft"
+                          size="lg"
                           key={`${key}-link`}
-                          className={mergeClass(
-                            "h-full",
-                            hasLink(route) && location.pathname === route.link && "border-accent-11 border-b-2",
-                          )}>
-                          <Button
-                            className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
-                            look="soft"
-                            size="lg"
-                            key={`${key}-link`}
-                            {...(hasLink(route)
-                              ? {
-                                  to: route.link,
-                                  external: route.external,
-                                }
-                              : {})}
-                            >
-                            {key}
-                          </Button>
-                        </Group>
-                      );
-                    })}
+                          {...(hasLink(route)
+                            ? {
+                                to: route.link,
+                                external: route.external,
+                              }
+                            : {})}>
+                          {key}
+                        </Button>
+                      </Group>
+                    );
+                  })}
                   <Group className="items-center">
                     <SwitchMode />
                     {merklConfig.header.searchbar.enabled && <SearchBar icon={true} />}
