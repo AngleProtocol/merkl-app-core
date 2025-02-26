@@ -31,11 +31,11 @@ export async function loader({ params: { address, chain: chainName }, request }:
   });
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity/leaderboard", [data?.url, merklConfig]);
+  return MetadataService.wrap(data?.url, location.pathname);
 };
 
 export default function Index() {

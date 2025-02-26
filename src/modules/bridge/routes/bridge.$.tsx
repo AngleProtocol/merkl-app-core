@@ -11,11 +11,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return withUrl(request, {});
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("bridge", [data?.url, merklConfig]);
+  return MetadataService.wrap(data?.url, location.pathname);
 };
 
 export default function Index() {

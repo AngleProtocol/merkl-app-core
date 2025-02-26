@@ -1,6 +1,4 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
-import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
-import type { MetaDescriptor } from "@remix-run/react";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { IconProps, WalletOptions } from "dappkit";
@@ -13,6 +11,7 @@ import type {
   OpportunityView,
 } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
+import type { MerklRoutes } from "./routes";
 
 export type routesType = {
   [key: string]: {
@@ -43,51 +42,39 @@ export type NavigationMenuRoutes = {
 
 // TODO: groups by entity
 export type MerklConfig<T extends Themes> = {
+  theme: {
+    modes: ("dark" | "light")[];
+    defaultTheme: keyof T;
+    themes: T;
+    /**
+     * Sizing theme, influences the padding, gaps & radius.
+     */
+    sizing: {
+      width: { [Size in (typeof sizeScale)[number]]: number };
+      spacing: { [Size in (typeof sizeScale)[number]]: number };
+      radius: { [Size in (typeof sizeScale)[number]]: number };
+    };
+  };
   /**
    * Themes available
    * @notice the first theme is the default one by default
    */
   themes: T;
 
-  metaDatasGlobal: (url: string) => MetaDescriptor[];
-
-  metaDatas: {
-    home: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    opportunity: (
-      url: string,
-      config: Omit<MerklConfig<T>, "wagmi" | "themes">,
-      opportunity: Opportunity,
-    ) => MetaDescriptor[];
-    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, address: string) => MetaDescriptor[];
-    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    token: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, token: Token) => MetaDescriptor[];
-    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, chain: Chain) => MetaDescriptor[];
-    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, protocol: Protocol) => MetaDescriptor[];
-    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-  };
-
-  /**
-   * Sizing theme, influences the padding, gaps & radius.
-   */
-  sizing: {
-    width: { [Size in (typeof sizeScale)[number]]: number };
-    spacing: { [Size in (typeof sizeScale)[number]]: number };
-    radius: { [Size in (typeof sizeScale)[number]]: number };
-  };
   /**
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
-  defaultTheme: keyof T;
+
+  routes: MerklRoutes;
+
+  /**
+   * Navigation Menu and Header links configuration
+   */
   navigation: {
     brand?: () => JSX.Element;
-    routes: NavigationMenuRoutes;
+    header: NavigationMenuRoutes;
+    menu: NavigationMenuRoutes;
   };
   /**
    * Toggle supply modal allowing users to deposit/withdraw directly on opportunities
@@ -165,7 +152,6 @@ export type MerklConfig<T extends Themes> = {
   /**
    * Enables themes to be switched between dark and light or enforce only one
    */
-  modes: ("dark" | "light")[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   /**
    * Custom white-label-banner component to showup on the top of pages
@@ -176,7 +162,6 @@ export type MerklConfig<T extends Themes> = {
    */
   appName: string;
   fonts?: { italic?: boolean };
-  routes: routesType;
   opportunity: {
     featured: {
       enabled: boolean;
