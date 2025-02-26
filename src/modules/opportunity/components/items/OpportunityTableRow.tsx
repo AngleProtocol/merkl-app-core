@@ -1,4 +1,3 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import AprModal from "@core/components/element/apr/AprModal";
 import merklConfig from "@core/config";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
@@ -26,13 +25,11 @@ import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 
 export type OpportunityTableRowProps = {
-  hideTags?: (keyof TagTypes)[];
   opportunity: Opportunity;
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 
 export default function OpportunityTableRow({
-  hideTags,
   opportunity,
   className,
   navigationMode,
@@ -60,7 +57,7 @@ export default function OpportunityTableRow({
 
   const tvlColumn = useMemo(
     () => (
-      <Text bold look="tint">
+      <Text bold look="tint" size="lg">
         <Value value format={merklConfig.decimalFormat.dollar}>
           {opportunity.tvl ?? 0}
         </Value>
@@ -72,7 +69,7 @@ export default function OpportunityTableRow({
   const rewardsColumn = useMemo(
     () => (
       <Group size="sm">
-        <Text look="hype" bold>
+        <Text look="hype" bold size="lg">
           <Value value format={merklConfig.decimalFormat.dollar}>
             {opportunity.dailyRewards ?? 0}
           </Value>
@@ -120,7 +117,7 @@ export default function OpportunityTableRow({
                 </Group>
 
                 <Group className="items-center">
-                  <Tags hide={hideTags} size="sm" />
+                  <Tags tags={["chain", "protocol", "status"]} size="xs" />
                 </Group>
               </Group>
             }
@@ -161,14 +158,14 @@ export default function OpportunityTableRow({
                 </Group>
 
                 <Group className="items-center">
-                  <Tags hide={hideTags} size="sm" />
+                  <Tags tags={["chain", "protocol", "status"]} size="sm" />
                 </Group>
               </Group>
             }
           />
         );
     }
-  }, [opportunity, aprColumn, tvlColumn, hideTags, className, rewardsColumn, icons, overflowing, ref, tags]);
+  }, [opportunity, aprColumn, tvlColumn, className, rewardsColumn, icons, overflowing, ref, tags]);
 
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{row}</OpportunityParticipateModal>;

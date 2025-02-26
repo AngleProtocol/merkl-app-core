@@ -16,13 +16,7 @@ export default function OpportunityFeatured({
   const renderOpportunities = useMemo(() => {
     return opportunities
       .slice(0, maxLength)
-      .map(o => (
-        <OpportunityCell
-          hideTags={["action", "chain", "status", "token", "tokenChain"]}
-          key={`${o.chainId}_${o.type}_${o.identifier}`}
-          opportunity={o}
-        />
-      ));
+      .map(o => <OpportunityCell tags={[]} key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />);
   }, [opportunities, maxLength]);
 
   return <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">{renderOpportunities}</div>;

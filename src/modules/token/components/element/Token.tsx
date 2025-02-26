@@ -60,7 +60,7 @@ export default function Token({
         {symbol && token?.symbol}
         {(format === "price" || format === "amount_price") && !!amount && (
           <Group className="shrink block">
-            <PrimitiveTag noClick size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}>
+            <PrimitiveTag size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}>
               <Value
                 className="text-right"
                 look={"soft"}

@@ -53,37 +53,37 @@ export default function OpportunityFilters({
 
   const sortOptions = {
     "apr-asc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By APR
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "apr-desc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By APR
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "tvl-asc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By TVL
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "tvl-desc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By TVL
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "rewards-asc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By Daily Rewards
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "rewards-desc": (
-      <Group className="flex-nowrap">
+      <Group className="flex-nowrap !gap-sm">
         By Daily Rewards
         <Icon remix="RiArrowDownLine" />
       </Group>
@@ -348,8 +348,8 @@ export default function OpportunityFilters({
         onChange={onSortByChange}
         state={[sortInput, setSortInput]}
         options={sortOptions}
-        look="tint"
-        placeholder="Sort by"
+        look="hype"
+        placeholder={"By Daily Rewards"}
       />
     </Group>
   );

@@ -102,7 +102,7 @@ export default function Participate({
                   size="xs">
                   <Group className="items-center">
                     {!!inputToken && (
-                      <PrimitiveTag noClick size="sm">
+                      <PrimitiveTag size="sm">
                         <Value
                           fallback={v => (v as string).includes("0.000") && "< 0.001"}
                           className="text-right items-center flex font-bold"

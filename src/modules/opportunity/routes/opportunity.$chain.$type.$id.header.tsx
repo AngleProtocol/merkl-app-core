@@ -110,7 +110,7 @@ export default function Index() {
             key: "leaderboard",
           },
         ]}
-        tags={<Tags size="sm" />}
+        tags={<Tags tags={["chain", "protocol", "action", "tokenChain", "token", "status"]} size="sm" />}
         sideDatas={headerMetrics}>
         <Outlet context={{ opportunity, chain }} />
       </Hero>

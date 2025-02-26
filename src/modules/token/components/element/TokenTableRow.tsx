@@ -1,4 +1,3 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import merklConfig from "@core/config";
 import { TokenRow } from "@core/modules/token/components/library/TokenTable";
 import type { Token } from "@merkl/api";
@@ -9,11 +8,10 @@ import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
 
 export type TokenTableRowProps = {
-  hideTags?: (keyof TagTypes)[];
   token: Token;
 } & BoxProps;
 
-export default function TokenTableRow({ hideTags, token, className, ...props }: TokenTableRowProps) {
+export default function TokenTableRow({ token, className, ...props }: TokenTableRowProps) {
   return (
     <Link to={`/tokens/${token.symbol}`}>
       <TokenRow

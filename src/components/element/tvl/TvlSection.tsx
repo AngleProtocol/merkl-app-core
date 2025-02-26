@@ -94,7 +94,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                 </Text>
 
                 {aprBreakdown && (
-                  <PrimitiveTag className="w-fit ml-auto" noClick look="bold" size="sm">
+                  <PrimitiveTag className="w-fit ml-auto" look="bold" size="sm">
                     <Value value format="0a%">
                       {aprBreakdown.value / 100}
                     </Value>

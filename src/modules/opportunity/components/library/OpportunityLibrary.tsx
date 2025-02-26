@@ -53,10 +53,7 @@ export default function OpportunityLibrary({
     }
   }, [clearing]);
 
-  // const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const handleClearFilters = useCallback(() => {
-    // scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     setClearing(true);
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
@@ -94,7 +91,6 @@ export default function OpportunityLibrary({
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
               <OpportunityTableRow
-                hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
                 navigationMode={merklConfig.opportunityNavigationMode}
                 key={`${o.chainId}_${o.type}_${o.identifier}`}
                 opportunity={o}
@@ -128,17 +124,14 @@ export default function OpportunityLibrary({
               </Group>
             </Box>
             <Box>
-              <Group>
-                <Group className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
-                  {opportunities?.map(o => (
-                    <OpportunityCell
-                      navigationMode={merklConfig.opportunityNavigationMode}
-                      hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
-                      key={`${o.chainId}_${o.type}_${o.identifier}`}
-                      opportunity={o}
-                    />
-                  ))}
-                </Group>
+              <Group className="grid md:grid-cols-2 lg:grid-cols-3" size="lg">
+                {opportunities?.map(o => (
+                  <OpportunityCell
+                    navigationMode={merklConfig.opportunityNavigationMode}
+                    key={`${o.chainId}_${o.type}_${o.identifier}`}
+                    opportunity={o}
+                  />
+                ))}
               </Group>
             </Box>
             {count !== undefined && (

@@ -264,9 +264,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   opportunityLibrary: {
     defaultView: "cells",
     // views: ["table"], // If you want only one view, this is where you can specify it.
-    cells: {
-      hideTags: ["token", "action"],
-    },
+
     excludeFilters: ["protocol", "tvl"],
   },
   opportunityPercentage: true,

@@ -99,22 +99,23 @@ export default function useOpportunityMetadata({
 
   /**
    * Extensible tags components that can be filtered
-   * @param hide which tags to filers out
+   * @param tags which tags to display, the order has its importance
    * @param props tag item props
    */
   const Tags = useCallback(
     function TagsComponent({
-      hide,
-      only,
+      tags: selectedTags,
       ...props
-    }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[] } & Omit<
-      Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
-      "value" | "type"
-    >) {
-      return tags
-        ?.filter(a => a !== undefined)
-        ?.filter(({ type }) => !hide || !hide.includes(type))
-        ?.filter(({ type }) => !only || only.includes(type))
+    }: { tags: (keyof TagTypes)[] } & Omit<Component<TagProps<keyof TagTypes>, HTMLButtonElement>, "value" | "type">) {
+      if (!selectedTags?.length || !tags?.length) return null;
+
+      // Create a map of available tags for O(1) lookup
+      const availableTags = new Map(tags.filter(tag => tag !== undefined).map(tag => [tag.type, tag]));
+
+      // Filter and order tags based on the selectedTags array
+      return selectedTags
+        .map(type => availableTags.get(type))
+        .filter((tag): tag is NonNullable<typeof tag> => tag !== undefined)
         .map(tag => <Tag {...tag} key={tag.key ?? uuidv4()} size="sm" {...props} />);
     },
     [tags],
