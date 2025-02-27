@@ -103,7 +103,9 @@ export default function Header() {
                           key={`${key}-link`}
                           {...(hasLink(route)
                             ? {
-                                to: route.link,
+                                to: route.flags?.replaceWithWallet
+                                  ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
+                                  : route.link,
                                 external: route.external,
                               }
                             : {})}>
