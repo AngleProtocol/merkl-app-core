@@ -69,6 +69,7 @@ const tools = {
   meta: {
     title: (title: string) => ({ title }),
     description: (content: string) => ({ name: "description", content }),
+    keywords: (content: string) => ({ name: "keywords", content }),
     preview: (content: string, type: "image/jpeg" | "image/png", width: number, height: number, alt: string) => [
       property("og:image", content),
       property("og:type", type),
