@@ -57,7 +57,7 @@ export default function Token({
                 format="0,0.###a">
                 {amountFormatted}
               </Value>
-              {symbol && token?.symbol}
+              {symbol && <span>{token?.symbol}</span>}
             </PrimitiveTag>
             <Value className="text-right" look={"soft"} size={size} format={merklConfig.decimalFormat.dollar}>
               {amountUSD}
