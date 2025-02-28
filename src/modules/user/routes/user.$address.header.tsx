@@ -2,7 +2,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
-import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
+import { Button, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
@@ -140,6 +140,9 @@ export default function Index() {
         <Group className="w-full items-center flex justify-between gap-xl md:gap-x-xl*4">
           <Group className="flex-1 gap-xl md:gap-x-xl*4 items-center">
             <Group className="flex-col gap-sm md:gap-md">
+              <Text size={"lg"} bold className="text-lg md:text-xl not-italic">
+                Claimable Now
+              </Text>
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
               ) : (
@@ -147,9 +150,18 @@ export default function Index() {
                   {rewards.unclaimed}
                 </Value>
               )}
-              <Text size={"xl"} bold className="text-lg md:text-xl not-italic">
-                Total Claimable
+            </Group>
+            <Group className="flex-col gap-sm md:gap-md">
+              <Text size="lg" bold className="text-lg md:text-xl not-italic">
+                Total Earned
               </Text>
+              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
+                <Token size="xl" symbol token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
+              ) : (
+                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                  {rewards.earned + rewards.pending}
+                </Value>
+              )}
             </Group>
             <Group className="flex-col gap-sm md:gap-md">
               {isAbleToClaim && (
@@ -167,40 +179,9 @@ export default function Index() {
               )}
             </Group>
           </Group>
-
-          <Divider vertical className="m-0 hidden lg:block" look="bold" />
-          <Divider horizontal className="m-0 lg:hidden" look="bold" />
-
-          <Group className="flex-1 gap-lg md:gap-xl*4 items-center lg:justify-end">
-            <Group className="flex-col gap-sm md:gap-md">
-              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
-              ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
-                  {rewards.pending}
-                </Value>
-              )}
-              <Text size="xl" bold className="text-lg md:text-xl not-italic">
-                Pending Rewards
-              </Text>
-            </Group>
-
-            <Group className="flex-col gap-sm md:gap-md">
-              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
-              ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
-                  {rewards.earned + rewards.pending}
-                </Value>
-              )}
-              <Text size="xl" bold className="text-lg md:text-xl not-italic">
-                Lifetime Earned
-              </Text>
-            </Group>
-          </Group>
         </Group>
       }
-      description={""}
+      description={"Check your liquidity positions and claim your rewards"}
       tabs={tabs}>
       <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess } as OutletContextRewards} />
     </Hero>

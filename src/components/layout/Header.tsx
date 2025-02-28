@@ -94,7 +94,12 @@ export default function Header() {
                         key={`${key}-link`}
                         className={mergeClass(
                           "h-full",
-                          hasLink(route) && location.pathname === route.link && "border-accent-11 border-b-2",
+                          hasLink(route) &&
+                            location.pathname ===
+                              (route.flags?.replaceWithWallet
+                                ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
+                                : route.link) &&
+                            "border-accent-11 border-b-2",
                         )}>
                         <Button
                           className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
@@ -103,7 +108,9 @@ export default function Header() {
                           key={`${key}-link`}
                           {...(hasLink(route)
                             ? {
-                                to: route.link,
+                                to: route.flags?.replaceWithWallet
+                                  ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
+                                  : route.link,
                                 external: route.external,
                               }
                             : {})}>

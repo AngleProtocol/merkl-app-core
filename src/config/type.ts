@@ -30,7 +30,9 @@ export type routesType = {
 export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
   icon: IconProps;
   name: string;
-} & (L extends "link" ? { link: string; external?: boolean; disabled?: boolean } : { routes: NavigationMenuRoutes });
+} & (L extends "link"
+  ? { link: string; flags?: { replaceWithWallet: string }; external?: boolean; disabled?: boolean }
+  : { routes: NavigationMenuRoutes });
 
 /**
  * Collection of routes

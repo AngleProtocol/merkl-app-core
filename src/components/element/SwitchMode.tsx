@@ -4,7 +4,7 @@ import merklConfig from "../../config";
 
 export default function SwitchMode() {
   const { mode, toggleMode, themes, theme, setTheme } = useTheme();
-  const canSwitchModes = useMemo(() => !(!merklConfig.modes || merklConfig.modes?.length === 1), []);
+  const canSwitchModes = useMemo(() => !(!merklConfig.theme.modes || merklConfig.theme.modes?.length === 1), []);
 
   const themeOptions = useMemo(() => {
     return Object.keys(themes).reduce(
