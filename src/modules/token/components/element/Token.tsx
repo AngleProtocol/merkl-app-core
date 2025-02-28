@@ -42,42 +42,63 @@ export default function Token({
   const amountFormatted = amount ? formatUnits(amount, token.decimals) : "0";
   const amountUSD = !amount ? 0 : (token.price ?? 0) * Number.parseFloat(amountFormatted ?? "0");
 
-  const display = useMemo(
-    () => (
-      <Fragment>
-        {(format === "amount" || format === "symbol" || format === "amount_price") &&
-          (!!amount || (amount === 0n && showZero)) && (
-            <Value
-              fallback={v => (v as string).includes("0.000") && "< 0.001"}
-              className="text-right items-center flex font-title"
-              look={"bold"}
-              size={size}
-              format="0,0.###a">
-              {amountFormatted}
-            </Value>
-          )}{" "}
-        {format !== "symbol" && icon && <Icon size={size} rounded src={token?.icon} />}
-        {symbol && token?.symbol}
-        {(format === "price" || format === "amount_price") && !!amount && (
-          <Group className="shrink block">
-            <PrimitiveTag size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}>
+  const display = useMemo(() => {
+    switch (format) {
+      case "amount_price":
+        return (
+          <Fragment>
+            <PrimitiveTag className="items-center font-title" size={size}>
+              <Icon size={size} rounded src={token?.icon} />
               <Value
-                className="text-right"
-                look={"soft"}
-                size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}
-                format={merklConfig.decimalFormat.dollar}>
-                {amountUSD}
+                value
+                fallback={v => (v as string).includes("0.000") && "< 0.001"}
+                look={"bold"}
+                size={size}
+                format="0,0.###a">
+                {amountFormatted}
               </Value>
+              {symbol && token?.symbol}
             </PrimitiveTag>
-          </Group>
-        )}
-      </Fragment>
-    ),
-    [token, format, amountFormatted, amountUSD, amount, symbol, icon, size, showZero],
-  );
+            <Value className="text-right" look={"soft"} size={size} format={merklConfig.decimalFormat.dollar}>
+              {amountUSD}
+            </Value>
+          </Fragment>
+        );
+      //TODO: refactor all other format into individual blocks
+      default:
+        return (
+          <Fragment>
+            {(format === "amount" || format === "symbol") && (!!amount || (amount === 0n && showZero)) && (
+              <Value
+                fallback={v => (v as string).includes("0.000") && "< 0.001"}
+                className="text-right items-center flex font-title"
+                look={"bold"}
+                size={size}
+                format="0,0.###a">
+                {amountFormatted}
+              </Value>
+            )}{" "}
+            {format !== "symbol" && icon && <Icon size={size} rounded src={token?.icon} />}
+            {symbol && token?.symbol}
+            {format === "price" && !!amount && (
+              <Group className="shrink block">
+                <PrimitiveTag size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}>
+                  <Value
+                    className="text-right"
+                    look={"soft"}
+                    size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}
+                    format={merklConfig.decimalFormat.dollar}>
+                    {amountUSD}
+                  </Value>
+                </PrimitiveTag>
+              </Group>
+            )}
+          </Fragment>
+        );
+    }
+  }, [token, format, amountFormatted, amountUSD, amount, symbol, icon, size, showZero]);
 
   if (value) return display;
-
   return (
     <Dropdown className="flex flex-col" content={<TokenTooltip {...{ token, amount, chain, size }} />}>
       <Button {...props} size={size} look="soft">

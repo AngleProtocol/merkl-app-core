@@ -11,6 +11,8 @@ export type HistoricalClaimsLibraryProps = {
 
 export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryProps) {
   const { claims } = props;
+  // const { chains } = useWalletContext();
+  // const { options: chainOptions, isSingleChain } = useChains(chains);
 
   const rows = useMemo(() => {
     return claims?.map(claim => <HistoricalClaimsTableRow key={uuidv4()} claim={claim} />);
@@ -23,9 +25,21 @@ export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryPr
           responsive
           dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
           header={
-            <Title h={5} look="soft" className="w-full">
-              Past Claims
-            </Title>
+            <Group className="flex-nowrap items-center">
+              <Title h={5} look="soft">
+                History
+              </Title>
+              {/* <Select
+                // state={[chainIdsInput, n => setChainIdsInput(n)]}
+                allOption={"All chains"}
+                multiple
+                search
+                options={chainOptions}
+                look="base"
+                placeholder="Chain"
+                placeholderIcon={<Icon remix="RiLink" />}
+              /> */}
+            </Group>
           }>
           {rows}
         </HistoricalClaimsTable>

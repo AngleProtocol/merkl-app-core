@@ -1,12 +1,12 @@
 import Tag from "@core/components/element/Tag";
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
+import Token from "@core/modules/token/components/element/Token";
 import type { Reward } from "@merkl/api";
-import { Checkbox, type Component, Divider, type GetSet, Group, Icon, type ListProps, Space } from "dappkit";
+import { Checkbox, type Component, Divider, type GetSet, Group, Icon, type ListProps, Space, Text } from "dappkit";
 import { Collapsible } from "dappkit";
 import { Fmt } from "dappkit";
 import React, { useMemo, useState } from "react";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
-import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 
 export type ClaimRewardsTokenTableRowProps = Component<{
   reward: Reward["rewards"][number];
@@ -40,23 +40,9 @@ export default function ClaimRewardsTokenTableRow({
           />
         </Group>
       }
-      amountColumn={
-        <ClaimRewardsTokenTablePrice amount={unclaimed} price={reward.token.price} decimals={reward.token.decimals} />
-      }
-      claimedColumn={
-        <ClaimRewardsTokenTablePrice
-          amount={BigInt(reward.claimed)}
-          price={reward.token.price}
-          decimals={reward.token.decimals}
-        />
-      }
-      pendingColumn={
-        <ClaimRewardsTokenTablePrice
-          amount={BigInt(reward.pending)}
-          price={reward.token.price}
-          decimals={reward.token.decimals}
-        />
-      }>
+      amountColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(unclaimed)} />}
+      claimedColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.claimed)} />}
+      pendingColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.pending)} />}>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
         {reward.breakdowns
@@ -75,31 +61,18 @@ export default function ClaimRewardsTokenTableRow({
                   className="!px-0 py-xl  !m-0 border-none bg-main-0"
                   onClick={() => setOpen(o => !o)}
                   tokenColumn={
-                    <Group className="flex-col justify-center">
+                    <Group className="pl-md justify-center items-center flex-nowrap">
+                      <Text size="xl">
+                        <Icon className="size" remix="RiCornerDownRightLine" />
+                      </Text>
                       <OpportunityButton opportunity={b.opportunity} />
                     </Group>
                   }
                   amountColumn={
-                    <ClaimRewardsTokenTablePrice
-                      amount={b.amount - b.claimed}
-                      price={reward.token.price}
-                      decimals={reward.token.decimals}
-                    />
+                    <Token size="md" token={reward.token} format="amount_price" amount={BigInt(b.amount - b.claimed)} />
                   }
-                  claimedColumn={
-                    <ClaimRewardsTokenTablePrice
-                      amount={b.claimed}
-                      price={reward.token.price}
-                      decimals={reward.token.decimals}
-                    />
-                  }
-                  pendingColumn={
-                    <ClaimRewardsTokenTablePrice
-                      amount={b.pending}
-                      price={reward.token.price}
-                      decimals={reward.token.decimals}
-                    />
-                  }
+                  claimedColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.claimed} />}
+                  pendingColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.pending} />}
                 />
               </React.Fragment>
             );
