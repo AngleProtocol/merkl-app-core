@@ -64,6 +64,10 @@ export default defineConfig({
               [chains => chains, chains => `${chains}.list`],
             ]);
 
+            route("/status", "modules/status/routes/status", url => `${url}.header`, [
+              [url => url, url => `${url}.list`],
+            ]);
+
             route("/chains/:id", "modules/chain/routes/chain.$id", chains => `${chains}.header`, [
               [chains => chains, chains => `${chains}.opportunities`],
             ]);
