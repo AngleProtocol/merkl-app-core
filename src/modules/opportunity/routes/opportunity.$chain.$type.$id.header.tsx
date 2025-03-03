@@ -15,6 +15,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
+import React, { useCallback, useMemo } from "react";
 
 export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
@@ -52,11 +53,21 @@ export default function Index() {
   const { opportunity, chain } = useLoaderData<typeof loader>();
 
   const { headerMetrics } = useOpportunityMetrics(opportunity);
-  const { title, Tags, description, link, url, icons } = useOpportunityData(opportunity);
+  const { title, Tags, description, link, url: protocolUrl, icons } = useOpportunityData(opportunity);
+  const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
 
   const { copy: copyCall, isCopied } = useClipboard();
 
   const currentLiveCampaign = opportunity.campaigns?.[0];
+
+  const onSupply = useCallback(() => {
+    if (!merklConfig.deposit && !!protocolUrl) return window.open(protocolUrl, "_blank");
+    setSupplyModalOpen(true);
+  }, [protocolUrl]);
+
+  const isSupplyButtonHidden = useMemo(() => {
+    return !merklConfig.deposit && !protocolUrl;
+  }, [protocolUrl]);
 
   return (
     <>
@@ -66,26 +77,13 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {merklConfig.deposit && (
-              <>
-                {!!url && (
-                  <Button to={url} external className="inline-flex" size="md">
-                    <Icon remix="RiArrowRightUpLine" size="sm" />
-                  </Button>
-                )}
-                <OpportunityParticipateModal opportunity={opportunity}>
-                  <Button className="inline-flex" look="hype" size="md">
-                    Supply
-                  </Button>
-                </OpportunityParticipateModal>
-              </>
-            )}
-            {!merklConfig.deposit && !!url && (
-              <Button className="inline-flex" look="hype" size="md" to={url} external>
+            {!isSupplyButtonHidden && (
+              <Button className="inline-flex" look="hype" size="md" onClick={onSupply}>
                 Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
             )}
+            <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
             {(merklConfig.showCopyOpportunityIdToClipboard ?? false) && (
               <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
                 <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
