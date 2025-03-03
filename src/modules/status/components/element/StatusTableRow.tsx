@@ -117,6 +117,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
           )}
         </Group>
       }
+      liveColumn={<Text look="bold">{status.liveCampaigns}</Text>}
       delayColumn={
         <Button
           size="xs"
@@ -125,9 +126,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
           onClick={() => {
             if (status.delayed.length > 0) setOpen(o => !o);
           }}>
-          <Text look="bold" className={status.delayed.length > 0 ? "text-red" : undefined}>
-            {status.delayed.length}
-          </Text>
+          <Text look="bold">{status.delayed.length}</Text>
           {status.delayed.length > 0 && (
             <Icon
               data-state={!open ? "closed" : "opened"}

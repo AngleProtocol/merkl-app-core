@@ -37,8 +37,14 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
     className: "justify-start",
     main: true,
   },
+  live: {
+    name: "Campaigns Live",
+    size: "minmax(100px,0.5fr)",
+    className: "justify-start",
+    main: true,
+  },
   delay: {
-    name: "Delayed Campaigns",
+    name: "Delayed",
     size: "minmax(100px,0.5fr)",
     className: "justify-start",
     main: true,
