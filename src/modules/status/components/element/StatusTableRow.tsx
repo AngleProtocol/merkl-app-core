@@ -135,8 +135,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
             </Group>
           )}
         </Group>
-      }
-      >
+      }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
 
