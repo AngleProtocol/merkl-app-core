@@ -40,9 +40,13 @@ export default function Index() {
           <OverrideTheme coloring={"harm"}>
             <Box>
               <Text>
-                This address has been flagged as suspicious for wash trading and dishonest behavior. For this reason,
-                unclaimed rewards are on hold. If you believe this is a false positive, which may be the case as the
-                detection algorithm is still in beta, please open a ticket on Merkl's Discord.
+                This address has been flagged as suspicious for wash trading and dishonest behavior. As a result,
+                unclaimed rewards are on hold and no new rewards will accumulate while the address remains blacklisted.
+              </Text>
+              <Space size="md" />
+              <Text>
+                If you believe this is a false positive - our detection algorithm is still in beta - please open a
+                ticket on Merkl’s Discord for further review.
               </Text>
               <Group>
                 <Button look="hype" to={merklConfig.links.merklSupport} external>
