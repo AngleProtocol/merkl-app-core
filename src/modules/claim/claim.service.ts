@@ -1,6 +1,7 @@
 import { api } from "@core/api";
 import { fetchWithLogs } from "@core/api/utils";
 import merklConfig from "@core/config";
+import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 
 export abstract class ClaimsService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -19,6 +20,24 @@ export abstract class ClaimsService {
   static async getForUser(address: string) {
     const chainIds = merklConfig.chains?.map(({ id }) => id).join(",");
     const query: Record<string, string> = {};
+    if (chainIds) query.chainIds = chainIds;
+    return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
+  }
+
+  // should be paginated
+  static async getForUserFromRequest(request: Request, address: string) {
+    const url = new URL(request.url);
+    const chainIdsParams = url.searchParams.get("chain") ?? undefined;
+
+    const chainIds =
+      (merklConfig.chains?.length
+        ? merklConfig.chains
+            ?.map(({ id }) => id)
+            ?.filter(id => chainIdsParams === undefined || chainIdsParams.split(",").includes(id.toString()))
+            .join(",")
+        : undefined) ?? chainIdsParams;
+    const query: Record<string, string> = {};
+
     if (chainIds) query.chainIds = chainIds;
     return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
   }

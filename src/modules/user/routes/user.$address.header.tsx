@@ -29,8 +29,9 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
         })
       )?.[0]
     : null;
+  const isBlacklisted = await UserService.isBlacklisted(address);
 
-  return withUrl(request, { rewards, address, token });
+  return withUrl(request, { rewards, address, token, isBlacklisted });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
@@ -43,10 +44,11 @@ export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => 
 export type OutletContextRewards = {
   rewards: ReturnType<typeof useRewards>["sortedRewards"];
   onClaimSuccess: TransactionButtonProps["onSuccess"];
+  isBlacklisted: boolean;
 };
 
 export default function Index() {
-  const { rewards: raw, address, token: rawToken } = useLoaderData<typeof loader>();
+  const { rewards: raw, address, token: rawToken, isBlacklisted } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof loader>();
 
   const { reload: reloadBalances } = useBalances();
@@ -183,7 +185,7 @@ export default function Index() {
       }
       description={"Check your liquidity positions and claim your rewards"}
       tabs={tabs}>
-      <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess } as OutletContextRewards} />
+      <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess, isBlacklisted } as OutletContextRewards} />
     </Hero>
   );
 }
