@@ -8,7 +8,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return withUrl(request, {});
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
