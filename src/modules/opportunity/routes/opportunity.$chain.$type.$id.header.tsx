@@ -1,6 +1,7 @@
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import merklConfig from "@core/config";
+import useParticipate from "@core/hooks/useParticipate";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
@@ -60,14 +61,18 @@ export default function Index() {
 
   const currentLiveCampaign = opportunity.campaigns?.[0];
 
-  const onSupply = useCallback(() => {
-    if (!merklConfig.deposit && !!protocolUrl) return window.open(protocolUrl, "_blank");
-    setSupplyModalOpen(true);
-  }, [protocolUrl]);
+  const { targets } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier);
 
-  const isSupplyButtonHidden = useMemo(() => {
-    return !merklConfig.deposit && !protocolUrl;
-  }, [protocolUrl]);
+  const isSupplyButtonVisible = useMemo(() => {
+    if (!!targets) return true;
+    if (!protocolUrl) return false;
+    return true;
+  }, [protocolUrl, targets]);
+
+  const onSupply = useCallback(() => {
+    if ((!merklConfig.deposit && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
+    setSupplyModalOpen(true);
+  }, [protocolUrl, targets]);
 
   return (
     <>
@@ -77,7 +82,7 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {!isSupplyButtonHidden && (
+            {!!isSupplyButtonVisible && (
               <Button className="inline-flex" look="hype" size="md" onClick={onSupply}>
                 Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
