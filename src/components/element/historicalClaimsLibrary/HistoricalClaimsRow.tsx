@@ -1,11 +1,10 @@
-import useChain from "@core/modules/chain/hooks/useChain";
 import Tag from "@core/components/element/Tag";
+import useChain from "@core/modules/chain/hooks/useChain";
 import type { ClaimsService } from "@core/modules/claim/claim.service";
 import Token from "@core/modules/token/components/element/Token";
 import { Button, Icon, type ListProps, mergeClass } from "dappkit";
-import { Time } from "dappkit";
-import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 import moment from "moment";
+import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 
 export type HistoricalClaimsRowProps = {
   claim: Awaited<ReturnType<typeof ClaimsService.getForUser>>[0];

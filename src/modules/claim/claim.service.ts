@@ -1,7 +1,6 @@
 import { api } from "@core/api";
 import { fetchWithLogs } from "@core/api/utils";
 import merklConfig from "@core/config";
-import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 
 export abstract class ClaimsService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(

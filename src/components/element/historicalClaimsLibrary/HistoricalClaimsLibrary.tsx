@@ -1,12 +1,12 @@
+import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
+import useChains from "@core/modules/chain/hooks/useChains";
+import { useSearchParams } from "@remix-run/react";
 import { Box, Group, Icon, Select, Space, Text, Title, useWalletContext } from "dappkit";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { ClaimsService } from "../../../modules/claim/claim.service";
 import HistoricalClaimsTableRow from "./HistoricalClaimsRow";
 import { HistoricalClaimsTable } from "./HistoricalClaimsTable";
-import useChains from "@core/modules/chain/hooks/useChains";
-import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
-import { useSearchParams } from "@remix-run/react";
 
 export type HistoricalClaimsLibraryProps = {
   claims: Awaited<ReturnType<typeof ClaimsService.getForUser>>;

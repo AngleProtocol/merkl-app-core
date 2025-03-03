@@ -19,7 +19,7 @@ export abstract class UserService {
   /**
    * Whether user is blacklisted or not
    * @param address
-   * @returns 
+   * @returns
    */
   static isBlacklisted(address: string): Promise<boolean> {
     return UserService.#fetch(() => api.v4.blacklists.check({ address }).get({ query: {} }));
