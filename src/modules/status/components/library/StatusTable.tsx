@@ -13,6 +13,18 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
     className: "justify-start",
     main: true,
   },
+  live: {
+    name: "Campaigns Live",
+    size: "minmax(100px,0.5fr)",
+    className: "justify-start",
+    main: true,
+  },
+  delay: {
+    name: "Delayed",
+    size: "minmax(100px,0.5fr)",
+    className: "justify-start",
+    main: true,
+  },
   update: {
     name: "Last Update",
     size: "minmax(200px,0.5fr)",
@@ -37,16 +49,5 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
     className: "justify-start",
     main: true,
   },
-  live: {
-    name: "Campaigns Live",
-    size: "minmax(100px,0.5fr)",
-    className: "justify-start",
-    main: true,
-  },
-  delay: {
-    name: "Delayed",
-    size: "minmax(100px,0.5fr)",
-    className: "justify-start",
-    main: true,
-  },
+  
 });

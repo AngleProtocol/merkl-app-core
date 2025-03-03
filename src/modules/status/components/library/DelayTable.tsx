@@ -25,4 +25,10 @@ export const [DelayTable, DelayRow, statusColumns] = createTable({
     className: "justify-start",
     main: true,
   },
+  reason: {
+    name: "Reason",
+    size: "minmax(250px,1fr)",
+    className: "justify-start",
+    main: true,
+  },
 });

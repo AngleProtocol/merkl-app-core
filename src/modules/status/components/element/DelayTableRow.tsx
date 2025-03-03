@@ -37,6 +37,7 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
         </Text>
       }
       delayColumn={<Duration timestamp={delay.delay * 1000} />}
+      reasonColumn={<Text size="sm">{delay.CampaignStatus?.[0]?.error}</Text>}
     />
   );
 }

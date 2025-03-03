@@ -50,8 +50,27 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
           </Text>
         </Group>
       }
+      liveColumn={<Text look="bold">{status.liveCampaigns}</Text>}
+      delayColumn={
+        <Button
+          size="xs"
+          look="soft"
+          disabled={status.delayed.length === 0}
+          onClick={() => {
+            if (status.delayed.length > 0) setOpen(o => !o);
+          }}>
+          <Text look="bold">{status.delayed.length}</Text>
+          {status.delayed.length > 0 && (
+            <Icon
+              data-state={!open ? "closed" : "opened"}
+              className=" data-[state=opened]:rotate-180"
+              remix={"RiArrowDropDownLine"}
+            />
+          )}
+        </Button>
+      }
       updateColumn={
-        <Group>
+        <Group className="justify-between">
           <Time timestamp={status.endOfDisputePeriod * 1000} />
           <Button
             to={`https://storage.cloud.google.com/merkl-production-reports/${chain.id}/${status.lastTree}_${status.tree}.html`}
@@ -117,25 +136,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
           )}
         </Group>
       }
-      liveColumn={<Text look="bold">{status.liveCampaigns}</Text>}
-      delayColumn={
-        <Button
-          size="xs"
-          look="soft"
-          disabled={status.delayed.length === 0}
-          onClick={() => {
-            if (status.delayed.length > 0) setOpen(o => !o);
-          }}>
-          <Text look="bold">{status.delayed.length}</Text>
-          {status.delayed.length > 0 && (
-            <Icon
-              data-state={!open ? "closed" : "opened"}
-              className=" data-[state=opened]:rotate-180"
-              remix={"RiArrowDropDownLine"}
-            />
-          )}
-        </Button>
-      }>
+      >
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
 
