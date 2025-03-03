@@ -2,7 +2,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Box, Checkbox, Container, Group, Space } from "dappkit";
+import { Box, Checkbox, Container, Group, Space, Text } from "dappkit";
 import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";
 import { useState } from "react";
@@ -27,12 +27,9 @@ export default function Index() {
     <Container>
       <Space size="xl" />
       <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
-        <Group className="justify-between flex-nowrap overflow-x-scroll">
-          <Checkbox
-            size="md"
-            label="Show only delayed"
-            state={[hideChainWithoutLiveCampaigns, setHideChainWithoutLiveCampaigns]}
-          />
+        <Group className="flex-nowrap items-center">
+          <Checkbox size="md" state={[hideChainWithoutLiveCampaigns, setHideChainWithoutLiveCampaigns]} />
+          <Text>Show only chains with live campaigns</Text>
         </Group>
       </Box>
       <StatusLibrary
