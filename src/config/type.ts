@@ -91,6 +91,7 @@ export type MerklConfig<T extends Themes> = {
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
   chains?: viemChain[];
+  protocols?: string[];
   /**
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */

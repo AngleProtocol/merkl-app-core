@@ -108,7 +108,7 @@ export default function OpportunityFilters({
     ),
   };
 
-  const { options: protocolOptions } = useProtocols(protocols);
+  const { options: protocolOptions, isSingleProtocol } = useProtocols(protocols);
   const { options: chainOptions, isSingleChain } = useChains(chains);
 
   const [actionsFilter] = useSearchParamState<string[]>(
@@ -312,7 +312,7 @@ export default function OpportunityFilters({
                 placeholderIcon={<Icon remix="RiLink" />}
               />
             )}
-            {fields.includes("protocol") && (
+            {fields.includes("protocol") && !isSingleProtocol && (
               <Select
                 state={[protocolInput, n => setProtocolInput(n)]}
                 allOption={"All protocols"}
