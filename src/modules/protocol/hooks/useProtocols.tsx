@@ -27,7 +27,10 @@ export default function useProtocols(protocols?: Protocol[]) {
     [protocols],
   );
 
+  const isSingleProtocol = protocols?.length === 1;
+
   return {
     options,
+    isSingleProtocol,
   };
 }
