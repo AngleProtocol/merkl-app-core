@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Button, Divider, Image, Modal, Text, Title } from "dappkit";
+import { Button, Divider, type GetSet, Image, Modal, Text, Title } from "dappkit";
 import type { PropsWithChildren } from "react";
 import React from "react";
 
@@ -8,9 +8,14 @@ import Participate from "@core/modules/interaction/components/Participate";
 
 export type OpportunityParticipateModalProps = {
   opportunity: Opportunity;
+  state?: GetSet<boolean>;
 } & PropsWithChildren;
 
-export default function OpportunityParticipateModal({ opportunity, children }: OpportunityParticipateModalProps) {
+export default function OpportunityParticipateModal({
+  opportunity,
+  children,
+  state,
+}: OpportunityParticipateModalProps) {
   return (
     <Modal
       title={<Title h={3}>SUPPLY</Title>}
@@ -38,7 +43,8 @@ export default function OpportunityParticipateModal({ opportunity, children }: O
             </Text>
           )}
         </div>
-      }>
+      }
+      state={state}>
       {children}
     </Modal>
   );
