@@ -12,35 +12,30 @@ export type ProtocolTableRowProps = {
 } & BoxProps;
 
 export default function ProtocolTableRow({ protocol, className, ...props }: ProtocolTableRowProps) {
-  const { name, link } = useProtocolMetadata(protocol);
-  // const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(protocol);
+  const { name, link, tags } = useProtocolMetadata(protocol);
 
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
 
   const liveCampaignsColumn = useMemo(
     () => (
       <Text bold look="tint" size="lg">
-        {/* {protocol.tvl ?? 0} */}
-        TODO
+        {protocol.numberOfCampaigns}
       </Text>
     ),
-    // [protocol],
-    [],
+    [protocol.numberOfCampaigns],
   );
 
   const rewardsColumn = useMemo(
     () => (
       <Group size="sm">
         <Text look="hype" bold size="lg">
-          <Value value format={merklConfig.decimalFormat.dollar}>
-            {/* {protocol.dailyRewards ?? 0} */}
-            TODO
+          <Value className="text-right font-bold" look={"soft"} format={merklConfig.decimalFormat.dollar}>
+            {protocol.dailyReward}
           </Value>
         </Text>
       </Group>
     ),
-    // [protocol, rewardsBreakdown],
-    [],
+    [protocol.dailyReward],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
@@ -69,11 +64,7 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
               </Group>
             </Group>
 
-            <Group className="items-center">
-              test
-              {/* TODO: Add tags */}
-              {/* <Tags tags={["action"]} size="xs" /> */}
-            </Group>
+            <Group className="items-center">{tags}</Group>
           </Group>
         }
         rewardsColumn={rewardsColumn}
@@ -85,7 +76,7 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
         }
       />
     );
-  }, [protocol, className, rewardsColumn, overflowing, ref]);
+  }, [protocol, className, rewardsColumn, overflowing, ref, tags]);
 
   return (
     <Link prefetch="intent" to={link}>

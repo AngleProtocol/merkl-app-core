@@ -1,4 +1,5 @@
 import type { Protocol } from "@merkl/api";
+import { PrimitiveTag } from "packages/dappkit/src";
 import { useMemo } from "react";
 
 /**
@@ -18,5 +19,19 @@ export default function useProtocolMetadata({ name, icon, ...protocol }: Protoco
    */
   const link = useMemo(() => `/protocols/${protocol?.id}`, [protocol.id]);
 
-  return { name, icon, description, link };
+  /**
+   * TagProps for each metadata that can be represented as a tag
+   */
+  const tags = useMemo(() => {
+    return protocol.tags.map(tag => {
+      if (tag.toUpperCase() !== tag || tag === tag.toLowerCase()) return;
+      return (
+        <PrimitiveTag look="soft" key={tag}>
+          {tag}
+        </PrimitiveTag>
+      );
+    });
+  }, [protocol.tags]);
+
+  return { name, icon, description, link, tags };
 }
