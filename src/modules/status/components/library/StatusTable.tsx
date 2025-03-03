@@ -21,7 +21,7 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
   },
   delay: {
     name: "Delayed",
-    size: "minmax(100px,0.5fr)",
+    size: "minmax(70px,0.3fr)",
     className: "justify-start",
     main: true,
   },
@@ -49,5 +49,4 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
     className: "justify-start",
     main: true,
   },
-  
 });

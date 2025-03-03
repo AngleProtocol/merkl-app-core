@@ -70,25 +70,27 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
         </Button>
       }
       updateColumn={
-        <Group className="justify-between">
-          <Time timestamp={status.endOfDisputePeriod * 1000} />
+        <Group>
           <Button
             to={`https://storage.cloud.google.com/merkl-production-reports/${chain.id}/${status.lastTree}_${status.tree}.html`}
             external
             look="soft">
             <Icon remix="RiFileChart2Fill" />
           </Button>
+          <Time timestamp={status.endOfDisputePeriod * 1000} />
         </Group>
       }
       treeColumn={
-        <Hash format="short" copy>
-          {status.tree}
-        </Hash>
+        <Group>
+          <Copy value={status.tree} />
+          <Hash format="prefix">{status.tree}</Hash>
+        </Group>
       }
       lastTreeColumn={
-        <Hash format="short" copy>
-          {status.lastTree}
-        </Hash>
+        <Group>
+          <Copy value={status.lastTree} />
+          <Hash format="prefix">{status.lastTree}</Hash>
+        </Group>
       }
       contractsColumn={
         <Group className="py-md w-full">
