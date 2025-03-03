@@ -14,7 +14,7 @@ export type ClaimRewardsLibraryProps = {
 };
 
 export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: ClaimRewardsLibraryProps) {
-  const flatenedRewards = useMemo(
+  const flattenedRewards = useMemo(
     () =>
       rewards.flatMap(({ chain, rewards, distributor }) =>
         rewards.flatMap(reward =>
@@ -27,7 +27,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
   const renderRewards = useMemo(() => {
     switch (merklConfig.rewardsNavigationMode) {
       case "opportunity":
-        return <ClaimRewardsByOpportunity from={from} rewards={flatenedRewards} />;
+        return <ClaimRewardsByOpportunity from={from} rewards={flattenedRewards} />;
       default:
         return (
           <ClaimRewardsChainTable
@@ -54,7 +54,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
           </ClaimRewardsChainTable>
         );
     }
-  }, [rewards, flatenedRewards, from, onClaimSuccess]);
+  }, [rewards, flattenedRewards, from, onClaimSuccess]);
 
   return <Group className="flex-row w-full [&>*]:flex-grow">{renderRewards}</Group>;
 }
