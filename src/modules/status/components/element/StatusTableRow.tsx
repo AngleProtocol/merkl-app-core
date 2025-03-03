@@ -81,13 +81,13 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
         </Group>
       }
       treeColumn={
-        <Group>
+        <Group className="items-center">
           <Copy value={status.tree} />
           <Hash format="prefix">{status.tree}</Hash>
         </Group>
       }
       lastTreeColumn={
-        <Group>
+        <Group className="items-center">
           <Copy value={status.lastTree} />
           <Hash format="prefix">{status.lastTree}</Hash>
         </Group>

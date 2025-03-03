@@ -1,5 +1,5 @@
 import type { Chain } from "@merkl/api";
-import { type BoxProps, Duration, Group, Hash, Icon, Text, mergeClass, useWalletContext } from "dappkit";
+import { type BoxProps, Duration, Group, Hash, Icon, Text, Tooltip, mergeClass, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import type { StatusService } from "../../status.service";
 import { DelayRow } from "../library/DelayTable";
@@ -19,7 +19,7 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
       className={mergeClass("", className)}
       {...props}
       computeChainColumn={
-        <Group>
+        <Group className="items-center">
           <Icon src={computeChain?.icon} />
           <Text look="bold" size="sm">
             {computeChain?.name}
@@ -27,9 +27,14 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
         </Group>
       }
       campaignColumn={
-        <Hash copy format="prefix">
-          {delay.campaignId}
-        </Hash>
+        <Group className="items-center">
+          <Hash copy format="prefix">
+            {delay.campaignId}
+          </Hash>{" "}
+          <Tooltip icon={false} helper={<>This is a test campaign.</>}>
+            {delay.RewardToken.isTest && <Icon remix="RiTestTubeFill" />}
+          </Tooltip>
+        </Group>
       }
       opportunityColumn={
         <Text look="bold" size="sm">
