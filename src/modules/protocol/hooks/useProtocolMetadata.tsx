@@ -27,7 +27,7 @@ export default function useProtocolMetadata({ icon, ...protocol }: Protocol) {
    */
   const tags = useMemo(() => {
     return protocol.opportunityLiveTags?.map(tag => {
-      return <Tag type="action" value={tag as OpportunityAction} key={tag} />;
+      return <Tag type="action" value={tag as OpportunityAction} key={tag} size="xs" />;
     });
   }, [protocol.opportunityLiveTags]);
 

@@ -29,7 +29,7 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
     () => (
       <Group size="sm">
         <Text look="hype" bold size="lg">
-          <Value className="text-right font-bold" look={"soft"} format={merklConfig.decimalFormat.dollar}>
+          <Value className="text-right font-bold" look={"hype"} format={merklConfig.decimalFormat.dollar}>
             {protocol.dailyRewards}
           </Value>
         </Text>
