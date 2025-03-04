@@ -1,4 +1,3 @@
-import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import { type Themes, createColoring } from "dappkit";
 import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
@@ -49,7 +48,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   modes: ["dark", "light"],
   defaultTheme: "merkl",
   navigation: {
-    routes: {
+    menu: {
       dashboard: {
         icon: { remix: "RiDashboardFill" },
         link: "/users/",
@@ -93,169 +92,6 @@ const defaultMerklConfig: MerklConfig<Themes> = {
         },
       },
     },
-  },
-  metaDatasGlobal: url => [
-    {
-      name: "twitter:site",
-      content: "@Merkl",
-    },
-    {
-      name: "twitter:creator",
-      content: "@Merkl",
-    },
-    {
-      name: "twitter:title",
-      content: "Merkl",
-    },
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      property: "og:image:alt",
-      content: "Welcome to Merkl!",
-    },
-    {
-      property: "og:url",
-      content: url,
-    },
-    {
-      property: "og:image:type",
-      content: "image/jpeg",
-    },
-    {
-      property: "og:image:width",
-      content: "1200",
-    },
-    {
-      property: "og:image:height",
-      content: "630",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-  ],
-  metaDatas: {
-    home: (url, config) => [
-      { title: `${config?.appName}` },
-      { name: "description", content: "" },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    opportunities: (url, config) => [
-      { title: `${config?.appName} | Opportunities` },
-      {
-        name: "description",
-        content: `Add liquidity to our top DeFi DEX, lending and perp protocols, and earn ${config.clientTokenName}`,
-      },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    opportunity: (url, config, opportunity) => [
-      { title: `${config?.appName} | ${opportunity?.name}` },
-      { name: "description", content: OpportunityService.getDescription(opportunity) || "" },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    "dashboard/connect": url => [
-      {
-        title: "Claims",
-      },
-      { name: "description", content: "Claims rewards earned through Merkl." },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    dashboard: (url, config, address) => [
-      {
-        title: `${config?.appName} | ${address?.substring(0, 6)}…${address.substring(address.length - 4)} dashboard`,
-      },
-      { name: "description", content: "" },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    chains: (url, config) => [
-      { title: `${config?.appName} | Chains` },
-      { name: "description", content: `Chains integrated by ${config?.appName}` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    chain: (url, config, chain) => [
-      { title: `${config?.appName} | ${chain.name}` },
-      { name: "description", content: `Earn rewards by supplying liquidity on ${chain.name} chain` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    bridge: (url, config) => [
-      { title: `${config?.appName} | Bridge` },
-      { name: "description", content: "Bridge" },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    protocols: (url, config) => [
-      { title: `${config?.appName} | Protocols` },
-      { name: "description", content: `Explore protocols incentivized on ${config?.appName}` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    protocol: (url, config, protocol) => [
-      { title: `${config?.appName} | ${protocol.name}` },
-      { name: "description", content: `Explore all opportunities availables on the ${protocol?.name} protocol` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    tokens: (url, config) => [
-      { title: `${config?.appName} | Tokens` },
-      { name: "description", content: `Tokens indexed by ${config?.appName}` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    token: (url, config, token) => [
-      { title: `${config?.appName} | ${token?.symbol}` },
-      { name: "description", content: `All opportunities availables on the ${token?.symbol} token` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    "opportunity/leaderboard": (url, config) => [
-      { title: `${config?.appName} | Leaderboard per token` },
-      { name: "description", content: "" },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
-    faq: (url, config) => [
-      { title: `${config?.appName} | FAQ` },
-      { name: "description", content: `Welcome to ${config?.appName}!` },
-      {
-        property: "og:image",
-        content: `${url}/preview.jpg`,
-      },
-    ],
   },
   fonts: { italic: false },
   opportunityNavigationMode: "supply",

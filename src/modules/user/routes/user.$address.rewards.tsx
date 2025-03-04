@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
-import { Container, Fmt, Group, Icon, Space, Text, useWalletContext } from "dappkit";
+import { Box, Button, Container, Fmt, Group, Icon, OverrideTheme, Space, Text, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";
 import { I18n } from "../../../I18n";
@@ -18,7 +18,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { address } = useLoaderData<typeof loader>();
-  const { rewards: sortedRewards, onClaimSuccess } = useOutletContext<OutletContextRewards>();
+  const { rewards: sortedRewards, onClaimSuccess, isBlacklisted } = useOutletContext<OutletContextRewards>();
 
   const { chainId } = useWalletContext();
   const { balances, loading: balanceLoading } = useBalances(chainId);
@@ -35,6 +35,30 @@ export default function Index() {
   return (
     <Container>
       <Space size="md" />
+      {isBlacklisted && (
+        <>
+          <OverrideTheme coloring={"harm"}>
+            <Box>
+              <Text>
+                This address has been flagged as suspicious for wash trading and dishonest behavior. As a result,
+                unclaimed rewards are on hold and no new rewards will accumulate while the address remains blacklisted.
+              </Text>
+              <Space size="md" />
+              <Text>
+                If you believe this is a false positive - our detection algorithm is still in beta - please open a
+                ticket on Merkl’s Discord for further review.
+              </Text>
+              <Group>
+                <Button look="hype" to={merklConfig.links.merklSupport} external>
+                  Contact Support
+                  <Icon remix="RiArrowRightUpLine" />
+                </Button>
+              </Group>
+            </Box>
+          </OverrideTheme>
+          <Space size="md" />
+        </>
+      )}
       {!!I18n.trad.get.pages.dashboard.explanation && (
         <>
           <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start">

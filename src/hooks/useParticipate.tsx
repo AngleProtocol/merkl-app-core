@@ -2,6 +2,7 @@ import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import useBalances from "./useBalances";
 import useInteractionTargets from "./useInteractionTarget";
+import merklConfig from "@core/config";
 
 export default function useParticipate(
   chainId: number,
@@ -9,6 +10,8 @@ export default function useParticipate(
   identifier?: string,
   tokenAddress?: string,
 ) {
+  if (!merklConfig.deposit) return { balance: [], targets: [], address: "", loading: false, token: undefined };
+
   const { targets, loading: targetLoading } = useInteractionTargets(chainId, protocolId, identifier);
   const { balances, loading: balanceLoading } = useBalances(chainId);
 

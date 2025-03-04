@@ -1,7 +1,7 @@
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
-import config from "@core/config";
 import merklConfig from "@core/config";
+import useParticipate from "@core/hooks/useParticipate";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
@@ -16,6 +16,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
+import React, { useCallback, useMemo } from "react";
 
 export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
@@ -37,11 +38,11 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
+  return MetadataService.wrap(data?.url, location.pathname, "opportunity", data?.opportunity);
 };
 
 export type OutletContextOpportunity = {
@@ -53,47 +54,41 @@ export default function Index() {
   const { opportunity, chain } = useLoaderData<typeof loader>();
 
   const { headerMetrics } = useOpportunityMetrics(opportunity);
-  const { title, Tags, description, link, url, icons } = useOpportunityData(opportunity);
+  const { title, Tags, description, link, url: protocolUrl, icons } = useOpportunityData(opportunity);
+  const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
 
   const { copy: copyCall, isCopied } = useClipboard();
 
   const currentLiveCampaign = opportunity.campaigns?.[0];
+
+  const { targets } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier);
+
+  const isSupplyButtonVisible = useMemo(() => {
+    if (!!targets) return true;
+    if (!protocolUrl) return false;
+    return true;
+  }, [protocolUrl, targets]);
+
+  const onSupply = useCallback(() => {
+    if ((!merklConfig.deposit && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
+    setSupplyModalOpen(true);
+  }, [protocolUrl, targets]);
 
   return (
     <>
       <Meta />
       <Hero
         icons={icons}
-        breadcrumbs={[
-          { link: merklConfig.routes.opportunities?.route ?? "/", name: "Opportunities" },
-          {
-            link: "/",
-            name: opportunity.name,
-          },
-        ]}
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {merklConfig.deposit && (
-              <>
-                {!!url && (
-                  <Button to={url} external className="inline-flex" size="md">
-                    <Icon remix="RiArrowRightUpLine" size="sm" />
-                  </Button>
-                )}
-                <OpportunityParticipateModal opportunity={opportunity}>
-                  <Button className="inline-flex" look="hype" size="md">
-                    Supply
-                  </Button>
-                </OpportunityParticipateModal>
-              </>
-            )}
-            {!merklConfig.deposit && !!url && (
-              <Button className="inline-flex" look="hype" size="md" to={url} external>
+            {!!isSupplyButtonVisible && (
+              <Button className="inline-flex" look="hype" size="md" onClick={onSupply}>
                 Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
             )}
+            <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
             {(merklConfig.showCopyOpportunityIdToClipboard ?? false) && (
               <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
                 <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />

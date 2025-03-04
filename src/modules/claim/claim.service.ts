@@ -22,4 +22,22 @@ export abstract class ClaimsService {
     if (chainIds) query.chainIds = chainIds;
     return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
   }
+
+  // should be paginated
+  static async getForUserFromRequest(request: Request, address: string) {
+    const url = new URL(request.url);
+    const chainIdsParams = url.searchParams.get("chain") ?? undefined;
+
+    const chainIds =
+      (merklConfig.chains?.length
+        ? merklConfig.chains
+            ?.map(({ id }) => id)
+            ?.filter(id => chainIdsParams === undefined || chainIdsParams.split(",").includes(id.toString()))
+            .join(",")
+        : undefined) ?? chainIdsParams;
+    const query: Record<string, string> = {};
+
+    if (chainIds) query.chainIds = chainIds;
+    return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
+  }
 }

@@ -3,7 +3,7 @@ import { createTable } from "dappkit";
 export const [ClaimRewardsTokenTable, ClaimRewardsTokenRow, claimRewardsTokenColumns] = createTable({
   token: {
     name: "Token",
-    size: "minmax(100px,1fr)",
+    size: "minmax(min-content,1fr)",
     className: "justify-start",
     main: true,
   },

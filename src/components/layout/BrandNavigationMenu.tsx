@@ -1,7 +1,7 @@
 import merklConfig from "@core/config";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/config/type";
 import { useNavigation } from "@remix-run/react";
-import { Button, Group, Icon, Image, Text, useTheme } from "dappkit";
+import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
 import { type ReactNode, useMemo } from "react";
@@ -19,6 +19,7 @@ export interface BrandNavigationMenuProps {
  */
 export default function BrandNavigationMenu({ routes, footer, disabled }: BrandNavigationMenuProps) {
   const { mode } = useTheme();
+  const { address } = useWalletContext();
   const navigation = useNavigation();
 
   /**
@@ -32,7 +33,12 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
         <Button
           {...(hasLink(nav)
             ? {
-                to: nav.link,
+                to: nav.flags?.replaceWithWallet
+                  ? nav.link
+                      .replaceAll(nav.flags?.replaceWithWallet, address ?? "")
+                      .split("/")
+                      .join("/")
+                  : nav.link,
                 external: nav.external,
               }
             : {})}
@@ -61,7 +67,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
     };
 
     return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }), {});
-  }, [routes]);
+  }, [routes, address]);
 
   /**
    * Navigation + Footer elements

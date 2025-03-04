@@ -5,9 +5,9 @@ import { isAddress } from "viem";
 import HistoricalClaimsLibrary from "../../../components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
 import { ClaimsService } from "../../../modules/claim/claim.service";
 
-export async function loader({ params: { address } }: LoaderFunctionArgs) {
+export async function loader({ request, params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
-  const claims = await ClaimsService.getForUser(address);
+  const claims = await ClaimsService.getForUserFromRequest(request, address);
   return { claims };
 }
 export default function Index() {

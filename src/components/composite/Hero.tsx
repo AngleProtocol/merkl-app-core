@@ -54,13 +54,16 @@ export default function Hero({
     <>
       <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className="bg-cover bg-right-bottom flex-row justify-between relative bg-no-repeat xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
+          className={`${
+            !!merklConfig.hero.bannerOnAllPages
+              ? "bg-cover xl:bg-auto bg-right-bottom"
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
+                ? "bg-cover bg-right-bottom flex-row justify-between relative bg-no-repeat xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
+                : "bg-main-6"
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? " bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
             backgroundImage: `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`,
           }}>
-          {location?.pathname !== "/" && location?.pathname !== "/opportunities" && (
-            <div className="bg-background bg-opacity-50 inset-0 z-0 absolute" />
-          )}
           <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
