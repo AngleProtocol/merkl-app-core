@@ -41,16 +41,16 @@ export default function ProtocolCell({ protocol }: ProtocolCellProps) {
           <Group className="flex-nowrap items-center" size="sm">
             <Text bold look="soft" className="flex gap-sm">
               <Value className="text-right font-bold" look={"soft"} format={merklConfig.decimalFormat.dollar}>
-                {protocol.dailyReward}
+                {protocol.dailyRewards}
               </Value>
               Daily Rewards
             </Text>
           </Group>
-          <Text look="base">{protocol.numberOfCampaigns} Campaigns</Text>
+          <Text look="base">{protocol.numberOfLiveCampaigns} Campaigns</Text>
         </div>
       </Box>
     ),
-    [protocol.icon, protocol.name, name, overflowing, ref, protocol.dailyReward, protocol.numberOfCampaigns, tags],
+    [protocol.icon, protocol.name, overflowing, ref, protocol.dailyRewards, protocol.numberOfLiveCampaigns, tags, name],
   );
 
   return (

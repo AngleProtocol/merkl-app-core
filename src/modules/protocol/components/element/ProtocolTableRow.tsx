@@ -19,10 +19,10 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
   const liveCampaignsColumn = useMemo(
     () => (
       <Text bold look="tint" size="lg">
-        {protocol.numberOfCampaigns}
+        {protocol.numberOfLiveCampaigns}
       </Text>
     ),
-    [protocol.numberOfCampaigns],
+    [protocol.numberOfLiveCampaigns],
   );
 
   const rewardsColumn = useMemo(
@@ -30,15 +30,15 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
       <Group size="sm">
         <Text look="hype" bold size="lg">
           <Value className="text-right font-bold" look={"soft"} format={merklConfig.decimalFormat.dollar}>
-            {protocol.dailyReward}
+            {protocol.dailyRewards}
           </Value>
         </Text>
       </Group>
     ),
-    [protocol.dailyReward],
+    [protocol.dailyRewards],
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const row = useMemo(() => {
     return (
       <ProtocolRow
@@ -76,7 +76,7 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
         }
       />
     );
-  }, [protocol, className, rewardsColumn, overflowing, ref, tags]);
+  }, [protocol, className, rewardsColumn, overflowing, ref, tags, name, liveCampaignsColumn]);
 
   return (
     <Link prefetch="intent" to={link}>

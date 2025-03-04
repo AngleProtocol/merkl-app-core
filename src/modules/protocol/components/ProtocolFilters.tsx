@@ -1,8 +1,6 @@
 import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
-import useChains from "@core/modules/chain/hooks/useChains";
-import type { Chain } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
@@ -11,7 +9,6 @@ export type ProtocolFilter = (typeof filters)[number];
 
 export type ProtocolFilterProps = {
   only?: ProtocolFilter[];
-  chains?: Chain[];
   setView?: (v: OpportunityView) => void;
   exclude?: ProtocolFilter[];
   onClear?: () => void;
@@ -19,7 +16,7 @@ export type ProtocolFilterProps = {
 };
 
 //TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
-export default function ProtocolFilter({ only, exclude, chains, onClear, clearing }: ProtocolFilterProps) {
+export default function ProtocolFilter({ only, exclude, onClear, clearing }: ProtocolFilterProps) {
   const [_, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -43,30 +40,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
     );
 
   const sortOptions = {
-    "apr-asc": (
-      <Group className="flex-nowrap !gap-sm">
-        By APR
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "apr-desc": (
-      <Group className="flex-nowrap !gap-sm">
-        By APR
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-    "tvl-asc": (
-      <Group className="flex-nowrap !gap-sm">
-        By TVL
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "tvl-desc": (
-      <Group className="flex-nowrap !gap-sm">
-        By TVL
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
     "rewards-asc": (
       <Group className="flex-nowrap !gap-sm">
         By Daily Rewards
@@ -79,9 +52,19 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
+    "campaigns-asc": (
+      <Group className="flex-nowrap !gap-sm">
+        By Live Campaigns
+        <Icon remix="RiArrowUpLine" />
+      </Group>
+    ),
+    "campaigns-desc": (
+      <Group className="flex-nowrap !gap-sm">
+        By Live Campaigns
+        <Icon remix="RiArrowDownLine" />
+      </Group>
+    ),
   };
-
-  const { options: chainOptions, isSingleChain } = useChains(chains);
 
   const [actionsFilter] = useSearchParamState<string[]>(
     "action",
@@ -97,13 +80,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
     v => v,
   );
   const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
-
-  const [chainIdsFilter] = useSearchParamState<string[]>(
-    "chain",
-    v => v?.join(","),
-    v => v?.split(","),
-  );
-  const [chainIdsInput, setChainIdsInput] = useState<string[]>(chainIdsFilter ?? []);
 
   const [search, setSearch] = useSearchParamState<string>(
     "search",
@@ -139,12 +115,11 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
     const isSameArray = (a: string[] | undefined, b: string[] | undefined) =>
       a?.every(c => b?.includes(c)) && b?.every(c => a?.includes(c));
 
-    const sameChains = isSameArray(chainIdsInput, chainIdsFilter);
     const sameActions = isSameArray(actionsInput, actionsFilter);
     const sameSearch = (search ?? "") === innerSearch;
 
-    return [sameChains, sameActions, sameSearch].some(v => v === false);
-  }, [chainIdsInput, chainIdsFilter, actionsInput, actionsFilter, search, innerSearch]);
+    return [sameActions, sameSearch].some(v => v === false);
+  }, [actionsInput, actionsFilter, search, innerSearch]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
   useEffect(() => {
@@ -154,7 +129,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
   function onApplyFilters() {
     setApplying(true);
     setSearchParams(params => {
-      updateParams("chain", chainIdsInput, params);
       updateParams("action", actionsInput, params);
       return params;
     });
@@ -164,7 +138,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
     setApplying(false);
 
     navigate(location.pathname, { replace: true });
-    setChainIdsInput([]);
 
     setActionsInput([]);
     setInnerSearch("");
@@ -180,8 +153,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
 
   useEffect(() => {
     if (clearing) {
-      setChainIdsInput([]);
-
       setActionsInput([]);
       setInnerSearch("");
       setSortInput("");
@@ -227,19 +198,6 @@ export default function ProtocolFilter({ only, exclude, chains, onClear, clearin
                 look="tint"
                 placeholder="Category"
                 placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
-              />
-            )}
-
-            {fields.includes("chain") && !isSingleChain && (
-              <Select
-                state={[chainIdsInput, n => setChainIdsInput(n)]}
-                allOption={"All chains"}
-                multiple
-                search
-                options={chainOptions}
-                look="tint"
-                placeholder="Chain"
-                placeholderIcon={<Icon remix="RiLink" />}
               />
             )}
           </Group>
