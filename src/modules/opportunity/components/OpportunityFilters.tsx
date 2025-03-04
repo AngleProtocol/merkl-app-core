@@ -5,7 +5,7 @@ import useChains from "@core/modules/chain/hooks/useChains";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
-import { Button, Group, Icon, Input, Select } from "dappkit";
+import { Button, Group, Icon, Input, Select, Text } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
@@ -54,37 +54,37 @@ export default function OpportunityFilters({
   const sortOptions = {
     "apr-asc": (
       <Group className="flex-nowrap !gap-sm">
-        By APR
+        <Text look="bold">By APR</Text>
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "apr-desc": (
       <Group className="flex-nowrap !gap-sm">
-        By APR
+        <Text look="bold">By APR</Text>
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "tvl-asc": (
       <Group className="flex-nowrap !gap-sm">
-        By TVL
+        <Text look="bold">By TVL</Text>
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "tvl-desc": (
       <Group className="flex-nowrap !gap-sm">
-        By TVL
+        <Text look="bold">By TVL</Text>
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),
     "rewards-asc": (
       <Group className="flex-nowrap !gap-sm">
-        By Daily Rewards
+        <Text look="bold">By Daily Rewards</Text>
         <Icon remix="RiArrowUpLine" />
       </Group>
     ),
     "rewards-desc": (
       <Group className="flex-nowrap !gap-sm">
-        By Daily Rewards
+        <Text look="bold">By Daily Rewards</Text>
         <Icon remix="RiArrowDownLine" />
       </Group>
     ),

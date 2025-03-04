@@ -2,7 +2,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Box, Checkbox, Container, Group, Space } from "dappkit";
+import { Box, Checkbox, Container, Group, Space, Text } from "dappkit";
 import { useState } from "react";
 import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";

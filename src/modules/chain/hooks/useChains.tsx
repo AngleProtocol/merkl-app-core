@@ -1,6 +1,6 @@
 import merklConfig from "@core/config";
 import type { Chain } from "@merkl/api";
-import { Icon } from "dappkit";
+import { Icon, Text } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 
@@ -36,7 +36,7 @@ export default function useChains(chainsData?: Chain[]) {
             [chain.id]: (
               <>
                 <Icon size="sm" src={chain?.icon} />
-                {chain.name}
+                <Text look="bold">{chain.name}</Text>
               </>
             ),
           }),
