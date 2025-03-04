@@ -1,10 +1,10 @@
+import merklConfig from "@core/config";
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
 import { Box, Divider, Group, Image, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import useProtocolMetadata from "../../hooks/useProtocolMetadata";
-import merklConfig from "@core/config";
 
 export type ProtocolCellProps = {
   protocol: Protocol;

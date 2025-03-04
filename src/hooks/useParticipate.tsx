@@ -1,8 +1,8 @@
+import merklConfig from "@core/config";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import useBalances from "./useBalances";
 import useInteractionTargets from "./useInteractionTarget";
-import merklConfig from "@core/config";
 
 export default function useParticipate(
   chainId: number,
