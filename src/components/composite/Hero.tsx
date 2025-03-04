@@ -2,7 +2,6 @@ import { useLocation } from "@remix-run/react";
 import {
   Button,
   Container,
-  Divider,
   Group,
   Icon,
   type IconProps,
@@ -24,7 +23,7 @@ export type HeroProps = PropsWithChildren<{
   title: ReactNode;
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
-  description: ReactNode;
+  description?: ReactNode;
   tags?: ReactNode[] | ReactNode;
   sideDatas?: HeroInformations[];
   tabs?: { label: ReactNode; link: string; key: string }[];
@@ -61,15 +60,11 @@ export default function Hero({
               : location?.pathname === "/" || location?.pathname === "/opportunities"
                 ? "bg-cover bg-right-bottom flex-row justify-between relative bg-no-repeat xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
                 : "bg-main-6"
-          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? " bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
-            backgroundImage: !!merklConfig.hero.bannerOnAllPages
-              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-                : "none",
+            backgroundImage: `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`,
           }}>
-          <Container>
+          <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
                 <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
@@ -109,12 +104,9 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <>
-                      <Divider look="soft" />
-                      <Text size="lg" look="base">
-                        {description}
-                      </Text>
-                    </>
+                    <Text size="lg" look="base">
+                      {description}
+                    </Text>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>

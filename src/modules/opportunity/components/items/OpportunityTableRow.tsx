@@ -117,7 +117,7 @@ export default function OpportunityTableRow({
                 </Group>
 
                 <Group className="items-center">
-                  <Tags tags={["chain", "protocol", "status"]} size="xs" />
+                  <Tags tags={["chain", "protocol", "status", "action"]} size="xs" />
                 </Group>
               </Group>
             }

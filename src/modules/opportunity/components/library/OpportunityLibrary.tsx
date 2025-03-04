@@ -145,7 +145,7 @@ export default function OpportunityLibrary({
   }, [opportunities, view, count]);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="w-full">
       {!hideFilters && (
         <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
           <OpportunityFilters

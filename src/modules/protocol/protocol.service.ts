@@ -1,8 +1,7 @@
 import { api } from "../../api";
 import { fetchWithLogs } from "../../api/utils";
 import merklConfig from "../../config";
-import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
-
+export const DEFAULT_ITEMS_PER_PAGE_PROTOCOLS = 500;
 export abstract class ProtocolService {
   // ─── Get Many Protocols ──────────────────────────────────────────────
 
@@ -68,7 +67,7 @@ export abstract class ProtocolService {
     override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ) {
     const page = new URL(request.url).searchParams.get("page");
-    const items = new URL(request.url).searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
+    const items = new URL(request.url).searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE_PROTOCOLS;
     const search = new URL(request.url).searchParams.get("search");
 
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
