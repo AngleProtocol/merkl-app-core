@@ -104,12 +104,9 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <>
-                      {/* <Divider look="soft" /> */}
-                      <Text size="lg" look="base">
-                        {description}
-                      </Text>
-                    </>
+                    <Text size="lg" look="base">
+                      {description}
+                    </Text>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>
