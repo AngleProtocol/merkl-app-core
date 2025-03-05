@@ -1,14 +1,11 @@
 import { I18n } from "@core/I18n";
 import Hero from "@core/components/composite/Hero";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { UserS } from "@core/modules/user/user.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  console.log(UserS);
-
   return withUrl(request, {});
 }
 
