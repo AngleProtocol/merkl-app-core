@@ -63,7 +63,7 @@ export default function Index() {
 
   // ------ HOTFIX > Summ breakdowns pending rewards @todo: to be removed when rewards.pending fixed
 
-  const flatenedRewards = useMemo(
+  const flattenedRewards = useMemo(
     () =>
       rewards.sortedRewards.flatMap(({ chain, rewards, distributor }) =>
         rewards.flatMap(reward =>
@@ -74,7 +74,7 @@ export default function Index() {
   );
 
   let totalPendingRewards = 0n;
-  flatenedRewards.forEach(reward => {
+  flattenedRewards.forEach(reward => {
     totalPendingRewards += BigInt(reward.breakdown.pending);
   });
 
