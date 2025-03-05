@@ -16,7 +16,7 @@ export abstract class CampaignService {
     request: Request | undefined,
     override?: Parameters<typeof api.v4.campaigns.index.get>[0]["query"],
   ) {
-    if (!request) return {};
+    if (!request) return override ?? {};
 
     const status = new URL(request.url).searchParams.get("status");
     const action = new URL(request.url).searchParams.get("action");
