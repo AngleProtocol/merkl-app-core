@@ -1,5 +1,16 @@
 import type { Chain } from "@merkl/api";
-import { type BoxProps, Duration, Group, Hash, Icon, Text, Tooltip, mergeClass, useWalletContext } from "dappkit";
+import {
+  type BoxProps,
+  Button,
+  Duration,
+  Group,
+  Hash,
+  Icon,
+  Text,
+  Tooltip,
+  mergeClass,
+  useWalletContext,
+} from "dappkit";
 import { useMemo } from "react";
 import type { StatusService } from "../../status.service";
 import { DelayRow } from "../library/DelayTable";
@@ -11,7 +22,18 @@ export type DelayTableRowProps = {
 
 export default function DelayTableRow({ delay, chain, className, ...props }: DelayTableRowProps) {
   const { chains } = useWalletContext();
+
   const computeChain = useMemo(() => chains.find(c => c.id === delay.computeChainId), [chains, delay.computeChainId]);
+
+  /**
+   * Internal link to the opportunity on this app
+   */
+  const link = useMemo(
+    () =>
+      `/opportunities/${computeChain?.name?.toLowerCase?.().replace(" ", "-")}/${delay.Opportunity.type}/${delay.Opportunity.id}`,
+    [delay, computeChain],
+  );
+
   return (
     <DelayRow
       size="lg"
@@ -37,9 +59,9 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
         </Group>
       }
       opportunityColumn={
-        <Text look="bold" size="sm">
+        <Button look="soft" size="sm" to={link}>
           {delay.Opportunity.name}
-        </Text>
+        </Button>
       }
       delayColumn={<Duration timestamp={delay.delay * 1000} />}
       reasonColumn={<Text size="sm">{delay.CampaignStatus?.[0]?.error}</Text>}
