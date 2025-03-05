@@ -24,7 +24,7 @@ export default function Index() {
     <Hero
       // icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={I18n.trad.get.pages.opportunities.title}
+      title={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "title")}
       description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
       <Outlet />
     </Hero>
