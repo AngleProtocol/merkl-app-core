@@ -61,6 +61,25 @@ export default function Index() {
 
   const rewards = useRewards(rawRewards);
 
+  // ------ HOTFIX > Summ breakdowns pending rewards @todo: to be removed when rewards.pending fixed
+
+  const flatenedRewards = useMemo(
+    () =>
+      rewards.sortedRewards.flatMap(({ chain, rewards, distributor }) =>
+        rewards.flatMap(reward =>
+          reward.breakdowns.flatMap(breakdown => ({ chain, distributor, breakdown, token: reward.token })),
+        ),
+      ),
+    [rewards.sortedRewards],
+  );
+
+  let totalPendingRewards = 0n;
+  flatenedRewards.forEach(reward => {
+    totalPendingRewards += BigInt(reward.breakdown.pending);
+  });
+
+  // ------ END
+
   const isSingleChain = merklConfig?.chains?.length === 1;
 
   const { chainId, chains, address: user } = useWalletContext();
@@ -174,10 +193,10 @@ export default function Index() {
           <Group className="flex-1 gap-lg md:gap-xl*4 items-center lg:justify-end">
             <Group className="flex-col gap-sm md:gap-md">
               {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" token={token} amount={BigInt(rewards.pending)} format="amount_price" showZero />
+                <Token size="xl" token={token} amount={BigInt(totalPendingRewards)} format="amount_price" showZero />
               ) : (
                 <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
-                  {rewards.pending}
+                  {totalPendingRewards.toString()}
                 </Value>
               )}
               <Text size="xl" bold className="text-lg md:text-xl not-italic">
