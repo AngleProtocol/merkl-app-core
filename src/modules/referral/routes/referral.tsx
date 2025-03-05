@@ -1,15 +1,15 @@
-import { I18n } from "@core/I18n";
-import Hero from "@core/components/composite/Hero";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { UserS } from "@core/modules/user/user.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import { useLoaderData, useLocation } from "@remix-run/react";
+import { Container, Group, Space } from "dappkit";
+import Hero from "../../../components/composite/Hero";
+import Refer from "../components/Refer";
+import Referral from "../components/Referral";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  console.log(UserS);
-
-  return withUrl(request, {});
+  const code = new URL(request.url).searchParams.get("code");
+  return withUrl(request, { code });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
@@ -25,11 +25,17 @@ export default function Index() {
 
   return (
     <Hero
-      // icons={[{ remix: "RiPlanetFill" }]}
+      breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "title")}
+      title={"Referral"}
       description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
-      <Outlet />
+      <Space size="lg" />
+      <Container>
+        <Group className="w-full grid grid-cols-1 md:grid-cols-2">
+          <Refer url={data.url} />
+          <Referral code={data.code ?? undefined} />
+        </Group>
+      </Container>
     </Hero>
   );
 }

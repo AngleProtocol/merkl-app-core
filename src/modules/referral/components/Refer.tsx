@@ -1,0 +1,106 @@
+import { useLocation } from "@remix-run/react";
+import {
+  Bar,
+  Box,
+  Button,
+  Connected,
+  Group,
+  Icon,
+  OverrideTheme,
+  Space,
+  Text,
+  Title,
+  TransactionButton,
+  useClipboard,
+  useTheme,
+} from "dappkit";
+import useReferrer from "../hooks/useReferrer";
+
+export interface ReferProps {
+  url?: string;
+}
+
+export default function Refer({ url }: ReferProps) {
+  const { isReferrer, referral, reload } = useReferrer();
+  const { copy: copyCode, isCopied: isCodeCopied } = useClipboard();
+  const { copy: copyLink, isCopied: isLinkCopied } = useClipboard();
+  const location = useLocation();
+  const { vars } = useTheme();
+
+  if (isReferrer && referral)
+    return (
+      <OverrideTheme coloring={"good"}>
+        <div className="border-accent-10 border-2 rounded-xl+md">
+          <Box style={vars} size="xl" className="p-xl*2">
+            <Space size="xl" />
+            <OverrideTheme coloring={"good"}>
+              <Group>
+                <Icon className="text-[70px] text-accent-10" remix="RiVerifiedBadgeFill" />
+              </Group>
+              <Space size="xl" />
+              <Title h={3}>Code generated</Title>
+            </OverrideTheme>
+            <Text look="base">
+              Send this link to friends so both of you can earn up to +5% when depositing. Learn more
+            </Text>
+            <Box
+              size="lg"
+              className="gap-xs hover:border-accent-8 cursor-pointer"
+              onClick={() => copyCode(referral.code)}
+              look="bold">
+              <Text size="sm" className="flex flex-nowrap gap-xs">
+                Copy code <Icon remix={!isCodeCopied ? "RiFileCopyLine" : "RiCheckboxCircleFill"} />
+              </Text>
+              <Text size="lg">{referral.code}</Text>
+            </Box>
+            <Button
+              size="lg"
+              look="hype"
+              className="justify-center"
+              onClick={() => copyLink(`${url}${location.pathname}?code=${referral.code}`)}>
+              Copy Referral Link <Icon remix={!isLinkCopied ? "RiFileCopyLine" : "RiCheckboxCircleFill"} />
+            </Button>
+            <Text bold>Referrals</Text>
+            <Group className="w-full grid grid-cols-[minmax(min-content,120px),1fr]">
+              <Text>Total</Text>
+              <Group className="items-center flex-nowrap">
+                <Bar
+                  className="w-full"
+                  total={10}
+                  values={[{ value: referral?.referredUsers?.length, className: "bg-accent-10" }]}
+                />
+                <Text>{referral?.referredUsers?.length}/10</Text>
+              </Group>
+              <Text>Extra rewards</Text>
+              <Group className="w-full">TDB</Group>
+            </Group>
+            <Space size="xl" />
+          </Box>
+        </div>
+      </OverrideTheme>
+    );
+  return (
+    <Box size="xl" className="p-xl*2 border-accent-10 border-2">
+      <Space size="xl" />
+      <Group>
+        <Icon className="text-[70px] text-accent-10" remix="RiGiftFill" />
+      </Group>
+      <Title h={3}>Invite Friend & get +5% more!</Title>
+      <Text look="base">
+        Generate a referral code via a quick on-chain transaction. Share it. When your friend deposits, Earn an
+        additional 5% yield on your referee deposit. Learn more
+      </Text>
+      <Connected size="lg" look="hype" className="justify-center">
+        <TransactionButton
+          onSuccess={reload}
+          tx={referral?.transaction}
+          size="lg"
+          look="hype"
+          className="justify-center">
+          Generate Code
+        </TransactionButton>
+      </Connected>
+      <Space size="xl" />
+    </Box>
+  );
+}
