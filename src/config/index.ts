@@ -155,6 +155,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   },
   decimalFormat: {
     dollar: "$0,0.##a",
+    apr: "0.##%a",
   },
   themes: {
     merkl: {

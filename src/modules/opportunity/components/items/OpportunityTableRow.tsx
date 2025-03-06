@@ -8,18 +8,7 @@ import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunit
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import {
-  Button,
-  Dropdown,
-  Group,
-  Icon,
-  Icons as IconGroup,
-  PrimitiveTag,
-  Text,
-  Title,
-  Value,
-  mergeClass,
-} from "dappkit";
+import { Button, Dropdown, Group, Icon, Icons as IconGroup, Text, Title, Value, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
@@ -43,12 +32,12 @@ export default function OpportunityTableRow({
   const aprColumn = useMemo(
     () => (
       <EventBlocker>
-        <Dropdown size="xl" content={<AprModal opportunity={opportunity} />}>
-          <PrimitiveTag look="hype">
-            <Value value format="0a%">
+        <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} />}>
+          <Text bold look="tint" size="lg">
+            <Value value format={merklConfig.decimalFormat.apr}>
               {opportunity.apr / 100}
             </Value>
-          </PrimitiveTag>
+          </Text>
         </Dropdown>
       </EventBlocker>
     ),
