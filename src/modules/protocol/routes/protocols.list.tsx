@@ -21,7 +21,7 @@ export default function Index() {
   return (
     <Container>
       <Space size="xl" />
-      <ProtocolLibrary protocols={protocols} count={count} chains={chains} />
+      <ProtocolLibrary protocols={protocols} forceView={"cells"} count={count} chains={chains} />
     </Container>
   );
 }

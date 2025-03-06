@@ -162,8 +162,7 @@ export default function OpportunityFilters({
   }, [only, exclude]);
 
   function onSearchSubmit() {
-    if (!innerSearch || innerSearch === search) return;
-
+    if (innerSearch === search) return;
     setSearch(innerSearch);
   }
 
@@ -216,6 +215,7 @@ export default function OpportunityFilters({
       updateParams("protocol", protocolInput, params);
       return params;
     });
+    onSearchSubmit();
   }
 
   function onClearFilters() {
