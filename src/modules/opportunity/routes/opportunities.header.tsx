@@ -1,4 +1,3 @@
-import { I18n } from "@core/I18n";
 import Hero from "@core/components/composite/Hero";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
