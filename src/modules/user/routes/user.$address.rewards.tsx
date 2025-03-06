@@ -42,12 +42,10 @@ export default function Index() {
               <Text>
                 This address has been flagged as suspicious for wash trading and dishonest behavior. As a result,
                 unclaimed rewards are on hold and no new rewards will accumulate while the address remains blacklisted.
-              </Text>
-              <Space size="md" />
-              <Text>
                 If you believe this is a false positive - our detection algorithm is still in beta - please open a
                 ticket on Merkl’s Discord for further review.
               </Text>
+              <Space size="md" />
               <Group>
                 <Button look="hype" to={merklConfig.links.merklSupport} external>
                   Contact Support

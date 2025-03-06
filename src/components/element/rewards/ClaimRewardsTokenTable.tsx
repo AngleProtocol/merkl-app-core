@@ -3,24 +3,24 @@ import { createTable } from "dappkit";
 export const [ClaimRewardsTokenTable, ClaimRewardsTokenRow, claimRewardsTokenColumns] = createTable({
   token: {
     name: "Token",
-    size: "minmax(min-content,1fr)",
+    size: "minmax(200px,1fr)",
     className: "justify-start",
     main: true,
   },
   amount: {
     name: "Claimable Now",
-    size: "minmax(min-content,200px)",
-    className: "justify-end",
+    size: "minmax(200px,250px)",
+    className: "justify-start",
   },
   pending: {
     name: "Claimable Soon",
-    size: "minmax(min-content,200px)",
-    className: "justify-end",
+    size: "minmax(200px,250px)",
+    className: "justify-start",
   },
   claimed: {
     name: "Claimed",
-    size: "minmax(min-content,200px)",
-    className: "justify-end",
+    size: "minmax(200px,250px)",
+    className: "justify-start",
   },
 });
 

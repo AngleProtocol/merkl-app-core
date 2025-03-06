@@ -92,6 +92,13 @@ export type MerklConfig<T extends Themes> = {
    */
   chains?: viemChain[];
   protocols?: string[];
+  referral?: {
+    /**
+     *
+     */
+    chainId: number;
+    referralKey: string;
+  };
   /**
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
