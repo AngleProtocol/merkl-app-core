@@ -213,6 +213,7 @@ export type MerklConfig<T extends Themes> = {
   };
   decimalFormat: {
     dollar: string;
+    apr: string;
   };
   hero: {
     bannerOnAllPages: boolean; // show banner on all pages
