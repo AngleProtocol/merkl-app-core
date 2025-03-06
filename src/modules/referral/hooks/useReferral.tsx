@@ -14,7 +14,7 @@ export default function useReferral(code?: string) {
 
   const reload = useCallback(
     async function fetchReferral() {
-      if (!chainId || !address || !code || !merklConfig.referral.referralKey) return;
+      if (!chainId || !address || !code || !merklConfig?.referral?.referralKey) return;
 
       setLoading(true);
 

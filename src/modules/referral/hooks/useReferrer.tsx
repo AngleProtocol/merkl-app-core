@@ -2,6 +2,7 @@ import type { UserTransaction } from "@merkl/api/dist/src/modules/v4/interaction
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ReferralService } from "../referral.service";
+import merklConfig from "@core/config";
 
 export default function useReferrer() {
   const { chainId, address } = useWalletContext();
@@ -18,12 +19,12 @@ export default function useReferrer() {
 
   const reload = useCallback(
     async function fetchReferral() {
-      if (!chainId || !address) return;
+      if (!chainId || !address || !merklConfig?.referral?.referralKey) return;
 
       setLoading(true);
 
       try {
-        const _referral = await ReferralService.getCodeOrTransaction(chainId, "merkl-test", address);
+        const _referral = await ReferralService.getCodeOrTransaction(chainId, merklConfig.referral.referralKey, address);
 
         if (_referral) setReferral(_referral);
       } catch {}
