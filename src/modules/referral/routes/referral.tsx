@@ -29,9 +29,11 @@ export default function Index() {
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={"Referral"}
       description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
-      <Space size="lg" />
+      <Space size="xl" />
+      <Space size="xl" />
+      <Space size="xl" />
       <Container>
-        <Group className="w-full grid grid-cols-1 md:grid-cols-2">
+        <Group size="xl" className="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2">
           <Refer url={data.url} />
           <Referral code={data.code ?? undefined} />
         </Group>

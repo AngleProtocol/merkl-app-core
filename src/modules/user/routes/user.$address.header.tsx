@@ -183,7 +183,7 @@ export default function Index() {
           </Group>
         </Group>
       }
-      description={"Check your liquidity positions and claim your rewards"}
+      description={"Claim your rewards"}
       tabs={tabs}>
       <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess, isBlacklisted } as OutletContextRewards} />
     </Hero>

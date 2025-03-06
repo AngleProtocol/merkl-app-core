@@ -1,9 +1,10 @@
+import merklConfig from "@core/config";
 import { useLocation } from "@remix-run/react";
 import {
-  Bar,
   Box,
   Button,
   Connected,
+  Divider,
   Group,
   Icon,
   OverrideTheme,
@@ -15,6 +16,7 @@ import {
   useTheme,
 } from "dappkit";
 import useReferrer from "../hooks/useReferrer";
+import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 
 export interface ReferProps {
   url?: string;
@@ -30,7 +32,7 @@ export default function Refer({ url }: ReferProps) {
   if (isReferrer && referral)
     return (
       <OverrideTheme coloring={"good"}>
-        <div className="border-accent-10 border-2 rounded-xl+md">
+        <div className="hover:border-accent-10 border-main-0 border-2 rounded-xl+md">
           <Box style={vars} size="xl" className="p-xl*2">
             <Space size="xl" />
             <OverrideTheme coloring={"good"}>
@@ -41,7 +43,7 @@ export default function Refer({ url }: ReferProps) {
               <Title h={3}>Code generated</Title>
             </OverrideTheme>
             <Text look="base">
-              Send this link to friends so both of you can earn up to +5% when depositing. Learn more
+              Send this link to friends so you can earn up to +5% when they deposit. <ReferralCalculationTooltip />
             </Text>
             <Box
               size="lg"
@@ -60,19 +62,9 @@ export default function Refer({ url }: ReferProps) {
               onClick={() => copyLink(`${url}${location.pathname}?code=${referral.code}`)}>
               Copy Referral Link <Icon remix={!isLinkCopied ? "RiFileCopyLine" : "RiCheckboxCircleFill"} />
             </Button>
-            <Text bold>Referrals</Text>
-            <Group className="w-full grid grid-cols-[minmax(min-content,120px),1fr]">
-              <Text>Total</Text>
-              <Group className="items-center flex-nowrap">
-                <Bar
-                  className="w-full"
-                  total={10}
-                  values={[{ value: referral?.referredUsers?.length, className: "bg-accent-10" }]}
-                />
-                <Text>{referral?.referredUsers?.length}/10</Text>
-              </Group>
-              <Text>Extra rewards</Text>
-              <Group className="w-full">TDB</Group>
+            <Divider horizontal className="border-main-6" />
+            <Group className="w-full grid grid-cols-[minmax(min-content,120px),1fr] font-bold">
+              <Text>Total Referrals: {referral?.referredUsers?.length} </Text>
             </Group>
             <Space size="xl" />
           </Box>
@@ -88,10 +80,11 @@ export default function Refer({ url }: ReferProps) {
       <Title h={3}>Invite Friend & get +5% more!</Title>
       <Text look="base">
         Generate a referral code via a quick on-chain transaction. Share it. When your friend deposits, Earn an
-        additional 5% yield on your referee deposit. Learn more
+        additional 5% yield on your referee deposit. <ReferralCalculationTooltip />
       </Text>
-      <Connected size="lg" look="hype" className="justify-center">
+      <Connected chain={merklConfig.referral?.chainId} size="lg" look="hype" className="justify-center">
         <TransactionButton
+          name="Becom a referrer"
           onSuccess={reload}
           tx={referral?.transaction}
           size="lg"

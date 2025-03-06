@@ -71,7 +71,7 @@ export default function Header() {
       return <Button onClick={() => switchChain(singleChain?.id!)}>Switch to {enabledChains?.[0]?.name}</Button>;
     if (isSingleChain) return <></>;
 
-    return <Select placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
+    return <Select search placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
   }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
 
   return (
@@ -114,7 +114,7 @@ export default function Header() {
                                 external: route.external,
                               }
                             : {})}>
-                          {key}
+                          {route.name}
                         </Button>
                       </Group>
                     );
