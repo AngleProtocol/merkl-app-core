@@ -96,8 +96,7 @@ export default function ProtocolFilter({ only, exclude, onClear, clearing }: Pro
   }, [only, exclude]);
 
   function onSearchSubmit() {
-    if (!innerSearch || innerSearch === search) return;
-
+    if (innerSearch === search) return;
     setSearch(innerSearch);
   }
 
@@ -132,6 +131,7 @@ export default function ProtocolFilter({ only, exclude, onClear, clearing }: Pro
       updateParams("action", actionsInput, params);
       return params;
     });
+    onSearchSubmit();
   }
 
   function onClearFilters() {
