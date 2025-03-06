@@ -31,7 +31,5 @@ export default function useReferral(code?: string) {
     reload();
   }, [reload]);
 
-  console.log("REFER", referral, isCodeAvailable);
-
   return { isCodeAvailable, referral, loading, reload };
 }
