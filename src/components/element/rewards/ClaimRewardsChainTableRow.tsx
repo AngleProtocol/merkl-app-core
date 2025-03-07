@@ -1,4 +1,5 @@
 import Tag from "@core/components/element/Tag";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, type ListProps, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
@@ -7,7 +8,6 @@ import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { useMemo, useState } from "react";
-import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import { UserService } from "../../../modules/user/user.service";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
@@ -30,6 +30,7 @@ export default function ClaimRewardsChainTableRow({
 }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const { address: user, chainId, switchChain } = useWalletContext();
   const isUserRewards = useMemo(() => UserService.isSame(user, from), [user, from]);
@@ -117,7 +118,7 @@ export default function ClaimRewardsChainTableRow({
       }
       unclaimedColumn={
         unclaimed === 0 ? undefined : (
-          <Value size="lg" format={merklConfig.decimalFormat.dollar} look="bold" className="font-title">
+          <Value size="lg" format={dollarFormat} look="bold" className="font-title">
             {unclaimed}
           </Value>
         )

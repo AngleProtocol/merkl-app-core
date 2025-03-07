@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import Token from "@core/modules/token/components/element/Token";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Token as TokenType } from "@merkl/api";
@@ -13,6 +13,7 @@ export type TokenSelectProps = {
 
 export default function TokenSelect({ tokens, balances, ...props }: TokenSelectProps) {
   const sortedTokens = useMemo(() => TokenService.sortForUser(tokens), [tokens]);
+  const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const options = useMemo(
     () =>
@@ -66,7 +67,7 @@ export default function TokenSelect({ tokens, balances, ...props }: TokenSelectP
                           <Value format="0,0.###a">{Fmt.toNumber(token.balance, token.decimals)}</Value> {token.symbol}
                         </Text>
                         <span className="mr-sm" />(
-                        <Value format={merklConfig.decimalFormat.dollar}>{Fmt.toPrice(token.balance, token)}</Value>)
+                        <Value format={decimalFormat}>{Fmt.toPrice(token.balance, token)}</Value>)
                       </Text>
                     </Group>
                   </Group>
@@ -75,7 +76,7 @@ export default function TokenSelect({ tokens, balances, ...props }: TokenSelectP
             }),
           {},
         ) ?? {},
-    [sortedTokens],
+    [sortedTokens, decimalFormat],
   );
 
   return (

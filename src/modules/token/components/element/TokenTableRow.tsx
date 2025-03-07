@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { TokenRow } from "@core/modules/token/components/library/TokenTable";
 import type { Token } from "@merkl/api";
 import { Link } from "@remix-run/react";
@@ -12,6 +12,8 @@ export type TokenTableRowProps = {
 } & BoxProps;
 
 export default function TokenTableRow({ token, className, ...props }: TokenTableRowProps) {
+  const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
   return (
     <Link to={`/tokens/${token.symbol}`}>
       <TokenRow
@@ -35,7 +37,7 @@ export default function TokenTableRow({ token, className, ...props }: TokenTable
         priceColumn={
           <Group className="py-xl">
             <Button look={"soft"} className="font-mono">
-              <Value value format={merklConfig.decimalFormat.dollar}>
+              <Value value format={decimalFormat}>
                 {token.price ?? 0}
               </Value>
             </Button>

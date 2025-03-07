@@ -1,9 +1,9 @@
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
-import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
@@ -52,7 +52,8 @@ export type OutletContextOpportunity = {
 
 export default function Index() {
   const { opportunity, chain } = useLoaderData<typeof loader>();
-
+  const showCopyOpportunityIdToClipboard = useMerklConfig(store => store.config.showCopyOpportunityIdToClipboard);
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
   const { headerMetrics } = useOpportunityMetrics(opportunity);
   const { title, Tags, description, link, url: protocolUrl, icons } = useOpportunityData(opportunity);
   const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
@@ -70,9 +71,9 @@ export default function Index() {
   }, [protocolUrl, targets]);
 
   const onSupply = useCallback(() => {
-    if ((!merklConfig.deposit && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
+    if ((!isDepositEnabled && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
-  }, [protocolUrl, targets]);
+  }, [protocolUrl, targets, isDepositEnabled]);
 
   return (
     <>
@@ -89,7 +90,7 @@ export default function Index() {
               </Button>
             )}
             <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
-            {(merklConfig.showCopyOpportunityIdToClipboard ?? false) && (
+            {(showCopyOpportunityIdToClipboard ?? false) && (
               <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
                 <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
               </Button>

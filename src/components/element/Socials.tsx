@@ -1,31 +1,33 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { Button, Group, Icon } from "dappkit";
-import merklConfig from "../../config";
 
 export default function Socials() {
+  const socials = useMerklConfig(store => store.config.socials);
+
   return (
     <Group className="items-center gap-xl">
-      {!!merklConfig.socials.x && (
-        <Button look="base" size="lg" external to={merklConfig.socials.x}>
+      {!!socials.x && (
+        <Button look="base" size="lg" external to={socials.x}>
           <Icon remix="RiTwitterXFill" />
         </Button>
       )}
-      {!!merklConfig.socials.telegram && (
-        <Button look="base" size="lg" external to={merklConfig.socials.telegram}>
+      {!!socials.telegram && (
+        <Button look="base" size="lg" external to={socials.telegram}>
           <Icon remix="RiTelegram2Fill" />
         </Button>
       )}
-      {!!merklConfig.socials.github && (
-        <Button look="base" size="lg" external to={merklConfig.socials.github}>
+      {!!socials.github && (
+        <Button look="base" size="lg" external to={socials.github}>
           <Icon remix="RiGithubFill" />
         </Button>
       )}
-      {!!merklConfig.socials.discord && (
-        <Button look="base" size="lg" external to={merklConfig.socials.discord}>
+      {!!socials.discord && (
+        <Button look="base" size="lg" external to={socials.discord}>
           <Icon remix="RiDiscordFill" />
         </Button>
       )}
-      {!!merklConfig.socials.medium && (
-        <Button look="base" size="lg" external to={merklConfig.socials.medium}>
+      {!!socials.medium && (
+        <Button look="base" size="lg" external to={socials.medium}>
           <Icon remix="RiMediumFill" />
         </Button>
       )}

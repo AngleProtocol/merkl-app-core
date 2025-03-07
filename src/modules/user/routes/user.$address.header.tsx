@@ -1,3 +1,4 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
@@ -65,7 +66,10 @@ export default function Index() {
 
   const rewards = useRewards(rawRewards);
 
-  const isSingleChain = merklConfig?.chains?.length === 1;
+  const merklChains = useMerklConfig(store => store.config.chains);
+  const isSingleChain = merklChains?.length === 1;
+  const rewardsTotalClaimableMode = useMerklConfig(store => store.config.rewardsTotalClaimableMode);
+  const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const { chainId, chains, address: user } = useWalletContext();
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
@@ -114,7 +118,7 @@ export default function Index() {
     ];
 
     // Remove the Liquidity tab if disabled in the config
-    return baseTabs.filter(tab => !(tab.key === "LiquidityUserChain" && !merklConfig.dashboard.liquidityTab.enabled));
+    return baseTabs;
   }, [address, chainId]);
 
   return (
@@ -147,10 +151,10 @@ export default function Index() {
               <Text size={"lg"} bold className="text-lg md:text-xl not-italic">
                 Claimable Now
               </Text>
-              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
+              {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
               ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={decimalFormat} size={2} className="text-main-12">
                   {rewards.unclaimed}
                 </Value>
               )}
@@ -159,10 +163,10 @@ export default function Index() {
               <Text size="lg" bold className="text-lg md:text-xl not-italic">
                 Total Earned
               </Text>
-              {isAddress(merklConfig.rewardsTotalClaimableMode ?? "") && !!token ? (
+              {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" symbol token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
               ) : (
-                <Value format={merklConfig.decimalFormat.dollar} size={2} className="text-main-12">
+                <Value format={decimalFormat} size={2} className="text-main-12">
                   {rewards.earned + rewards.pending}
                 </Value>
               )}

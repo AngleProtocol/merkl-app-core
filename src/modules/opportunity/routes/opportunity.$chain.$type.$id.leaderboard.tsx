@@ -1,8 +1,8 @@
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
-import merklConfig from "@core/config";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { RewardService } from "@core/modules/reward/reward.service";
 import Token from "@core/modules/token/components/element/Token";
 import type { Campaign } from "@merkl/api";
@@ -58,6 +58,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
 
 export default function Index() {
   const { rewards, campaigns, count, total, selectedCampaign, computeChain } = useLoaderData<typeof loader>();
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const [campaignId, setCampaignIds] = useSearchParamState<string>(
     "campaignId",
@@ -120,7 +121,7 @@ export default function Index() {
           ],
           [
             "Total Rewards Distributed",
-            <Value value key="users" format={merklConfig.decimalFormat.dollar}>
+            <Value value key="users" format={dollarFormat}>
               {totalRewardsInUsd}
             </Value>,
           ],
@@ -150,7 +151,7 @@ export default function Index() {
           <Title h={3}>{value}</Title>
         </Box>
       )),
-    [totalRewardsInUsd, count, selectedCampaign],
+    [totalRewardsInUsd, count, selectedCampaign, dollarFormat],
   );
 
   return (

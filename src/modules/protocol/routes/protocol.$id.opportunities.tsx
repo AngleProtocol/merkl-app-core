@@ -1,9 +1,9 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
-import merklConfig from "../../../config";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
@@ -22,12 +22,13 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 export default function Index() {
   const { chains } = useWalletContext();
   const { opportunities, count, featuredOpportunities } = useLoaderData<typeof loader>();
+  const areFeaturedOpportunitiesEnabled = useMerklConfig(store => store.config.opportunity.featured.enabled);
 
   return (
     <Container>
       <Space size="xl" />
       <Group size="xl" className="py-xl flex-col">
-        {merklConfig.opportunity.featured.enabled && (
+        {areFeaturedOpportunitiesEnabled && (
           <>
             <Title look="soft" h={3}>
               BEST OPPORTUNITIES

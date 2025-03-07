@@ -3,7 +3,7 @@ import { Button, Divider, type GetSet, Image, Modal, Text, Title } from "dappkit
 import type { PropsWithChildren } from "react";
 import React from "react";
 
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import Participate from "@core/modules/interaction/components/Participate";
 
 export type OpportunityParticipateModalProps = {
@@ -16,6 +16,9 @@ export default function OpportunityParticipateModal({
   children,
   state,
 }: OpportunityParticipateModalProps) {
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
+  const supplyCredits = useMerklConfig(store => store.config.supplyCredits);
+
   return (
     <Modal
       title={<Title h={3}>SUPPLY</Title>}
@@ -27,12 +30,12 @@ export default function OpportunityParticipateModal({
             displayLinks
             displayOpportunity
             displayMode="deposit"
-            hideInteractor={!merklConfig?.deposit}
+            hideInteractor={!isDepositEnabled}
           />
-          {merklConfig.deposit && !!merklConfig.supplyCredits && merklConfig.supplyCredits.length > 0 && (
+          {isDepositEnabled && !!supplyCredits && supplyCredits.length > 0 && (
             <Text look="bold" className="flex mt-md gap-md items-center mx-auto">
               Powered by{" "}
-              {merklConfig.supplyCredits.map(credit => (
+              {supplyCredits.map(credit => (
                 <React.Fragment key={credit.id}>
                   <Button look="soft" key={credit.name} to={credit.url}>
                     <Image src={credit.image} alt={credit.name} />
