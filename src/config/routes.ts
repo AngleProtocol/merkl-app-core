@@ -36,6 +36,14 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
     resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) => MetaDescriptor[];
   /**
+   * Page title/description to use instead of metadatas
+   */
+  pagedata?: (
+    url: string,
+    config: Omit<MerklConfig<Themes>, "wagmi" | "themes">,
+    resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+  ) => MetaDescriptor[];
+  /**
    * Remix route file containing Index, loader, action...
    */
   file: string;

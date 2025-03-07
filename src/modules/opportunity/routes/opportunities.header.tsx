@@ -23,7 +23,7 @@ export default function Index() {
     <Hero
       // icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "title")}
+      title={MetadataService.find(MetadataService.wrapInPage(data?.url, location.pathname), "title")}
       description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
       <Outlet />
     </Hero>
