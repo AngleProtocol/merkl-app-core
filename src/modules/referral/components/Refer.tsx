@@ -92,7 +92,7 @@ export default function Refer({ url }: ReferProps) {
               <Button
                 onClick={() =>
                   window.open(
-                    `https://x.com/post?text=${shareMessage} ${`${url}${location.pathname}?code=${referral.code}`}`,
+                    `https://x.com/intent/post?text=${shareMessage} ${`${url}${location.pathname}?code=${referral.code}`}`,
                   )
                 }
                 size="xl"
