@@ -32,7 +32,7 @@ export default function Refer({ url }: ReferProps) {
   if (isReferrer && referral)
     return (
       <OverrideTheme coloring={"good"}>
-        <div className="hover:border-accent-10 border-main-0 border-2 rounded-xl+md">
+        <div className="border-accent-10 border-2 rounded-xl+md">
           <Box style={vars} size="xl" className="p-xl*2">
             <Space size="xl" />
             <OverrideTheme coloring={"good"}>
@@ -63,7 +63,7 @@ export default function Refer({ url }: ReferProps) {
               Copy Referral Link <Icon remix={!isLinkCopied ? "RiFileCopyLine" : "RiCheckboxCircleFill"} />
             </Button>
             <Divider horizontal className="border-main-6" />
-            <Group className="w-full grid grid-cols-[minmax(min-content,120px),1fr] font-bold">
+            <Group className="w-full font-bold">
               <Text>Total Referrals: {referral?.referredUsers?.length} </Text>
             </Group>
             <Space size="xl" />
@@ -72,7 +72,7 @@ export default function Refer({ url }: ReferProps) {
       </OverrideTheme>
     );
   return (
-    <Box size="xl" className="p-xl*2 border-accent-10 border-2">
+    <Box size="xl" className="p-xl*2 hover:border-accent-10 border-main-0 border-2">
       <Space size="xl" />
       <Group>
         <Icon className="text-[70px] text-accent-10" remix="RiGiftFill" />
@@ -84,7 +84,7 @@ export default function Refer({ url }: ReferProps) {
       </Text>
       <Connected chain={merklConfig.referral?.chainId} size="lg" look="hype" className="justify-center">
         <TransactionButton
-          name="Becom a referrer"
+          name="Become a referrer"
           onSuccess={reload}
           tx={referral?.transaction}
           size="lg"

@@ -67,8 +67,9 @@ const tools = {
    * Shortcuts for defining meta descriptors
    */
   meta: {
-    title: (title: string) => ({ title }),
-    description: (content: string) => ({ name: "description", content }),
+    siteName: (site: string) => [property("og:site_name", site)],
+    title: (title: string) => [{ title }, property("og:title", title)],
+    description: (content: string) => [{ name: "description", content }, property("og:description", content)],
     keywords: (content: string) => ({ name: "keywords", content }),
     preview: (content: string, type: "image/jpeg" | "image/png", width: number, height: number, alt: string) => [
       property("og:image", content),

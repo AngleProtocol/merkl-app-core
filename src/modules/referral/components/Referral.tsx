@@ -41,7 +41,7 @@ export default function Referral({ code: defaultCode }: ReferProps) {
   if (redeemed && referral)
     return (
       <OverrideTheme coloring={"good"}>
-        <div className="hover:border-accent-10 border-main-0 border-2 rounded-xl+md">
+        <div className="border-accent-10 border-2 rounded-xl+md">
           <Box style={vars} size="xl" className="p-xl*2">
             <Space size="xl" />
             <OverrideTheme coloring={"good"}>

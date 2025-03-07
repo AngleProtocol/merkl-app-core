@@ -5,7 +5,7 @@ export default function ReferralCalculationTooltip() {
     <Dropdown
       onHover
       content={
-        <Group className="max-w-[400px]">
+        <Group className="w-fit">
           <Text look="bold" className="font-bold flex gap-md">
             <Icon remix="RiWaterFlashFill" /> Referral Boost Calculation
           </Text>

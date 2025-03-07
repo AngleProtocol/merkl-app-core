@@ -5,13 +5,10 @@
   "type": "module",
   "main": "src/index.generated.ts",
   "scripts": {
-    "start": "bun run scripts/start.ts",
     "generate:exports": "bun run scripts/generateExports.ts",
-    "build": "remix vite:build",
     "dev": "remix vite:dev --host",
     "lint": "biome check --fix ./src ./*.ts",
     "lint:ci": "biome check --diagnostic-level error ./src ./*.ts",
-    "serve": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "workspaces": ["packages/*"],

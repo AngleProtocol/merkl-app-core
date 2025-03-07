@@ -31,6 +31,8 @@ export async function loader({ params: { address }, request }: LoaderFunctionArg
     : null;
   const isBlacklisted = await UserService.isBlacklisted(address);
 
+  console.log("BLACKLIST", isBlacklisted);
+
   return withUrl(request, { rewards, address, token, isBlacklisted });
 }
 
