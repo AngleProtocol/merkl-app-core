@@ -15,6 +15,7 @@ import {
   useClipboard,
   useTheme,
 } from "dappkit";
+import { useMemo } from "react";
 import useReferrer from "../hooks/useReferrer";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 
@@ -28,6 +29,11 @@ export default function Refer({ url }: ReferProps) {
   const { copy: copyLink, isCopied: isLinkCopied } = useClipboard();
   const location = useLocation();
   const { vars } = useTheme();
+
+  const shareMessage = useMemo(() => {
+    if (referral)
+      return `Join me on ${merklConfig.appName} and earn a +5% boost using my referral code: ${referral.code}`;
+  }, [referral]);
 
   if (isReferrer && referral)
     return (
@@ -62,6 +68,38 @@ export default function Refer({ url }: ReferProps) {
               onClick={() => copyLink(`${url}${location.pathname}?code=${referral.code}`)}>
               Copy Referral Link <Icon remix={!isLinkCopied ? "RiFileCopyLine" : "RiCheckboxCircleFill"} />
             </Button>
+            <Group size="xl" className="w-full justify-center">
+              <Button
+                onClick={() =>
+                  window.open(
+                    `https://wa.me/?text=${shareMessage} ${`${url}${location.pathname}?code=${referral.code}`}`,
+                  )
+                }
+                size="xl"
+                look="hype">
+                <Icon remix="RiWhatsappLine" />
+              </Button>
+              <Button
+                onClick={() =>
+                  window.open(
+                    `https://t.me/share/url?url=${`${url}${location.pathname}?code=${referral.code}`}&text=${shareMessage}`,
+                  )
+                }
+                size="xl"
+                look="hype">
+                <Icon remix="RiTelegram2Fill" />
+              </Button>
+              <Button
+                onClick={() =>
+                  window.open(
+                    `https://x.com/post?text=${shareMessage} ${`${url}${location.pathname}?code=${referral.code}`}`,
+                  )
+                }
+                size="xl"
+                look="hype">
+                <Icon remix="RiTwitterXFill" />
+              </Button>
+            </Group>
             <Divider horizontal className="border-main-6" />
             <Group className="w-full font-bold">
               <Text>Total Referrals: {referral?.referredUsers?.length} </Text>

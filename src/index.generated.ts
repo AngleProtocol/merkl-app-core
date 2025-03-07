@@ -1,9 +1,6 @@
 /**
  *
  */
-export * from ".//root";
-export { default as root } from ".//root";
-export * from ".//entry.client";
 export * from ".//layout";
 export { default as layout } from ".//layout";
 
