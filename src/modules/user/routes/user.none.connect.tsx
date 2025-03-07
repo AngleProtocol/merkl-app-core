@@ -1,15 +1,16 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { useNavigate } from "@remix-run/react";
 import { Box, Button, Connected, Container, Group, Icon, Input, Space, Text, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { useEffect, useState } from "react";
-import merklConfig from "../../../config";
 
 export default function Index() {
   const [_isEditingAddress] = useState(false);
   const { connected, address } = useWalletContext();
   const [inputAddress, setInputAddress] = useState<string>();
   const navigate = useNavigate();
+  const hideSpyMode = useMerklConfig(store => store.config.hideSpyMode);
 
   useEffect(() => {
     if (connected) navigate(`/users/${address}`);
@@ -44,7 +45,7 @@ export default function Index() {
             <Text>or</Text>
           </Group>
           <Group className="justify-center">
-            <Connected size="lg" className="w-full justify-center" hideSpyMode={merklConfig.hideSpyMode}>
+            <Connected size="lg" className="w-full justify-center" hideSpyMode={hideSpyMode}>
               <Button
                 size="lg"
                 className="w-full justify-center"

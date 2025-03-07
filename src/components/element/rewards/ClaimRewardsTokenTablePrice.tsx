@@ -1,7 +1,7 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { Group, PrimitiveTag, Value } from "dappkit";
 import type { PropsWithChildren } from "react";
 import { formatUnits } from "viem";
-import merklConfig from "../../../config";
 
 export type ClaimRewardsTokenTablePriceProps = PropsWithChildren & {
   price: number | null;
@@ -11,7 +11,7 @@ export type ClaimRewardsTokenTablePriceProps = PropsWithChildren & {
 
 export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }: ClaimRewardsTokenTablePriceProps) {
   const value = formatUnits(amount, decimals);
-
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   if (value === "0") return;
   return (
     <Group size="md" className="flex-row  flex-nowrap items-center">
@@ -31,7 +31,7 @@ export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }:
           size="xs"
           className="text-right items-center flex font-title"
           look={"bold"}
-          format={merklConfig.decimalFormat.dollar}>
+          format={dollarFormat}>
           {Number.parseFloat(value) * (price ?? 0)}
         </Value>
       </PrimitiveTag>

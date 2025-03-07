@@ -1,6 +1,6 @@
 import { I18n } from "@core/I18n";
-import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import TokenSelect from "@core/modules/token/components/element/TokenSelect";
@@ -34,6 +34,8 @@ export default function Participate({
   const [tokenAddress, setTokenAddress] = useState("");
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
 
   const {
     targets,
@@ -84,7 +86,7 @@ export default function Participate({
           footer={
             <Group className="justify-between w-full">
               {inputToken && (
-                <Value className="animate-drop" format={merklConfig.decimalFormat.dollar}>
+                <Value className="animate-drop" format={dollarFormat}>
                   {Fmt.toPrice(amount ?? 0n, inputToken)}
                 </Value>
               )}
@@ -115,7 +117,7 @@ export default function Participate({
                       </PrimitiveTag>
                     )}
                     {!!BigInt(inputToken?.balance ?? "0") && (
-                      <Value className="text-right" look={"soft"} size="sm" format={merklConfig.decimalFormat.dollar}>
+                      <Value className="text-right" look={"soft"} size="sm" format={dollarFormat}>
                         {Fmt.toPrice(inputToken?.balance, inputToken)}
                       </Value>
                     )}
@@ -187,6 +189,7 @@ export default function Participate({
     balance,
     targets,
     connected,
+    dollarFormat,
   ]);
 
   useEffect(() => {
@@ -223,7 +226,7 @@ export default function Participate({
           </Box>
         </>
       )}
-      {loading && !!merklConfig.deposit && (
+      {loading && !!isDepositEnabled && (
         <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>

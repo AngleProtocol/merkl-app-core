@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import { Button, Icon } from "dappkit";
 import { blockEvent } from "dappkit";
@@ -9,10 +9,11 @@ export type OpportuntiyButtonProps = {
 
 export default function OpportunityButton({ opportunity }: OpportuntiyButtonProps) {
   const { name, Icons, link } = useOpportunityMetadata(opportunity);
+  const tags = useMerklConfig(store => store.config.tags);
 
   return (
     <Button
-      disabled={merklConfig.tags && !opportunity.tags.some(t => merklConfig?.tags?.includes(t))}
+      disabled={tags && !opportunity.tags.some(t => tags?.includes(t))}
       to={link}
       onClick={blockEvent(() => {})}
       look="soft">

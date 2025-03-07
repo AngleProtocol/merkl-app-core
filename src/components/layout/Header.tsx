@@ -1,9 +1,9 @@
 import type { NavigationMenuRoute } from "@core/config/type";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import merklConfig from "../../config";
 import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
@@ -24,6 +24,9 @@ export default function Header() {
   const { chainId, address: user, chains, switchChain } = useWalletContext();
   const headerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const hideSpyMode = useMerklConfig(store => store.config.hideSpyMode);
+  const navigationConfig = useMerklConfig(store => store.config.navigation);
+  const isSearchbarEnabled = useMerklConfig(store => store.config.header.searchbar.enabled);
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -82,11 +85,11 @@ export default function Header() {
         className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
         <Container className="py-xl">
           <Group className="justify-between items-center">
-            <BrandNavigationMenu routes={merklConfig.navigation.menu} footer={<SwitchMode />} />
+            <BrandNavigationMenu routes={navigationConfig.menu} footer={<SwitchMode />} />
             <Group>
               <Group className="items-center" size="xl">
                 <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
-                  {Object.entries(merklConfig.navigation.header).map(([key, route]) => {
+                  {Object.entries(navigationConfig.header).map(([key, route]) => {
                     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> =>
                       "link" in route;
                     return (
@@ -121,12 +124,12 @@ export default function Header() {
                   })}
                   <Group className="items-center">
                     <SwitchMode />
-                    {merklConfig.header.searchbar.enabled && <SearchBar icon={true} />}
+                    {isSearchbarEnabled && <SearchBar icon={true} />}
                   </Group>
                 </Group>
 
                 <Group className="flex">
-                  <WalletButton select={chainSwitcher} hideSpyMode={merklConfig.hideSpyMode}>
+                  <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
                     <Button to={`/users/${user}`} size="sm" look="soft">
                       <Icon remix="RiArrowRightLine" /> Check claims
                     </Button>

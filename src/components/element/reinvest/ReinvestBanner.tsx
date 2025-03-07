@@ -1,17 +1,18 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityCell from "@core/modules/opportunity/components/items/OpportunityCell";
 import type { Opportunity } from "@merkl/api";
 import { Collapsible, EventBlocker, Group, Icon, Space, Text, mergeClass } from "dappkit";
 import { useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
-import merklConfig from "../../../config";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 
 export default function ReinvestBanner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>();
   const [isOpen, setIsOpen] = useState(true);
+  const reinvestTokenAddress = useMerklConfig(store => store.config.dashboard?.reinvestTokenAddress);
 
   useEffect(() => {
-    if (!merklConfig.dashboard?.reinvestTokenAddress) return;
+    if (!reinvestTokenAddress) return;
 
     const fetchData = async () => {
       const opp1 = await OpportunityService.getMany({
@@ -36,7 +37,7 @@ export default function ReinvestBanner() {
     };
 
     fetchData();
-  }, []);
+  }, [reinvestTokenAddress]);
 
   const cells = useMemo(
     () =>
@@ -48,7 +49,7 @@ export default function ReinvestBanner() {
     [opportunities],
   );
 
-  if (!merklConfig.dashboard?.reinvestTokenAddress) return;
+  if (!reinvestTokenAddress) return;
   return (
     <Group
       className="rounded-md p-md bg-main-8 flex-nowrap items-start flex-col cursor-pointer !gap-0"

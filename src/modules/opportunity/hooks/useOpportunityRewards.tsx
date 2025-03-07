@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Fmt, Icon, Text, Value } from "dappkit";
@@ -13,6 +13,8 @@ export default function useOpportunityRewards({
   dailyRewards,
   rewardsRecord,
 }: Pick<Opportunity, (typeof rewards)[number]>) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const dailyRewardsTokenAddress = useMerklConfig(store => store.config.opportunity.library.dailyRewardsTokenAddress);
   /**
    * Picks tokens and amounts from the rewards breakdown
    */
@@ -38,10 +40,8 @@ export default function useOpportunityRewards({
    * Formatted daily rewards displayed
    */
   const formattedDailyRewards = useMemo(() => {
-    if (merklConfig.opportunity.library.dailyRewardsTokenAddress) {
-      const breakdowns = rewardsRecord.breakdowns.filter(
-        ({ token }) => token?.address === merklConfig.opportunity.library.dailyRewardsTokenAddress,
-      );
+    if (dailyRewardsTokenAddress) {
+      const breakdowns = rewardsRecord.breakdowns.filter(({ token }) => token?.address === dailyRewardsTokenAddress);
       const token = breakdowns?.[0]?.token;
       const breakdownAmount = breakdowns.reduce((acc, breakdown) => BigInt(acc) + BigInt(breakdown.amount), 0n);
 
@@ -63,13 +63,13 @@ export default function useOpportunityRewards({
     return (
       <>
         <Text bold look="soft">
-          <Value value format={merklConfig.decimalFormat.dollar}>
+          <Value value format={dollarFormat}>
             {dailyRewards ?? 0}
           </Value>
         </Text>
       </>
     );
-  }, [rewardsRecord, dailyRewards]);
+  }, [rewardsRecord, dailyRewards, dollarFormat, dailyRewardsTokenAddress]);
 
   return {
     rewardsBreakdown,

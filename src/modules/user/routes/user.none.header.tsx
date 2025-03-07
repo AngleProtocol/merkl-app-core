@@ -7,7 +7,6 @@ import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
-import merklConfig from "../../../config";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return withUrl(request, {});
@@ -45,16 +44,6 @@ export default function Index() {
       {
         label: (
           <>
-            <Icon size="sm" remix="RiDropFill" />
-            Liquidity
-          </>
-        ),
-        link: `/users/${address}/liquidity`,
-        key: "Liquidity",
-      },
-      {
-        label: (
-          <>
             <Icon size="sm" remix="RiListCheck3" />
             History
           </>
@@ -65,14 +54,14 @@ export default function Index() {
     ];
 
     // Filter out the Liquidity tab if it's disabled in the config
-    return baseTabs.filter(tab => !(tab.key === "Liquidity" && !merklConfig.dashboard.liquidityTab.enabled));
+    return baseTabs;
   }, [address]);
 
   return (
     <Hero
       breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={!!merklConfig.dashboardPageName ? merklConfig.dashboardPageName : "Claims"}
+      title={MetadataService.find(MetadataService.wrapInPage(data?.url, location.pathname), "title")}
       description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}
       tabs={tabs}>
       <Outlet />

@@ -1,8 +1,8 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Reward } from "@merkl/api";
 import { Box, Group, Icon, Space, Text } from "dappkit";
 import type { TransactionButtonProps } from "dappkit";
 import { useMemo } from "react";
-import merklConfig from "../../../config";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";
 import ClaimRewardsByOpportunity from "./byOpportunity/ClaimRewardsByOpportunity";
@@ -14,6 +14,8 @@ export type ClaimRewardsLibraryProps = {
 };
 
 export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: ClaimRewardsLibraryProps) {
+  const rewardsNavigationMode = useMerklConfig(store => store.config.rewardsNavigationMode);
+
   const flattenedRewards = useMemo(
     () =>
       rewards.flatMap(({ chain, rewards, distributor }) =>
@@ -25,7 +27,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
   );
 
   const renderRewards = useMemo(() => {
-    switch (merklConfig.rewardsNavigationMode) {
+    switch (rewardsNavigationMode) {
       case "opportunity":
         return <ClaimRewardsByOpportunity from={from} rewards={flattenedRewards} />;
       default:
@@ -54,7 +56,7 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
           </ClaimRewardsChainTable>
         );
     }
-  }, [rewards, flattenedRewards, from, onClaimSuccess]);
+  }, [rewards, flattenedRewards, from, onClaimSuccess, rewardsNavigationMode]);
 
   return <Group className="flex-row w-full [&>*]:flex-grow">{renderRewards}</Group>;
 }

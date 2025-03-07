@@ -1,3 +1,4 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { useNavigate } from "@remix-run/react";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
 } from "dappkit";
 import { useMemo, useState } from "react";
 import { zeroAddress } from "viem";
-import merklConfig from "../../../../../../../merkl.config";
 import useReferral from "../hooks/useReferral";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 
@@ -25,6 +25,7 @@ export interface ReferProps {
 }
 
 export default function Referral({ code: defaultCode }: ReferProps) {
+  const referralConfig = useMerklConfig(store => store.config.referral);
   const navigate = useNavigate();
   const [code, setCode] = useState<string | undefined>(defaultCode);
   const { isCodeAvailable, referral } = useReferral(code);
@@ -82,7 +83,7 @@ export default function Referral({ code: defaultCode }: ReferProps) {
           state={[code, setCode]}
           look="base"
           size="lg"
-          placeholder={`${merklConfig.referral?.referralKey}-${exampleCode}`}
+          placeholder={`${referralConfig?.referralKey}-${exampleCode}`}
         />
         {validity === "harm" && (
           <Text className="flex gap-md">
@@ -90,7 +91,7 @@ export default function Referral({ code: defaultCode }: ReferProps) {
           </Text>
         )}
       </OverrideTheme>
-      <Connected chain={merklConfig.referral?.chainId} size="lg" look="hype" className="justify-center">
+      <Connected chain={referralConfig?.chainId} size="lg" look="hype" className="justify-center">
         <TransactionButton
           name={"Redeem a referral code"}
           disabled={!isCodeAvailable || validity === "harm"}

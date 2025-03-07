@@ -1,7 +1,7 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
 import { Fragment, useMemo, useState } from "react";
-import merklConfig from "../../../config";
 
 interface TvlSectionProps {
   opportunity: Opportunity;
@@ -11,6 +11,7 @@ const DEFAULT_ARRAY_SIZE = 3;
 
 export default function TvlSection({ opportunity }: TvlSectionProps) {
   const [isShowingMore, setIsShowingMore] = useState(false);
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const tvlFiltered = useMemo(() => {
     return opportunity.tvlRecord?.breakdowns
@@ -101,7 +102,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                   </PrimitiveTag>
                 )}
                 <Text look="bold" className="inline-flex justify-end" size="sm">
-                  <Value value format={merklConfig.decimalFormat.dollar}>
+                  <Value value format={dollarFormat}>
                     {breakdown.value}
                   </Value>
                 </Text>

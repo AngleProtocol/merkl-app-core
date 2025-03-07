@@ -1,6 +1,6 @@
-import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -23,12 +23,13 @@ export const clientLoader = Cache.wrap("token/opportunities", 300);
 
 export default function Index() {
   const { opportunities, chains, count, featuredOpportunities } = useLoaderData<typeof loader>();
+  const areFeaturedOpportunitiesEnabled = useMerklConfig(store => store.config.opportunity.featured.enabled);
 
   return (
     <Container>
       <Space size="xl" />
       <Group size="xl" className="py-xl flex-col">
-        {merklConfig.opportunity.featured.enabled && (
+        {areFeaturedOpportunitiesEnabled && (
           <>
             <Title look="soft" h={3}>
               BEST OPPORTUNITIES

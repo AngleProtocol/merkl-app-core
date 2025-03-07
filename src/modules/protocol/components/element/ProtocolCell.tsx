@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
@@ -12,7 +12,7 @@ export type ProtocolCellProps = {
 
 export default function ProtocolCell({ protocol }: ProtocolCellProps) {
   const { name, link, tags } = useProtocolMetadata(protocol);
-
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
 
   const cell = useMemo(
@@ -40,7 +40,7 @@ export default function ProtocolCell({ protocol }: ProtocolCellProps) {
         <div className="p-md md:p-xl">
           <Group className="flex-nowrap items-center" size="sm">
             <Text bold look="soft" className="flex gap-sm">
-              <Value className="text-right font-bold" look={"soft"} format={merklConfig.decimalFormat.dollar}>
+              <Value className="text-right font-bold" look={"soft"} format={dollarFormat}>
                 {protocol.dailyRewards}
               </Value>
               Daily Rewards
@@ -50,7 +50,17 @@ export default function ProtocolCell({ protocol }: ProtocolCellProps) {
         </div>
       </Box>
     ),
-    [protocol.icon, protocol.name, overflowing, ref, protocol.dailyRewards, protocol.numberOfLiveCampaigns, tags, name],
+    [
+      protocol.icon,
+      protocol.name,
+      overflowing,
+      ref,
+      protocol.dailyRewards,
+      protocol.numberOfLiveCampaigns,
+      tags,
+      name,
+      dollarFormat,
+    ],
   );
 
   return (

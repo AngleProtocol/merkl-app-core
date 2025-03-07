@@ -1,8 +1,8 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { NavLink } from "@remix-run/react";
 import { Divider, Group, Text } from "dappkit";
 import { Icon } from "dappkit";
 import type { FC } from "react";
-import merklConfig from "../../config";
 import type { routesType } from "../../config/type";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
@@ -11,6 +11,7 @@ export const LayerMenu: FC<{
   nav: routesType;
   setOpen: (open: boolean) => void;
 }> = ({ nav, setOpen }) => {
+  const searchBarEnabled = useMerklConfig(store => store.config.header.searchbar.enabled);
   return (
     <div className="layermenu z-50 min-w-64 bg-main-2 flex flex-col">
       <main className="flex-1 overflow-y-scroll w-full">
@@ -49,7 +50,7 @@ export const LayerMenu: FC<{
       </main>
       <footer className="mt-lg">
         <Group className="items-center">
-          {merklConfig.header.searchbar.enabled && <SearchBar />}
+          {searchBarEnabled && <SearchBar />}
           <SwitchMode />
         </Group>
       </footer>

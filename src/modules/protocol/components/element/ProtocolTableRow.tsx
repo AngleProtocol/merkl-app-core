@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
@@ -13,8 +13,8 @@ export type ProtocolTableRowProps = {
 
 export default function ProtocolTableRow({ protocol, className, ...props }: ProtocolTableRowProps) {
   const { name, link, tags } = useProtocolMetadata(protocol);
-
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const liveCampaignsColumn = useMemo(
     () => (
@@ -29,13 +29,13 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
     () => (
       <Group size="sm">
         <Text look="hype" bold size="lg">
-          <Value className="text-right font-bold" look={"hype"} format={merklConfig.decimalFormat.dollar}>
+          <Value className="text-right font-bold" look={"hype"} format={dollarFormat}>
             {protocol.dailyRewards}
           </Value>
         </Text>
       </Group>
     ),
-    [protocol.dailyRewards],
+    [protocol.dailyRewards, dollarFormat],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

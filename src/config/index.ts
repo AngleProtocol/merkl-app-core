@@ -43,7 +43,7 @@ import { walletConnect } from "wagmi/connectors";
 import merklClientConfig from "../../../../../merkl.config";
 import { type MerklConfig, createConfig } from "./type";
 
-const defaultMerklConfig: MerklConfig<Themes> = {
+export const defaultMerklConfig: MerklConfig<Themes> = {
   appName: "Merkl",
   modes: ["dark", "light"],
   defaultTheme: "merkl",
