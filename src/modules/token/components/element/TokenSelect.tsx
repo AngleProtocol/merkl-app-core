@@ -12,8 +12,8 @@ export type TokenSelectProps = {
 } & SelectProps<string>;
 
 export default function TokenSelect({ tokens, balances, ...props }: TokenSelectProps) {
-  const server = useMerklConfig(store => store.config.server);
-  const sortedTokens = useMemo(() => TokenService({ server }).sortForUser(tokens), [tokens, server]);
+  const backend = useMerklConfig(store => store.config.backend);
+  const sortedTokens = useMemo(() => TokenService({ backend }).sortForUser(tokens), [tokens, backend]);
   const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const options = useMemo(

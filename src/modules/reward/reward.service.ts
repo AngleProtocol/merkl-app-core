@@ -1,10 +1,10 @@
 import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
-import type { MerklServer } from "@core/config/server";
+import type { MerklBackend } from "@core/config/backend";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import { defineModule } from "@merkl/conduit";
 
-export const RewardService = defineModule<{ api: Api; request: Request; server: MerklServer }>().create(
+export const RewardService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(
   ({ inject }) => {
     const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Reward")(call);
     const campaignLeaderboardQueryFromRequest = (
@@ -33,14 +33,14 @@ export const RewardService = defineModule<{ api: Api; request: Request; server: 
       return query;
     };
 
-    const getForUser = inject(["api", "server", "request"]).inFunction(({ api, server, request }, address: string) => {
+    const getForUser = inject(["api", "backend", "request"]).inFunction(({ api, backend, request }, address: string) => {
       const url = new URL(request.url);
 
-      const chainIds = server.chains?.map(({ id }) => id).join(",");
+      const chainIds = backend.chains?.map(({ id }) => id).join(",");
 
       // biome-ignore lint/suspicious/noExplicitAny: TODO
       const query: Record<string, any> = {
-        test: server.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+        test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
       };
       if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
       if (chainIds) query.chainIds = chainIds;

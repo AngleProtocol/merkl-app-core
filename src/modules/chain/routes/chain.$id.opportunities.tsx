@@ -9,9 +9,9 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 
-export async function loader({ context: { server }, params: { id: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { id: chainId }, request }: LoaderFunctionArgs) {
   const chain = await ChainService({ api }).get({ name: chainId });
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
   const opportunityFilters = {
     chainId: chain.id.toString(),
   } as const;
@@ -19,7 +19,7 @@ export async function loader({ context: { server }, params: { id: chainId }, req
   const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
 
-  const { protocols } = await ProtocolService({ api, server, request }).getManyFromRequest();
+  const { protocols } = await ProtocolService({ api, backend, request }).getManyFromRequest();
 
   return { opportunities, count, protocols, featuredOpportunities };
 }

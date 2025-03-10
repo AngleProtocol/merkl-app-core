@@ -8,13 +8,13 @@ import { useWalletContext } from "dappkit";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { mainProtocolId: id } as const;
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
-  const { protocols } = await ProtocolService({ server, api, request }).getManyFromRequest();
+  const { protocols } = await ProtocolService({ backend, api, request }).getManyFromRequest();
 
   return { opportunities, count, protocols, featuredOpportunities };
 }

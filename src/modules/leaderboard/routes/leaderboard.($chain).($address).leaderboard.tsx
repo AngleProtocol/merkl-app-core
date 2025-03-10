@@ -12,13 +12,13 @@ import { RewardService } from "../../reward/reward.service";
 import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
 
 export async function loader({
-  context: { server },
+  context: { backend },
   params: { address, chain: chainName },
   request,
 }: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  const { rewards, count, total } = await RewardService({ api, server, request }).getTokenLeaderboard({
+  const { rewards, count, total } = await RewardService({ api, backend, request }).getTokenLeaderboard({
     chainId: chain.id,
     address: token.address,
   });

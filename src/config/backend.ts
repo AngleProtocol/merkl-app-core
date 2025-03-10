@@ -1,10 +1,11 @@
 import type { Chain } from "viem";
 
-export interface MerklServer {
+export interface MerklBackend {
+  appName: string;
   tags?: string[];
   chains?: Chain[];
   alwaysShowTestTokens?: boolean;
-  sortedBy: "apr" | "dailyRewards";
+  sortedBy: "apr" | "rewards";
   featured?: {
     enabled: boolean;
     length: number;
@@ -13,4 +14,4 @@ export interface MerklServer {
   tokenSymbolPriority?: string[];
 }
 
-export const merklServer = (create: () => MerklServer) => create();
+export const merklBackend = (create: () => MerklBackend) => create();

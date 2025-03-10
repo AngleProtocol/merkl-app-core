@@ -11,10 +11,10 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
 
-export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
   if (!id) throw new Error("Protocol not found");
   const protocol = await ProtocolService({ api }).getById(id);
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities, count } = await opportunityService.getManyFromRequest({ mainProtocolId: id });
 

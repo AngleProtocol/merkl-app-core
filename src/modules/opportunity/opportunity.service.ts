@@ -1,57 +1,61 @@
 import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
-import merklConfig from "@core/config";
-import type { MerklServer } from "@core/config/server";
+import type { MerklBackend } from "@core/config/backend";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Opportunity } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
 
-export const OpportunityService = defineModule<{ api: Api; request: Request; server: MerklServer }>().create(
+export const OpportunityService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(
   ({ inject }) => {
     const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Opportunity")(call);
-    const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
-      const url = new URL(request.url);
+    const queryFromRequest = inject(["backend", "request"]).inFunction(
+      ({ backend, request }, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        const url = new URL(request.url);
 
-      const filters = {
-        status: url.searchParams.get("status") ?? undefined,
-        mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
-        action: url.searchParams.get("action") ?? undefined,
-        chainId: url.searchParams.get("chain") ?? undefined,
-        minimumTvl: url.searchParams.get("tvl") ?? undefined,
-        items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
-        sort: url.searchParams.get("sort")?.split("-")[0],
-        order: url.searchParams.get("sort")?.split("-")[1],
-        name: url.searchParams.get("search") ?? undefined,
-        test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
-        page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
-        ...override,
-      };
+        const filters = {
+          status: url.searchParams.get("status") ?? undefined,
+          mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
+          action: url.searchParams.get("action") ?? undefined,
+          chainId: url.searchParams.get("chain") ?? undefined,
+          minimumTvl: url.searchParams.get("tvl") ?? undefined,
+          items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
+          sort: url.searchParams.get("sort")?.split("-")[0],
+          order: url.searchParams.get("sort")?.split("-")[1],
+          name: url.searchParams.get("search") ?? undefined,
+          test: backend.alwaysShowTestTokens ? true : url.searchParams.get("test") ?? false,
+          page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
+          ...override,
+        };
 
-      // Remove null/undefined values
-      const query = Object.fromEntries(
-        Object.entries(filters).filter(([, value]) => value !== undefined && value !== null),
-      );
+        // Remove null/undefined values
+        const query = Object.fromEntries(
+          Object.entries(filters).filter(([, value]) => value !== undefined && value !== null),
+        );
 
-      return query;
-    };
-
-    const getManyFromRequest = inject(["api", "request", "server"]).inFunction(
-      ({ api, request, server }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
-        return getMany.handler({ api, server }, Object.assign(queryFromRequest(request), query ?? {}));
+        return query;
       },
     );
 
-    const getMany = inject(["api", "server"]).inFunction(
-      async ({ api, server }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
-        const overrideQuery = { ...query, sort: query.sort ?? server.sortedBy };
+    const getManyFromRequest = inject(["api", "request", "backend"]).inFunction(
+      ({ api, request, backend }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        return getMany.handler(
+          { api, backend },
+          Object.assign(queryFromRequest.handler({ backend, request }), query ?? {}),
+        );
+      },
+    );
+
+    const getMany = inject(["api", "backend"]).inFunction(
+      async ({ api, backend }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        const overrideQuery = { ...query, sort: query.sort ?? backend.sortedBy };
         const opportunities = await fetchApi(async () =>
           api.v4.opportunities.index.get({
-            query: Object.assign({ ...overrideQuery }, server.tags?.[0] ? { tags: server.tags?.[0] } : {}),
+            query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
         const count = await fetchApi(async () =>
           api.v4.opportunities.count.get({
-            query: Object.assign({ ...overrideQuery }, server.tags?.[0] ? { tags: server.tags?.[0] } : {}),
+            query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
 
@@ -59,13 +63,13 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; ser
       },
     );
 
-    const getFeatured = inject(["api", "request", "server"]).inFunction(
-      async ({ api, request, server }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
-        if (server.featured?.enabled)
+    const getFeatured = inject(["api", "request", "backend"]).inFunction(
+      async ({ api, request, backend }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        if (backend.featured?.enabled)
           return await getMany.handler(
-            { api, server },
-            Object.assign(queryFromRequest(request), {
-              items: server.featured.length,
+            { api, backend },
+            Object.assign(queryFromRequest.handler({ backend, request }), {
+              items: backend.featured.length,
               ...query,
             }),
           );
@@ -73,9 +77,9 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; ser
       },
     );
 
-    const getCampaignsByParams = inject(["api", "server"]).inFunction(
+    const getCampaignsByParams = inject(["api", "backend"]).inFunction(
       async (
-        { api, server },
+        { api, backend },
         query: {
           chainId: number;
           type: string;
@@ -86,13 +90,13 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; ser
         const opportunityWithCampaigns = await fetchApi(async () =>
           api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
             query: {
-              test: server.alwaysShowTestTokens ?? false,
+              test: backend.alwaysShowTestTokens ?? false,
             },
           }),
         );
 
         // TODO: updates tags to take an array
-        if (server.tags?.length && server.tags && !opportunityWithCampaigns.tags.includes(server.tags?.[0]))
+        if (backend.tags?.length && backend.tags && !opportunityWithCampaigns.tags.includes(backend.tags?.[0]))
           throw new Response("Opportunity inaccessible", { status: 403 });
 
         return opportunityWithCampaigns;

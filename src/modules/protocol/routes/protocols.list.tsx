@@ -7,8 +7,8 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 
-export async function loader({ context: { server }, request }: LoaderFunctionArgs) {
-  const { protocols, count } = await ProtocolService({ api, request, server }).getManyFromRequest();
+export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {
+  const { protocols, count } = await ProtocolService({ api, request, backend }).getManyFromRequest();
 
   return { protocols, count };
 }

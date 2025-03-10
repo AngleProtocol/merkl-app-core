@@ -6,29 +6,34 @@ import { Container, Group, Space } from "dappkit";
 import Hero from "../../../components/composite/Hero";
 import Refer from "../components/Refer";
 import Referral from "../components/Referral";
+import type { MerklBackend } from "@core/config/backend";
+import { useMerklConfig } from "@core/modules/config/config.context";
+import { useMemo } from "react";
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   const code = new URL(request.url).searchParams.get("code");
-  return withUrl(request, { code });
+  return withUrl(request, { code, backend, routes });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrap(data?.url, location.pathname);
+  const { url, backend, routes } = data;
+  return MetadataService({ url, location, backend: backend as MerklBackend, routes }).wrap();
 };
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
-  const location = useLocation();
+  const metadata = useMetadata(data?.url);
 
   return (
     <Hero
       breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={"Referral"}
-      description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
+      description={metadata.find(metadata.wrap(), "description")}>
       <Space size="xl" />
       <Space size="xl" />
       <Space size="xl" />

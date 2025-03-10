@@ -28,7 +28,7 @@ import { useCallback, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
 
 export async function loader({
-  context: { server },
+  context: { backend },
   params: { id, type, chain: chainId },
   request,
 }: LoaderFunctionArgs) {
@@ -37,7 +37,7 @@ export async function loader({
   const chain = await ChainService({ api }).get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
-  const campaigns = await CampaignService({ server, api }).getByOpportunity({
+  const campaigns = await CampaignService({ backend, api }).getByOpportunity({
     chainId: chain.id,
     type: type as Campaign["type"],
     mainParameter: id,
@@ -46,7 +46,7 @@ export async function loader({
   const selectedCampaign = campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0];
   const computeChain = await ChainService({ api }).getById(selectedCampaign?.computeChainId ?? chain.id);
 
-  const { rewards, count, total } = await RewardService({ server, api, request }).getCampaignLeaderboard({
+  const { rewards, count, total } = await RewardService({ backend, api, request }).getCampaignLeaderboard({
     chainId: selectedCampaign.distributionChainId,
     campaignId: selectedCampaign.campaignId,
   });

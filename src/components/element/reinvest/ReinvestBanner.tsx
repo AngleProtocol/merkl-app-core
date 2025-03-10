@@ -11,12 +11,12 @@ export default function ReinvestBanner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>();
   const [isOpen, setIsOpen] = useState(true);
   const reinvestTokenAddress = useMerklConfig(store => store.config.dashboard?.reinvestTokenAddress);
-  const server = useMerklConfig(store => store.config.server);
+  const backend = useMerklConfig(store => store.config.backend);
 
   useEffect(() => {
     if (!reinvestTokenAddress) return;
 
-    const opportunityService = OpportunityService({ api, server });
+    const opportunityService = OpportunityService({ api, backend });
 
     const fetchData = async () => {
       const opp1 = await opportunityService.getMany({
@@ -41,7 +41,7 @@ export default function ReinvestBanner() {
     };
 
     fetchData();
-  }, [reinvestTokenAddress, server]);
+  }, [reinvestTokenAddress, backend]);
 
   const cells = useMemo(
     () =>

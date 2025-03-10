@@ -1,12 +1,11 @@
 import type { Api } from "@core/api/types";
-import type { MerklServer } from "@core/config/server";
+import type { MerklBackend } from "@core/config/backend";
 import type { Token } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
 import { Fmt } from "dappkit";
 import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
-import merklConfig from "../../config";
 
-export const TokenService = defineModule<{ api: Api; request: Request; server: MerklServer }>().create(({ inject }) => {
+export const TokenService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(({ inject }) => {
   const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Token")(call);
   const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
     const page = new URL(request.url).searchParams.get("page");
@@ -69,7 +68,7 @@ export const TokenService = defineModule<{ api: Api; request: Request; server: M
     },
   );
 
-  const sortForUser = inject(["server"]).inFunction(({ server }, tokens?: (Token & { balance: bigint })[]) => {
+  const sortForUser = inject(["backend"]).inFunction(({ backend }, tokens?: (Token & { balance: bigint })[]) => {
     if (!tokens) return [];
 
     const tokensWithBalance = tokens
@@ -83,13 +82,13 @@ export const TokenService = defineModule<{ api: Api; request: Request; server: M
       });
     const tokensWithNoBalance = tokens.filter(({ balance }) => !balance || BigInt(balance) <= 0n);
 
-    const tokensInPriority = !merklConfig?.tokenSymbolPriority?.length
+    const tokensInPriority = !backend?.tokenSymbolPriority?.length
       ? tokensWithNoBalance
-      : (server?.tokenSymbolPriority
+      : (backend?.tokenSymbolPriority
           ?.map(s => tokensWithNoBalance.find(({ symbol }) => symbol === s))
           ?.filter(t => t !== undefined) ?? []);
 
-    const otherTokens = tokensWithNoBalance.filter(s => merklConfig?.tokenSymbolPriority?.includes(s.symbol));
+    const otherTokens = tokensWithNoBalance.filter(s => backend?.tokenSymbolPriority?.includes(s.symbol));
 
     return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
   });

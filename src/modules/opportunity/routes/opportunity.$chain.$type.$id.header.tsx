@@ -20,7 +20,7 @@ import { useClipboard } from "dappkit";
 import React, { useCallback, useMemo } from "react";
 
 export async function loader({
-  context: { server },
+  context: { backend },
   params: { id, type, chain: chainId },
   request,
 }: LoaderFunctionArgs) {
@@ -28,7 +28,7 @@ export async function loader({
 
   const chain = await ChainService({ api }).get({ name: chainId });
 
-  const opportunity = await OpportunityService({ api, request, server }).getCampaignsByParams({
+  const opportunity = await OpportunityService({ api, request, backend }).getCampaignsByParams({
     chainId: chain.id,
     type: type,
     identifier: id,

@@ -9,11 +9,12 @@ import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
+import type { MerklBackend } from "@core/config/backend";
 
-export async function loader({ context: { server }, params: { symbol }, request }: LoaderFunctionArgs) {
-  const tokens = await TokenService({ server, request, api }).getSymbol(symbol);
+export async function loader({ context: { backend, routes }, params: { symbol }, request }: LoaderFunctionArgs) {
+  const tokens = await TokenService({ backend, request, api }).getSymbol(symbol);
   const chains = await ChainService({ api }).getAll();
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
     tokens: symbol,
@@ -30,6 +31,8 @@ export async function loader({ context: { server }, params: { symbol }, request 
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
     count,
+    backend,
+    routes,
   });
 }
 
@@ -42,7 +45,9 @@ export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => 
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrap(data?.url, location.pathname, "token", data?.tokens?.[0]);
+  const { url, routes, backend } = data;
+
+  return MetadataService({ url, location, routes, backend: backend as MerklBackend }).wrap("token", data?.tokens?.[0]);
 };
 
 export default function Index() {

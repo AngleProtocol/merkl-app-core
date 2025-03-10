@@ -8,9 +8,9 @@ import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
-export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
   const chain = await ChainService({ api }).get({ name: id });
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
     chainId: chain.id.toString(),

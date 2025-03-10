@@ -7,22 +7,28 @@ import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
+import type { MerklBackend } from "@core/config/backend";
+import { useMerklConfig } from "@core/modules/config/config.context";
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request, {});
+export async function loader({ context, request }: LoaderFunctionArgs) {
+  return withUrl(request, { context });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (error) return [{ title: error }];
   if (!data) return [{ title: error }];
 
-  return MetadataService.wrap(data?.url, location.pathname);
+  const {
+    url,
+    context: { backend, routes },
+  } = data;
+
+  return MetadataService({ url, backend: backend as MerklBackend, routes, location }).wrap();
 };
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
-  const location = useLocation();
-
   const [_isEditingAddress] = useState(false);
   const { address } = useWalletContext();
   // Dynamically compute tabs based on config and address validity
@@ -57,12 +63,14 @@ export default function Index() {
     return baseTabs;
   }, [address]);
 
+  const metadata = useMetadata(data.url);
+
   return (
     <Hero
       breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={MetadataService.find(MetadataService.wrapInPage(data?.url, location.pathname), "title")}
-      description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}
+      title={metadata.find(metadata.wrapInPage(), "title")}
+      description={metadata.find(metadata.wrap(), "description")}
       tabs={tabs}>
       <Outlet />
     </Hero>

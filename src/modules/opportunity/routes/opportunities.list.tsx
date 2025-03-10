@@ -11,16 +11,14 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Show, Space, Title } from "dappkit";
 
-export async function loader({ context: { server }, request }: LoaderFunctionArgs) {
-  const opportunityService = OpportunityService({ api, server, request });
+export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {
+  const opportunityService = OpportunityService({ api, backend, request });
   const { opportunities, count } = await opportunityService.getManyFromRequest();
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured();
 
   //TODO: embed this in client/service
   const chains = await ChainService({ api }).getAll();
-  const { protocols } = await ProtocolService({ api, server, request }).getManyFromRequest();
-
-  console.log("???", { opportunities, chains, count, protocols, featuredOpportunities });
+  const { protocols } = await ProtocolService({ api, backend, request }).getManyFromRequest();
 
   return { opportunities, chains, count, protocols, featuredOpportunities };
 }

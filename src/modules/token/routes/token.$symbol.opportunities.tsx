@@ -8,9 +8,9 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 
-export async function loader({ context: { server }, params: { symbol }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { symbol }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { tokens: symbol } as const;
-  const opportunityService = OpportunityService({ api, request, server });
+  const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
