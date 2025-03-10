@@ -33,7 +33,7 @@ export default function ClaimRewardsChainTableRow({
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const { address: user, chainId, switchChain } = useWalletContext();
-  const isUserRewards = useMemo(() => UserService.isSame(user, from), [user, from]);
+  const isUserRewards = useMemo(() => UserService({}).isSame(user, from), [user, from]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],

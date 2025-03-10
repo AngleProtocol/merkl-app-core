@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
 import { Cache } from "@core/modules/cache/cache.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
@@ -10,20 +11,21 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
 
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
   if (!id) throw new Error("Protocol not found");
-  const protocol = await ProtocolService.getById(id);
+  const protocol = await ProtocolService({ api }).getById(id);
+  const opportunityService = OpportunityService({ api, request, server });
 
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { mainProtocolId: id });
+  const { opportunities, count } = await opportunityService.getManyFromRequest({ mainProtocolId: id });
 
-  const { opportunities: opportunitiesByApr, count: liveCount } = await OpportunityService.getMany({
+  const { opportunities: opportunitiesByApr, count: liveCount } = await opportunityService.getMany({
     mainProtocolId: id,
     status: "LIVE",
     sort: "apr",
     order: "desc",
   });
 
-  const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
+  const { sum } = await opportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
   return withUrl(request, {
     opportunities,

@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { MetaFunction } from "@remix-run/node";
@@ -8,8 +9,8 @@ import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { protocols, count } = await ProtocolService.getManyFromRequest(request);
+export async function loader({ context: { server }, request }: LoaderFunctionArgs) {
+  const { protocols, count } = await ProtocolService({ api, request, server }).getManyFromRequest();
 
   return withUrl(request, { protocols, count });
 }

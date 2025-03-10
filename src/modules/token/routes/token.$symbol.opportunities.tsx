@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { useMerklConfig } from "@core/modules/config/config.context";
@@ -7,14 +8,15 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 
-export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { server }, params: { symbol }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { tokens: symbol } as const;
+  const opportunityService = OpportunityService({ api, request, server });
 
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, opportunityFilters);
-  const { opportunities: featuredOpportunities } = await OpportunityService.getFeatured(request, opportunityFilters);
+  const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
+  const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
 
   //TODO: embed this in client/service
-  const chains = await ChainService.getAll();
+  const chains = await ChainService({ api }).getAll();
 
   return { opportunities, chains, count, featuredOpportunities };
 }

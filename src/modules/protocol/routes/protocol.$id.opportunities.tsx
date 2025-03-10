@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -7,14 +8,13 @@ import { useWalletContext } from "dappkit";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { mainProtocolId: id } as const;
+  const opportunityService = OpportunityService({ api, request, server });
 
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, opportunityFilters);
-  const { opportunities: featuredOpportunities } = await OpportunityService.getFeatured(request, opportunityFilters);
-
-  //TODO: embed this in client/service
-  const { protocols } = await ProtocolService.getManyFromRequest(request);
+  const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
+  const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
+  const { protocols } = await ProtocolService({ server, api, request }).getManyFromRequest();
 
   return { opportunities, count, protocols, featuredOpportunities };
 }

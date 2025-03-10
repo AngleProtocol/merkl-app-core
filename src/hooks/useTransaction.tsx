@@ -1,9 +1,10 @@
+import type { Api } from "@core/api/types";
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { InteractionService } from "../modules/interaction/interaction.service";
-import type { api as clientApi } from "./../api";
+import { api } from "./../api";
 
-type Transaction = Awaited<ReturnType<typeof clientApi.v4.interaction.transaction.get>>["data"];
+type Transaction = Awaited<ReturnType<Api["v4"]["interaction"]["transaction"]["get"]>>["data"];
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function useTransaction(chainId: number, payload: any, txFunctionName: "deposit" | "approve") {
@@ -23,7 +24,7 @@ export default function useTransaction(chainId: number, payload: any, txFunction
       setLoading(true);
       try {
         // biome-ignore lint/suspicious/noExplicitAny: @TODO: type correctly the txFunctionName
-        const tx = await InteractionService.get(txFunctionName as any, payload, {
+        const tx = await InteractionService({ api }).get(txFunctionName as any, payload, {
           sponsor: sponsorTransactions && chainId === 324,
         });
         setTransactions(txns => {

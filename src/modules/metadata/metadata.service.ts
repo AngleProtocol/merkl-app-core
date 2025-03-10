@@ -2,6 +2,9 @@ import merklConfig from "@core/config";
 import type { MerklRoute, MerklRouteType, MerklRoutes } from "@core/config/routes";
 import type { MetaDescriptor } from "@remix-run/node";
 
+/**
+ * @todo switch to conduit module
+ */
 export abstract class MetadataService {
   /**
    * Compare routes definition versus location

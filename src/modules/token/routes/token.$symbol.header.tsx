@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
@@ -9,18 +10,19 @@ import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
 
-export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
-  const tokens = await TokenService.getSymbol(symbol);
-  const chains = await ChainService.getAll();
+export async function loader({ context: { server }, params: { symbol }, request }: LoaderFunctionArgs) {
+  const tokens = await TokenService({ server, request, api }).getSymbol(symbol);
+  const chains = await ChainService({ api }).getAll();
+  const opportunityService = OpportunityService({ api, request, server });
 
-  const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
+  const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
     tokens: symbol,
     status: "LIVE",
     sort: "apr",
     order: "desc",
   });
 
-  const { sum: dailyRewards } = await OpportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
+  const { sum: dailyRewards } = await opportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
 
   return withUrl(request, {
     tokens,

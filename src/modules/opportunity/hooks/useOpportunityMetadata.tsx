@@ -171,7 +171,7 @@ export default function useOpportunityMetadata({
    * Explainer for the opportunity
    */
   const description = useMemo(
-    () => OpportunityService.getDescription({ tokens, protocol, chain, action }),
+    () => OpportunityService({}).getDescription({ tokens, protocol, chain, action }),
     [tokens, protocol, chain, action],
   );
 

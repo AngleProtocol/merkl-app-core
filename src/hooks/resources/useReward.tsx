@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import type { Reward } from "@merkl/api";
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,7 +30,9 @@ export default function useReward(reward?: Reward, userAddress?: string, tokenAd
 
       setLoading(true);
       try {
-        const tx = await InteractionService.get("claim", payload, { sponsor: sponsorTransactions && chainId === 324 });
+        const tx = await InteractionService({ api }).get("claim", payload, {
+          sponsor: sponsorTransactions && chainId === 324,
+        });
 
         setClaimTransaction({ ...tx });
       } catch {}

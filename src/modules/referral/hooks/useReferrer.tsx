@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { UserTransaction } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { useWalletContext } from "dappkit";
@@ -25,7 +26,7 @@ export default function useReferrer() {
       setLoading(true);
 
       try {
-        const _referral = await ReferralService.getCodeOrTransaction(chainId, referralKey, address);
+        const _referral = await ReferralService({ api }).getCodeOrTransaction(chainId, referralKey, address);
 
         if (_referral) setReferral(_referral);
       } catch {}

@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -16,8 +17,8 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
   if (!address && !merklConfig.leaderboard) throw "";
   if (!address) address = merklConfig.leaderboard!.address;
 
-  const chain = await ChainService.get({ name: chainName });
-  const token = await TokenService.findUniqueOrThrow(chain.id, address);
+  const chain = await ChainService({ api }).get({ name: chainName });
+  const token = await TokenService({ api }).findUniqueOrThrow(chain.id, address);
 
   return { chain, token };
 };

@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityCell from "@core/modules/opportunity/components/items/OpportunityCell";
 import type { Opportunity } from "@merkl/api";
@@ -10,24 +11,27 @@ export default function ReinvestBanner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>();
   const [isOpen, setIsOpen] = useState(true);
   const reinvestTokenAddress = useMerklConfig(store => store.config.dashboard?.reinvestTokenAddress);
+  const server = useMerklConfig(store => store.config.server);
 
   useEffect(() => {
     if (!reinvestTokenAddress) return;
 
+    const opportunityService = OpportunityService({ api, server });
+
     const fetchData = async () => {
-      const opp1 = await OpportunityService.getMany({
+      const opp1 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on Venus",
       });
 
-      const opp2 = await OpportunityService.getMany({
+      const opp2 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on ZeroLend",
       });
 
-      const opp3 = await OpportunityService.getMany({
+      const opp3 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on Aave",
@@ -37,7 +41,7 @@ export default function ReinvestBanner() {
     };
 
     fetchData();
-  }, [reinvestTokenAddress]);
+  }, [reinvestTokenAddress, server]);
 
   const cells = useMemo(
     () =>

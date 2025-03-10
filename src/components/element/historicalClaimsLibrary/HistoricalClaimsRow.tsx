@@ -1,13 +1,13 @@
+import type { Api } from "@core/api/types";
 import Tag from "@core/components/element/Tag";
 import useChain from "@core/modules/chain/hooks/useChain";
-import type { ClaimsService } from "@core/modules/claim/claim.service";
 import Token from "@core/modules/token/components/element/Token";
 import { Button, Icon, type ListProps, mergeClass } from "dappkit";
 import moment from "moment";
 import { HistoricalClaimsRow } from "./HistoricalClaimsTable";
 
 export type HistoricalClaimsRowProps = {
-  claim: Awaited<ReturnType<typeof ClaimsService.getForUser>>[0];
+  claim: NonNullable<Awaited<ReturnType<ReturnType<Api["v4"]["claims"]>["get"]>>["data"]>[0];
 } & ListProps;
 
 export default function HistoricalClaimsTableRow({ claim, className, size, ...props }: HistoricalClaimsRowProps) {

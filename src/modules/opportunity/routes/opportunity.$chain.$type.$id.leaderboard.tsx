@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
@@ -26,22 +27,26 @@ import moment from "moment";
 import { useCallback, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
 
-export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { server },
+  params: { id, type, chain: chainId },
+  request,
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ name: chainId });
+  const chain = await ChainService({ api }).get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
-  const campaigns = await CampaignService.getByOpportunity(undefined, {
+  const campaigns = await CampaignService({ server, api }).getByOpportunity({
     chainId: chain.id,
     type: type as Campaign["type"],
     mainParameter: id,
   });
 
   const selectedCampaign = campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0];
-  const computeChain = await ChainService.getById(selectedCampaign?.computeChainId ?? chain.id);
+  const computeChain = await ChainService({ api }).getById(selectedCampaign?.computeChainId ?? chain.id);
 
-  const { rewards, count, total } = await RewardService.getCampaignLeaderboard(request, {
+  const { rewards, count, total } = await RewardService({ server, api, request }).getCampaignLeaderboard({
     chainId: selectedCampaign.distributionChainId,
     campaignId: selectedCampaign.campaignId,
   });
@@ -159,7 +164,7 @@ export default function Index() {
       <Select
         className="w-full"
         size="xl"
-        look="tint"
+        look="hype"
         options={campaignsOptions}
         state={[campaignId, id => setCampaignIds(id as string)]}
         placeholder={!!campaignId ? "Campaign Selected" : "Please select a campaign"}

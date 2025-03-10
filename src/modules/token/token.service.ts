@@ -1,32 +1,14 @@
+import type { Api } from "@core/api/types";
+import type { MerklServer } from "@core/config/server";
 import type { Token } from "@merkl/api";
+import { defineModule } from "@merkl/conduit";
 import { Fmt } from "dappkit";
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
+import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
 import merklConfig from "../../config";
 
-export abstract class TokenService {
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Token",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
-
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
-
-  /**
-   * Retrieves tokens query params from page request
-   * @param request request containing query params such as pagination
-   * @param override params for which to override value
-   * @returns query
-   */
-  static #getQueryFromRequest(
-    request: Request,
-    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ) {
+export const TokenService = defineModule<{ api: Api; request: Request; server: MerklServer }>().create(({ inject }) => {
+  const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Token")(call);
+  const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
     const page = new URL(request.url).searchParams.get("page");
     const items = new URL(request.url).searchParams.get("items");
     const search = new URL(request.url).searchParams.get("search");
@@ -45,51 +27,49 @@ export abstract class TokenService {
     );
 
     return query;
-  }
+  };
 
-  static async getManyFromRequest(request: Request): Promise<{ tokens: Token[]; count: number }> {
-    const query = TokenService.#getQueryFromRequest(request);
-    const tokens = await TokenService.#fetch(async () => api.v4.tokens.index.get({ query }));
-    const count = await TokenService.#fetch(async () => api.v4.tokens.count.get({ query }));
+  const getMany = inject(["api"]).inFunction(async ({ api }, query: ApiQuery<Api["v4"]["tokens"]["index"]["get"]>) => {
+    const tokens = await fetchApi(async () => api.v4.tokens.index.get({ query }));
+
+    return tokens;
+  });
+
+  const getManyFromRequest = inject(["api", "request"]).inFunction(async ({ api, request }) => {
+    const query = queryFromRequest(request);
+    const tokens = await fetchApi(async () => api.v4.tokens.index.get({ query }));
+    const count = await fetchApi(async () => api.v4.tokens.count.get({ query }));
 
     return { tokens, count };
-  }
+  });
 
-  static async getMany(query: Parameters<typeof api.v4.tokens.index.get>[0]["query"]): Promise<Token[]> {
-    const tokens = await TokenService.#fetch(async () => api.v4.tokens.index.get({ query }));
-
+  const getValidRewardTokenByChain = inject(["api"]).inFunction(async ({ api }, chainId) => {
+    const tokens = await fetchApi(async () => api.v4.tokens.reward({ chainId }).get());
     return tokens;
-  }
+  });
 
-  static async getValidRewardTokenByChain(chainId: number): Promise<Token[]> {
-    const tokens = await TokenService.#fetch(async () => api.v4.tokens.reward({ chainId }).get());
-    return tokens;
-  }
+  const findUniqueOrThrow = inject(["api"]).inFunction(async ({ api }, chainId: number, address: string) => {
+    return await fetchApi(async () => api.v4.tokens({ id: `${chainId}-${address}` }).get());
+  });
 
-  static async findUniqueOrThrow(chainId: number, address: string) {
-    return await TokenService.#fetch(async () => api.v4.tokens({ id: `${chainId}-${address}` }).get());
-  }
-
-  static async getSymbol(symbol: string | undefined): Promise<Token[]> {
+  const getSymbol = inject(["api"]).inFunction(async ({ api }, symbol: string | undefined) => {
     if (!symbol) throw new Response("Token not found");
 
-    const tokens = await TokenService.#fetch(async () => api.v4.tokens.index.get({ query: { displaySymbol: symbol } }));
+    const tokens = await fetchApi(async () => api.v4.tokens.index.get({ query: { displaySymbol: symbol } }));
 
     if (tokens.length === 0) throw new Response("Token not found", { status: 404 });
     return tokens;
-  }
+  });
 
-  static async getAllowance(chainId: number, address: string, owner: string, spender: string) {
-    const id = `${chainId}-${address}`;
+  const getAllowance = inject(["api"]).inFunction(
+    async ({ api }, chainId: number, address: string, owner: string, spender: string) => {
+      const id = `${chainId}-${address}`;
 
-    return await TokenService.#fetch(async () => api.v4.tokens({ id }).allowance({ owner })({ spender }).get());
-  }
+      return await fetchApi(async () => api.v4.tokens({ id }).allowance({ owner })({ spender }).get());
+    },
+  );
 
-  /**
-   * Sorts tokens based on dollar value & token priority
-   * @returns
-   */
-  static sortForUser(tokens?: (Token & { balance: bigint })[]) {
+  const sortForUser = inject(["server"]).inFunction(({ server }, tokens?: (Token & { balance: bigint })[]) => {
     if (!tokens) return [];
 
     const tokensWithBalance = tokens
@@ -105,12 +85,22 @@ export abstract class TokenService {
 
     const tokensInPriority = !merklConfig?.tokenSymbolPriority?.length
       ? tokensWithNoBalance
-      : merklConfig?.tokenSymbolPriority
-          .map(s => tokensWithNoBalance.find(({ symbol }) => symbol === s))
-          .filter(t => t !== undefined);
+      : (server?.tokenSymbolPriority
+          ?.map(s => tokensWithNoBalance.find(({ symbol }) => symbol === s))
+          ?.filter(t => t !== undefined) ?? []);
 
     const otherTokens = tokensWithNoBalance.filter(s => merklConfig?.tokenSymbolPriority?.includes(s.symbol));
 
     return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
-  }
-}
+  });
+
+  return {
+    getMany,
+    getManyFromRequest,
+    getSymbol,
+    getAllowance,
+    sortForUser,
+    findUniqueOrThrow,
+    getValidRewardTokenByChain,
+  };
+});

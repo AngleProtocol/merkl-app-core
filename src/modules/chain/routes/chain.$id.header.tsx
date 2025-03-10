@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
@@ -7,17 +8,18 @@ import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
-  const chain = await ChainService.get({ name: id });
+export async function loader({ context: { server }, params: { id }, request }: LoaderFunctionArgs) {
+  const chain = await ChainService({ api }).get({ name: id });
+  const opportunityService = OpportunityService({ api, request, server });
 
-  const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
+  const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
     chainId: chain.id.toString(),
     status: "LIVE",
     sort: "apr",
     order: "desc",
   });
 
-  const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
+  const { sum: dailyRewards } = await opportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
 
   return withUrl(request, {
     chain,

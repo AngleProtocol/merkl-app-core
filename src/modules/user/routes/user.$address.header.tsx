@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
@@ -10,7 +11,6 @@ import { useMemo } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
 import AddressEdit from "../../../components/element/AddressEdit";
-import merklConfig from "../../../config";
 import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
 import useBalances from "../../../hooks/useBalances";
@@ -19,20 +19,18 @@ import { TokenService } from "../../../modules/token/token.service";
 import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
 
-export async function loader({ params: { address }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { server }, params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
 
-  const rewards = await RewardService.getForUser(request, address);
-  const token = !!merklConfig.rewardsTotalClaimableMode
+  const rewards = await RewardService({ api, server, request }).getForUser(address);
+  const token = !!server.rewardsTotalClaimableMode
     ? (
-        await TokenService.getMany({
-          address: merklConfig.rewardsTotalClaimableMode,
+        await TokenService({ server, api, request }).getMany({
+          address: server.rewardsTotalClaimableMode,
         })
       )?.[0]
     : null;
-  const isBlacklisted = await UserService.isBlacklisted(address);
-
-  console.log("BLACKLIST", isBlacklisted);
+  const isBlacklisted = await UserService({ api }).isBlacklisted(address);
 
   return withUrl(request, { rewards, address, token, isBlacklisted });
 }
@@ -76,7 +74,7 @@ export default function Index() {
   const reward = useMemo(() => rawRewards.find(({ chain: { id } }) => id === chainId), [chainId, rawRewards]);
   const { claimTransaction } = useReward(reward, user);
 
-  const isUserRewards = useMemo(() => UserService.isSame(user, address), [user, address]);
+  const isUserRewards = useMemo(() => UserService({}).isSame(user, address), [user, address]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && reward && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],

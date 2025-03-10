@@ -12,6 +12,7 @@ import type {
 } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
 import type { MerklRoutes } from "./routes";
+import type { MerklServer } from "./server";
 
 export type routesType = {
   [key: string]: {
@@ -69,6 +70,7 @@ export type MerklConfig<T extends Themes> = {
   tags?: string[];
 
   routes: MerklRoutes;
+  server: MerklServer;
 
   /**
    * Navigation Menu and Header links configuration

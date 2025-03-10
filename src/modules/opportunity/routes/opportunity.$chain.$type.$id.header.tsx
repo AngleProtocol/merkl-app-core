@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import useParticipate from "@core/hooks/useParticipate";
@@ -18,12 +19,16 @@ import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
 import React, { useCallback, useMemo } from "react";
 
-export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { server },
+  params: { id, type, chain: chainId },
+  request,
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ name: chainId });
+  const chain = await ChainService({ api }).get({ name: chainId });
 
-  const opportunity = await OpportunityService.getCampaignsByParams({
+  const opportunity = await OpportunityService({ api, request, server }).getCampaignsByParams({
     chainId: chain.id,
     type: type,
     identifier: id,

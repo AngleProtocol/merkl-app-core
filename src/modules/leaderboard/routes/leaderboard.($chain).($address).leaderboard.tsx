@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -10,10 +11,14 @@ import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
 import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
 
-export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { server },
+  params: { address, chain: chainName },
+  request,
+}: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  const { rewards, count, total } = await RewardService.getTokenLeaderboard(request, {
+  const { rewards, count, total } = await RewardService({ api, server, request }).getTokenLeaderboard({
     chainId: chain.id,
     address: token.address,
   });

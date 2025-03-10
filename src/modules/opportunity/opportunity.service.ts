@@ -1,156 +1,136 @@
-import { api } from "@core/api";
-import { fetchWithLogs } from "@core/api/utils";
+import type { Api } from "@core/api/types";
+import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
 import merklConfig from "@core/config";
+import type { MerklServer } from "@core/config/server";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Opportunity } from "@merkl/api";
+import { defineModule } from "@merkl/conduit";
 
-export abstract class OpportunityService {
-  static async getManyFromRequest(
-    request: Request,
-    overrides?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ) {
-    return OpportunityService.getMany(Object.assign(OpportunityService.#getQueryFromRequest(request), overrides ?? {}));
-  }
-  // ─── Get Many Opportunities ──────────────────────────────────────────────
+export const OpportunityService = defineModule<{ api: Api; request: Request; server: MerklServer }>().create(
+  ({ inject }) => {
+    const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Opportunity")(call);
+    const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+      const url = new URL(request.url);
 
-  static async getMany(
-    query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ): Promise<{ opportunities: Opportunity[]; count: number }> {
-    //TODO: updates tags to take an array
-    const overrideQuery = { ...query, sort: query.sort ?? merklConfig.opportunity.library.sortedBy };
-    const opportunities = await OpportunityService.#fetch(async () =>
-      api.v4.opportunities.index.get({
-        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
-      }),
-    );
-    const count = await OpportunityService.#fetch(async () =>
-      api.v4.opportunities.count.get({
-        query: Object.assign({ ...overrideQuery }, merklConfig.tags?.[0] ? { tags: merklConfig.tags?.[0] } : {}),
-      }),
-    );
+      const filters = {
+        status: url.searchParams.get("status") ?? undefined,
+        mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
+        action: url.searchParams.get("action") ?? undefined,
+        chainId: url.searchParams.get("chain") ?? undefined,
+        minimumTvl: url.searchParams.get("tvl") ?? undefined,
+        items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
+        sort: url.searchParams.get("sort")?.split("-")[0],
+        order: url.searchParams.get("sort")?.split("-")[1],
+        name: url.searchParams.get("search") ?? undefined,
+        test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+        page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
+        ...override,
+      };
 
-    return { opportunities: opportunities.filter(o => o !== null), count };
-  }
-
-  // ─── Get Featured opportunities ──────────────────────────────────────────────
-
-  static async getFeatured(
-    request: Request,
-    overrides?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ): Promise<{ opportunities: Opportunity[]; count: number }> {
-    if (merklConfig.opportunity.featured.enabled)
-      return await OpportunityService.getMany(
-        Object.assign(OpportunityService.#getQueryFromRequest(request), {
-          items: merklConfig.opportunity.featured.length,
-          ...overrides,
-        }),
+      // Remove null/undefined values
+      const query = Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => value !== undefined && value !== null),
       );
-    return { opportunities: [], count: 0 };
-  }
 
-  // ─── Get Opportunities with campaign ──────────────────────────────────────────────
-
-  static async getCampaignsByParams(query: {
-    chainId: number;
-    type: string;
-    identifier: string;
-  }) {
-    const { chainId, type, identifier } = query;
-    const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
-      api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
-        query: {
-          test: merklConfig.alwaysShowTestTokens ?? false,
-        },
-      }),
-    );
-
-    // TODO: updates tags to take an array
-    if (merklConfig.tags?.length && merklConfig.tags && !opportunityWithCampaigns.tags.includes(merklConfig.tags?.[0]))
-      throw new Response("Opportunity inaccessible", { status: 403 });
-
-    return opportunityWithCampaigns;
-  }
-
-  // ─── Get Aggregate ──────────────────────────────────────────────
-
-  static async getAggregate(
-    query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-    params: "dailyRewards",
-  ) {
-    return await OpportunityService.#fetch(async () =>
-      api.v4.opportunities.aggregate({ field: params }).get({ query }),
-    );
-  }
-
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Opportunity",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
-
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
-
-  /**
-   * Retrieves opportunities query params from page request
-   * @param request request containing query params such as chains, status, pagination...
-   * @param override params for which to override value
-   * @returns query
-   */
-  /**
-   * Retrieves opportunities query params from page request
-   * @param request request containing query params such as chains, status, pagination...
-   * @param override params for which to override value
-   * @returns query
-   */
-  static #getQueryFromRequest(
-    request: Request,
-    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ) {
-    const url = new URL(request.url);
-
-    const filters = {
-      status: url.searchParams.get("status") ?? undefined,
-      mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
-      action: url.searchParams.get("action") ?? undefined,
-      chainId: url.searchParams.get("chain") ?? undefined,
-      minimumTvl: url.searchParams.get("tvl") ?? undefined,
-      items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
-      sort: url.searchParams.get("sort")?.split("-")[0],
-      order: url.searchParams.get("sort")?.split("-")[1],
-      name: url.searchParams.get("search") ?? undefined,
-      test: merklConfig.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
-      page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
-      ...override,
+      return query;
     };
 
-    // Remove null/undefined values
-    const query = Object.fromEntries(
-      Object.entries(filters).filter(([, value]) => value !== undefined && value !== null),
+    const getManyFromRequest = inject(["api", "request", "server"]).inFunction(
+      ({ api, request, server }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        return getMany.handler({ api, server }, Object.assign(queryFromRequest(request), query ?? {}));
+      },
     );
 
-    return query;
-  }
+    const getMany = inject(["api", "server"]).inFunction(
+      async ({ api, server }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        const overrideQuery = { ...query, sort: query.sort ?? server.sortedBy };
+        const opportunities = await fetchApi(async () =>
+          api.v4.opportunities.index.get({
+            query: Object.assign({ ...overrideQuery }, server.tags?.[0] ? { tags: server.tags?.[0] } : {}),
+          }),
+        );
+        const count = await fetchApi(async () =>
+          api.v4.opportunities.count.get({
+            query: Object.assign({ ...overrideQuery }, server.tags?.[0] ? { tags: server.tags?.[0] } : {}),
+          }),
+        );
 
-  static getDescription(opportunity: Pick<Opportunity, "tokens" | "protocol" | "chain" | "action">) {
-    const symbols = opportunity.tokens?.map(t => t.symbol).join("-");
+        return { opportunities: opportunities.filter(o => o !== null), count };
+      },
+    );
 
-    switch (opportunity.action) {
-      case "POOL":
-        return `Earn rewards by providing liquidity to the ${opportunity.protocol?.name} ${symbols} pool on ${opportunity.chain.name}, or through a liquidity manager supported by Merkl`;
-      case "HOLD":
-        return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
-      case "LEND":
-        return `Earn rewards by supplying liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
-      case "BORROW":
-        return `Earn rewards by borrowing liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
-      case "DROP":
-        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
-      default:
-        break;
-    }
-  }
-}
+    const getFeatured = inject(["api", "request", "server"]).inFunction(
+      async ({ api, request, server }, query?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+        if (server.featured?.enabled)
+          return await getMany.handler(
+            { api, server },
+            Object.assign(queryFromRequest(request), {
+              items: server.featured.length,
+              ...query,
+            }),
+          );
+        return { opportunities: [], count: 0 };
+      },
+    );
+
+    const getCampaignsByParams = inject(["api", "server"]).inFunction(
+      async (
+        { api, server },
+        query: {
+          chainId: number;
+          type: string;
+          identifier: string;
+        },
+      ) => {
+        const { chainId, type, identifier } = query;
+        const opportunityWithCampaigns = await fetchApi(async () =>
+          api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
+            query: {
+              test: server.alwaysShowTestTokens ?? false,
+            },
+          }),
+        );
+
+        // TODO: updates tags to take an array
+        if (server.tags?.length && server.tags && !opportunityWithCampaigns.tags.includes(server.tags?.[0]))
+          throw new Response("Opportunity inaccessible", { status: 403 });
+
+        return opportunityWithCampaigns;
+      },
+    );
+
+    const getAggregate = inject(["api"]).inFunction(
+      ({ api }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>, params: "dailyRewards") => {
+        return fetchApi(async () => api.v4.opportunities.aggregate({ field: params }).get({ query }));
+      },
+    );
+
+    const getDescription = (opportunity: Pick<Opportunity, "tokens" | "protocol" | "chain" | "action">) => {
+      const symbols = opportunity.tokens?.map(t => t.symbol).join("-");
+
+      switch (opportunity.action) {
+        case "POOL":
+          return `Earn rewards by providing liquidity to the ${opportunity.protocol?.name} ${symbols} pool on ${opportunity.chain.name}, or through a liquidity manager supported by Merkl`;
+        case "HOLD":
+          return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
+        case "LEND":
+          return `Earn rewards by supplying liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
+        case "BORROW":
+          return `Earn rewards by borrowing liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
+        case "DROP":
+          return `Visit your dashboard to check if you've earned rewards from this airdrop`;
+        default:
+          break;
+      }
+    };
+
+    return {
+      getMany,
+      getAggregate,
+      getManyFromRequest,
+      getDescription,
+      getFeatured,
+      getCampaignsByParams,
+    };
+  },
+);

@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container } from "dappkit";
@@ -12,7 +13,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
   // need to be improved and remove chainId fromUrl
   const defaultChain = merklConfig.chains?.[0]?.id ?? 1;
 
-  const positions = await LiquidityService.getForUser({
+  const positions = await LiquidityService({ api }).getForUser({
     address,
     chainId: defaultChain,
   });
