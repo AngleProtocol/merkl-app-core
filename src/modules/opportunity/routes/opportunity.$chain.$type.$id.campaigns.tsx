@@ -1,8 +1,7 @@
 import { ErrorContent } from "@core/components/layout/ErrorContent";
-import CampaignLibrary from "@core/modules/campaigns/components/library/CampaignLibrary";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
-import { useOutletContext } from "@remix-run/react";
-import { Container, Group, Space, Text } from "dappkit";
+import { Outlet, useOutletContext } from "@remix-run/react";
+import { Container, Group, Text } from "dappkit";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
 
 export default function Index() {
@@ -10,16 +9,15 @@ export default function Index() {
 
   return (
     <Container>
-      <Space size="md" />
-      <Group className="flex-nowrap">
-        <OpportunityBoxParticipate opportunity={opportunity} />
-        <Group>
-          <Text>
+      <Group className="flex-wrap flex-col-reverse lg:flex-nowrap lg:flex-row gap-xl py-xl">
+        <OpportunityBoxParticipate opportunity={opportunity} className="max-w-xs min-w-[22ch]" />
+        <Group className="flex flex-col items-start gap-xl">
+          <Text className="h-[fit-content]">
             Each opportunity can have multiple campaigns, with different reward rules. Some reward bigger deposits,
             others longer participation or specific tokens. Check campaigns details to find the best way to maximize
             your rewards!
           </Text>
-          <CampaignLibrary opportunity={opportunity} chain={chain} />
+          <Outlet context={{ opportunity, chain }} />
         </Group>
       </Group>
     </Container>
