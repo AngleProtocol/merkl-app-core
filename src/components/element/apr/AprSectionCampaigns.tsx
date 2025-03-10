@@ -6,7 +6,7 @@ type AprSectionProps = {
   opportunity: Opportunity;
 };
 
-export default function AprSection({ opportunity }: AprSectionProps) {
+export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
   const breakdowns = useMemo(() => {
     return opportunity.aprRecord?.breakdowns.filter(aprBreakdown => aprBreakdown.type !== "PROTOCOL");
   }, [opportunity]);
@@ -17,21 +17,21 @@ export default function AprSection({ opportunity }: AprSectionProps) {
     switch (breakdown?.type) {
       case "CAMPAIGN":
         return (
-          <Text className="flex items-center gap-sm" size="sm">
-            <span>Campaign</span>
-            <Hash format="prefix" copy>
+          <Group className="items-center gap-sm">
+            <Text size="xs">Campaign</Text>
+            <Hash size="xs" format="prefix" copy>
               {breakdown.identifier}
             </Hash>
-          </Text>
+          </Group>
         );
       case "PROTOCOL":
         return (
-          <Text className="flex items-center gap-sm" size="sm">
+          <Group>
             {breakdown.identifier.split(" ")[0]}
-            <Hash format="prefix" copy>
+            <Hash format="prefix" copy size="xs">
               {breakdown.identifier.split(" ")[1]}
             </Hash>
-          </Text>
+          </Group>
         );
       case "TOKEN":
         return breakdown.identifier;
@@ -48,23 +48,32 @@ export default function AprSection({ opportunity }: AprSectionProps) {
 
   return (
     <Group className="flex-col mt-md">
-      <Text bold className="flex items-center gap-xs " size="sm" look="bold">
-        <Icon remix="RiFileList3Line" />
-        APR details
+      <Text bold className="flex items-center gap-xs" size="sm" look="bold">
+        <Icon remix="RiWaterFlashFill" />
+        TVL Allocation
       </Text>
-
       <Divider />
-      <Group className="flex-col">
+      <Group className="flex-col ">
+        <Group className="items-center justify-between gap-xl" size="sm">
+          <Text size="sm" look="soft">
+            Average APR
+          </Text>
+          <Text look="soft" bold>
+            <Value value format="0a%">
+              {opportunity.apr / 100}
+            </Value>
+          </Text>
+        </Group>
         {breakdowns?.map(breakdown => (
-          <Group key={breakdown.id} className="items-center justify-between" size="sm">
-            <Text size="sm" look="bold">
+          <Group key={breakdown.id} className="items-center justify-between gap-xl" size="sm">
+            <Text size="sm" look="soft">
               {getAprName(breakdown)}
             </Text>
-            <PrimitiveTag look="bold" size="sm">
+            <Text look="soft">
               <Value value format="0a%">
                 {breakdown.value / 100}
               </Value>
-            </PrimitiveTag>
+            </Text>
           </Group>
         ))}
       </Group>

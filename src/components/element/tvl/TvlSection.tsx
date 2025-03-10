@@ -30,23 +30,17 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
       case "PROTOCOL":
         return (
           <Group className="items-center">
-            <Text look="bold" size="sm">
-              {breakdown.identifier.split(" ")[0]}
-            </Text>
-            <PrimitiveTag look="soft" size="xs">
-              <Hash format="short" look="bold" copy size="xs">
-                {breakdown.identifier.split(" ")[1]}
-              </Hash>
-            </PrimitiveTag>
+            <Text>{breakdown.identifier.split(" ")[0]}</Text>
+            <Hash format="prefix" copy size="xs">
+              {breakdown.identifier.split(" ")[1]}
+            </Hash>
           </Group>
         );
       default:
         return (
-          <PrimitiveTag look="soft" size="xs">
-            <Hash format="short" look="bold" copy>
-              {breakdown.identifier}
-            </Hash>
-          </PrimitiveTag>
+          <Hash format="prefix" copy>
+            {breakdown.identifier}
+          </Hash>
         );
     }
   };
@@ -62,16 +56,15 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
             style={{
               gridTemplateColumns: "minmax(350px, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
             }}>
-            <Group className="items-center" size="sm">
-              <Icon className="text-main-11" remix="RiForwardEndFill" />
-              <Text size="sm" bold>
-                Forwarder details
-              </Text>
-            </Group>
-            <Text size="sm" className="inline-flex justify-end">
+            <Text bold className="flex items-center gap-xs " size="sm" look="bold">
+              <Icon remix="RiForwardEndFill" />
+              Forwarder details
+            </Text>
+
+            <Text bold size="sm" className="inline-flex justify-end" look="bold">
               APR
             </Text>
-            <Text size="sm" className="inline-flex justify-end">
+            <Text bold size="sm" className="inline-flex justify-end" look="bold">
               TVL
             </Text>
           </Group>
