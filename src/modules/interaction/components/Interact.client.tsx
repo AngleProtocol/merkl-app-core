@@ -190,13 +190,13 @@ export default function Interact({
       <TransactionOverview settings={settings} allowTxSponsoring={canTransactionBeSponsored}>
         {!!amount && !!inputToken && (
           <Text className="flex animate-drop grow flex-nowrap items-center gap-sm" size={6}>
-            <PrimitiveTag size="sm">
+            {/* <PrimitiveTag size="sm">
               <Icon src={inputToken.icon} />
               <Value size="sm" format={merklConfig.decimalFormat.dollar}>
                 {Fmt.toPrice(amount, inputToken)}
               </Value>
-            </PrimitiveTag>
-            <Icon remix="RiArrowRightLine" />
+            </PrimitiveTag> */}
+            {/* <Icon remix="RiArrowRightLine" /> */}
             {providerIcon}
             {transaction && (
               <>

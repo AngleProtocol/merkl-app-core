@@ -18,7 +18,8 @@ export default function OpportunityParticipateModal({
 }: OpportunityParticipateModalProps) {
   return (
     <Modal
-      title={<Title h={3}>SUPPLY</Title>}
+      title={<Title h={3}>{opportunity.name}</Title>}
+      look="soft"
       modal={
         <div>
           <Divider horizontal look="bold" className="mb-xl" />
