@@ -8,8 +8,8 @@ import {
   Box,
   Button,
   type Component,
-  Divider,
   Dropdown,
+  EventBlocker,
   Group,
   Hash,
   Icon,
@@ -31,6 +31,7 @@ import Token from "../../../token/components/element/Token";
 import CampaignTooltipDates from "../CampaignTooltipDates";
 import { CampaignRow } from "../library/CampaignTable";
 import Rule from "../rules/Rule";
+import { useNavigate } from "@remix-run/react";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
@@ -54,48 +55,21 @@ export default function CampaignTableRow({
   const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
 
+  const navigate = useNavigate();
+
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
+
+  const onNavigateToLeaderBoard = useCallback(() => {
+    navigate(`leaderboard?campaignId=${campaign.campaignId}`);
+  }, [campaign.campaignId, navigate]);
 
   const campaignInformation = useMemo(() => {
     const columns = [
       [
         "Total Distributed",
-        <Token
-          key="token"
-          symbol={false}
-          size="md"
-          token={campaign.rewardToken}
-          amount={amount}
-          format="amount_price"
-        />,
+        <Token key="token" size="xs" token={campaign.rewardToken} amount={amount} format="amount_price" />,
       ],
-      [
-        "Dates",
-        <Dropdown key="dates" content={<CampaignTooltipDates campaign={campaign} />}>
-          <Text size="sm" className="flex">
-            {moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY")}
-            <Icon remix="RiArrowRightLine" />
-            {moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY")}
-          </Text>
-        </Dropdown>,
-      ],
-      [
-        "Campaign Creator",
-        <Group key="creator" className="gap-xs">
-          <Hash size="sm" format="short" copy>
-            {campaign.creatorAddress}
-          </Hash>
-          <Button to={`${chain.explorers?.[0]?.url}/address/${campaign.creatorAddress}`} external size="xs" look="soft">
-            <Image className="w-3" alt="Merkl Footer logo" src={EtherScan} />
-          </Button>
-        </Group>,
-      ],
-      [
-        "Merkl Campaign Id",
-        <Hash key="id" size="sm" format="short" copy>
-          {campaign.campaignId}
-        </Hash>,
-      ],
+      ["Reward chain", <Tag key="chain" type="chain" value={distributionChain ?? chain} size="xs" />],
       [
         "Last Snapshot",
         <Tooltip
@@ -103,7 +77,7 @@ export default function CampaignTableRow({
             "Indicates when the campaign has last been processed by the Merkl engine. Once a campaign is processed, its rewards can then be included in the following distribution of the associated chain. Distributions on a chain may easily be delayed, for example by disputers, or by instabilities in Merkl dependencies"
           }
           key="computedUntil">
-          <Text>
+          <Text size="sm" look="tint">
             {campaign?.campaignStatus?.computedUntil ? (
               <Time timestamp={Number(campaign?.campaignStatus?.computedUntil) * 1000} />
             ) : (
@@ -112,19 +86,65 @@ export default function CampaignTableRow({
           </Text>
         </Tooltip>,
       ],
-    ] as const satisfies [string, ReactNode][];
+      [
+        "Dates",
+        <Dropdown key="dates" content={<CampaignTooltipDates campaign={campaign} />}>
+          <Text size="sm" className="flex" look="tint">
+            {moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY")}
+            <Icon remix="RiArrowRightLine" />
+            {moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY")}
+          </Text>
+        </Dropdown>,
+      ],
+      [
+        "Creator address",
+        <Group key="creator" className="gap-xs">
+          <Hash size="sm" format="short" copy look="tint">
+            {campaign.creatorAddress}
+          </Hash>
+          <Button to={`${chain.explorers?.[0]?.url}/address/${campaign.creatorAddress}`} external size="xs" look="soft">
+            <Image className="w-3" alt="Merkl Footer logo" src={EtherScan} />
+          </Button>
+        </Group>,
+      ],
+      [
+        <EventBlocker key="leaderboardLabel">
+          <Text size="sm" className="flex items-center gap-xs" onClick={onNavigateToLeaderBoard}>
+            Leaderboard
+            <Icon remix="RiArrowRightUpLine" />
+          </Text>
+        </EventBlocker>,
+        <Text key="leaderboard" size={"sm"} look="tint">
+          Todo
+        </Text>,
+      ],
+      rules.length > 0
+        ? [
+            <Text key="rules" size="sm">
+              Rules
+            </Text>,
+            <EventBlocker key="rulesLabel">
+              <Group className="justify-between flex-col size-full">
+                <Group>
+                  {rules?.map(rule => (
+                    <Rule size="xs" key={uuidv4()} type={rule.type} value={rule.value} />
+                  ))}
+                </Group>
+              </Group>
+            </EventBlocker>,
+          ]
+        : [undefined, undefined],
+    ] as const satisfies [ReactNode, ReactNode][];
 
     return columns.map(([label, content]) => {
       return (
-        <Group key={label} className="justify-between">
-          <Text size="sm" look="bold">
-            {label}
-          </Text>
+        <Group key={label?.toString()} className="justify-between">
+          <Text size="sm">{label}</Text>
           {content}
         </Group>
       );
     });
-  }, [campaign, amount, chain]);
+  }, [campaign, amount, chain, distributionChain, onNavigateToLeaderBoard, rules]);
 
   const isCampaignLive = useMemo(() => BigInt(campaign.endTimestamp) * 1000n > moment.now(), [campaign]);
 
@@ -134,14 +154,19 @@ export default function CampaignTableRow({
       size={size}
       className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
-      chainColumn={distributionChain && <Tag type="chain" value={distributionChain} />}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
+          <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap">
+            CAMPAIGN #
+            <Hash size="sm" format="prefix" copy bold>
+              {campaign.campaignId}
+            </Hash>
+          </Text>
           <Token
-            size="xl"
+            size="sm"
             token={campaign.rewardToken}
             amount={dailyRewards}
             format="amount_price"
@@ -149,13 +174,13 @@ export default function CampaignTableRow({
           />
           <Icon
             data-state={!isOpen ? "closed" : "opened"}
-            className="transition duration-150 ease-out data-[state=opened]:rotate-180"
+            className="transition duration-150 ease-out data-[state=opened]:rotate-180 border-1 border-accent-10 rounded-full p-1"
             remix={"RiArrowDropDownLine"}
           />
         </Group>
       }
       timeRemainingColumn={
-        <PrimitiveTag look={isCampaignLive ? "bold" : "soft"}>
+        <PrimitiveTag look={isCampaignLive ? "bold" : "soft"} size="xs" coloring={isCampaignLive ? "good" : undefined}>
           {isCampaignLive && <Icon remix="RiFlashlightFill" />}
           {time}
         </PrimitiveTag>
@@ -164,24 +189,11 @@ export default function CampaignTableRow({
         <Space size="md" />
         <Box size="md" className="p-0 bg-main-4 !rounded-md">
           <Group className="flex-nowrap p-lg" size="lg">
-            <Group className="justify-between flex-grow flex-col size-full">
-              <Text size="sm" look="soft">
-                Campaign Information
+            <Group className="justify-between flex-grow flex-col size-full gap-xs">
+              <Text size="sm" look="tint" bold className="mb-md">
+                Campaign Informations
               </Text>
               {campaignInformation}
-            </Group>
-            <Divider look="bold" vertical className="bg-main-6 border-main-6" />
-            <Group className="justify-between flex-col size-full">
-              <Group className="flex justify-between item-center">
-                <Text size="sm" look="soft">
-                  Rules
-                </Text>
-              </Group>
-              <Group>
-                {rules?.map(rule => (
-                  <Rule size="md" key={uuidv4()} type={rule.type} value={rule.value} />
-                ))}
-              </Group>
             </Group>
           </Group>
         </Box>
