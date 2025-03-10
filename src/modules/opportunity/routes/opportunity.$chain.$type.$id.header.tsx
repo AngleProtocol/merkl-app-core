@@ -20,7 +20,7 @@ import { useClipboard } from "dappkit";
 import React, { useCallback, useMemo } from "react";
 
 export async function loader({
-  context: { backend },
+  context: { backend, routes },
   params: { id, type, chain: chainId },
   request,
 }: LoaderFunctionArgs) {
@@ -38,16 +38,15 @@ export async function loader({
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
+    backend,
+    routes,
   });
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname, "opportunity", data?.opportunity);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export type OutletContextOpportunity = {

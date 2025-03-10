@@ -1,30 +1,20 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
-import type { MerklBackend } from "@core/config/backend";
-import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
-export async function loader({ context, request }: LoaderFunctionArgs) {
-  return withUrl(request, { context });
+export async function loader({ context: {backend, routes}, request }: LoaderFunctionArgs) {
+  return withUrl(request, { backend, routes });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  const {
-    url,
-    context: { backend, routes },
-  } = data;
-
-  return MetadataService({ url, backend: backend as MerklBackend, routes, location }).wrap();
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

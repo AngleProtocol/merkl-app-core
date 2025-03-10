@@ -23,20 +23,23 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
   return { chain, token };
 };
 
-export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend, routes },
+  params: { address, chain: chainName },
+  request,
+}: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
   return withUrl(request, {
     token,
     chain,
+    backend,
+    routes,
   });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

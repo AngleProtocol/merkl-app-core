@@ -3,7 +3,6 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
 import { withUrl } from "../../../utils/url";
-import type { MerklBackend } from "@core/config/backend";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
@@ -11,11 +10,7 @@ export async function loader({ context: { backend, routes }, request }: LoaderFu
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  const { url, routes, backend } = data;
-  return MetadataService({ url, routes, backend: backend as MerklBackend, location }).wrap();
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

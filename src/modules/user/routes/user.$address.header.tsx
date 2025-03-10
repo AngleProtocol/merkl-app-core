@@ -37,14 +37,7 @@ export async function loader({ context: { backend, routes }, params: { address }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  const { url, backend, routes } = data;
-
-  return MetadataService({ url, backend: backend as MerklBackend, routes, location }).wrap("user", {
-    address: data?.address,
-  });
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export type OutletContextRewards = {

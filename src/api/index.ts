@@ -1,5 +1,6 @@
 import type { MerklBackend } from "@core/config/backend";
-import { MerklRoutes } from "@core/config/routes";
+import type { MerklRoutes } from "@core/config/routes";
+import "@remix-run/server-runtime";
 import { MerklApi } from "@merkl/api";
 
 const api = MerklApi(

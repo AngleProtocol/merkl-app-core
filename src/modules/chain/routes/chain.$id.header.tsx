@@ -8,7 +8,7 @@ import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
-export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend, routes }, params: { id }, request }: LoaderFunctionArgs) {
   const chain = await ChainService({ api }).get({ name: id });
   const opportunityService = OpportunityService({ api, request, backend });
 
@@ -26,16 +26,15 @@ export async function loader({ context: { backend }, params: { id }, request }: 
     count,
     dailyRewards,
     maxApr: opportunitiesByApr?.[0]?.apr,
+    backend,
+    routes,
   });
 }
 
 export const clientLoader = Cache.wrap("chain", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname, "chain", data?.chain);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

@@ -18,11 +18,7 @@ export async function loader({ context: { backend, routes }, request }: LoaderFu
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  const { url, backend, routes } = data;
-  return MetadataService({ url, location, backend: backend as MerklBackend, routes }).wrap();
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

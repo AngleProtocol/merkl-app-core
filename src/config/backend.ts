@@ -3,7 +3,7 @@ import type { Chain } from "viem";
 export interface MerklBackend {
   appName: string;
   tags?: string[];
-  chains?: Chain[];
+  chains?: Pick<Chain, "id">[];
   alwaysShowTestTokens?: boolean;
   sortedBy: "apr" | "rewards";
   featured?: {

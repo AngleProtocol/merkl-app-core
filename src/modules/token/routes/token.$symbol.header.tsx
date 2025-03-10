@@ -1,5 +1,4 @@
 import { api } from "@core/api";
-import config from "@core/config";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
@@ -9,7 +8,6 @@ import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
-import type { MerklBackend } from "@core/config/backend";
 
 export async function loader({ context: { backend, routes }, params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService({ backend, request, api }).getSymbol(symbol);
@@ -39,15 +37,7 @@ export async function loader({ context: { backend, routes }, params: { symbol },
 export const clientLoader = Cache.wrap("token", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  const symbol = data?.tokens?.[0]?.symbol;
-
-  if (!symbol) return [{ title: `${config?.appName} | Token` }];
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  const { url, routes, backend } = data;
-
-  return MetadataService({ url, location, routes, backend: backend as MerklBackend }).wrap("token", data?.tokens?.[0]);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

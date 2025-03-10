@@ -7,15 +7,12 @@ import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request, {});
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
+  return withUrl(request, { backend, routes });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {
