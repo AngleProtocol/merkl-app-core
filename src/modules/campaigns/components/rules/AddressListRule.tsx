@@ -28,7 +28,9 @@ export default function AddressListRule({
       }>
       <PrimitiveTag look="soft" {...props}>
         {label}
-        <Value format="0">{addresses?.length}</Value>
+        <Value format="0" {...props}>
+          {addresses?.length}
+        </Value>
       </PrimitiveTag>
     </Dropdown>
   );
