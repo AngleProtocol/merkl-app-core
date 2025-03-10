@@ -1,5 +1,5 @@
+import Brand from "@core/components/layout/Brand";
 import { type Themes, createColoring } from "dappkit";
-import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
@@ -48,11 +48,31 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   modes: ["dark", "light"],
   defaultTheme: "merkl",
   navigation: {
-<<<<<<< HEAD
+    brand: Brand,
+    header: {
+      dashboard: {
+        icon: { remix: "RiDashboardFill" },
+        link: "/users/:address",
+        flags: { replaceWithWallet: ":address" },
+        name: "Claims",
+      },
+      opportunities: {
+        icon: { remix: "RiPlanetFill" },
+        link: "/",
+        name: "Opportunities",
+      },
+      faq: {
+        icon: { remix: "RiPlanetFill" },
+        link: "/faq",
+        name: "FAQ",
+      },
+      referral: {
+        icon: { remix: "RiPlanetFill" },
+        link: "/referral",
+        name: "Referral",
+      },
+    },
     menu: {
-=======
-    routes: {
->>>>>>> ce2988a (update: layermenu & header)
       dashboard: {
         icon: { remix: "RiDashboardFill" },
         link: "/users/",
@@ -95,25 +115,17 @@ const defaultMerklConfig: MerklConfig<Themes> = {
           },
         },
       },
-<<<<<<< HEAD
-=======
     },
   },
-  metaDatasGlobal: url => [
-    {
-      name: "twitter:site",
-      content: "@Merkl",
->>>>>>> ce2988a (update: layermenu & header)
-    },
+  fonts: {
+    italic: false,
   },
-  fonts: { italic: false },
   opportunityNavigationMode: "supply",
   tokenSymbolPriority: ["ZK", "USDC", "USDC.e", "ETH", "WETH", "WBTC", "wstETH", "USDT", "USDe", "weETH", "DAI"],
   rewardsNavigationMode: "chain",
   opportunityLibrary: {
     defaultView: "cells",
     // views: ["table"], // If you want only one view, this is where you can specify it.
-
     excludeFilters: ["protocol", "tvl"],
   },
   opportunityPercentage: true,
@@ -135,114 +147,56 @@ const defaultMerklConfig: MerklConfig<Themes> = {
   },
   chains: [],
   opportunity: {
-    featured: {
-      enabled: false,
-      length: 6,
-    },
+    enabled: false,
+    length: 6,
     library: {
       sortedBy: "rewards",
       dailyRewardsTokenAddress: "",
-      columns: {
-        action: {
-          enabled: false,
-        },
-      },
+      columns: { enabled: false },
+      minWalletBalance: 100,
     },
-    minWalletBalance: 100,
-  },
-  bridge: {
-    helperLink: "",
-  },
-  dashboard: {
-    liquidityTab: {
+    bridge: {
+      helperLink: "",
+    },
+    dashboard: {
       enabled: false,
+      reinvestTokenAddress: "",
     },
-    reinvestTokenAddress: "",
-  },
-  tagsDetails: {
-    token: {
-      visitOpportunities: {
-        enabled: true,
+    tagsDetails: {
+      enabled: true,
+    },
+    decimalFormat: {
+      dollar: "$0,0.##a",
+      apr: "0.##%a",
+    },
+    themes: {
+      merkl: {
+        base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
+        info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      },
+      ignite: {
+        base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
+        info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       },
     },
-  },
-  decimalFormat: {
-    dollar: "$0,0.##a",
-    apr: "0.##%a",
-  },
-  themes: {
-    merkl: {
-      base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+    sizing: {
+      xs: 14,
+      sm: 16,
+      md: 18,
+      lg: 20,
+      xl: 24,
     },
-    ignite: {
-      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    },
-  },
-  sizing: {
-    width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
   },
   alwaysShowTestTokens: true,
   showCopyOpportunityIdToClipboard: true,
-  routes: {
-    home: {
-      icon: "RiHomeFill",
-      route: "/",
-      enabled: true,
-      inHeader: false,
-      key: uuidv4(),
-    },
-    opportunities: {
-      icon: "RiPlanetFill",
-      route: "/opportunities",
-      enabled: true,
-      inHeader: true,
-      key: uuidv4(),
-    },
-    protocols: {
-      icon: "RiVipCrown2Fill",
-      route: "/protocols",
-      enabled: true,
-      inHeader: true,
-      key: uuidv4(),
-    },
-    bridge: {
-      icon: "RiCompassesLine",
-      route: "/bridge",
-      enabled: true,
-      inHeader: true,
-      key: uuidv4(),
-    },
-    docs: {
-      icon: "RiFile4Fill",
-      route: "https://docs.merkl.xyz/",
-      external: true,
-      enabled: true,
-      inHeader: true,
-      key: uuidv4(),
-    },
-    faq: {
-      icon: "RiQuestionFill",
-      route: "/faq",
-      enabled: true,
-      inHeader: true,
-      key: uuidv4(),
-    },
-  },
-  header: {
-    searchbar: {
-      enabled: true,
-    },
-  },
   socials: {
     discord: "",
     telegram: "https://t.me/+2T0RNabX2ANkMzAx",

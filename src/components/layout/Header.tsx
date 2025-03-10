@@ -1,17 +1,6 @@
-<<<<<<< HEAD
 import type { NavigationMenuRoute } from "@core/config/type";
 import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
-=======
-import type { routesType } from "@core/config/type";
-import { useNavigate } from "@remix-run/react";
-import {
-  Button,
-  Container, Group,
-  Icon, Select, WalletButton,
-  mergeClass, useWalletContext
-} from "dappkit";
->>>>>>> ce2988a (update: layermenu & header)
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import merklConfig from "../../config";
@@ -33,13 +22,8 @@ const container = {
 
 export default function Header() {
   const { chainId, address: user, chains, switchChain } = useWalletContext();
-<<<<<<< HEAD
   const headerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-=======
-  const [open, setOpen] = useState<boolean>(false);
-  const headerRef = useRef<HTMLDivElement>(null);
->>>>>>> ce2988a (update: layermenu & header)
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -50,7 +34,6 @@ export default function Header() {
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-<<<<<<< HEAD
     const updateHeaderHeight = () => {
       if (headerRef.current) {
         // Use requestAnimationFrame to ensure we get the final layout
@@ -63,26 +46,6 @@ export default function Header() {
       }
     };
 
-=======
-  const navigate = useNavigate();
-  const [height, setHeight] = useState(0)
-
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        // Use requestAnimationFrame to ensure we get the final layout
-        requestAnimationFrame(() => {
-          const height = headerRef.current?.offsetHeight;
-          if (height) {
-            setHeight(height)
-          }
-        });
-      }
-    };
-
->>>>>>> ce2988a (update: layermenu & header)
     // Initial measurement with a small delay to ensure everything is loaded
     const timeoutId = setTimeout(updateHeaderHeight, 100);
 
@@ -112,7 +75,6 @@ export default function Header() {
   }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
 
   return (
-<<<<<<< HEAD
     <div ref={headerRef} style={{ minHeight: height }}>
       <motion.header
         variants={container}
@@ -127,24 +89,6 @@ export default function Header() {
                   {Object.entries(merklConfig.navigation.header).map(([key, route]) => {
                     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> =>
                       "link" in route;
-=======
-    <div ref={headerRef} style={{minHeight: height}}>
-
-    <motion.header
-      
-      variants={container}
-      whileInView="visible"
-      className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
-      <Container className="py-xl">
-        <Group className="justify-between items-center">
-          <BrandNavigationMenu routes={merklConfig.navigation.routes} footer={<SwitchMode/>}/>
-          <div>
-            <Group className="items-center" size="xl">
-              <Group className="hidden lg:flex items-center" size="xl">
-                {Object.entries(routes)
-                  .filter(([key]) => !["home", "docs"].includes(key))
-                  .map(([key, route]) => {
->>>>>>> ce2988a (update: layermenu & header)
                     return (
                       <Group
                         key={`${key}-link`}
@@ -195,16 +139,9 @@ export default function Header() {
                 </Group>
               </Group>
             </Group>
-<<<<<<< HEAD
           </Group>
         </Container>
       </motion.header>
-=======
-          </div>
-        </Group>
-      </Container>
-    </motion.header>
->>>>>>> ce2988a (update: layermenu & header)
     </div>
   );
 }

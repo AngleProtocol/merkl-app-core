@@ -1,11 +1,7 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
-<<<<<<< HEAD
 import type { IconProps, WalletOptions } from "dappkit";
-=======
-import type { WalletOptions, IconProps } from "dappkit";
->>>>>>> ce2988a (update: layermenu & header)
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type {
@@ -15,11 +11,7 @@ import type {
   OpportunityView,
 } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
-<<<<<<< HEAD
 import type { MerklRoutes } from "./routes";
-=======
-import type { ReactNode } from "react";
->>>>>>> ce2988a (update: layermenu & header)
 
 export type routesType = {
   [key: string]: {
@@ -38,13 +30,9 @@ export type routesType = {
 export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
   icon: IconProps;
   name: string;
-<<<<<<< HEAD
 } & (L extends "link"
   ? { link: string; flags?: { replaceWithWallet: string }; external?: boolean; disabled?: boolean }
   : { routes: NavigationMenuRoutes });
-=======
-} & (L extends "link" ? { link: string; external?: boolean } : { routes: NavigationMenuRoutes });
->>>>>>> ce2988a (update: layermenu & header)
 
 /**
  * Collection of routes
@@ -79,7 +67,6 @@ export type MerklConfig<T extends Themes> = {
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
-<<<<<<< HEAD
 
   routes: MerklRoutes;
 
@@ -90,12 +77,6 @@ export type MerklConfig<T extends Themes> = {
     brand?: () => JSX.Element;
     header: NavigationMenuRoutes;
     menu: NavigationMenuRoutes;
-=======
-  defaultTheme: keyof T;
-  navigation: {
-    brand?: () => JSX.Element;
-    routes: NavigationMenuRoutes;
->>>>>>> ce2988a (update: layermenu & header)
   };
   /**
    * Toggle supply modal allowing users to deposit/withdraw directly on opportunities

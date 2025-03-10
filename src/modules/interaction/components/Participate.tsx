@@ -1,13 +1,10 @@
-import { I18n } from "@core/I18n";
 import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
-import { useLocation } from "@remix-run/react";
-import { Button, Group, Icon, Input, PrimitiveTag, Space, Text, Value } from "dappkit";
+import { Button, EventBlocker, Group, Icon, Input, PrimitiveTag, Space, Text, Value } from "dappkit";
 import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
@@ -42,9 +39,6 @@ export default function Participate({
     loading,
   } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
 
-  const { link } = useOpportunityData(opportunity);
-  const location = useLocation();
-  const isOnOpportunityPage = location.pathname.includes("/opportunities/");
   const [success, setSuccess] = useState(false);
 
   const { connected } = useWalletContext();
@@ -74,10 +68,11 @@ export default function Participate({
     if (hideInteractor || loading || !targets?.length) return;
     return (
       <Group className="mt-md !gap-0">
+        <Space size="md" />
         <Input.BigInt
           className="w-full gap-xs"
           inputClassName="font-title font-bold italic text-[clamp(38px,0.667vw+1.125rem,46px)] !leading-none"
-          look="bold"
+          look="base"
           size="lg"
           state={[amount, a => setAmount(a)]}
           base={inputToken?.decimals ?? 18}
@@ -92,18 +87,15 @@ export default function Participate({
           }
           header={
             <Group className="justify-between w-full">
-              <Text size={5}>{mode === "deposit" ? "Supply" : "Withdraw"}</Text>
+              <Text size={"md"}>{mode === "deposit" ? "Deposit" : "Withdraw"}</Text>
               {inputToken && (
-                <Button
-                  onClick={() => {
-                    setAmount(BigInt(inputToken?.balance ?? "0"));
-                  }}
-                  look="soft"
-                  size="xs">
+                <Group>
                   <Group className="items-center">
                     {!!inputToken && (
-                      <PrimitiveTag size="sm">
+                      <>
+                        Balance:{" "}
                         <Value
+                          value
                           fallback={v => (v as string).includes("0.000") && "< 0.001"}
                           className="text-right items-center flex font-bold"
                           size="sm"
@@ -112,22 +104,29 @@ export default function Participate({
                           {Fmt.toNumber(inputToken?.balance, inputToken.decimals).toString()}
                         </Value>{" "}
                         {inputToken?.symbol}
-                      </PrimitiveTag>
+                      </>
                     )}
-                    {!!BigInt(inputToken?.balance ?? "0") && (
-                      <Value className="text-right" look={"soft"} size="sm" format={merklConfig.decimalFormat.dollar}>
-                        {Fmt.toPrice(inputToken?.balance, inputToken)}
-                      </Value>
-                    )}
-                    Max
+                    <Button
+                      look="tint"
+                      size="xs"
+                      onClick={() => {
+                        setAmount(BigInt(inputToken?.balance ?? "0"));
+                      }}>
+                      Max
+                    </Button>
                   </Group>
-                </Button>
+                </Group>
               )}
             </Group>
           }
-          suffix={connected && <TokenSelect balances state={[tokenAddress, setTokenAddress]} tokens={balance ?? []} />}
+          suffix={
+            connected && (
+              <TokenSelect look="tint" balances state={[tokenAddress, setTokenAddress]} tokens={balance ?? []} />
+            )
+          }
           placeholder="0.0"
         />
+        <Space size="lg" />
         <Suspense>
           <Interact
             onSuccess={() => {
@@ -143,32 +142,35 @@ export default function Participate({
             settings={
               <Group className="justify-between w-full items-center">
                 <Text>Slippage</Text>
-                <Input.BigInt
-                  base={2}
-                  state={[
-                    slippage,
-                    v => {
-                      if (!!v) setSlippage(v);
-                    },
-                  ]}
-                  size="sm"
-                  className="max-w-[20ch] !rounded-sm+sm"
-                  prefix={
-                    <Group size="xs">
-                      {[50n, 100n, 200n].map(_slippage => (
-                        <PrimitiveTag
-                          key={_slippage}
-                          onClick={() => setSlippage(_slippage)}
-                          look={_slippage === slippage ? "hype" : "base"}
-                          size="xs">
-                          <Value value format="0.#%">
-                            {Fmt.toNumber(_slippage, 4)}
-                          </Value>
-                        </PrimitiveTag>
-                      ))}
-                    </Group>
-                  }
-                />
+                <EventBlocker>
+                  <Input.BigInt
+                    base={2}
+                    state={[
+                      slippage,
+                      v => {
+                        if (!!v) setSlippage(v);
+                      },
+                    ]}
+                    size="sm"
+                    look="tint"
+                    className="max-w-[20ch] !rounded-sm+sm"
+                    prefix={
+                      <Group size="xs">
+                        {[50n, 100n, 200n].map(_slippage => (
+                          <PrimitiveTag
+                            key={_slippage}
+                            onClick={() => setSlippage(_slippage)}
+                            look={_slippage === slippage ? "hype" : "base"}
+                            size="xs">
+                            <Value value format="0.#%">
+                              {Fmt.toNumber(_slippage, 4)}
+                            </Value>
+                          </PrimitiveTag>
+                        ))}
+                      </Group>
+                    }
+                  />
+                </EventBlocker>
               </Group>
             }
           />
@@ -203,26 +205,6 @@ export default function Participate({
         </>
       )}
 
-      {displayLinks && !isOnOpportunityPage && (
-        <>
-          <Space />
-          <Button to={link} className="mt-sm" look="soft" size="sm">
-            Opportunity overview <Icon remix="RiArrowRightLine" />
-          </Button>
-        </>
-      )}
-
-      {!loading && !!interactor && (
-        <>
-          <Space />
-          <Box look="soft" className="gap-xs bg-main-5">
-            <Group className="flex flex-nowrap">
-              <Icon coloring={"warn"} remix="RiErrorWarningFill" className="text-accent-11 flex-shrink-0" />
-              <Text size="sm">{I18n.trad.get.pages.home.depositInformation}</Text>
-            </Group>
-          </Box>
-        </>
-      )}
       {loading && !!merklConfig.deposit && (
         <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
@@ -245,6 +227,16 @@ export default function Participate({
           </Text>
         </Box>
       </Collapsible>
+      {!loading && !!interactor && (
+        <>
+          <Space />
+          <Text size="xs" look="bold" bold>
+            Deposit a single token— It will be automatically swapped and split 50/50 in this pool to provide liquidity
+            in a wide-range position. Check price impact before confirming. For custom settings, visit the protocol’s
+            app below.
+          </Text>
+        </>
+      )}
     </>
   );
 }
