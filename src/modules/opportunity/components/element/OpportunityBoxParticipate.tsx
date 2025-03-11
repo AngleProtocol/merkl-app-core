@@ -2,7 +2,7 @@ import Tag from "@core/components/element/Tag";
 import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import type { Opportunity } from "@merkl/api";
-import { Button, Dropdown, Group, Icon, Text, Value } from "packages/dappkit/src";
+import { Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import React, { useCallback, useMemo } from "react";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
@@ -38,22 +38,24 @@ export default function OpportunityBoxParticipate(props: IProps) {
       <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
       <Group
         className={`w-full !gap-0 h-[fit-content] border-1 rounded-lg border-accent-5 overflow-hidden ${className}`}>
-        <Group className="justify-between flex-nowrap h-[fit-content] bg-main-2 p-xl w-full">
-          <Text>{"Opportunity".toUpperCase()}</Text>
-          <Tag type="status" value={opportunity.status} size="xs" />
+        <Group className="justify-between flex-nowrap h-[fit-content] bg-main-2 p-xl w-full items-center">
+          <Title h={5} look="hype" className="!text-sm">
+            OPPORTUNITY
+          </Title>
+          <Tag type="status" value={opportunity.status} size="md" />
         </Group>
 
-        <Group className="flex-col bg-accent-4 p-xl w-full justify-between" size="xs">
-          <Text bold className="flex items-center gap-sm w-full">
+        <Group className="flex-col bg-main-4 p-xl w-full justify-between" size="sm">
+          <Text bold className="flex items-center gap-sm w-full" look="tint">
             <Icon remix="RiStarFill" className="fill-accent-10" />
-            DAILY REWARDS
+            Daily Rewards
           </Text>
           <Group className="items-center justify-between">
-            <Text bold look="tint" size={"xl"}>
+            <Title look="hype" h={3}>
               <Value value format={merklConfig.decimalFormat.dollar}>
                 {opportunity.dailyRewards}
               </Value>
-            </Text>
+            </Title>
             {!!isSupplyButtonVisible && (
               <Button className="inline-flex" look="hype" size="md" onClick={onSupply}>
                 Supply
@@ -65,7 +67,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
 
         <Group className="bg-main-2 p-xl h-[fit-content] w-full justify-between flex-col gap-xl">
           <Group className="justify-between items-center">
-            <Text> DETAILS </Text>
+            <Text size={"sm"}> Details </Text>
             <Group className="gap-sm">
               <Tag type="chain" value={opportunity.chain} size="xs" />
               <Tag type="protocol" value={opportunity.protocol} size="xs" />
@@ -89,7 +91,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
             <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="xs">
               {opportunity.type === "CLAMM" ? (
                 <Dropdown onHover content={<TvlRowAllocation opportunity={opportunity} />}>
-                  <Text bold className="flex items-center gap-sm ">
+                  <Text bold className="flex items-center gap-sm " look="soft">
                     TVL
                     <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
                   </Text>
