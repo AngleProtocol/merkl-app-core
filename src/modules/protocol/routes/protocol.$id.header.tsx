@@ -1,6 +1,5 @@
 import { api } from "@core/api";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
-import { MerklBackend } from "@core/config/backend";
 import { Cache } from "@core/modules/cache/cache.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
@@ -69,4 +68,3 @@ export default function Index() {
     </Hero>
   );
 }
-

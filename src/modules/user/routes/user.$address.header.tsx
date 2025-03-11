@@ -18,7 +18,6 @@ import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
 import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
-import type { MerklBackend } from "@core/config/backend";
 
 export async function loader({ context: { backend, routes }, params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
@@ -48,7 +47,7 @@ export type OutletContextRewards = {
 
 /**
  * @todo reduce Index size, either with hooks or by calling other components
- * @returns 
+ * @returns
  */
 export default function Index() {
   const { rewards: raw, address, token: rawToken, isBlacklisted } = useLoaderData<typeof loader>();

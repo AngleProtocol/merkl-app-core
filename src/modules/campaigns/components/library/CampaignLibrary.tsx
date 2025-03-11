@@ -1,12 +1,12 @@
+import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
+import { useOutletContext } from "@remix-run/react";
 import { Box, Button, Group, Icon, OverrideTheme, Text, Title } from "dappkit";
 import moment from "moment";
+import { useMemo, useState } from "react";
 import CampaignTableRow from "../element/CampaignTableRow";
 import { CampaignTable } from "./CampaignTable";
-import { useOutletContext } from "@remix-run/react";
-import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
-import { useMemo, useState } from "react";
 
 export type CampaignLibraryProps = {
   opportunity: Opportunity & { campaigns: Campaign[] };

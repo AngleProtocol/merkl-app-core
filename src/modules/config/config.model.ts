@@ -1,6 +1,5 @@
 export type MerklConfigs = {
-    "backend": MerklBackend;
-    "routes": MerklRoutes;
-    "brand": MerklBrand;
-}
-
+  backend: MerklBackend;
+  routes: MerklRoutes;
+  brand: MerklBrand;
+};

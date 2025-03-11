@@ -33,19 +33,21 @@ export const RewardService = defineModule<{ api: Api; request: Request; backend:
       return query;
     };
 
-    const getForUser = inject(["api", "backend", "request"]).inFunction(({ api, backend, request }, address: string) => {
-      const url = new URL(request.url);
+    const getForUser = inject(["api", "backend", "request"]).inFunction(
+      ({ api, backend, request }, address: string) => {
+        const url = new URL(request.url);
 
-      const chainIds = backend.chains?.map(({ id }) => id).join(",");
+        const chainIds = backend.chains?.map(({ id }) => id).join(",");
 
-      // biome-ignore lint/suspicious/noExplicitAny: TODO
-      const query: Record<string, any> = {
-        test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
-      };
-      if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
-      if (chainIds) query.chainIds = chainIds;
-      return fetchApi(() => api.v4.users({ address }).rewards.breakdowns.get({ query }));
-    });
+        // biome-ignore lint/suspicious/noExplicitAny: TODO
+        const query: Record<string, any> = {
+          test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+        };
+        if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
+        if (chainIds) query.chainIds = chainIds;
+        return fetchApi(() => api.v4.users({ address }).rewards.breakdowns.get({ query }));
+      },
+    );
 
     const getTokenLeaderboard = inject(["api", "request"]).inFunction(
       async ({ api, request }, overrides?: ApiQuery<Api["v4"]["rewards"]["token"]["index"]["get"]>) => {

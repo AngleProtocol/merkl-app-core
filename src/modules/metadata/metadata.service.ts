@@ -1,6 +1,6 @@
-import { defineModule } from "@merkl/conduit";
 import type { MerklBackend } from "@core/config/backend";
 import type { MerklRoute, MerklRouteType, MerklRoutes } from "@core/config/routes";
+import { defineModule } from "@merkl/conduit";
 import type { MetaDescriptor } from "@remix-run/node";
 import type { Location } from "@remix-run/react";
 
@@ -177,6 +177,6 @@ export const MetadataService = defineModule<{
     find,
     wrapInPage,
     wrap,
-    fromRoute
+    fromRoute,
   };
 });

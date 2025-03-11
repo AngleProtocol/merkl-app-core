@@ -10,14 +10,13 @@ export async function loader({ context: { backend, routes }, request }: LoaderFu
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-
   console.log(data, error, location);
-  
+
   return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {
-  const {url} = useLoaderData<typeof loader>();
+  const { url } = useLoaderData<typeof loader>();
   const metadata = useMetadata(url);
 
   return (

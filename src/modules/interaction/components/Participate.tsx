@@ -1,5 +1,6 @@
 import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
 import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
@@ -10,7 +11,6 @@ import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Interact from "./Interact.client";
-import { useMerklConfig } from "@core/modules/config/config.context";
 
 export type ParticipateProps = {
   opportunity: Opportunity;

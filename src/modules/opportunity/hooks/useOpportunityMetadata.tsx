@@ -3,6 +3,7 @@ import Tag from "@core/components/element/Tag";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
+import { Link } from "@remix-run/react";
 import {
   type Component,
   Group,
@@ -16,7 +17,6 @@ import {
 } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Link } from "@remix-run/react";
 
 const metadata = [
   "name",

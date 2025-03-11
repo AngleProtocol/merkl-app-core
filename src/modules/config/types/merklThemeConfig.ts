@@ -1,4 +1,4 @@
-import type { sizeScale, Themes } from "dappkit";
+import type { Themes, sizeScale } from "dappkit";
 
 /**
  * Configuration for dappkit

@@ -1,13 +1,13 @@
 import Tag from "@core/components/element/Tag";
+import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
+import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import type { Opportunity } from "@merkl/api";
 import { Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
-import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import React, { useCallback, useMemo } from "react";
+import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
-import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
-import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
 
 type IProps = {
   opportunity: Opportunity;

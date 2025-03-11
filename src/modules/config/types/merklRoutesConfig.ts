@@ -1,7 +1,5 @@
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
-import type { DefineRouteFunction } from "@remix-run/dev/dist/config/routes";
 import type { MetaDescriptor } from "@remix-run/node";
-import type { NavigationMenuRoute } from "./type";
 import type { MerklBackend } from "./backend";
 
 /**

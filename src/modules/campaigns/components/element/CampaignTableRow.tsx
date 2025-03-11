@@ -4,6 +4,7 @@ import useCampaignMetadata from "@core/modules/campaigns/hooks/useCampaignMetada
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
+import { useNavigate } from "@remix-run/react";
 import {
   Box,
   Button,
@@ -31,7 +32,6 @@ import Token from "../../../token/components/element/Token";
 import CampaignTooltipDates from "../CampaignTooltipDates";
 import { CampaignRow } from "../library/CampaignTable";
 import Rule from "../rules/Rule";
-import { useNavigate } from "@remix-run/react";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
