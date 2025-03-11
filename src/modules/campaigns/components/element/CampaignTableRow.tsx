@@ -152,21 +152,21 @@ export default function CampaignTableRow({
     <CampaignRow
       {...props}
       size={size}
-      className={mergeClass("cursor-pointer py-4", className)}
+      className={mergeClass("cursor-pointer py-4 bg-main-2", className)}
       onClick={toggleIsOpen}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
-          <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap">
+          <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
             CAMPAIGN #
-            <Hash size="sm" format="prefix" copy bold>
+            <Hash size="md" format="prefix" copy bold look="tint">
               {campaign.campaignId}
             </Hash>
           </Text>
           <Token
-            size="sm"
+            size="md"
             token={campaign.rewardToken}
             amount={dailyRewards}
             format="amount_price"

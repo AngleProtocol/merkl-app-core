@@ -44,7 +44,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
       className="w-full"
       hideLabels={true}
       header={
-        <Box className="bg-accent-2">
+        <Box className="bg-main-3">
           <Group className="justify-between items-center w-full">
             <OverrideTheme coloring={"good"}>
               <Title look="soft" h={5}>

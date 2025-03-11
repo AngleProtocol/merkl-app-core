@@ -161,7 +161,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     merkl: {
       base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#41D5BB", "#8FF2E1", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
