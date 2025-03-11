@@ -182,6 +182,7 @@ export type MerklConfig<T extends Themes> = {
       sortedBy: OpportunitySortedBy;
       dailyRewardsTokenAddress: string;
       overrideDisplay?: OpportuntyLibraryOverride<"table">;
+      overrideCell?: OpportuntyLibraryOverride<"cell">;
       columns: {
         action: {
           enabled: boolean;

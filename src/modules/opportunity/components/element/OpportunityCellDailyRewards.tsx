@@ -2,15 +2,15 @@ import type { Opportunity } from "@merkl/api";
 import { type Component, Group, Text } from "packages/dappkit/src";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 
-export type OpportunityTableDailyRewardsProps = {
+export type OpportunityCellDailyRewardsProps = {
   opportunity: Opportunity;
   format?: string;
 };
 
-export default function OpportunityTableDailyRewards({
+export default function OpportunityCellDailyRewards({
   opportunity,
   size: _,
-}: Component<OpportunityTableDailyRewardsProps>) {
+}: Component<OpportunityCellDailyRewardsProps>) {
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
   return (
