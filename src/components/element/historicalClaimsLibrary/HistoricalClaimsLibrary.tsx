@@ -1,15 +1,15 @@
+import type { Api } from "@core/api/types";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import useChains from "@core/modules/chain/hooks/useChains";
 import { useSearchParams } from "@remix-run/react";
 import { Box, Group, Icon, Select, Space, Text, Title, useWalletContext } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
-import type { ClaimsService } from "../../../modules/claim/claim.service";
 import HistoricalClaimsTableRow from "./HistoricalClaimsRow";
 import { HistoricalClaimsTable } from "./HistoricalClaimsTable";
 
 export type HistoricalClaimsLibraryProps = {
-  claims: Awaited<ReturnType<typeof ClaimsService.getForUser>>;
+  claims: NonNullable<Awaited<ReturnType<ReturnType<Api["v4"]["claims"]>["get"]>>["data"]>;
 };
 
 export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryProps) {

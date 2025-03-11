@@ -1,9 +1,9 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
 import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
 import { type Component, type ListProps, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
-import merklConfig from "../../../config";
 import Token from "../../../modules/token/components/element/Token";
 import { PositionRow } from "./PositionTable";
 
@@ -14,6 +14,7 @@ export type PositionRowProps = Component<{
 
 // Commented code can be implemented when we get breakdowns positions for CLAMM (subPositions)
 export default function PositionTableRow({ row, className, ...props }: PositionRowProps) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   // const [_open, setOpen] = useState(false);
   // const subPositions = useMemo(() => {
   //   return <SubPositionTableRow key={crypto.randomUUID()} row={row} />;
@@ -65,7 +66,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
                   className="text-right"
                   look={"soft"}
                   size={sizeScale[Math.max(sizeScale.indexOf("md") - 1, 0)]}
-                  format={merklConfig.decimalFormat.dollar}>
+                  format={dollarFormat}>
                   {price0 + price1}
                 </Value>
               </PrimitiveTag>
@@ -86,7 +87,7 @@ export default function PositionTableRow({ row, className, ...props }: PositionR
         );
     }
     // biome-ignore lint/correctness/useExhaustiveDependencies: passing {...props} is a bad habit -> props change on every render
-  }, [row, className, tokenAmount0, price0, price1, props]);
+  }, [row, dollarFormat, className, tokenAmount0, price0, price1, props]);
 
   return renderRowByCampaignType;
 }

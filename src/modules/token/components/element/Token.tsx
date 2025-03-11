@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import TokenTooltip from "@core/modules/token/components/TokenTooltip";
 import type { Chain, Token as TokenType } from "@merkl/api";
 import {
@@ -41,6 +41,7 @@ export default function Token({
 }: TokenProps) {
   const amountFormatted = amount ? formatUnits(amount, token.decimals) : "0";
   const amountUSD = !amount ? 0 : (token.price ?? 0) * Number.parseFloat(amountFormatted ?? "0");
+  const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const display = useMemo(() => {
     switch (format) {
@@ -59,7 +60,7 @@ export default function Token({
               </Value>
               {symbol && <span>{token?.symbol}</span>}
             </PrimitiveTag>
-            <Value className="text-right" look={"soft"} size={size} format={merklConfig.decimalFormat.dollar}>
+            <Value className="text-right" look={"soft"} size={size} format={decimalFormat}>
               {amountUSD}
             </Value>
           </Fragment>
@@ -87,7 +88,7 @@ export default function Token({
                     className="text-right"
                     look={"soft"}
                     size={sizeScale[Math.max(sizeScale.indexOf(size ?? "md") - 1, 0)]}
-                    format={merklConfig.decimalFormat.dollar}>
+                    format={decimalFormat}>
                     {amountUSD}
                   </Value>
                 </PrimitiveTag>
@@ -96,7 +97,7 @@ export default function Token({
           </Fragment>
         );
     }
-  }, [token, format, amountFormatted, amountUSD, amount, symbol, icon, size, showZero]);
+  }, [token, format, amountFormatted, amountUSD, amount, symbol, icon, size, showZero, decimalFormat]);
 
   if (value) return display;
   return (

@@ -1,3 +1,6 @@
+import type { MerklBackend } from "@core/config/backend";
+import type { MerklRoutes } from "@core/config/routes";
+import "@remix-run/server-runtime";
 import { MerklApi } from "@merkl/api";
 
 const api = MerklApi(
@@ -6,3 +9,16 @@ const api = MerklApi(
 );
 
 export { api };
+
+//TODO: move this in a more appropriate global
+declare module "@remix-run/server-runtime" {
+  // or cloudflare, deno, etc.
+  interface Future {
+    v3_singleFetch: true;
+  }
+
+  export interface AppLoadContext {
+    backend: MerklBackend;
+    routes: MerklRoutes;
+  }
+}

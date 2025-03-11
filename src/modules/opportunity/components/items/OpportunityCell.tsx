@@ -1,6 +1,6 @@
 import type { TagTypes } from "@core/components/element/Tag";
-import config from "@core/config";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
@@ -20,6 +20,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const cell = useMemo(
     () => (
@@ -63,7 +64,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
               APR
             </Group>
             <Text look="base">
-              <Value value format={config.decimalFormat.dollar}>
+              <Value value format={dollarFormat}>
                 {opportunity.tvl ?? 0}
               </Value>{" "}
               TVL
@@ -79,7 +80,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
         </Group>
       </Box>
     ),
-    [opportunity, Icons, name, overflowing, ref, Tags, tags, formattedDailyRewards],
+    [opportunity, Icons, name, overflowing, ref, Tags, tags, formattedDailyRewards, dollarFormat],
   );
 
   if (navigationMode === "supply")

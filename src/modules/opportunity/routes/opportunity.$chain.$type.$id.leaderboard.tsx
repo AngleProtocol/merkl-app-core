@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
@@ -9,22 +10,26 @@ import { useCallback } from "react";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "./opportunity.$chain.$type.$id.header";
 
-export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend },
+  params: { id, type, chain: chainId },
+  request,
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ name: chainId });
+  const chain = await ChainService({ api }).get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
   // TODO Need to be replace by findFisrt campaign by id
-  const campaigns = await CampaignService.getByOpportunity(undefined, {
+  const campaigns = await CampaignService({ backend, api }).getByOpportunity({
     campaignId: campaignId ?? "",
   });
 
   const selectedCampaign = campaigns[0];
   // --------
-  const computeChain = await ChainService.getById(selectedCampaign?.computeChainId ?? chain.id);
+  const computeChain = await ChainService({ api }).getById(selectedCampaign?.computeChainId ?? chain.id);
 
-  const { rewards, count, total } = await RewardService.getCampaignLeaderboard(request, {
+  const { rewards, count, total } = await RewardService({ backend, api, request }).getCampaignLeaderboard({
     chainId: selectedCampaign.distributionChainId,
     campaignId: selectedCampaign.campaignId,
   });

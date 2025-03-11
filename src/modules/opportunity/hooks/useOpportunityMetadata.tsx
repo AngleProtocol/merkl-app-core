@@ -1,6 +1,6 @@
 import type { TagProps, TagType, TagTypes } from "@core/components/element/Tag";
 import Tag from "@core/components/element/Tag";
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
 import {
@@ -46,13 +46,14 @@ export default function useOpportunityMetadata({
   depositUrl,
   ...opportunity
 }: PickAndOptOut<Opportunity, (typeof metadata)[number], "depositUrl" | "protocol">) {
+  const opportunityPercentage = useMerklConfig(store => store.config.opportunityPercentage);
   /**
    * Formatted name
    */
   const configuredName = useMemo(() => {
-    if (!merklConfig.opportunityPercentage) return name.replace(/\s*\d+(\.\d+)?%$/, "").trim();
+    if (!opportunityPercentage) return name.replace(/\s*\d+(\.\d+)?%$/, "").trim();
     return name;
-  }, [name]);
+  }, [name, opportunityPercentage]);
 
   /**
    * Formatted name split into multiple spans to be used in page header titles

@@ -1,30 +1,28 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
 import { withUrl } from "../../../utils/url";
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request, {});
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
+  return withUrl(request, { backend, routes });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
-  const location = useLocation();
+  const metadata = useMetadata(data?.url);
 
   return (
     <Hero
       icons={[{ remix: "RiCoinFill" }]}
       title={"Tokens"}
       breadcrumbs={[{ link: "/tokens", name: "Tokens" }]}
-      description={MetadataService.find(MetadataService.wrap(data?.url, location.pathname), "description")}>
+      description={metadata.find(metadata.wrap(), "description")}>
       <Outlet />
     </Hero>
   );

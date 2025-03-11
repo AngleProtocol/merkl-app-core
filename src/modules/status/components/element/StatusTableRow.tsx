@@ -16,13 +16,13 @@ import {
   mergeClass,
 } from "dappkit";
 
+import type { Api } from "@core/api/types";
 import { useState } from "react";
-import type { StatusService } from "../../status.service";
 import DelayLibrary from "../library/DelayLibrary";
 import { StatusRow } from "../library/StatusTable";
 
 export type StatusTableRowProps = {
-  status: Awaited<ReturnType<typeof StatusService.getStatusAndDelays>>[1];
+  status: NonNullable<Awaited<ReturnType<Api["v4"]["campaign-status"]["delay"]["status"]["get"]>>["data"]>[1];
   chain: Chain;
 } & BoxProps;
 

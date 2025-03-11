@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -8,9 +9,8 @@ import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const chains = await ChainService.getAll();
-
-  const statusAndDelays = await StatusService.getStatusAndDelays();
+  const chains = await ChainService({ api }).getAll();
+  const statusAndDelays = await StatusService({ api }).getStatusAndDelays();
 
   return withUrl(request, {
     chains,

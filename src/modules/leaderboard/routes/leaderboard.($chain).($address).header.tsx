@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { withUrl } from "@core/utils/url";
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -16,26 +17,29 @@ export const extractChainAndTokenFromParams = async (address: string | undefined
   if (!address && !merklConfig.leaderboard) throw "";
   if (!address) address = merklConfig.leaderboard!.address;
 
-  const chain = await ChainService.get({ name: chainName });
-  const token = await TokenService.findUniqueOrThrow(chain.id, address);
+  const chain = await ChainService({ api }).get({ name: chainName });
+  const token = await TokenService({ api }).findUniqueOrThrow(chain.id, address);
 
   return { chain, token };
 };
 
-export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend, routes },
+  params: { address, chain: chainName },
+  request,
+}: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
   return withUrl(request, {
     token,
     chain,
+    backend,
+    routes,
   });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export default function Index() {

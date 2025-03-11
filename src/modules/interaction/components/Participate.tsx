@@ -10,6 +10,7 @@ import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Interact from "./Interact.client";
+import { useMerklConfig } from "@core/modules/config/config.context";
 
 export type ParticipateProps = {
   opportunity: Opportunity;
@@ -31,6 +32,8 @@ export default function Participate({
   const [tokenAddress, setTokenAddress] = useState("");
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
+
+  const backend = useMerklConfig(store => store.config.backend);
 
   const {
     targets,
@@ -193,8 +196,8 @@ export default function Participate({
 
   useEffect(() => {
     if (!tokenAddress || tokenAddress === "")
-      setTokenAddress((balance && TokenService.sortForUser(balance)?.[0]?.address) ?? "");
-  }, [balance, tokenAddress]);
+      setTokenAddress((balance && TokenService({ backend }).sortForUser(balance)?.[0]?.address) ?? "");
+  }, [balance, tokenAddress, backend]);
 
   return (
     <>

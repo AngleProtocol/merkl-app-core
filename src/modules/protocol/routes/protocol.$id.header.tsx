@@ -1,4 +1,6 @@
+import { api } from "@core/api";
 import Hero, { defaultHeroSideDatas } from "@core/components/composite/Hero";
+import { MerklBackend } from "@core/config/backend";
 import { Cache } from "@core/modules/cache/cache.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
@@ -10,20 +12,21 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
 
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend, routes }, params: { id }, request }: LoaderFunctionArgs) {
   if (!id) throw new Error("Protocol not found");
-  const protocol = await ProtocolService.getById(id);
+  const protocol = await ProtocolService({ api }).getById(id);
+  const opportunityService = OpportunityService({ api, request, backend });
 
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { mainProtocolId: id });
+  const { opportunities, count } = await opportunityService.getManyFromRequest({ mainProtocolId: id });
 
-  const { opportunities: opportunitiesByApr, count: liveCount } = await OpportunityService.getMany({
+  const { opportunities: opportunitiesByApr, count: liveCount } = await opportunityService.getMany({
     mainProtocolId: id,
     status: "LIVE",
     sort: "apr",
     order: "desc",
   });
 
-  const { sum } = await OpportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
+  const { sum } = await opportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
   return withUrl(request, {
     opportunities,
@@ -32,8 +35,14 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
     liveOpportunityCount: liveCount,
     maxApr: opportunitiesByApr?.[0]?.apr,
     dailyRewards: sum,
+    backend,
+    routes,
   });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
+  return MetadataService({}).fromRoute(data, error, location).wrap();
+};
 
 export const clientLoader = Cache.wrap("protocol", 300);
 
@@ -61,9 +70,3 @@ export default function Index() {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname, "protocol", data?.protocol);
-};

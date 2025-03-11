@@ -1,21 +1,15 @@
-import { api } from "@core/api";
-import { fetchWithLogs } from "@core/api/utils";
+import type { Api } from "@core/api/types";
+import { type ApiResponse, fetchResource } from "@core/api/utils";
+import { defineModule } from "@merkl/conduit";
 
-export abstract class StatusService {
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Delays",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
+export const StatusService = defineModule<{ api: Api }>().create(({ inject }) => {
+  const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Status")(call);
 
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
+  const getStatusAndDelays = inject(["api"]).inFunction(({ api }) => {
+    return fetchApi(async () => api.v4["campaign-status"].delay.status.get());
+  });
 
-  static async getStatusAndDelays() {
-    const status = await StatusService.#fetch(async () => api.v4["campaign-status"].delay.status.get());
-    return status;
-  }
-}
+  return {
+    getStatusAndDelays,
+  };
+});

@@ -1,32 +1,37 @@
+import { api } from "@core/api";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityCell from "@core/modules/opportunity/components/items/OpportunityCell";
 import type { Opportunity } from "@merkl/api";
 import { Collapsible, EventBlocker, Group, Icon, Space, Text, mergeClass } from "dappkit";
 import { useEffect, useMemo, useState } from "react";
 import { I18n } from "../../../I18n";
-import merklConfig from "../../../config";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 
 export default function ReinvestBanner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>();
   const [isOpen, setIsOpen] = useState(true);
+  const reinvestTokenAddress = useMerklConfig(store => store.config.dashboard?.reinvestTokenAddress);
+  const backend = useMerklConfig(store => store.config.backend);
 
   useEffect(() => {
-    if (!merklConfig.dashboard?.reinvestTokenAddress) return;
+    if (!reinvestTokenAddress) return;
+
+    const opportunityService = OpportunityService({ api, backend });
 
     const fetchData = async () => {
-      const opp1 = await OpportunityService.getMany({
+      const opp1 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on Venus",
       });
 
-      const opp2 = await OpportunityService.getMany({
+      const opp2 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on ZeroLend",
       });
 
-      const opp3 = await OpportunityService.getMany({
+      const opp3 = await opportunityService.getMany({
         items: 1,
         sort: "rewards",
         name: "Supply ZK on Aave",
@@ -36,7 +41,7 @@ export default function ReinvestBanner() {
     };
 
     fetchData();
-  }, []);
+  }, [reinvestTokenAddress, backend]);
 
   const cells = useMemo(
     () =>
@@ -48,7 +53,7 @@ export default function ReinvestBanner() {
     [opportunities],
   );
 
-  if (!merklConfig.dashboard?.reinvestTokenAddress) return;
+  if (!reinvestTokenAddress) return;
   return (
     <Group
       className="rounded-md p-md bg-main-8 flex-nowrap items-start flex-col cursor-pointer !gap-0"

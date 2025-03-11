@@ -22,6 +22,8 @@ function logSize(bytes: number) {
  * Eden response structure for a given return type
  */
 export type ApiResponse<R> = { data: R; status: number; response: Response };
+// biome-ignore lint/suspicious/noExplicitAny: needed
+export type ApiQuery<R extends (...args: any[]) => any> = R extends (parameter: { query: infer P }) => any ? P : never;
 
 export async function fetchWithLogs<R, T extends { data: R; status: number; response: Response }>(
   call: () => Promise<T>,

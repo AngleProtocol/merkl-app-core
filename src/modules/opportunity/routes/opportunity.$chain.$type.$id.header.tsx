@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import merklConfig from "@core/config";
@@ -14,12 +15,16 @@ import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
 
-export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend, routes },
+  params: { id, type, chain: chainId },
+  request,
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ name: chainId });
+  const chain = await ChainService({ api }).get({ name: chainId });
 
-  const opportunity = await OpportunityService.getCampaignsByParams({
+  const opportunity = await OpportunityService({ api, request, backend }).getCampaignsByParams({
     chainId: chain.id,
     type: type,
     identifier: id,
@@ -29,16 +34,15 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
+    backend,
+    routes,
   });
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname, "opportunity", data?.opportunity);
+  return MetadataService({}).fromRoute(data, error, location).wrap();
 };
 
 export type OutletContextOpportunity = {

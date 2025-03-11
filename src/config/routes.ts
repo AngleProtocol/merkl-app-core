@@ -1,8 +1,8 @@
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type { DefineRouteFunction } from "@remix-run/dev/dist/config/routes";
 import type { MetaDescriptor } from "@remix-run/node";
-import type { Themes } from "packages/dappkit/src";
-import type { MerklConfig, NavigationMenuRoute } from "./type";
+import type { NavigationMenuRoute } from "./type";
+import type { MerklBackend } from "./backend";
 
 /**
  * Types of single page resources
@@ -32,7 +32,7 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
    */
   metadata?: (
     url: string,
-    config: Omit<MerklConfig<Themes>, "wagmi" | "themes">,
+    config: MerklBackend,
     resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) => MetaDescriptor[];
   /**
@@ -40,7 +40,7 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
    */
   pagedata?: (
     url: string,
-    config: Omit<MerklConfig<Themes>, "wagmi" | "themes">,
+    config: MerklBackend,
     resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) => MetaDescriptor[];
   /**

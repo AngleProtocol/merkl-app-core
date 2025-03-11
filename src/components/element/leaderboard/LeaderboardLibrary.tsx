@@ -1,5 +1,5 @@
+import type { Api } from "@core/api/types";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
-import type { RewardService } from "@core/modules/reward/reward.service";
 import type { Chain, Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Text } from "dappkit";
@@ -10,7 +10,7 @@ import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTa
 import LeaderboardTableRow from "./LeaderboardTableRow";
 
 export type LeaderboardLibraryProps = {
-  leaderboard: Awaited<ReturnType<typeof RewardService.getCampaignLeaderboard>>["rewards"];
+  leaderboard: NonNullable<Awaited<ReturnType<Api["v4"]["rewards"]["index"]["get"]>>["data"]>["0"];
   count?: number;
   total?: bigint;
   reason: boolean;

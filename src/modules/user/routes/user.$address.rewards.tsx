@@ -1,3 +1,4 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Box, Button, Container, Fmt, Group, Icon, OverrideTheme, Space, Text, useWalletContext } from "dappkit";
@@ -6,7 +7,6 @@ import { isAddress } from "viem";
 import { I18n } from "../../../I18n";
 import ReinvestBanner from "../../../components/element/reinvest/ReinvestBanner";
 import ClaimRewardsLibrary from "../../../components/element/rewards/ClaimRewardsLibrary";
-import merklConfig from "../../../config";
 import useBalances from "../../../hooks/useBalances";
 import type { OutletContextRewards } from "./user.$address.header";
 
@@ -19,18 +19,19 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 export default function Index() {
   const { address } = useLoaderData<typeof loader>();
   const { rewards: sortedRewards, onClaimSuccess, isBlacklisted } = useOutletContext<OutletContextRewards>();
+  const reinvestTokenAddress = useMerklConfig(store => store.config.dashboard.reinvestTokenAddress);
+  const minWalletBalance = useMerklConfig(store => store.config.opportunity?.minWalletBalance);
+  const links = useMerklConfig(store => store.config.links);
 
   const { chainId } = useWalletContext();
   const { balances, loading: balanceLoading } = useBalances(chainId);
 
   const tokenBalance = useMemo(() => {
     if (!balances || balanceLoading) return 0;
-    const token = balances?.find(
-      balance => balance?.address?.toLowerCase() === merklConfig.dashboard?.reinvestTokenAddress?.toLowerCase(),
-    );
+    const token = balances?.find(balance => balance?.address?.toLowerCase() === reinvestTokenAddress?.toLowerCase());
     if (!token) return 0;
     return Fmt.toNumber(token?.balance, token?.decimals);
-  }, [balances, balanceLoading]);
+  }, [balances, balanceLoading, reinvestTokenAddress]);
 
   return (
     <Container>
@@ -47,7 +48,7 @@ export default function Index() {
               </Text>
               <Space size="md" />
               <Group>
-                <Button look="hype" to={merklConfig.links.merklSupport} external>
+                <Button look="hype" to={links.merklSupport} external>
                   Contact Support
                   <Icon remix="RiArrowRightUpLine" />
                 </Button>
@@ -68,7 +69,7 @@ export default function Index() {
           <Space size="md" />
         </>
       )}
-      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > merklConfig.opportunity?.minWalletBalance && (
+      {!!I18n.trad.get.pages.dashboard.reinvest && tokenBalance > minWalletBalance && (
         <>
           <ReinvestBanner />
           <Space size="md" />
