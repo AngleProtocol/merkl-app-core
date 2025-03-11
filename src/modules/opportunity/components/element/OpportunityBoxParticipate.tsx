@@ -57,7 +57,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
               </Value>
             </Title>
             {!!isSupplyButtonVisible && (
-              <Button className="inline-flex" look="hype" size="md" onClick={onSupply}>
+              <Button className="inline-flex" look="hype" size="xl" onClick={onSupply}>
                 Supply
                 <Icon remix="RiArrowRightUpLine" size="sm" />
               </Button>
@@ -74,7 +74,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
             </Group>
           </Group>
           <Group className="flex-nowrap">
-            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="xs">
+            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="sm">
               <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
                 <Text bold className="flex items-center gap-sm ">
                   APR
@@ -82,13 +82,13 @@ export default function OpportunityBoxParticipate(props: IProps) {
                 </Text>
               </Dropdown>
 
-              <Text bold look="tint" size={"xl"}>
+              <Title h={3} look="tint">
                 <Value value format={merklConfig.decimalFormat.apr}>
                   {opportunity.apr / 100}
                 </Value>
-              </Text>
+              </Title>
             </Group>
-            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="xs">
+            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="sm">
               {opportunity.type === "CLAMM" ? (
                 <Dropdown onHover content={<TvlRowAllocation opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm " look="soft">
@@ -101,11 +101,11 @@ export default function OpportunityBoxParticipate(props: IProps) {
                   TVL
                 </Text>
               )}
-              <Text bold look="tint" size={"xl"}>
+              <Title h={3} look="tint">
                 <Value value format={merklConfig.decimalFormat.dollar}>
                   {opportunity.tvl}
                 </Value>
-              </Text>
+              </Title>
             </Group>
           </Group>
         </Group>
