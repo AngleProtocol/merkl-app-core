@@ -11,8 +11,8 @@ export default function Index() {
     <Container>
       <Group className="flex-wrap flex-col-reverse lg:flex-nowrap lg:flex-row gap-xl py-xl">
         <OpportunityBoxParticipate opportunity={opportunity} className="max-w-sm min-w-[24ch]" />
-        <Group className="flex flex-col items-start gap-xl">
-          <Text className="h-[fit-content]">
+        <Group className="flex flex-col items-start gap-xl ">
+          <Text className="h-[fit-content] border-1 rounded-lg border-main-5 p-xl">
             Each opportunity can have multiple campaigns, with different reward rules. Some reward bigger deposits,
             others longer participation or specific tokens. Check campaigns details to find the best way to maximize
             your rewards!
