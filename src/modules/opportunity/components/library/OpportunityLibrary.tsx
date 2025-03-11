@@ -6,10 +6,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
+import useOpportunityTable from "../../hooks/useOpportunityTable";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
 import OpportunityCell from "../items/OpportunityCell";
 import OpportunityTableRow from "../items/OpportunityTableRow";
-import { OpportunityTable } from "./OpportunityTable";
 
 export type Displays = "grid" | "list";
 
@@ -57,6 +57,8 @@ export default function OpportunityLibrary({
     setClearing(true);
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
+
+  const { OpportunityTable } = useOpportunityTable();
 
   const display = useMemo(() => {
     switch (view) {
@@ -142,7 +144,7 @@ export default function OpportunityLibrary({
           </List>
         );
     }
-  }, [opportunities, view, count]);
+  }, [opportunities, view, count, OpportunityTable]);
 
   return (
     <div className="w-full">

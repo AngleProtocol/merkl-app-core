@@ -1,4 +1,5 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { OpportuntyLibraryOverride } from "@core/modules/opportunity/opportunity.model";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import type { IconProps, WalletOptions } from "dappkit";
@@ -180,6 +181,7 @@ export type MerklConfig<T extends Themes> = {
     library: {
       sortedBy: OpportunitySortedBy;
       dailyRewardsTokenAddress: string;
+      overrideDisplay?: OpportuntyLibraryOverride<"table">;
       columns: {
         action: {
           enabled: boolean;
