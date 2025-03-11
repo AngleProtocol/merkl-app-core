@@ -198,7 +198,7 @@ export default function useOpportunityMetadata({
                     </li>
                     <li>
                       <Group>
-                        <Text bold>Step 2:</Text> Earn rewards based on your liquidity position.
+                        <Text bold>Step 2:</Text>Earn rewards based on your liquidity position.
                       </Group>
                     </li>
                     <li>
@@ -236,7 +236,7 @@ export default function useOpportunityMetadata({
                     </li>
                     <li>
                       <Group>
-                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -273,7 +273,7 @@ export default function useOpportunityMetadata({
                     </li>
                     <li>
                       <Group>
-                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -310,7 +310,7 @@ export default function useOpportunityMetadata({
                     </li>
                     <li>
                       <Group>
-                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -329,11 +329,120 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by borrowing liquidity to the ${protocol?.name} ${symbols} on ${chain.name}
+            Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}
           </Tooltip>
         );
       case "DROP":
-        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Check your eligibility on Merkl.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text>Eligible rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Visit your dashboard to check if you've earned rewards from this airdrop
+          </Tooltip>
+        );
+      case "LONG":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Open a long position on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}
+          </Tooltip>
+        );
+      case "SHORT":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Open a short position on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by taking a short position on ${protocol?.name} ${symbols} on ${chain.name}
+          </Tooltip>
+        );
       default:
         break;
     }
