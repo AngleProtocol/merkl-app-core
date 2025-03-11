@@ -81,6 +81,26 @@ export abstract class MetadataService {
     );
   }
 
+  static #wrap<T extends keyof MerklRouteType | undefined>(
+    key: "metadata" | "pagedata",
+    url: string,
+    location: string,
+    type?: T,
+    resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+  ) {
+    const routes = merklConfig.routes as MerklRoutes & { layout?: Omit<MerklRoute, "label"> };
+    const matches = MetadataService.matchRoute(location, routes);
+    const metadatas = matches.map(({ type: routeType, metadata, pagedata }) => {
+      const pageOrMetaData = { metadata, pagedata }[key];
+      if (!routeType) return pageOrMetaData?.(url, merklConfig, undefined) ?? [];
+      if (routeType === type) return pageOrMetaData?.(url, merklConfig, resource) ?? [];
+      return [];
+    });
+    const globalMetadata = routes.layout?.metadata?.(url, merklConfig, undefined) ?? [];
+
+    return MetadataService.deduplicate(metadatas.concat([globalMetadata]));
+  }
+
   /**
    * Detects recursive routes and computes its metadata
    * @param url raw base url (i.e. "https://app.merkl.xyz")
@@ -95,16 +115,27 @@ export abstract class MetadataService {
     type?: T,
     resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) {
-    const routes = merklConfig.routes as MerklRoutes & { layout?: Omit<MerklRoute, "label"> };
-    const matches = MetadataService.matchRoute(location, routes);
-    const metadatas = matches.map(({ type: routeType, metadata }) => {
-      if (!routeType) return metadata?.(url, merklConfig, undefined) ?? [];
-      if (routeType === type) return metadata?.(url, merklConfig, resource) ?? [];
-      return [];
-    });
-    const globalMetadata = routes.layout?.metadata?.(url, merklConfig, undefined) ?? [];
+    return MetadataService.#wrap("metadata", url, location, type, resource);
+  }
 
-    return MetadataService.deduplicate(metadatas.concat([globalMetadata]));
+  /**
+   * Detects recursive routes and computes its pagedata
+   * @param url raw base url (i.e. "https://app.merkl.xyz")
+   * @param location pathname, (i.e. "/", "/protocols")
+   * @param type of the resource to be provided {@link MerklRouteType}
+   * @param resource resource provided
+   * @returns deduplicated route context meta descriptors
+   */
+  static wrapInPage<T extends keyof MerklRouteType | undefined>(
+    url: string,
+    location: string,
+    type?: T,
+    resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+  ) {
+    const meta = MetadataService.#wrap("metadata", url, location, type, resource);
+    const page = MetadataService.#wrap("pagedata", url, location, type, resource);
+
+    return MetadataService.deduplicate([page, meta]);
   }
 
   /**
