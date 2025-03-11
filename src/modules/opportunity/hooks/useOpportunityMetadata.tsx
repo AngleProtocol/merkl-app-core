@@ -3,10 +3,20 @@ import Tag from "@core/components/element/Tag";
 import merklConfig from "@core/config";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps } from "dappkit";
+import {
+  type Component,
+  Group,
+  Icon,
+  Icons as IconGroup,
+  type IconProps,
+  type IconsProps,
+  Text,
+  Title,
+  Tooltip,
+} from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { OpportunityService } from "../opportunity.service";
+import { Link } from "@remix-run/react";
 
 const metadata = [
   "name",
@@ -167,12 +177,167 @@ export default function useOpportunityMetadata({
   );
 
   /**
-   * Explainer for the opportunity
+   * Explainer for the opportunity with Helpers
    */
-  const description = useMemo(
-    () => OpportunityService.getDescription({ tokens, protocol, chain, action }),
-    [tokens, protocol, chain, action],
-  );
+  const description = useMemo(() => {
+    const symbols = tokens?.map(t => t.symbol).join("-");
+
+    switch (action) {
+      case "POOL":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Provide liquidity on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text> Earn rewards based on your liquidity position.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by providing liquidity to the {protocol?.name} {symbols} pool on {chain.name}, or through a
+            liquidity manager supported by Merkl
+          </Tooltip>
+        );
+      case "HOLD":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Hold {symbols}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by holding ${symbols} or by staking it in a supported contract
+          </Tooltip>
+        );
+      case "LEND":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Lend assets on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by supplying liquidity to the {protocol?.name} {symbols} on {chain.name}
+          </Tooltip>
+        );
+      case "BORROW":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Borrow assets on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap" size="sm">
+                        <Text bold>Step 3:</Text> Claim
+                        <Link to="/users">rewards</Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Link
+                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
+                          target="_blank">
+                          Check next reward update
+                        </Link>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by borrowing liquidity to the ${protocol?.name} ${symbols} on ${chain.name}
+          </Tooltip>
+        );
+      case "DROP":
+        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
+      default:
+        break;
+    }
+  }, [tokens, protocol, chain, action]);
 
   return {
     name: configuredName,

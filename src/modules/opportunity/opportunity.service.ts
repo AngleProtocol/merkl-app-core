@@ -134,23 +134,4 @@ export abstract class OpportunityService {
 
     return query;
   }
-
-  static getDescription(opportunity: Pick<Opportunity, "tokens" | "protocol" | "chain" | "action">) {
-    const symbols = opportunity.tokens?.map(t => t.symbol).join("-");
-
-    switch (opportunity.action) {
-      case "POOL":
-        return `Earn rewards by providing liquidity to the ${opportunity.protocol?.name} ${symbols} pool on ${opportunity.chain.name}, or through a liquidity manager supported by Merkl`;
-      case "HOLD":
-        return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
-      case "LEND":
-        return `Earn rewards by supplying liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
-      case "BORROW":
-        return `Earn rewards by borrowing liquidity to the ${opportunity.protocol?.name} ${symbols} on ${opportunity.chain.name}`;
-      case "DROP":
-        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
-      default:
-        break;
-    }
-  }
 }
