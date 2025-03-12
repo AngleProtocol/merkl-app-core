@@ -207,9 +207,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -245,9 +243,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -282,9 +278,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -319,9 +313,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -356,9 +348,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -393,9 +383,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
@@ -430,9 +418,7 @@ export default function useOpportunityMetadata({
                         <Text bold>Step 3:</Text> Claim
                         <Link to="/users">rewards</Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link
-                          to="https://www.notion.so/Tooltip-to-explain-opportunity-1afcfed0d48c800fb927ff341342df17?pvs=21"
-                          target="_blank">
+                        <Link to="/status" target="_blank">
                           Check next reward update
                         </Link>
                       </Group>
