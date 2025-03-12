@@ -1,20 +1,20 @@
+import { api } from "@core/api";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
-import merklConfig from "../../../config";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
 
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { mainProtocolId: id } as const;
+  const opportunityService = OpportunityService({ api, request, backend });
 
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, opportunityFilters);
-  const { opportunities: featuredOpportunities } = await OpportunityService.getFeatured(request, opportunityFilters);
-
-  //TODO: embed this in client/service
-  const { protocols } = await ProtocolService.getManyFromRequest(request);
+  const { opportunities, count } = await opportunityService.getManyFromRequest(opportunityFilters);
+  const { opportunities: featuredOpportunities } = await opportunityService.getFeatured(opportunityFilters);
+  const { protocols } = await ProtocolService({ backend, api, request }).getManyFromRequest();
 
   return { opportunities, count, protocols, featuredOpportunities };
 }
@@ -22,12 +22,13 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 export default function Index() {
   const { chains } = useWalletContext();
   const { opportunities, count, featuredOpportunities } = useLoaderData<typeof loader>();
+  const areFeaturedOpportunitiesEnabled = useMerklConfig(store => store.config.opportunity.featured.enabled);
 
   return (
     <Container>
       <Space size="xl" />
       <Group size="xl" className="py-xl flex-col">
-        {merklConfig.opportunity.featured.enabled && (
+        {areFeaturedOpportunitiesEnabled && (
           <>
             <Title look="soft" h={3}>
               BEST OPPORTUNITIES

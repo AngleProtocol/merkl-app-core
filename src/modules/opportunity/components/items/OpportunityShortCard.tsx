@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
 import { Button, Group, Icon, Space, Text, Value } from "dappkit";
@@ -7,6 +7,8 @@ export type OpportunityShortCardProps = { opportunity: Opportunity; displayLinks
 
 export default function OpportunityShortCard({ opportunity, displayLinks }: OpportunityShortCardProps) {
   const { name, url, Icons, link } = useOpportunityData(opportunity);
+
+  const decimalFormat = useMerklConfig(store => store.config.decimalFormat);
 
   return (
     <Group className="flex-col">
@@ -20,19 +22,19 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
       <Group className="justify-between">
         <Group className="flex-col">
           <Text look="bold" className="flex items-center">
-            <Value value format={merklConfig.decimalFormat.apr}>
+            <Value value format={decimalFormat.apr}>
               {opportunity.apr ?? 0}
             </Value>{" "}
             APR
           </Text>
           <Text look="bold" className="flex items-center">
-            <Value value format={merklConfig.decimalFormat.dollar}>
+            <Value value format={decimalFormat.dollar}>
               {opportunity.tvl ?? 0}
             </Value>{" "}
             TVL
           </Text>
           <Text look="bold" className="flex items-center">
-            <Value value format={merklConfig.decimalFormat.dollar}>
+            <Value value format={decimalFormat.dollar}>
               {opportunity.dailyRewards ?? 0}
             </Value>{" "}
             Daily Rewards

@@ -1,14 +1,24 @@
-import merklConfig from "@core/config";
-import type { MerklRoute, MerklRouteType, MerklRoutes } from "@core/config/routes";
-import type { MetaDescriptor } from "@remix-run/node";
+import { defineModule } from "@merkl/conduit";
+import type { LoaderFunctionArgs, MetaDescriptor, MetaFunction } from "@remix-run/node";
+import type { Location } from "@remix-run/react";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
+import type { MerklRoute, MerklRouteType, MerklRoutes } from "../config/types/merklRoutesConfig";
 
-export abstract class MetadataService {
+type Dependencies = {
+  routes: MerklRoutes;
+  backend: MerklBackendConfig;
+  url: string;
+  request: Request;
+  location: Location;
+};
+
+export const MetadataService = defineModule<Dependencies>().create(({ inject }) => {
   /**
    * Compare routes definition versus location
    * @param definitionRoute (i.e. "/chains/:id")
    * @param route (i.e. "/chains/ethereum")
    */
-  static compareRoute(definitionRoute: string, route: string) {
+  const compareRoute = (definitionRoute: string, route: string) => {
     const paramAgnosticParentRoute = definitionRoute
       .toLowerCase()
       .replaceAll(/:[\w-]+(?=\/|$)/g, ":param")
@@ -27,27 +37,27 @@ export abstract class MetadataService {
       paramAgnosticParentRoute.every((r, index) => r === paramAgnosticRoute[index]) &&
       paramAgnosticParentRoute.length === paramAgnosticRoute.length
     );
-  }
+  };
+
   /**
    * Recursive route to find the matching routes amongst all subroutes
    * @param location to test url against
    * @param routes all
    * @returns an array from deepest to shallowest match.
    */
-  static matchRoute(location: string, routes: MerklRoutes, parentRoute = "/"): MerklRoute[] {
-    for (const [route, value] of Object.entries(routes)) {
-      const matches = MetadataService.matchRoute(location, value.routes ?? {}, parentRoute + route);
+  const matchRoute = inject(["location"]).inFunction(
+    ({ location }, routes: MerklRoutes, parentRoute = "/"): MerklRoute[] => {
+      for (const [route, value] of Object.entries(routes)) {
+        const matches = matchRoute.handler({ location }, value.routes ?? {}, parentRoute + route);
 
-      if (matches.length > 0) return matches.concat(value);
-      if (MetadataService.compareRoute(parentRoute + route, location)) return [value];
-    }
-    return [];
-  }
+        if (matches.length > 0) return matches.concat(value);
+        if (compareRoute(parentRoute + route, location.pathname)) return [value];
+      }
+      return [];
+    },
+  );
 
-  /**
-   * Removes duplicates according to array order (first is more important)
-   */
-  static deduplicate(metadatas: MetaDescriptor[][]) {
+  const deduplicate = (metadatas: MetaDescriptor[][]) => {
     return metadatas.reduce(
       (all, metadata) =>
         all.concat(
@@ -79,27 +89,7 @@ export abstract class MetadataService {
         ),
       [],
     );
-  }
-
-  static #wrap<T extends keyof MerklRouteType | undefined>(
-    key: "metadata" | "pagedata",
-    url: string,
-    location: string,
-    type?: T,
-    resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
-  ) {
-    const routes = merklConfig.routes as MerklRoutes & { layout?: Omit<MerklRoute, "label"> };
-    const matches = MetadataService.matchRoute(location, routes);
-    const metadatas = matches.map(({ type: routeType, metadata, pagedata }) => {
-      const pageOrMetaData = { metadata, pagedata }[key];
-      if (!routeType) return pageOrMetaData?.(url, merklConfig, undefined) ?? [];
-      if (routeType === type) return pageOrMetaData?.(url, merklConfig, resource) ?? [];
-      return [];
-    });
-    const globalMetadata = routes.layout?.metadata?.(url, merklConfig, undefined) ?? [];
-
-    return MetadataService.deduplicate(metadatas.concat([globalMetadata]));
-  }
+  };
 
   /**
    * Detects recursive routes and computes its metadata
@@ -109,44 +99,59 @@ export abstract class MetadataService {
    * @param resource resource provided
    * @returns deduplicated route context meta descriptors
    */
-  static wrap<T extends keyof MerklRouteType | undefined>(
-    url: string,
-    location: string,
-    type?: T,
-    resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
-  ) {
-    return MetadataService.#wrap("metadata", url, location, type, resource);
-  }
+  const baseWrap = inject(["routes", "backend", "url", "location"]).inFunction(
+    <T extends keyof MerklRouteType | undefined>(
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
+      key: "metadata" | "pagedata",
+      type?: T,
+      resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+    ) => {
+      const routes = deps.routes as MerklRoutes & { layout?: Omit<MerklRoute, "label"> };
+      const matches = matchRoute.handler(deps, routes);
+      const metadatas = matches.map(({ type: routeType, metadata, pagedata }) => {
+        const pageOrMetaData = { metadata, pagedata }[key];
+        if (!routeType) return pageOrMetaData?.(deps.url, deps.backend, undefined) ?? [];
+        if (routeType === type) return pageOrMetaData?.(deps.url, deps.backend, resource) ?? [];
+        return [];
+      });
+      const globalMetadata = routes.layout?.metadata?.(deps.url, deps.backend, undefined) ?? [];
 
-  /**
-   * Detects recursive routes and computes its pagedata
-   * @param url raw base url (i.e. "https://app.merkl.xyz")
-   * @param location pathname, (i.e. "/", "/protocols")
-   * @param type of the resource to be provided {@link MerklRouteType}
-   * @param resource resource provided
-   * @returns deduplicated route context meta descriptors
-   */
-  static wrapInPage<T extends keyof MerklRouteType | undefined>(
-    url: string,
-    location: string,
-    type?: T,
-    resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
-  ) {
-    const meta = MetadataService.#wrap("metadata", url, location, type, resource);
-    const page = MetadataService.#wrap("pagedata", url, location, type, resource);
+      return deduplicate(metadatas.concat([globalMetadata]));
+    },
+  );
 
-    return MetadataService.deduplicate([page, meta]);
-  }
+  const wrap = inject(["backend", "routes", "url", "location"]).inFunction(
+    <T extends keyof MerklRouteType | undefined>(
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
+      type?: T,
+      resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+    ) => {
+      return baseWrap.handler(deps, "metadata", type, resource);
+    },
+  );
+
+  const wrapInPage = inject(["backend", "routes", "url", "location"]).inFunction(
+    <T extends keyof MerklRouteType | undefined>(
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
+      type?: T,
+      resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+    ) => {
+      const meta = baseWrap.handler(deps, "metadata", type, resource);
+      const page = baseWrap.handler(deps, "pagedata", type, resource);
+
+      return deduplicate([page, meta]);
+    },
+  );
 
   /**
    * Shortcut for finding meta descriptors
    * @param property property name
    * @returns raw string property
    */
-  static find<Property extends "description" | "title">(
+  const find = <Property extends "description" | "title">(
     metadata: MetaDescriptor[],
     property: Property,
-  ): string | undefined {
+  ): string | undefined => {
     switch (property) {
       case "description":
         // biome-ignore lint/suspicious/noExplicitAny: no need to collapse
@@ -157,5 +162,56 @@ export abstract class MetadataService {
       default:
         break;
     }
-  }
-}
+  };
+
+  const fromRoute = (
+    data: { backend: MerklBackendConfig; routes: MerklRoutes; url: string } | undefined,
+    error: unknown,
+    location: Location,
+  ) => {
+    if (error) return { wrap: () => [{ title: error }] };
+    if (!data) return { wrap: () => [{ title: error }] };
+    const { url, backend, routes } = data;
+
+    return MetadataService({ url, backend: backend as MerklBackendConfig, routes, location });
+  };
+
+  const fill = inject(["backend", "request", "routes"]).inFunction(
+    (dependencies: Pick<Dependencies, "backend" | "request" | "routes">) => {
+      const { request } = dependencies;
+      const url = `${request.url.split("/")?.[0]}//${request.headers.get("host")}`;
+      const metadata = wrap.handler({
+        ...dependencies,
+        url,
+        location: {
+          pathname: request.url.replace(url, ""),
+          key: "",
+          search: "",
+          hash: "",
+          state: "",
+        },
+      });
+
+      return {
+        url,
+        metadata,
+      };
+    },
+  );
+
+  type MetadataLoader = (args: LoaderFunctionArgs) => Promise<{
+    url: string;
+    metadata: MetaDescriptor[];
+  }>;
+  const forwardMetadata: <Loader extends MetadataLoader>() => MetaFunction<Loader> = () => data =>
+    data.data?.metadata ?? [];
+
+  return {
+    find,
+    wrapInPage,
+    wrap,
+    fromRoute,
+    fill,
+    forwardMetadata,
+  };
+});

@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import useBalances from "./useBalances";
@@ -10,7 +10,9 @@ export default function useParticipate(
   identifier?: string,
   tokenAddress?: string,
 ) {
-  if (!merklConfig.deposit) return { balance: [], targets: [], address: "", loading: false, token: undefined };
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
+
+  if (!isDepositEnabled) return { balance: [], targets: [], address: "", loading: false, token: undefined };
 
   const { targets, loading: targetLoading } = useInteractionTargets(chainId, protocolId, identifier);
   const { balances, loading: balanceLoading } = useBalances(chainId);

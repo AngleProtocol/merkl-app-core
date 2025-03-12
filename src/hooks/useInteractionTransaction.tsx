@@ -3,7 +3,7 @@ import type { Token } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { api as clientApi } from "../api/index";
+import { api, type api as clientApi } from "../api/index";
 import { InteractionService } from "../modules/interaction/interaction.service";
 
 type Payload = Parameters<typeof clientApi.v4.interaction.transaction.get>[0]["query"];
@@ -49,7 +49,9 @@ export default function useInteractionTransaction(
       setLoading(true);
       setError(false);
       try {
-        const tx = await InteractionService.get("supply", payload, { sponsor: sponsorTransactions && chainId === 324 });
+        const tx = await InteractionService({ api }).get("supply", payload, {
+          sponsor: sponsorTransactions && chainId === 324,
+        });
 
         setTransactions(txns => {
           return { ...txns, [JSON.stringify(payload)]: tx };

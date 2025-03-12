@@ -1,3 +1,4 @@
+import { api } from "@core/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
@@ -6,7 +7,7 @@ import { TokenService } from "../../../modules/token/token.service";
 import TokenLibrary from "../components/library/TokenLibrary";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { tokens, count } = await TokenService.getManyFromRequest(request);
+  const { tokens, count } = await TokenService({ api, request }).getManyFromRequest();
 
   return { tokens, count };
 }

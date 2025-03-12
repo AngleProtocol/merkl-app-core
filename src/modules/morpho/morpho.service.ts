@@ -1,36 +1,30 @@
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
+import type { Api } from "@core/api/types";
+import { defineModule } from "@merkl/conduit";
+import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
 
-export type Payload = Awaited<ReturnType<typeof api.v3.payload.get>>["data"];
+export type MorphoPayload = Awaited<ReturnType<Api["v3"]["morphoMarkets"]["get"]>>["data"];
 
-export abstract class MorphoService {
-  // ─── Get a morpho markets ──────────────────────────────────────────────
-  static async getMarkets(query: Parameters<typeof api.v3.morphoMarkets.get>[0]["query"]) {
-    return await MorphoService.#fetch(async () =>
+export const MorphoService = defineModule<{ api: Api }>().create(({ inject }) => {
+  const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Morpho")(call);
+
+  const getMarkets = inject(["api"]).inFunction(({ api }, query: ApiQuery<Api["v3"]["morphoMarkets"]["get"]>) => {
+    return fetchApi(async () =>
       api.v3.morphoMarkets.get({
         query: Object.assign({ ...query }),
       }),
     );
-  }
+  });
 
-  // ─── Get a morpho vaults ──────────────────────────────────────────────
-  static async getVaults(query: Parameters<typeof api.v3.morphoVaults.get>[0]["query"]) {
-    return await MorphoService.#fetch(async () =>
+  const getVaults = inject(["api"]).inFunction(({ api }, query: ApiQuery<Api["v3"]["morphoMarkets"]["get"]>) => {
+    return fetchApi(async () =>
       api.v3.morphoVaults.get({
         query: Object.assign({ ...query }),
       }),
     );
-  }
+  });
 
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Morpho Markets",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
-
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
-}
+  return {
+    getMarkets,
+    getVaults,
+  };
+});

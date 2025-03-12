@@ -1,5 +1,6 @@
-import config from "../../config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 
 export default function CustomBanner() {
-  return config.customBanner;
+  const customBanner = useMerklConfig(store => store.config.customBanner);
+  return customBanner;
 }

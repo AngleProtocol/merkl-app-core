@@ -1,43 +1,41 @@
-import { api } from "@core/api";
-import { fetchWithLogs } from "@core/api/utils";
-import merklConfig from "@core/config";
+import type { Api } from "@core/api/types";
+import { type ApiResponse, fetchResource } from "@core/api/utils";
+import type { MerklBackend } from "@core/config/backend";
+import { defineModule } from "@merkl/conduit";
 
-export abstract class ClaimsService {
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Claims",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
+export const ClaimsService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(
+  ({ inject }) => {
+    const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Claims")(call);
 
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
+    const getForUser = inject(["api", "backend"]).inFunction(async ({ api, backend }, address: string) => {
+      const chainIds = backend.chains?.map(({ id }) => id).join(",");
+      const query: Record<string, string> = {};
+      if (chainIds) query.chainIds = chainIds;
+      return fetch(async () => api.v4.claims({ address }).get({ query }));
+    });
 
-  // should be paginated
-  static async getForUser(address: string) {
-    const chainIds = merklConfig.chains?.map(({ id }) => id).join(",");
-    const query: Record<string, string> = {};
-    if (chainIds) query.chainIds = chainIds;
-    return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
-  }
+    const getForUserFromRequest = inject(["api", "request", "backend"]).inFunction(
+      ({ api, request, backend }, address: string) => {
+        const url = new URL(request.url);
+        const chainIdsParams = url.searchParams.get("chain") ?? undefined;
 
-  // should be paginated
-  static async getForUserFromRequest(request: Request, address: string) {
-    const url = new URL(request.url);
-    const chainIdsParams = url.searchParams.get("chain") ?? undefined;
+        const chainIds =
+          (backend.chains?.length
+            ? backend.chains
+                ?.map(({ id }) => id)
+                ?.filter(id => chainIdsParams === undefined || chainIdsParams.split(",").includes(id.toString()))
+                .join(",")
+            : undefined) ?? chainIdsParams;
+        const query: Record<string, string> = {};
 
-    const chainIds =
-      (merklConfig.chains?.length
-        ? merklConfig.chains
-            ?.map(({ id }) => id)
-            ?.filter(id => chainIdsParams === undefined || chainIdsParams.split(",").includes(id.toString()))
-            .join(",")
-        : undefined) ?? chainIdsParams;
-    const query: Record<string, string> = {};
+        if (chainIds) query.chainIds = chainIds;
+        return fetch(async () => api.v4.claims({ address }).get({ query }));
+      },
+    );
 
-    if (chainIds) query.chainIds = chainIds;
-    return await ClaimsService.#fetch(async () => api.v4.claims({ address }).get({ query }));
-  }
-}
+    return {
+      getForUser,
+      getForUserFromRequest,
+    };
+  },
+);

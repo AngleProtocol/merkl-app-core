@@ -1,40 +1,45 @@
-import { api } from "@core/api";
+import type { Api } from "@core/api/types";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import type { Chain } from "@merkl/api";
+import { defineModule } from "@merkl/conduit";
 
-export abstract class ChainService {
-  static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
+export const ChainService = defineModule<{ api: Api }>().create(({ inject }) => {
+  const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
 
-  static async getAll() {
-    const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query: {} }));
+  const getAll = inject(["api"]).inFunction(({ api }) => {
+    return fetch(() => api.v4.chains.index.get({ query: {} }));
+  });
 
-    //TODO: add some cache here
-    return chains;
-  }
+  const getMany = inject(["api"]).inFunction(
+    ({ api }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+      return fetch(async () => api.v4.chains.index.get({ query }));
+    },
+  );
 
-  static async getMany(query: Parameters<typeof api.v4.chains.index.get>[0]["query"]): Promise<Chain[]> {
-    const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query }));
+  const get = inject(["api"]).inFunction(
+    async ({ api }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+      const chains = await fetch(async () =>
+        api.v4.chains.index.get({
+          query: {
+            name: query.name?.replace("-", " "),
+          },
+        }),
+      );
 
-    //TODO: add some cache here
-    return chains;
-  }
+      if (chains.length === 0) throw new Response("Chain not found", { status: 404 });
 
-  static async get(query: Parameters<typeof api.v4.chains.index.get>[0]["query"]): Promise<Chain> {
-    const chains = await ChainService.#fetch(async () =>
-      api.v4.chains.index.get({
-        query: {
-          name: query.name?.replace("-", " "),
-        },
-      }),
-    );
+      //TODO: add some cache here
+      return chains?.[0];
+    },
+  );
 
-    if (chains.length === 0) throw new Response("Chain not found", { status: 404 });
+  const getById = inject(["api"]).inFunction(async ({ api }, chainId: number) => {
+    return fetch(() => api.v4.chains({ chainId }).get());
+  });
 
-    //TODO: add some cache here
-    return chains?.[0];
-  }
-
-  static async getById(chainId: number): Promise<Chain> {
-    return await ChainService.#fetch(async () => api.v4.chains({ chainId }).get());
-  }
-}
+  return {
+    getAll,
+    get,
+    getMany,
+    getById,
+  };
+});

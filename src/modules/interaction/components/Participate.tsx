@@ -1,5 +1,5 @@
-import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
 import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
@@ -31,6 +31,10 @@ export default function Participate({
   const [tokenAddress, setTokenAddress] = useState("");
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
+
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
+  const decimalFormatDollar = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const backend = useMerklConfig(store => store.config.backend);
 
   const {
     targets,
@@ -79,7 +83,7 @@ export default function Participate({
           footer={
             <Group className="justify-between w-full">
               {inputToken && (
-                <Value className="animate-drop" format={merklConfig.decimalFormat.dollar}>
+                <Value className="animate-drop" format={decimalFormatDollar}>
                   {Fmt.toPrice(amount ?? 0n, inputToken)}
                 </Value>
               )}
@@ -189,12 +193,13 @@ export default function Participate({
     balance,
     targets,
     connected,
+    decimalFormatDollar,
   ]);
 
   useEffect(() => {
     if (!tokenAddress || tokenAddress === "")
-      setTokenAddress((balance && TokenService.sortForUser(balance)?.[0]?.address) ?? "");
-  }, [balance, tokenAddress]);
+      setTokenAddress((balance && TokenService({ backend }).sortForUser(balance)?.[0]?.address) ?? "");
+  }, [balance, tokenAddress, backend]);
 
   return (
     <>
@@ -205,7 +210,7 @@ export default function Participate({
         </>
       )}
 
-      {loading && !!merklConfig.deposit && (
+      {loading && !!isDepositEnabled && (
         <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>

@@ -1,28 +1,17 @@
-import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
-import type * as RemixIcon from "@remixicon/react";
-import type { Themes, sizeScale } from "dappkit";
-import type { IconProps, WalletOptions } from "dappkit";
-import type { Chain as viemChain } from "viem/chains";
-import { createConfig as createWagmiConfig } from "wagmi";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
   OpportunitySortedBy,
   OpportunityView,
-} from "./opportunity";
-import type { RewardsNavigationMode } from "./rewards";
-import type { MerklRoutes } from "./routes";
-
-export type routesType = {
-  [key: string]: {
-    route: string;
-    icon: keyof typeof RemixIcon;
-    key: string;
-    external?: boolean;
-    enabled?: boolean;
-    inHeader?: boolean;
-  };
-};
+} from "@core/config/opportunity";
+import type { RewardsNavigationMode } from "@core/config/rewards";
+import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { IconProps, WalletOptions } from "packages/dappkit/src";
+import type { Chain } from "viem";
+import type { createConfig as createWagmiConfig } from "wagmi";
+import type { MerklBackendConfig } from "./types/merklBackendConfig";
+import type { MerklRoutes } from "./types/merklRoutesConfig";
+import type { MerklThemeConfig } from "./types/merklThemeConfig";
 
 /**
  * Route entry in the links menu, either an external link or internal route
@@ -43,32 +32,15 @@ export type NavigationMenuRoutes = {
 };
 
 // TODO: groups by entity
-export type MerklConfig<T extends Themes> = {
-  theme: {
-    modes: ("dark" | "light")[];
-    defaultTheme: keyof T;
-    themes: T;
-    /**
-     * Sizing theme, influences the padding, gaps & radius.
-     */
-    sizing: {
-      width: { [Size in (typeof sizeScale)[number]]: number };
-      spacing: { [Size in (typeof sizeScale)[number]]: number };
-      radius: { [Size in (typeof sizeScale)[number]]: number };
-    };
-  };
-  /**
-   * Themes available
-   * @notice the first theme is the default one by default
-   */
-  themes: T;
+export type MerklConfig = {
+  theme: MerklThemeConfig;
+  routes: MerklRoutes;
+  backend: MerklBackendConfig;
 
   /**
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
-
-  routes: MerklRoutes;
 
   /**
    * Navigation Menu and Header links configuration
@@ -90,7 +62,7 @@ export type MerklConfig<T extends Themes> = {
    * Chains that can be connected to the dapp
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
-  chains?: viemChain[];
+  chains?: Chain[];
   protocols?: string[];
   referral?: {
     /**
@@ -241,11 +213,4 @@ export type MerklConfig<T extends Themes> = {
     [key: string]: string;
   };
   footerLinks: { image: string; link: string; key: string }[];
-  footerNavLinks?: routesType;
 };
-
-export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
-  const wagmiConfig = createWagmiConfig(wagmi);
-
-  return { wagmi: wagmiConfig, ...config };
-}

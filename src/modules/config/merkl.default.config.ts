@@ -1,5 +1,4 @@
-import Brand from "@core/components/layout/Brand";
-import { type Themes, createColoring } from "dappkit";
+import { createColoring } from "dappkit";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
@@ -38,40 +37,12 @@ import {
 } from "viem/chains";
 import { eip712WalletActions, zksync } from "viem/zksync";
 import { walletConnect } from "wagmi/connectors";
-//TODO: find a better way to handle importing the client config, this works
-//@ts-ignore
-import merklClientConfig from "../../../../../merkl.config";
-import { type MerklConfig, createConfig } from "./type";
+import type { MerklConfig } from "./config.model";
 
-const defaultMerklConfig: MerklConfig<Themes> = {
+export const defaultMerklConfig: MerklConfig = {
   appName: "Merkl",
-  modes: ["dark", "light"],
-  defaultTheme: "merkl",
   navigation: {
-    brand: Brand,
-    header: {
-      dashboard: {
-        icon: { remix: "RiDashboardFill" },
-        link: "/users/:address",
-        flags: { replaceWithWallet: ":address" },
-        name: "Claims",
-      },
-      opportunities: {
-        icon: { remix: "RiPlanetFill" },
-        link: "/",
-        name: "Opportunities",
-      },
-      faq: {
-        icon: { remix: "RiPlanetFill" },
-        link: "/faq",
-        name: "FAQ",
-      },
-      referral: {
-        icon: { remix: "RiPlanetFill" },
-        link: "/referral",
-        name: "Referral",
-      },
-    },
+    header: {},
     menu: {
       dashboard: {
         icon: { remix: "RiDashboardFill" },
@@ -173,7 +144,7 @@ const defaultMerklConfig: MerklConfig<Themes> = {
       merkl: {
         base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
         info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+        good: createColoring(["#41D5BB", "#8FF2E1", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
         warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
         harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       },
@@ -185,13 +156,13 @@ const defaultMerklConfig: MerklConfig<Themes> = {
         harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       },
     },
-    sizing: {
-      xs: 14,
-      sm: 16,
-      md: 18,
-      lg: 20,
-      xl: 24,
-    },
+  },
+  decimalFormat: {
+    dollar: "$0,0.##a",
+    apr: "0.##%a",
+  },
+  sizing: {
+    width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
   },
@@ -270,7 +241,3 @@ const defaultMerklConfig: MerklConfig<Themes> = {
     ],
   },
 };
-
-const merklConfig = createConfig(Object.assign(defaultMerklConfig, merklClientConfig));
-
-export default merklConfig;

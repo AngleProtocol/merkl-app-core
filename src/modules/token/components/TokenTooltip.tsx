@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain, Explorer, Token } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, Text, Value } from "dappkit";
 
@@ -9,6 +9,8 @@ export type TokenTooltipProps = {
 };
 
 export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) {
+  const visitOpportunities = useMerklConfig(store => store.config.tagsDetails?.token?.visitOpportunities?.enabled);
+
   return (
     <>
       <Group className="flex-col">
@@ -34,13 +36,12 @@ export default function TokenTooltip({ token, size, chain }: TokenTooltipProps) 
             </Group>
           </>
         )}
-        {((merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) ||
-          (chain?.explorers?.length ?? 0) > 0) && (
+        {((visitOpportunities ?? false) || (chain?.explorers?.length ?? 0) > 0) && (
           <>
             <Divider look="soft" horizontal />
             <Group className="flex-col" size="md">
               {/* Conditionally render the "Check opportunities" link */}
-              {(merklConfig?.tagsDetails?.token?.visitOpportunities?.enabled ?? false) && (
+              {(visitOpportunities ?? false) && (
                 <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" />
                   Check opportunities with {token?.symbol}
