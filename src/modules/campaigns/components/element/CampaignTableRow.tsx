@@ -116,7 +116,7 @@ export default function CampaignTableRow({
 
     return columns.map(([label, content]) => {
       return (
-        <Group key={label} className="justify-between">
+        <Group key={label} className="justify-between items-center">
           <Text size="sm" look="bold">
             {label}
           </Text>
