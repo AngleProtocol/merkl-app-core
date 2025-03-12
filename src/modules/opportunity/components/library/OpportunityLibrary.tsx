@@ -1,7 +1,7 @@
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useLocation, useNavigate } from "@remix-run/react";
-import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
+import { Animations, Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import merklConfig from "../../../../config";
@@ -10,6 +10,7 @@ import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityF
 import OpportunityCell from "../items/OpportunityCell";
 import OpportunityTableRow from "../items/OpportunityTableRow";
 import { OpportunityTable } from "./OpportunityTable";
+import { motion } from "motion/react";
 
 export type Displays = "grid" | "list";
 
@@ -20,6 +21,8 @@ export type OpportunityLibrary = {
   hideFilters?: boolean;
   forceView?: OpportunityView;
 } & OpportunityFilterProps;
+
+const MotionGroup = motion.create(Group);
 
 export default function OpportunityLibrary({
   opportunities,
@@ -124,7 +127,13 @@ export default function OpportunityLibrary({
               </Group>
             </Box>
             <Box>
-              <Group className="grid md:grid-cols-2 lg:grid-cols-3" size="lg">
+              <MotionGroup
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={Animations.container}
+                className="grid md:grid-cols-2 lg:grid-cols-3"
+                size="lg">
                 {opportunities?.map(o => (
                   <OpportunityCell
                     navigationMode={merklConfig.opportunityNavigationMode}
@@ -132,7 +141,7 @@ export default function OpportunityLibrary({
                     opportunity={o}
                   />
                 ))}
-              </Group>
+              </MotionGroup>
             </Box>
             {count !== undefined && (
               <Box content="sm" className="w-full">

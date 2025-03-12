@@ -7,14 +7,29 @@ import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunit
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Box, Button, Divider, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
+import {
+  Animations,
+  Box,
+  Button,
+  Divider,
+  Group,
+  Icon,
+  Text,
+  Title,
+  Value,
+  mergeClass,
+  useOverflowingRef,
+} from "dappkit";
 import { useMemo } from "react";
+import { motion } from "motion/react";
 
 export type OpportunityCellProps = {
   opportunity: Opportunity;
   tags?: (keyof TagTypes)[];
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
+
+const MotionBox = motion.create(Box);
 
 export default function OpportunityCell({ opportunity, navigationMode, tags }: OpportunityCellProps) {
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
@@ -23,7 +38,9 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
 
   const cell = useMemo(
     () => (
-      <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0">
+      <MotionBox
+        className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0"
+        variants={Animations.fadeIn}>
         <Group className="p-md md:p-xl justify-between flex-1 items-end">
           <Group className="flex-nowrap">
             <Text className="text-3xl">
@@ -77,7 +94,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
             </Button>
           </Group>
         </Group>
-      </Box>
+      </MotionBox>
     ),
     [opportunity, Icons, name, overflowing, ref, Tags, tags, formattedDailyRewards],
   );

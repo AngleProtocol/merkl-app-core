@@ -1,7 +1,9 @@
 import { useLocation } from "@remix-run/react";
 import {
+  Animations,
   Button,
   Container,
+  Divider,
   Group,
   Icon,
   type IconProps,
@@ -13,6 +15,7 @@ import {
   Value,
   useTheme,
 } from "dappkit";
+import { motion } from "motion/react";
 import type { PropsWithChildren, ReactNode } from "react";
 import { v4 as uuidv4 } from "uuid";
 import merklConfig from "../../config";
@@ -23,7 +26,7 @@ export type HeroProps = PropsWithChildren<{
   title: ReactNode;
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
-  description?: ReactNode;
+  description: ReactNode;
   tags?: ReactNode[] | ReactNode;
   sideDatas?: HeroInformations[];
   tabs?: { label: ReactNode; link: string; key: string }[];
@@ -34,6 +37,8 @@ export type HeroInformations = {
   label: string;
   key: string;
 };
+
+const MotionGroup = motion.create(Group);
 
 export default function Hero({
   navigation,
@@ -58,13 +63,17 @@ export default function Hero({
             !!merklConfig.hero.bannerOnAllPages
               ? "bg-cover xl:bg-auto bg-right-bottom"
               : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
+                ? "bg-cover xl:bg-auto bg-right-bottom"
                 : "bg-main-6"
-          } flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
-            backgroundImage: `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`,
+            backgroundImage: !!merklConfig.hero.bannerOnAllPages
+              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
+                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
+                : "none",
           }}>
-          <Container className="z-10">
+          <Container>
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
                 <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
@@ -99,21 +108,32 @@ export default function Hero({
                       </Icons>
                     )}
                     <Title h={1} size={2} className="flex-1">
-                      {title}
+                      <motion.span className="inline-block" variants={Animations.slideYfadeIn}>
+                        {title}
+                      </motion.span>
                     </Title>
                   </Group>
 
                   {!!description && (
-                    <Text size="lg" look="base">
-                      {description}
-                    </Text>
+                    <>
+                      <Divider look="soft" />
+                      <Text size="lg" look="base">
+                        <motion.span className="inline-block" variants={Animations.slideYfadeIn}>
+                          {description}
+                        </motion.span>
+                      </Text>
+                    </>
                   )}
-                  {!!tags && <Group className="mb-lg">{tags}</Group>}
+                  {!!tags && (
+                    <MotionGroup variants={Animations.fadeIn} className="mb-lg">
+                      {tags}
+                    </MotionGroup>
+                  )}
                 </Group>
                 {!!sideDatas && (
                   <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="lg">
                     {sideDatas.map(data => (
-                      <Group key={data.key} className="flex-col" size="xs">
+                      <MotionGroup key={data.key} className="flex-col" size="xs" variants={Animations.fadeIn}>
                         <Text size={4} className="!text-main-12">
                           {data.data}
                         </Text>
@@ -121,7 +141,7 @@ export default function Hero({
                         <Text size="md" bold>
                           {data.label}
                         </Text>
-                      </Group>
+                      </MotionGroup>
                     ))}
                   </Group>
                 )}

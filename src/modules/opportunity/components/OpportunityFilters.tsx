@@ -5,7 +5,8 @@ import useChains from "@core/modules/chain/hooks/useChains";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
-import { Button, Group, Icon, Input, Select, Text } from "dappkit";
+import { Animations, Button, Group, Icon, Input, Select, Text } from "dappkit";
+import { motion } from "motion/react";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
@@ -263,66 +264,76 @@ export default function OpportunityFilters({
     <Group className="justify-between flex-nowrap overflow-x-scroll">
       <Group className="items-center flex-nowrap">
         {fields.includes("search") && (
-          <Form>
-            <Input
-              look="base"
-              name="search"
-              value={innerSearch}
-              className="min-w-[12ch]"
-              state={[innerSearch, v => setInnerSearch(v ?? "")]}
-              suffix={<Icon remix="RiSearchLine" />}
-              onClick={onSearchSubmit}
-              placeholder="Search"
-            />
-          </Form>
+          <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+            <Form>
+              <Input
+                look="base"
+                name="search"
+                value={innerSearch}
+                className="min-w-[12ch]"
+                state={[innerSearch, v => setInnerSearch(v ?? "")]}
+                suffix={<Icon remix="RiSearchLine" />}
+                onClick={onSearchSubmit}
+                placeholder="Search"
+              />
+            </Form>
+          </motion.span>
         )}
         <Group size="lg" className="items-center flex-nowrap">
           <Group className="items-center flex-nowrap">
             {fields.includes("action") && (
-              <Select
-                state={[actionsInput, setActionsInput]}
-                allOption={"All categories"}
-                multiple
-                options={actionOptions}
-                look="tint"
-                placeholder="Category"
-                placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
-              />
+              <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+                <Select
+                  state={[actionsInput, setActionsInput]}
+                  allOption={"All categories"}
+                  multiple
+                  options={actionOptions}
+                  look="tint"
+                  placeholder="Category"
+                  placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
+                />
+              </motion.span>
             )}
             {fields.includes("status") && (
-              <Select
-                state={[statusInput, setStatusInput]}
-                allOption={"All status"}
-                multiple
-                options={statusOptions}
-                look="tint"
-                placeholder="Status"
-                placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
-              />
+              <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+                <Select
+                  state={[statusInput, setStatusInput]}
+                  allOption={"All status"}
+                  multiple
+                  options={statusOptions}
+                  look="tint"
+                  placeholder="Status"
+                  placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
+                />
+              </motion.span>
             )}
             {fields.includes("chain") && !isSingleChain && (
-              <Select
-                state={[chainIdsInput, n => setChainIdsInput(n)]}
-                allOption={"All chains"}
-                multiple
-                search
-                options={chainOptions}
-                look="tint"
-                placeholder="Chain"
-                placeholderIcon={<Icon remix="RiLink" />}
-              />
+              <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+                <Select
+                  state={[chainIdsInput, n => setChainIdsInput(n)]}
+                  allOption={"All chains"}
+                  multiple
+                  search
+                  options={chainOptions}
+                  look="tint"
+                  placeholder="Chain"
+                  placeholderIcon={<Icon remix="RiLink" />}
+                />
+              </motion.span>
             )}
             {fields.includes("protocol") && !isSingleProtocol && (
-              <Select
-                state={[protocolInput, n => setProtocolInput(n)]}
-                allOption={"All protocols"}
-                multiple
-                search
-                options={protocolOptions}
-                look="tint"
-                placeholder="Protocol"
-                placeholderIcon={<Icon remix="RiShapesFill" />}
-              />
+              <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+                <Select
+                  state={[protocolInput, n => setProtocolInput(n)]}
+                  allOption={"All protocols"}
+                  multiple
+                  search
+                  options={protocolOptions}
+                  look="tint"
+                  placeholder="Protocol"
+                  placeholderIcon={<Icon remix="RiShapesFill" />}
+                />
+              </motion.span>
             )}
           </Group>
           <Group size="lg" className="flex-nowrap items-center">
@@ -337,20 +348,24 @@ export default function OpportunityFilters({
                 )}
               </Button>
             )}
-            <Button onClick={onClearFilters} look="soft" size="xs" className="text-nowrap">
-              Clear all filters
-              <Icon remix="RiCloseLine" />{" "}
-            </Button>
+            <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+              <Button onClick={onClearFilters} look="soft" size="xs" className="text-nowrap">
+                Clear all filters
+                <Icon remix="RiCloseLine" />{" "}
+              </Button>
+            </motion.span>
           </Group>
         </Group>
       </Group>
-      <Select
-        onChange={onSortByChange}
-        state={[sortInput, setSortInput]}
-        options={sortOptions}
-        look="hype"
-        placeholder={"By Daily Rewards"}
-      />
+      <motion.span className="inline-block" variants={Animations.slideXfadeIn}>
+        <Select
+          onChange={onSortByChange}
+          state={[sortInput, setSortInput]}
+          options={sortOptions}
+          look="hype"
+          placeholder={"By Daily Rewards"}
+        />
+      </motion.span>
     </Group>
   );
 }
