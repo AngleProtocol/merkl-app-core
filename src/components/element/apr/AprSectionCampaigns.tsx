@@ -53,12 +53,12 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
         TVL Allocation
       </Text>
       <Divider />
-      <Group className="flex-col ">
+      <Group className="flex-col" size="sm">
         <Group className="items-center justify-between gap-xl" size="sm">
           <Text size="sm" look="soft">
             Average APR
           </Text>
-          <Text look="soft" bold>
+          <Text look="soft" bold size="sm">
             <Value value format="0a%">
               {opportunity.apr / 100}
             </Value>
@@ -69,7 +69,7 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
             <Text size="sm" look="soft">
               {getAprName(breakdown)}
             </Text>
-            <Text look="soft">
+            <Text look="soft" size="sm">
               <Value value format="0a%">
                 {breakdown.value / 100}
               </Value>
