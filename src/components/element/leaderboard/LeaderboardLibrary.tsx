@@ -2,7 +2,7 @@ import type { Api } from "@core/api/types";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Chain, Token } from "@merkl/api";
 import { useSearchParams } from "@remix-run/react";
-import { Group, Text, Title } from "dappkit";
+import { Group, Text } from "dappkit";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Pagination from "../Pagination";
@@ -16,10 +16,11 @@ export type LeaderboardLibraryProps = {
   reason: boolean;
   token: Token;
   chain: Chain;
+  header?: React.ReactNode;
 };
 
 export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
-  const { leaderboard, count, total, token, chain, reason } = props;
+  const { leaderboard, count, total, token, chain, reason, header } = props;
   const [searchParams] = useSearchParams();
 
   const items = searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
@@ -47,11 +48,7 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
         <Table
           responsive
           dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
-          header={
-            <Title h={5} look="soft" className="w-full">
-              Leaderboard
-            </Title>
-          }
+          header={header}
           footer={count !== undefined && <Pagination count={count} />}>
           {rows}
         </Table>

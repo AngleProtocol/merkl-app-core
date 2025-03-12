@@ -1,4 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useTokens from "@core/modules/token/hooks/useTokens";
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, Icon, Text, Value } from "dappkit";
 
@@ -8,6 +9,9 @@ type TvlRowAllocationProps = {
 
 export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
+  const { navigateToCoinGecko: navigateToCoinGeckoToken0 } = useTokens(opportunity.tokens[0]);
+  const { navigateToCoinGecko: navigateToCoinGeckoToken1 } = useTokens(opportunity.tokens[1]);
 
   let content: React.ReactNode = null;
   switch (opportunity.type) {
@@ -20,54 +24,54 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
 
       content = (
         <Group className="flex-col" size="sm">
-          <Group className="items-center" size="sm">
+          <Text className="flex items-center gap-sm" size="sm" look="soft">
             <Icon src={opportunity.tokens[0].icon} />
-            <Text size="sm" look="bold" bold>
+            <Text bold className="flex gap-sm">
               <Value value format="0.0a">
                 {tvlBreakdownToken0?.value}
               </Value>
-            </Text>
-            <Text size="sm" look="bold" bold>
-              {token0.name}
+              <span>{token0.symbol}</span>
             </Text>
 
             {!!tvlBreakdownToken0?.value && !!token0?.price && (
-              <Text size="sm">
+              <Text size="sm" className="flex items-center gap-sm">
+                (
                 <Value value format={dollarFormat}>
                   {tvlBreakdownToken0.value * token0.price}
                 </Value>
-                {" ~ "}
+                {" - "}
                 <Value value format="0a%">
                   {(tvlBreakdownToken0?.value * token0.price) / opportunity.tvlRecord.total}
                 </Value>
-                {" of TVL"}
+                {" TVL"})
+                <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken0} />
               </Text>
             )}
-          </Group>
-          <Group className="items-center" size="sm">
+          </Text>
+          <Text className="flex items-center gap-sm" size="sm" look="soft">
             <Icon src={opportunity.tokens[1].icon} />
-            <Text size="sm" look="bold" bold>
+            <Text bold className="flex gap-sm" size="sm">
               <Value value format="0.0a">
                 {tvlBreakdownToken1?.value}
               </Value>
-            </Text>
-            <Text size="sm" look="bold" bold>
-              {token1.name}
+              <span>{token1.symbol}</span>
             </Text>
 
             {!!tvlBreakdownToken1?.value && !!token1?.price && (
-              <Text size="sm">
+              <Text size="sm" className="flex items-center gap-sm">
+                (
                 <Value value format={dollarFormat}>
                   {tvlBreakdownToken1.value * token1.price}
                 </Value>
-                {" ~ "}
+                {" - "}
                 <Value value format="0a%">
                   {(tvlBreakdownToken1?.value * token1.price) / opportunity.tvlRecord.total}
                 </Value>
-                {" of TVL"}
+                {" TVL"})
+                <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken1} />
               </Text>
             )}
-          </Group>
+          </Text>
         </Group>
       );
       break;
@@ -78,13 +82,10 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   if (!content) return null;
   return (
     <Group className="flex-col">
-      <Group className="items-center" size="sm">
-        <Icon className="text-main-11" remix="RiContractRightFill" />
-        <Text size="sm" bold>
-          TVL allocation
-        </Text>
-      </Group>
-
+      <Text bold className="flex items-center gap-xs " size="sm" look="bold">
+        <Icon remix="RiWaterFlashFill" />
+        TVL Allocation
+      </Text>
       <Divider />
       {content}
     </Group>

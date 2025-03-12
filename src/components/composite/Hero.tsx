@@ -3,6 +3,7 @@ import { useLocation } from "@remix-run/react";
 import {
   Button,
   Container,
+  Divider,
   Group,
   Icon,
   type IconProps,
@@ -106,9 +107,12 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <Text size="lg" look="base">
-                      {description}
-                    </Text>
+                    <>
+                      <Divider />
+                      <Text size="lg" look="base">
+                        {description}
+                      </Text>
+                    </>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>

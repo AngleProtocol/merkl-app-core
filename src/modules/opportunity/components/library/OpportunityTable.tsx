@@ -1,6 +1,6 @@
 import { Title, createTable } from "dappkit";
 
-export const columns = {
+const columns = {
   opportunity: {
     name: (
       <Title h={5} look="soft">

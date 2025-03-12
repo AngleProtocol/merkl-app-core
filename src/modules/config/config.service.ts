@@ -61,7 +61,7 @@ export const ConfigService = defineModule<object>().create(() => {
           const register = (routes: MerklRoutes, parent: string) => {
             for (const [route, { file, routes: subroutes }] of Object.entries(routes)) {
               set([parent, route].every(r => r === "/") ? "/" : `${parent}${route}`, file, () => {
-                subroutes && register(subroutes, route);
+                subroutes && register(subroutes, parent + route);
               });
             }
           };

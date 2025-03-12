@@ -32,7 +32,7 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
    */
   const link = useMemo(
     () =>
-      `/opportunities/${computeChain?.name?.toLowerCase?.().replace(" ", "-")}/${delay.Opportunity.type}/${delay.Opportunity.id}`,
+      `/opportunities/${computeChain?.name?.toLowerCase?.().replace(" ", "-")}/${delay.Opportunity.type}/${delay.Opportunity.identifier}`,
     [delay, computeChain],
   );
 
