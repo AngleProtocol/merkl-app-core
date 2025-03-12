@@ -1,19 +1,16 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Button, Container, Group, Icon, Space, Text } from "dappkit";
 import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
-  return withUrl(request, { backend, routes });
+  return MetadataService({ request, backend, routes }).fill();
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
   const bridgeHelperLink = useMerklConfig(store => store.config.bridge.helperLink);

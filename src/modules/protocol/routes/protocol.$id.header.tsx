@@ -5,9 +5,8 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
-import { withUrl } from "@core/utils/url";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
 
@@ -27,7 +26,7 @@ export async function loader({ context: { backend, routes }, params: { id }, req
 
   const { sum } = await opportunityService.getAggregate({ mainProtocolId: id }, "dailyRewards");
 
-  return withUrl(request, {
+  return {
     opportunities,
     count,
     protocol,
@@ -36,12 +35,11 @@ export async function loader({ context: { backend, routes }, params: { id }, req
     dailyRewards: sum,
     backend,
     routes,
-  });
+    ...MetadataService({ backend, routes, request }).fill(),
+  };
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export const clientLoader = Cache.wrap("protocol", 300);
 

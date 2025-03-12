@@ -1,10 +1,10 @@
 import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
-import type { MerklBackend } from "@core/config/backend";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
-export const RewardService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(
+export const RewardService = defineModule<{ api: Api; request: Request; backend: MerklBackendConfig }>().create(
   ({ inject }) => {
     const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Reward")(call);
     const campaignLeaderboardQueryFromRequest = (

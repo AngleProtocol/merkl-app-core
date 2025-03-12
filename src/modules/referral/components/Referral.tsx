@@ -19,12 +19,12 @@ import { zeroAddress } from "viem";
 import useReferral from "../hooks/useReferral";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 
-export interface ReferProps {
+export interface ReferalProps {
   url?: string;
   code?: string;
 }
 
-export default function Referral({ code: defaultCode }: ReferProps) {
+export default function Referral({ code: defaultCode }: ReferalProps) {
   const referralConfig = useMerklConfig(store => store.config.referral);
   const navigate = useNavigate();
   const [code, setCode] = useState<string | undefined>(defaultCode);

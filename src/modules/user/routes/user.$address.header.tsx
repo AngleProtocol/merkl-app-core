@@ -1,8 +1,7 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { Button, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
@@ -32,12 +31,18 @@ export async function loader({ context: { backend, routes }, params: { address }
     : null;
   const isBlacklisted = await UserService({ api }).isBlacklisted(address);
 
-  return withUrl(request, { rewards, address, token, isBlacklisted, backend, routes });
+  return {
+    rewards,
+    address,
+    token,
+    isBlacklisted,
+    backend,
+    routes,
+    ...MetadataService({ backend, routes, request }).fill(),
+  };
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export type OutletContextRewards = {
   rewards: ReturnType<typeof useRewards>["sortedRewards"];

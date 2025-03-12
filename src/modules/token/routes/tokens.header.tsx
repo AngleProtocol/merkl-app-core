@@ -1,17 +1,13 @@
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
-import { withUrl } from "../../../utils/url";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
-  return withUrl(request, { backend, routes });
+  return MetadataService({ request, backend, routes }).fill();
 }
-
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();

@@ -2,7 +2,7 @@ import type { Api } from "@core/api/types";
 import { defineModule } from "@merkl/conduit";
 import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
 
-export type Payload = Awaited<ReturnType<Api["v3"]["morphoMarkets"]["get"]>>["data"];
+export type MorphoPayload = Awaited<ReturnType<Api["v3"]["morphoMarkets"]["get"]>>["data"];
 
 export const MorphoService = defineModule<{ api: Api }>().create(({ inject }) => {
   const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Morpho")(call);

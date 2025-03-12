@@ -1,10 +1,10 @@
 import type { Api } from "@core/api/types";
-import type { MerklBackend } from "@core/config/backend";
 import { defineModule } from "@merkl/conduit";
 import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 export const DEFAULT_ITEMS_PER_PAGE_PROTOCOLS = 500;
 
-export const ProtocolService = defineModule<{ api: Api; backend: MerklBackend; request: Request }>().create(
+export const ProtocolService = defineModule<{ api: Api; backend: MerklBackendConfig; request: Request }>().create(
   ({ inject }) => {
     const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Protocol")(call);
     const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {

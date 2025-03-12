@@ -1,6 +1,6 @@
-import type { MerklBackend } from "@core/config/backend";
-import type { MerklRoutes } from "@core/config/routes";
+import type { MerklBackendConfig } from "@core/modules/config/types/merklBackendConfig";
 import "@remix-run/server-runtime";
+import type { MerklRoutes } from "@core/modules/config/types/merklRoutesConfig";
 import { MerklApi } from "@merkl/api";
 
 const api = MerklApi(
@@ -18,7 +18,7 @@ declare module "@remix-run/server-runtime" {
   }
 
   export interface AppLoadContext {
-    backend: MerklBackend;
+    backend: MerklBackendConfig;
     routes: MerklRoutes;
   }
 }

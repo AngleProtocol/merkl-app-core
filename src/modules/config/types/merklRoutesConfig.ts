@@ -1,6 +1,6 @@
+import type { MerklBackendConfig } from "@core/modules/config/types/merklBackendConfig";
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
 import type { MetaDescriptor } from "@remix-run/node";
-import type { MerklBackend } from "./backend";
 
 /**
  * Types of single page resources
@@ -30,7 +30,7 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
    */
   metadata?: (
     url: string,
-    config: MerklBackend,
+    config: MerklBackendConfig,
     resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) => MetaDescriptor[];
   /**
@@ -38,7 +38,7 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
    */
   pagedata?: (
     url: string,
-    config: MerklBackend,
+    config: MerklBackendConfig,
     resource: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
   ) => MetaDescriptor[];
   /**
@@ -58,3 +58,5 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
 export type MerklRoutes = {
   [url: `/${string}`]: MerklRoute;
 };
+
+export type MerklRoutesConfig = MerklRoutes & { layout: Omit<MerklRoute, "label"> };

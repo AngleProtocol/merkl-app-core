@@ -1,6 +1,6 @@
 import type { Chain } from "viem";
 
-export interface MerklBackend {
+export interface MerklBackendConfig {
   appName: string;
   tags?: string[];
   chains?: Pick<Chain, "id">[];
@@ -9,6 +9,10 @@ export interface MerklBackend {
   featured?: {
     enabled: boolean;
     length: number;
+  };
+  leaderboard?: {
+    chain: string;
+    address: string;
   };
   rewardsTotalClaimableMode?: string;
   tokenSymbolPriority?: string[];

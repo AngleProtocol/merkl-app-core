@@ -1,5 +1,5 @@
-import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/config/type";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
 import { useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
