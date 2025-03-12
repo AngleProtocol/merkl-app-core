@@ -1,3 +1,4 @@
+import { createColoring } from "dappkit";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
@@ -37,7 +38,6 @@ import {
 import { eip712WalletActions, zksync } from "viem/zksync";
 import { walletConnect } from "wagmi/connectors";
 import type { MerklConfig } from "./config.model";
-import { createColoring } from "dappkit";
 
 export const defaultMerklConfig: MerklConfig = {
   appName: "Merkl",
