@@ -9,7 +9,7 @@ export default function Index() {
 
   return (
     <Container>
-      <Group className="flex-wrap flex-col-reverse lg:flex-nowrap lg:flex-row gap-xl py-xl">
+      <Group className="flex-wrap lg:flex-nowrap lg:flex-row gap-xl py-xl">
         <OpportunityBoxParticipate opportunity={opportunity} className="max-w-sm min-w-[24ch]" />
         <Group className="flex flex-col items-start gap-xl ">
           <Text className="h-[fit-content] border-1 rounded-lg border-main-5 p-xl">
