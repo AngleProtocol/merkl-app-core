@@ -1,8 +1,8 @@
 import Tag from "@core/components/element/Tag";
 import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
-import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import React, { useCallback, useMemo } from "react";
@@ -20,6 +20,12 @@ export default function OpportunityBoxParticipate(props: IProps) {
 
   const { targets } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier);
 
+  const { isDepositEnabled, decimalFormatDolar, decimalFormatApr } = useMerklConfig(store => ({
+    isDepositEnabled: store.config.deposit,
+    decimalFormatDolar: store.config.decimalFormat.dollar,
+    decimalFormatApr: store.config.decimalFormat.apr,
+  }));
+
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
 
   const isSupplyButtonVisible = useMemo(() => {
@@ -29,9 +35,9 @@ export default function OpportunityBoxParticipate(props: IProps) {
   }, [protocolUrl, targets]);
 
   const onSupply = useCallback(() => {
-    if ((!merklConfig.deposit && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
+    if ((!isDepositEnabled && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
-  }, [protocolUrl, targets]);
+  }, [protocolUrl, targets, isDepositEnabled]);
 
   return (
     <>
@@ -52,7 +58,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
           </Text>
           <Group className="items-center justify-between">
             <Title look="hype" h={3}>
-              <Value value format={merklConfig.decimalFormat.dollar}>
+              <Value value format={decimalFormatDolar}>
                 {opportunity.dailyRewards}
               </Value>
             </Title>
@@ -83,7 +89,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
               </Dropdown>
 
               <Title h={3} look="tint">
-                <Value value format={merklConfig.decimalFormat.apr}>
+                <Value value format={decimalFormatApr}>
                   {opportunity.apr / 100}
                 </Value>
               </Title>
@@ -102,7 +108,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
                 </Text>
               )}
               <Title h={3} look="tint">
-                <Value value format={merklConfig.decimalFormat.dollar}>
+                <Value value format={decimalFormatDolar}>
                   {opportunity.tvl}
                 </Value>
               </Title>

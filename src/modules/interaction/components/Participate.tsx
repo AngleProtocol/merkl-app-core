@@ -1,4 +1,3 @@
-import merklConfig from "@core/config";
 import useParticipate from "@core/hooks/useParticipate";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityShortCard from "@core/modules/opportunity/components/items/OpportunityShortCard";
@@ -33,7 +32,11 @@ export default function Participate({
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
 
-  const backend = useMerklConfig(store => store.config.backend);
+  const { backend, isDepositEnabled, decimalFormatDolar } = useMerklConfig(store => ({
+    backend: store.config.backend,
+    isDepositEnabled: store.config.deposit,
+    decimalFormatDolar: store.config.decimalFormat.dollar,
+  }));
 
   const {
     targets,
@@ -82,7 +85,7 @@ export default function Participate({
           footer={
             <Group className="justify-between w-full">
               {inputToken && (
-                <Value className="animate-drop" format={merklConfig.decimalFormat.dollar}>
+                <Value className="animate-drop" format={decimalFormatDolar}>
                   {Fmt.toPrice(amount ?? 0n, inputToken)}
                 </Value>
               )}
@@ -192,6 +195,7 @@ export default function Participate({
     balance,
     targets,
     connected,
+    decimalFormatDolar,
   ]);
 
   useEffect(() => {
@@ -208,7 +212,7 @@ export default function Participate({
         </>
       )}
 
-      {loading && !!merklConfig.deposit && (
+      {loading && !!isDepositEnabled && (
         <Group className="w-full justify-center mt-md">
           <Icon remix="RiLoader2Line" className="animate-spin" />
         </Group>
