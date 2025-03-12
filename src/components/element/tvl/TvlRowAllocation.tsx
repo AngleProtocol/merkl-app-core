@@ -1,4 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useTokens from "@core/modules/token/hooks/useTokens";
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, Icon, Text, Value } from "dappkit";
 
@@ -8,6 +9,9 @@ type TvlRowAllocationProps = {
 
 export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
+  const { navigateToCoinGecko: navigateToCoinGeckoToken0 } = useTokens(opportunity.tokens[0]);
+  const { navigateToCoinGecko: navigateToCoinGeckoToken1 } = useTokens(opportunity.tokens[1]);
 
   let content: React.ReactNode = null;
   switch (opportunity.type) {
@@ -30,7 +34,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
             </Text>
 
             {!!tvlBreakdownToken0?.value && !!token0?.price && (
-              <Text size="sm">
+              <Text size="sm" className="flex items-center gap-sm">
                 (
                 <Value value format={dollarFormat}>
                   {tvlBreakdownToken0.value * token0.price}
@@ -40,12 +44,13 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
                   {(tvlBreakdownToken0?.value * token0.price) / opportunity.tvlRecord.total}
                 </Value>
                 {"TVL"})
+                <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken0} />
               </Text>
             )}
           </Text>
           <Text className="flex items-center gap-sm" size="sm" look="soft">
             <Icon src={opportunity.tokens[1].icon} />
-            <Text bold className="flex gap-sm">
+            <Text bold className="flex gap-sm" size="sm">
               <Value value format="0.0a">
                 {tvlBreakdownToken1?.value}
               </Value>
@@ -53,7 +58,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
             </Text>
 
             {!!tvlBreakdownToken1?.value && !!token1?.price && (
-              <Text size="sm">
+              <Text size="sm" className="flex items-center gap-sm">
                 (
                 <Value value format={dollarFormat}>
                   {tvlBreakdownToken1.value * token1.price}
@@ -63,6 +68,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
                   {(tvlBreakdownToken1?.value * token1.price) / opportunity.tvlRecord.total}
                 </Value>
                 {"TVL"})
+                <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken1} />
               </Text>
             )}
           </Text>
