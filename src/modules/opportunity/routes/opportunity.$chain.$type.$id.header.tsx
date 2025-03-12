@@ -72,6 +72,7 @@ export default function Index() {
             )}
           </Group>
         }
+        breadcrumbs={[{ name: "Opportunity", link: "" }]}
         description={description}>
         <Outlet context={{ opportunity, chain }} />
       </Hero>
