@@ -68,7 +68,7 @@ export default function Index() {
         header={
           <Group className="justify-between w-full pb-md">
             <Group className="gap-md items-center">
-              <Button bold onClick={backToOpportunity} look="soft">
+              <Button bold onClick={backToOpportunity} look="soft" size="xs">
                 <Icon remix="RiArrowLeftLine" /> Back
               </Button>
               <Text bold>LEADERBOARD</Text>
