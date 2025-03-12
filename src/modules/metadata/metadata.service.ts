@@ -2,7 +2,7 @@ import { defineModule } from "@merkl/conduit";
 import type { LoaderFunctionArgs, MetaDescriptor, MetaFunction } from "@remix-run/node";
 import type { Location } from "@remix-run/react";
 import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
-import type { MerklRoute, MerklRoutes, MerklRouteType } from "../config/types/merklRoutesConfig";
+import type { MerklRoute, MerklRouteType, MerklRoutes } from "../config/types/merklRoutesConfig";
 
 type Dependencies = {
   routes: MerklRoutes;
@@ -177,7 +177,7 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
   };
 
   const fill = inject(["backend", "request", "routes"]).inFunction(
-    <T extends object>(dependencies: Pick<Dependencies, "backend" | "request" | "routes">) => {
+    (dependencies: Pick<Dependencies, "backend" | "request" | "routes">) => {
       const { request } = dependencies;
       const url = `${request.url.split("/")?.[0]}//${request.headers.get("host")}`;
       const metadata = wrap.handler({

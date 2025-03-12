@@ -1,3 +1,4 @@
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -5,7 +6,6 @@ import { Container, Group, Space } from "dappkit";
 import Hero from "../../../components/composite/Hero";
 import Refer from "../components/Refer";
 import Referral from "../components/Referral";
-import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   const code = new URL(request.url).searchParams.get("code");

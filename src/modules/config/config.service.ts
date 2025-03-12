@@ -1,14 +1,14 @@
 import { defineModule } from "@merkl/conduit";
-import type { MerklRoute, MerklRoutes, MerklRoutesConfig, MerklRouteType } from "./types/merklRoutesConfig";
 import type { DefineRouteFunction } from "@remix-run/dev/dist/config/routes";
 import type { MetaDescriptor } from "@remix-run/react";
-import type { MerklBackendConfig } from "./types/merklBackendConfig";
-import type { MerklThemeConfig } from "./types/merklThemeConfig";
+import { createConfig as createWagmiConfig } from "wagmi";
 import type { MerklConfig } from "./config.model";
 import { defaultMerklConfig } from "./merkl.default.config";
-import { createConfig as createWagmiConfig } from "wagmi";
+import type { MerklBackendConfig } from "./types/merklBackendConfig";
+import type { MerklRoute, MerklRouteType, MerklRoutes, MerklRoutesConfig } from "./types/merklRoutesConfig";
+import type { MerklThemeConfig } from "./types/merklThemeConfig";
 
-export const ConfigService = defineModule<object>().create(({ inject }) => {
+export const ConfigService = defineModule<object>().create(() => {
   const property = (propertyName: string, content: string) => ({ property: propertyName, content });
   const routeDefinitionTools = {
     /**
@@ -48,9 +48,7 @@ export const ConfigService = defineModule<object>().create(({ inject }) => {
    * @param
    * @returns
    */
-  const defineRoutes = <T extends MerklRoutesConfig>(
-    definition: (tools: Tool) => T,
-  ) => {
+  const defineRoutes = <T extends MerklRoutesConfig>(definition: (tools: Tool) => T) => {
     const { layout, ...other } = definition(routeDefinitionTools);
 
     return {
@@ -88,6 +86,6 @@ export const ConfigService = defineModule<object>().create(({ inject }) => {
     defineRoutes,
     defineBackend,
     defineTheme,
-    defineConfig
+    defineConfig,
   };
 });

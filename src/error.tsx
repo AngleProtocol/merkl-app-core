@@ -17,10 +17,7 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
 
     if (notARoute)
       return (
-        <ThemeProvider
-          sizing={config.theme.sizing}
-          themes={config.theme.themes}
-          modes={config.theme.modes}>
+        <ThemeProvider sizing={config.theme.sizing} themes={config.theme.themes} modes={config.theme.modes}>
           <Group className="h-[100vh] flex-col justify-center m-auto w-min">
             <Title h={1} className="flex flex-nowrap flex-col">
               <Icon size="xl" className="!w-[100px] h-[100px]" remix="RiAlertFill" />
@@ -31,10 +28,7 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
         </ThemeProvider>
       );
     return (
-      <ThemeProvider
-        sizing={config.theme.sizing}
-        themes={config.theme.themes}
-        modes={config.theme.modes}>
+      <ThemeProvider sizing={config.theme.sizing} themes={config.theme.themes} modes={config.theme.modes}>
         <Group className="h-[100vh] flex-col justify-center m-auto w-min">
           <Title h={1} className="flex flex-nowrap flex-col">
             <Icon size="xl" className="!w-[100px] h-[100px]" remix="RiAlertFill" />

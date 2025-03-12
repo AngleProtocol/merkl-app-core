@@ -1,6 +1,5 @@
 import { Title, createTable } from "dappkit";
 
-
 export const columns = {
   opportunity: {
     name: (

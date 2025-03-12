@@ -1,3 +1,4 @@
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -6,9 +7,8 @@ import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
-import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
-export async function loader({ context: {backend, routes}, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   return MetadataService({ backend, routes, request }).fill();
 }
 

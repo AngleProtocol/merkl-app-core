@@ -1,9 +1,9 @@
 import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
-import type { Opportunity } from "@merkl/api";
-import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
+import type { Opportunity } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
 export const OpportunityService = defineModule<{ api: Api; request: Request; backend: MerklBackendConfig }>().create(
   ({ inject }) => {
@@ -22,7 +22,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           sort: url.searchParams.get("sort")?.split("-")[0],
           order: url.searchParams.get("sort")?.split("-")[1],
           name: url.searchParams.get("search") ?? undefined,
-          test: backend.alwaysShowTestTokens ? true : url.searchParams.get("test") ?? false,
+          test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
           ...override,
         };

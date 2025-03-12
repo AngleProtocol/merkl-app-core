@@ -1,8 +1,3 @@
-import type { MerklRoutes } from "./types/merklRoutesConfig";
-import type { MerklThemeConfig } from "./types/merklThemeConfig";
-import type { MerklBackendConfig } from "./types/merklBackendConfig";
-import type { Chain } from "viem";
-import type { IconProps, WalletOptions } from "packages/dappkit/src";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
@@ -10,8 +5,13 @@ import type {
   OpportunityView,
 } from "@core/config/opportunity";
 import type { RewardsNavigationMode } from "@core/config/rewards";
-import type { createConfig as createWagmiConfig } from "wagmi";
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { IconProps, WalletOptions } from "packages/dappkit/src";
+import type { Chain } from "viem";
+import type { createConfig as createWagmiConfig } from "wagmi";
+import type { MerklBackendConfig } from "./types/merklBackendConfig";
+import type { MerklRoutes } from "./types/merklRoutesConfig";
+import type { MerklThemeConfig } from "./types/merklThemeConfig";
 
 /**
  * Route entry in the links menu, either an external link or internal route

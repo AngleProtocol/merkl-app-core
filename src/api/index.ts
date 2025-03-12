@@ -1,7 +1,7 @@
 import type { MerklBackendConfig } from "@core/modules/config/types/merklBackendConfig";
 import "@remix-run/server-runtime";
-import { MerklApi } from "@merkl/api";
 import type { MerklRoutes } from "@core/modules/config/types/merklRoutesConfig";
+import { MerklApi } from "@merkl/api";
 
 const api = MerklApi(
   (typeof window === "undefined" ? process.env.API_URL : (window as { ENV?: { API_URL?: string } })?.ENV?.API_URL) ??

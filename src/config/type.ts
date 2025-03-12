@@ -1,9 +1,10 @@
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
-import type { IconProps, WalletOptions } from "dappkit";
+import type { WalletOptions } from "dappkit";
 import type { Chain as viemChain } from "viem/chains";
 import { createConfig as createWagmiConfig } from "wagmi";
+import type { MerklBackend } from "./backend";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
@@ -12,7 +13,6 @@ import type {
 } from "./opportunity";
 import type { RewardsNavigationMode } from "./rewards";
 import type { MerklRoutes } from "./routes";
-import type { MerklBackend } from "./backend";
 
 export type routesType = {
   [key: string]: {
@@ -24,8 +24,6 @@ export type routesType = {
     inHeader?: boolean;
   };
 };
-
-
 
 // TODO: groups by entity
 export type MerklConfig<T extends Themes> = {
