@@ -1,7 +1,7 @@
-import type { NavigationMenuRoute } from "@core/config/type";
+import type { routesType } from "@core/config/type";
 import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import merklConfig from "../../config";
 import useChains from "../../modules/chain/hooks/useChains";
@@ -28,6 +28,19 @@ export default function Header() {
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
   }, [chains, chainId]);
+
+  // Dynamically filter routes based on the config
+  const routes = useMemo(() => {
+    const routes: routesType = JSON.parse(JSON.stringify(merklConfig.routes));
+    const filteredRoutes = Object.fromEntries(
+      Object.entries(routes).filter(([_, route]) => route.enabled && route.inHeader === true),
+    );
+
+    if (!!filteredRoutes.dashboard && !!user) {
+      filteredRoutes.dashboard.route = filteredRoutes.dashboard.route.concat(`/${user}`);
+    }
+    return filteredRoutes;
+  }, [user]);
 
   const [height, setHeight] = useState(0);
 
@@ -71,7 +84,7 @@ export default function Header() {
       return <Button onClick={() => switchChain(singleChain?.id!)}>Switch to {enabledChains?.[0]?.name}</Button>;
     if (isSingleChain) return <></>;
 
-    return <Select search placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
+    return <Select placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
   }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
 
   return (
@@ -93,13 +106,13 @@ export default function Header() {
                       <Group
                         key={`${key}-link`}
                         className={mergeClass(
-                          "h-full",
+                          "h-full border-b-2 border-main-0 ease",
                           hasLink(route) &&
                             location.pathname ===
                               (route.flags?.replaceWithWallet
                                 ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
                                 : route.link) &&
-                            "border-accent-11 border-b-2",
+                            "border-accent-11",
                         )}>
                         <Button
                           className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
