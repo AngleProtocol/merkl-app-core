@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   type Component,
+  Divider,
   Dropdown,
   EventBlocker,
   Group,
@@ -107,33 +108,6 @@ export default function CampaignTableRow({
           </Button>
         </Group>,
       ],
-      [
-        <EventBlocker key="leaderboardLabel">
-          <Text size="sm" className="flex items-center gap-xs" onClick={onNavigateToLeaderBoard}>
-            Leaderboard
-            <Icon remix="RiArrowRightUpLine" />
-          </Text>
-        </EventBlocker>,
-        <Text key="leaderboard" size={"sm"} look="tint">
-          Todo
-        </Text>,
-      ],
-      rules.length > 0
-        ? [
-            <Text key="rules" size="sm">
-              Rules
-            </Text>,
-            <EventBlocker key="rulesLabel">
-              <Group className="justify-between flex-col size-full">
-                <Group>
-                  {rules?.map(rule => (
-                    <Rule size="xs" key={uuidv4()} type={rule.type} value={rule.value} />
-                  ))}
-                </Group>
-              </Group>
-            </EventBlocker>,
-          ]
-        : [undefined, undefined],
     ] as const satisfies [ReactNode, ReactNode][];
 
     return columns.map(([label, content]) => {
@@ -144,7 +118,7 @@ export default function CampaignTableRow({
         </Group>
       );
     });
-  }, [campaign, amount, chain, distributionChain, onNavigateToLeaderBoard, rules]);
+  }, [campaign, amount, chain, distributionChain]);
 
   const isCampaignLive = useMemo(() => BigInt(campaign.endTimestamp) * 1000n > moment.now(), [campaign]);
 
@@ -187,14 +161,48 @@ export default function CampaignTableRow({
       }>
       <Collapsible state={[isOpen, setIsOpen]}>
         <Space size="md" />
-        <Box size="md" className="p-0 bg-main-4 !rounded-md">
-          <Group className="flex-nowrap p-lg" size="lg">
+        <Box size="md" className="p-0 bg-main-4 !rounded-md ">
+          <Group className="flex-nowrap p-lg flex-col" size="xs">
             <Group className="justify-between flex-grow flex-col size-full gap-xs">
               <Text size="sm" look="tint" bold className="mb-md">
                 Campaign Informations
               </Text>
               {campaignInformation}
             </Group>
+            <Divider look="soft" />
+            <Group className="justify-between items-center">
+              <EventBlocker key="leaderboardLabel" className="py-sm">
+                <Button
+                  bold
+                  size="sm"
+                  look="soft"
+                  className="flex items-center gap-xs"
+                  onClick={onNavigateToLeaderBoard}>
+                  Leaderboard
+                  <Icon remix="RiArrowRightUpLine" />
+                </Button>
+              </EventBlocker>
+              <Text key="leaderboard" size={"sm"} look="tint">
+                Todo
+              </Text>
+            </Group>
+            <Divider look="soft" />
+            {rules.length > 0 && (
+              <Group className="flex-col">
+                <Text bold key="rules" size="sm">
+                  Rules
+                </Text>
+                <EventBlocker key="rulesLabel">
+                  <Group className="justify-between flex-col size-full">
+                    <Group>
+                      {rules?.map(rule => (
+                        <Rule size="xs" key={uuidv4()} type={rule.type} value={rule.value} />
+                      ))}
+                    </Group>
+                  </Group>
+                </EventBlocker>
+              </Group>
+            )}
           </Group>
         </Box>
       </Collapsible>

@@ -5,7 +5,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
-import { Box, Group, Hash, Icon, Text } from "packages/dappkit/src";
+import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
 import { useCallback } from "react";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "./opportunity.$chain.$type.$id.header";
@@ -67,12 +67,12 @@ export default function Index() {
         total={total}
         header={
           <Group className="justify-between w-full pb-md">
-            <Text bold className="flex gap-md items-center">
-              <Text onClick={backToOpportunity} className="flex cursor-pointer gap-xs" look="hype">
+            <Group className="gap-md items-center">
+              <Button bold onClick={backToOpportunity} look="soft">
                 <Icon remix="RiArrowLeftLine" /> Back
-              </Text>
-              LEADERBOARD
-            </Text>
+              </Button>
+              <Text bold>LEADERBOARD</Text>
+            </Group>
             <Text bold className="flex items-center">
               CAMPAIGN #
               <Hash format="prefix" copy>
