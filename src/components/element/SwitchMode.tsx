@@ -5,7 +5,7 @@ import { useMemo } from "react";
 export default function SwitchMode() {
   const { mode, toggleMode, themes, theme, setTheme } = useTheme();
   const modes = useMerklConfig(store => store.config.theme.modes);
-  const canSwitchModes = useMemo(() => !(!modes || modes?.length === 1), [modes]);
+  const canSwitchModes = useMemo(() => modes && modes.length > 1, [modes]);
 
   const themeOptions = useMemo(() => {
     return Object.keys(themes).reduce(
