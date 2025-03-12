@@ -4,7 +4,7 @@ import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import useParticipate from "@core/hooks/useParticipate";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
+import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
@@ -39,8 +39,9 @@ export default function OpportunityBoxParticipate(props: IProps) {
   return (
     <>
       <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
-      <Group
-        className={`w-full !gap-0 h-[fit-content] border-1 rounded-lg border-accent-5 overflow-hidden ${className}`}>
+      <Box
+        className={`bg-main-0 w-full !gap-0 h-[fit-content] border-1 border-accent-5 overflow-hidden ${className} !p-0`}
+        size="xl">
         <Group className="justify-between flex-nowrap h-[fit-content] p-xl w-full items-center">
           <Title h={5} look="hype" className="!text-sm">
             OPPORTUNITY
@@ -77,7 +78,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
             </Group>
           </Group>
           <Group className="flex-nowrap">
-            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="sm">
+            <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
                 <Text bold className="flex items-center gap-sm ">
                   APR
@@ -91,7 +92,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
                 </Value>
               </Title>
             </Group>
-            <Group className="border-1 rounded-lg border-accent-10 p-lg flex-col flex-1" size="sm">
+            <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               {opportunity.type === "CLAMM" ? (
                 <Dropdown onHover content={<TvlRowAllocation opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm " look="soft">
@@ -112,7 +113,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
             </Group>
           </Group>
         </Group>
-      </Group>
+      </Box>
     </>
   );
 }
