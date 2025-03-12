@@ -43,7 +43,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
                 <Value value format="0a%">
                   {(tvlBreakdownToken0?.value * token0.price) / opportunity.tvlRecord.total}
                 </Value>
-                {"TVL"})
+                {" TVL"})
                 <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken0} />
               </Text>
             )}
@@ -67,7 +67,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
                 <Value value format="0a%">
                   {(tvlBreakdownToken1?.value * token1.price) / opportunity.tvlRecord.total}
                 </Value>
-                {"TVL"})
+                {" TVL"})
                 <Icon remix="RiExternalLinkLine" className="cursor-pointer" onClick={navigateToCoinGeckoToken1} />
               </Text>
             )}
