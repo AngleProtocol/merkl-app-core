@@ -9,7 +9,7 @@ export const [CampaignTable, CampaignRow, campaignColumns] = createTable({
   },
   timeRemaining: {
     name: "",
-    size: "0.35fr",
+    size: "auto",
     className: "justify-end",
   },
 });
