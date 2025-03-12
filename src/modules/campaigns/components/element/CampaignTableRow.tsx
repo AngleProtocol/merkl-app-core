@@ -164,7 +164,7 @@ export default function CampaignTableRow({
         <Box size="md" className="p-0 bg-main-4 !rounded-md ">
           <Group className="flex-nowrap p-lg flex-col" size="xs">
             <Group className="justify-between flex-grow flex-col size-full gap-xs">
-              <Text size="sm" look="tint" bold className="mb-md">
+              <Text bold size="sm">
                 Campaign Informations
               </Text>
               {campaignInformation}
@@ -179,7 +179,7 @@ export default function CampaignTableRow({
                   className="flex items-center gap-xs"
                   onClick={onNavigateToLeaderBoard}>
                   Leaderboard
-                  <Icon remix="RiArrowRightUpLine" />
+                  <Icon remix="RiArrowRightLine" />
                 </Button>
               </EventBlocker>
               <Text key="leaderboard" size={"sm"} look="tint">
