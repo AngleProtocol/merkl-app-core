@@ -41,7 +41,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
       <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
       <Group
         className={`w-full !gap-0 h-[fit-content] border-1 rounded-lg border-accent-5 overflow-hidden ${className}`}>
-        <Group className="justify-between flex-nowrap h-[fit-content] bg-main-2 p-xl w-full items-center">
+        <Group className="justify-between flex-nowrap h-[fit-content] p-xl w-full items-center">
           <Title h={5} look="hype" className="!text-sm">
             OPPORTUNITY
           </Title>
@@ -68,7 +68,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
           </Group>
         </Group>
 
-        <Group className="bg-main-2 p-xl h-[fit-content] w-full justify-between flex-col gap-xl">
+        <Group className="p-xl h-[fit-content] w-full justify-between flex-col gap-xl">
           <Group className="justify-between items-center">
             <Text size={"sm"}> Details </Text>
             <Group className="gap-sm">
