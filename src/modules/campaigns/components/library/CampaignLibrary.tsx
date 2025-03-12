@@ -48,7 +48,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
           <Group className="justify-between items-center w-full">
             <OverrideTheme coloring={"good"}>
               <Title look="soft" h={5}>
-                {nbActiveCampaigns} Active Campaigns
+                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "Active Campaigns" : "Active Campaign"}
               </Title>
             </OverrideTheme>
 
