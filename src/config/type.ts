@@ -25,23 +25,7 @@ export type routesType = {
   };
 };
 
-/**
- * Route entry in the links menu, either an external link or internal route
- */
-export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
-  icon: IconProps;
-  name: string;
-} & (L extends "link"
-  ? { link: string; flags?: { replaceWithWallet: string }; external?: boolean; disabled?: boolean }
-  : { routes: NavigationMenuRoutes });
 
-/**
- * Collection of routes
- * {@link NavigationMenuRoute }
- */
-export type NavigationMenuRoutes = {
-  [key: string]: NavigationMenuRoute;
-};
 
 // TODO: groups by entity
 export type MerklConfig<T extends Themes> = {

@@ -1,7 +1,6 @@
 import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
@@ -23,7 +22,7 @@ export async function loader({ context: { backend, routes }, params: { symbol },
 
   const { sum: dailyRewards } = await opportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
 
-  return withUrl(request, {
+  return {
     tokens,
     chains,
     dailyRewards,
@@ -31,14 +30,13 @@ export async function loader({ context: { backend, routes }, params: { symbol },
     count,
     backend,
     routes,
-  });
+    ...MetadataService({ request, backend, routes }).fill(),
+  };
 }
 
 export const clientLoader = Cache.wrap("token", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
   const { tokens, dailyRewards, count, maxApr } = useLoaderData<typeof loader>();

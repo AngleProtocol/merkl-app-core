@@ -1,11 +1,11 @@
 import type { Api } from "@core/api/types";
-import type { MerklBackend } from "@core/config/backend";
 import type { Token } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
 import { Fmt } from "dappkit";
 import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
-export const TokenService = defineModule<{ api: Api; request: Request; backend: MerklBackend }>().create(({ inject }) => {
+export const TokenService = defineModule<{ api: Api; request: Request; backend: MerklBackendConfig }>().create(({ inject }) => {
   const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Token")(call);
   const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
     const page = new URL(request.url).searchParams.get("page");

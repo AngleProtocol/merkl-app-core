@@ -29,10 +29,7 @@ export * from "./hooks/useMerklSearch";
 export * from "./config/actions";
 export * from "./config/status";
 export * from "./config/rewards";
-export * from "./config/type";
 export * from "./config/opportunity";
-export * from "./config/index";
-export { default as index } from "./config/index";
 
 /**
  * api
@@ -94,7 +91,6 @@ export * from "./components/composite/LiFiWidget.client";
 /**
  * components/layout
  */
-export * from "./components/layout/LayerMenu";
 export * from "./components/layout/LoadingIndicator";
 export { default as LoadingIndicator } from "./components/layout/LoadingIndicator";
 export * from "./components/layout/Header";

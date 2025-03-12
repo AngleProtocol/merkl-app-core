@@ -1,12 +1,11 @@
-import type { MerklConfig } from "@core/config/type";
-import type { Themes } from "dappkit";
 import { type PropsWithChildren, createContext, useContext, useState } from "react";
 import { create } from "zustand";
+import type { MerklConfig } from "./config.model";
 
 export interface ConfigContextStore {
-  config: MerklConfig<Themes>;
+  config: Omit<MerklConfig, "wagmi">;
 }
-export const initConfigProvider = (config: MerklConfig<Themes>) =>
+export const initConfigProvider = (config: MerklConfig) =>
   create<ConfigContextStore>(() => ({
     config,
   }));

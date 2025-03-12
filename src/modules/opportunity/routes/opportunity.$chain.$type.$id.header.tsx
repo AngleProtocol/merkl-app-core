@@ -10,10 +10,9 @@ import OpportunityParticipateModal from "@core/modules/opportunity/components/el
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityMetrics from "@core/modules/opportunity/hooks/useOpportunityMetrics";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import { withUrl } from "@core/utils/url";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
@@ -34,20 +33,19 @@ export async function loader({
     identifier: id,
   });
 
-  return withUrl(request, {
+  return {
     //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
     backend,
     routes,
-  });
+    ...MetadataService({ request, backend, routes }).fill()
+  };
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export type OutletContextOpportunity = {
   opportunity: Opportunity & { campaigns: Campaign[] };

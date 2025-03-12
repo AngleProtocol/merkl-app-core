@@ -1,4 +1,3 @@
-import { type Themes, createColoring } from "dappkit";
 import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
 import {
@@ -38,16 +37,12 @@ import {
 } from "viem/chains";
 import { eip712WalletActions, zksync } from "viem/zksync";
 import { walletConnect } from "wagmi/connectors";
-//TODO: find a better way to handle importing the client config, this works
-//@ts-ignore
-import merklClientConfig from "../../../../../merkl.config";
-import { type MerklConfig, createConfig } from "./type";
+import type { MerklConfig } from "./config.model";
 
-export const defaultMerklConfig: MerklConfig<Themes> = {
+export const defaultMerklConfig: MerklConfig = {
   appName: "Merkl",
-  modes: ["dark", "light"],
-  defaultTheme: "merkl",
   navigation: {
+    header: {},
     menu: {
       dashboard: {
         icon: { remix: "RiDashboardFill" },
@@ -156,22 +151,6 @@ export const defaultMerklConfig: MerklConfig<Themes> = {
   decimalFormat: {
     dollar: "$0,0.##a",
     apr: "0.##%a",
-  },
-  themes: {
-    merkl: {
-      base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    },
-    ignite: {
-      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    },
   },
   sizing: {
     width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },
@@ -303,7 +282,3 @@ export const defaultMerklConfig: MerklConfig<Themes> = {
     ],
   },
 };
-
-const merklConfig = createConfig(Object.assign(defaultMerklConfig, merklClientConfig));
-
-export default merklConfig;

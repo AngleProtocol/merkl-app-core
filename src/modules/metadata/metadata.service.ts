@@ -1,15 +1,18 @@
 import { defineModule } from "@merkl/conduit";
-import type { MerklBackend } from "@core/config/backend";
-import type { MerklRoute, MerklRouteType, MerklRoutes } from "@core/config/routes";
-import type { MetaDescriptor } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaDescriptor, MetaFunction } from "@remix-run/node";
 import type { Location } from "@remix-run/react";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
+import type { MerklRoute, MerklRoutes, MerklRouteType } from "../config/types/merklRoutesConfig";
 
-export const MetadataService = defineModule<{
+type Dependencies = {
   routes: MerklRoutes;
-  backend: MerklBackend;
+  backend: MerklBackendConfig;
   url: string;
+  request: Request;
   location: Location;
-}>().create(({ inject }) => {
+};
+
+export const MetadataService = defineModule<Dependencies>().create(({ inject }) => {
   /**
    * Compare routes definition versus location
    * @param definitionRoute (i.e. "/chains/:id")
@@ -98,7 +101,7 @@ export const MetadataService = defineModule<{
    */
   const baseWrap = inject(["routes", "backend", "url", "location"]).inFunction(
     <T extends keyof MerklRouteType | undefined>(
-      deps: { routes: MerklRoutes; backend: MerklBackend; location: Location; url: string },
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
       key: "metadata" | "pagedata",
       type?: T,
       resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
@@ -119,7 +122,7 @@ export const MetadataService = defineModule<{
 
   const wrap = inject(["backend", "routes", "url", "location"]).inFunction(
     <T extends keyof MerklRouteType | undefined>(
-      deps: { routes: MerklRoutes; backend: MerklBackend; location: Location; url: string },
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
       type?: T,
       resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
     ) => {
@@ -129,7 +132,7 @@ export const MetadataService = defineModule<{
 
   const wrapInPage = inject(["backend", "routes", "url", "location"]).inFunction(
     <T extends keyof MerklRouteType | undefined>(
-      deps: { routes: MerklRoutes; backend: MerklBackend; location: Location; url: string },
+      deps: { routes: MerklRoutes; backend: MerklBackendConfig; location: Location; url: string },
       type?: T,
       resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
     ) => {
@@ -162,7 +165,7 @@ export const MetadataService = defineModule<{
   };
 
   const fromRoute = (
-    data: { backend: MerklBackend; routes: MerklRoutes; url: string } | undefined,
+    data: { backend: MerklBackendConfig; routes: MerklRoutes; url: string } | undefined,
     error: unknown,
     location: Location,
   ) => {
@@ -170,13 +173,45 @@ export const MetadataService = defineModule<{
     if (!data) return { wrap: () => [{ title: error }] };
     const { url, backend, routes } = data;
 
-    return MetadataService({ url, backend: backend as MerklBackend, routes, location });
+    return MetadataService({ url, backend: backend as MerklBackendConfig, routes, location });
   };
+
+  const fill = inject(["backend", "request", "routes"]).inFunction(
+    <T extends object>(dependencies: Pick<Dependencies, "backend" | "request" | "routes">) => {
+      const { request } = dependencies;
+      const url = `${request.url.split("/")?.[0]}//${request.headers.get("host")}`;
+      const metadata = wrap.handler({
+        ...dependencies,
+        url,
+        location: {
+          pathname: request.url.replace(url, ""),
+          key: "",
+          search: "",
+          hash: "",
+          state: "",
+        },
+      });
+
+      return {
+        url,
+        metadata,
+      };
+    },
+  );
+
+  type MetadataLoader = (args: LoaderFunctionArgs) => Promise<{
+    url: string;
+    metadata: MetaDescriptor[];
+  }>;
+  const forwardMetadata: <Loader extends MetadataLoader>() => MetaFunction<Loader> = () => data =>
+    data.data?.metadata ?? [];
 
   return {
     find,
     wrapInPage,
     wrap,
-    fromRoute
+    fromRoute,
+    fill,
+    forwardMetadata,
   };
 });

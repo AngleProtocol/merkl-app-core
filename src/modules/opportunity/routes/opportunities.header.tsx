@@ -1,23 +1,19 @@
 import Hero from "@core/components/composite/Hero";
+import { Cache } from "@core/modules/cache/cache.service";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
-  return withUrl(request, { backend, routes });
+  return MetadataService({ request, backend, routes }).fill();
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-
-  console.log(data, error, location);
-  
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
+export const clientLoader = Cache.wrap("opportunities.header", 300);
 
 export default function Index() {
-  const {url} = useLoaderData<typeof loader>();
+  const { url } = useLoaderData<typeof loader>();
   const metadata = useMetadata(url);
 
   return (
@@ -25,7 +21,7 @@ export default function Index() {
       // icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={metadata.find(metadata.wrapInPage(), "title")}
-      description={metadata.find(metadata.wrap(), "description")}>
+      description={"It's fast s"}>
       <Outlet />
     </Hero>
   );

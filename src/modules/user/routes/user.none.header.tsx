@@ -1,6 +1,5 @@
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -10,12 +9,10 @@ import Hero from "../../../components/composite/Hero";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 
 export async function loader({ context: {backend, routes}, request }: LoaderFunctionArgs) {
-  return withUrl(request, { backend, routes });
+  return MetadataService({ backend, routes, request }).fill();
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  return MetadataService({}).fromRoute(data, error, location).wrap();
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
