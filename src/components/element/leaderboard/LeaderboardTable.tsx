@@ -14,12 +14,12 @@ export const [LeaderboardTable, LeaderboardRow, LeaderboardColumns] = createTabl
   },
   rewards: {
     name: "Rewards earned",
-    size: "minmax(300px,2fr)",
+    size: "minmax(300px,auto)",
     className: "justify-start",
   },
   protocol: {
     name: "Via",
-    size: "minmax(80px,150px)",
+    size: "minmax(90px,auto)",
     className: "justify-end",
   },
 });
