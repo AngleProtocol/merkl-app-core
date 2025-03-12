@@ -32,11 +32,9 @@ export default function Participate({
   const [amount, setAmount] = useState<bigint>();
   const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
 
-  const { backend, isDepositEnabled, decimalFormatDolar } = useMerklConfig(store => ({
-    backend: store.config.backend,
-    isDepositEnabled: store.config.deposit,
-    decimalFormatDolar: store.config.decimalFormat.dollar,
-  }));
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
+  const decimalFormatDollar = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const backend = useMerklConfig(store => store.config.backend);
 
   const {
     targets,
@@ -85,7 +83,7 @@ export default function Participate({
           footer={
             <Group className="justify-between w-full">
               {inputToken && (
-                <Value className="animate-drop" format={decimalFormatDolar}>
+                <Value className="animate-drop" format={decimalFormatDollar}>
                   {Fmt.toPrice(amount ?? 0n, inputToken)}
                 </Value>
               )}
@@ -195,7 +193,7 @@ export default function Participate({
     balance,
     targets,
     connected,
-    decimalFormatDolar,
+    decimalFormatDollar,
   ]);
 
   useEffect(() => {

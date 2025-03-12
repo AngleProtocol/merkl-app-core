@@ -20,12 +20,9 @@ export default function OpportunityBoxParticipate(props: IProps) {
 
   const { targets } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier);
 
-  const { isDepositEnabled, decimalFormatDolar, decimalFormatApr } = useMerklConfig(store => ({
-    isDepositEnabled: store.config.deposit,
-    decimalFormatDolar: store.config.decimalFormat.dollar,
-    decimalFormatApr: store.config.decimalFormat.apr,
-  }));
-
+  const isDepositEnabled = useMerklConfig(store => store.config.deposit);
+  const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
 
   const isSupplyButtonVisible = useMemo(() => {
