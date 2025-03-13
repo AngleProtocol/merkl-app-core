@@ -1,4 +1,4 @@
-import { createColoring } from "dappkit";
+import { createColoring } from "dappkit/src/theming/coloring";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
