@@ -44,6 +44,11 @@ export type MerklConfig = {
   tags?: string[];
 
   /**
+   * Hide the price of these reward token addresses array
+   */
+  hideRewardTokenPrice?: string[];
+
+  /**
    * Navigation Menu and Header links configuration
    */
   navigation: {
