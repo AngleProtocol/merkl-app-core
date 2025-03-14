@@ -42,9 +42,9 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
         className={`bg-main-0 w-full !gap-0 h-[fit-content] border-1 border-accent-5 overflow-hidden ${className} !p-0`}
         size="xl">
         <Group className="justify-between flex-nowrap h-[fit-content] p-xl w-full items-center">
-          <Title h={5} look="hype" className="!text-sm">
+          <Text bold look="hype">
             OPPORTUNITY
-          </Title>
+          </Text>
           <Tag type="status" value={opportunity.status} size="md" />
         </Group>
 

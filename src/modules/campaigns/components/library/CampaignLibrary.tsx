@@ -47,9 +47,9 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
         <Box className="bg-main-3">
           <Group className="justify-between items-center w-full">
             <OverrideTheme coloring={"good"}>
-              <Title look="soft" h={5}>
-                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "Active Campaigns" : "Active Campaign"}
-              </Title>
+              <Text bold look="soft">
+                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "ACTIVE CAMPAIGN"}
+              </Text>
             </OverrideTheme>
 
             <Group>
