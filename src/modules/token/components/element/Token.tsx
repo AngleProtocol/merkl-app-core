@@ -42,8 +42,13 @@ export default function Token({
   const amountFormatted = amount ? formatUnits(amount, token.decimals) : "0";
   const amountUSD = !amount ? 0 : (token.price ?? 0) * Number.parseFloat(amountFormatted ?? "0");
   const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const tokenAddressesToHidePrice = useMerklConfig(store => store.config.hideRewardTokenPrice);
 
   const display = useMemo(() => {
+    const shouldHidePrice = tokenAddressesToHidePrice?.some(
+      address => address.toLowerCase() === token.address.toLowerCase(),
+    );
+
     switch (format) {
       case "amount_price":
         return (
@@ -60,9 +65,11 @@ export default function Token({
               </Value>
               {symbol && <span>{token?.symbol}</span>}
             </PrimitiveTag>
-            <Value className="text-right" look={"soft"} size={size} format={decimalFormat}>
-              {amountUSD}
-            </Value>
+            {!shouldHidePrice && (
+              <Value className="text-right" look={"soft"} size={size} format={decimalFormat}>
+                {amountUSD}
+              </Value>
+            )}
           </Fragment>
         );
       //TODO: refactor all other format into individual blocks
@@ -97,7 +104,19 @@ export default function Token({
           </Fragment>
         );
     }
-  }, [token, format, amountFormatted, amountUSD, amount, symbol, icon, size, showZero, decimalFormat]);
+  }, [
+    token,
+    format,
+    amountFormatted,
+    amountUSD,
+    amount,
+    symbol,
+    icon,
+    size,
+    showZero,
+    decimalFormat,
+    tokenAddressesToHidePrice,
+  ]);
 
   if (value) return display;
   return (

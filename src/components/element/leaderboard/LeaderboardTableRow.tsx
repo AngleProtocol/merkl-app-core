@@ -48,7 +48,9 @@ export default function LeaderboardTableRow({
         </Group>
       }
       addressColumn={<User chain={chain} address={row.recipient} />}
-      rewardsColumn={<Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} />}
+      rewardsColumn={
+        <Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} value={true} />
+      }
       protocolColumn={<Text>{row?.reason?.split("_")[0]}</Text>}
     />
   ) : (
@@ -66,7 +68,9 @@ export default function LeaderboardTableRow({
         </Group>
       }
       addressColumn={<User chain={chain} address={row.recipient} />}
-      rewardsColumn={<Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} />}
+      rewardsColumn={
+        <Token token={token} format="amount_price" amount={BigInt(row?.amount) + BigInt(row?.pending)} value={true} />
+      }
     />
   );
 }
