@@ -2,16 +2,16 @@ import AprModal from "@core/components/element/apr/AprModal";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
-import { OpportunityRow } from "@core/modules/opportunity/components/library/OpportunityTable";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Button, Dropdown, Group, Icon, Icons as IconGroup, Text, Title, Value, mergeClass } from "dappkit";
+import { Dropdown, Group, Icon, Icons as IconGroup, Text, Title, Value, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
+import useOpportunityTable from "../../hooks/useOpportunityTable";
 
 export type OpportunityTableRowProps = {
   opportunity: Opportunity;
@@ -24,12 +24,13 @@ export default function OpportunityTableRow({
   navigationMode,
   ...props
 }: OpportunityTableRowProps) {
-  const { name, tags, link, icons, Tags, Icons } = useOpportunityData(opportunity);
+  const { name, tags, link, icons, Tags } = useOpportunityData(opportunity);
   const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
   const opportunityLibraryRowView = useMerklConfig(store => store.config.opportunityLibrary.rowView);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
+  const { OpportunityRow, opportunityColumns } = useOpportunityTable(opportunity);
 
   const aprColumn = useMemo(
     () => (
@@ -85,38 +86,7 @@ export default function OpportunityTableRow({
             content="sm"
             className={mergeClass("cursor-pointer ease hover:bg-main-2", className)}
             {...props}
-            aprColumn={aprColumn}
-            tvlColumn={tvlColumn}
-            rewardsColumn={rewardsColumn}
-            opportunityColumn={
-              <Group className="flex-col w-full" size="lg">
-                <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
-                  <Group className="text-xl items-center">
-                    <Icons groupProps={{ className: "flex-nowrap" }} />
-                  </Group>
-                  <Group>
-                    <Title
-                      h={3}
-                      size={4}
-                      ref={ref}
-                      className={mergeClass(
-                        overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
-                      )}>
-                      {name}
-                    </Title>
-                  </Group>
-                </Group>
-
-                <Group className="items-center">
-                  <Tags tags={["chain", "protocol", "status", "action"]} size="xs" />
-                </Group>
-              </Group>
-            }
-            ctaColumn={
-              <Button look="hype">
-                <Icon remix="RiArrowRightLine" />
-              </Button>
-            }
+            {...opportunityColumns}
           />
         );
       case "rewards":

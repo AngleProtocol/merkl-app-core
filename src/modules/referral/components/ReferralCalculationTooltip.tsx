@@ -12,8 +12,9 @@ export default function ReferralCalculationTooltip() {
           <Divider horizontal className="border-main-8" />
           <Text>
             When a referral deposits, the boost is calculated as:
-            <li />
-            <span className="font-bold">Referrer Reward</span> = 5% of the referee’s score (uncapped).
+            <li>
+              <span className="font-bold">Referrer Reward</span> = 5% of the referee’s score (uncapped).
+            </li>
             <li>
               <span className="font-bold">Referee Reward</span> = Min (5% of referee’s score, 5% of referrer’s score).
             </li>

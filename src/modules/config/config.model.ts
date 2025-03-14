@@ -9,6 +9,7 @@ import type { OpportunityFilter } from "@core/modules/opportunity/components/Opp
 import type { IconProps, WalletOptions } from "packages/dappkit/src";
 import type { Chain } from "viem";
 import type { createConfig as createWagmiConfig } from "wagmi";
+import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoutes } from "./types/merklRoutesConfig";
 import type { MerklThemeConfig } from "./types/merklThemeConfig";
@@ -152,6 +153,8 @@ export type MerklConfig = {
     library: {
       sortedBy: OpportunitySortedBy;
       dailyRewardsTokenAddress: string;
+      overrideDisplay?: OpportuntyLibraryOverride<"table">;
+      overrideCell?: OpportuntyLibraryOverride<"cell">;
       columns: {
         action: {
           enabled: boolean;

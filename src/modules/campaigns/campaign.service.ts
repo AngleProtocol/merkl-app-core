@@ -46,7 +46,7 @@ export const CampaignService = defineModule<{ backend: MerklBackend; request: Re
      */
     const getByOpportunity = inject(["api"]).inFunction(
       async ({ api }, query: Parameters<Api["v4"]["campaigns"]["index"]["get"]>[0]["query"]) => {
-        return await fetch(async () => await api.v4.campaigns.index.get({ query }));
+        return await fetch(async () => await api.v4.campaigns.index.get({ query: { ...query, test: true } }));
       },
     );
 

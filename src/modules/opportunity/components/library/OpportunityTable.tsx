@@ -28,7 +28,7 @@ const columns = {
   },
   rewards: {
     name: "Daily rewards",
-    size: "minmax(min-content,120px)",
+    size: "minmax(200px,400px)",
     className: "md:justify-center",
   },
   cta: {

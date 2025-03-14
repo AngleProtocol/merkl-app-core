@@ -102,16 +102,6 @@ export default function Index() {
       {
         label: (
           <>
-            <Icon size="sm" remix="RiDropFill" />
-            Liquidity
-          </>
-        ),
-        link: `/users/${address}/liquidity?chainId=${chainId}`,
-        key: "LiquidityUserChain",
-      },
-      {
-        label: (
-          <>
             <Icon size="sm" remix="RiListCheck3" />
             Claims
           </>
@@ -123,7 +113,7 @@ export default function Index() {
 
     // Remove the Liquidity tab if disabled in the config
     return baseTabs;
-  }, [address, chainId]);
+  }, [address]);
 
   return (
     <Hero

@@ -1,5 +1,4 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useLocation } from "@remix-run/react";
 import {
   Button,
   Container,
@@ -48,7 +47,6 @@ export default function Hero({
   tabs,
   children,
 }: HeroProps) {
-  const location = useLocation();
   const { mode } = useTheme();
   const heroConfig = useMerklConfig(store => store.config.hero);
   const images = useMerklConfig(store => store.config.images);
@@ -57,13 +55,7 @@ export default function Hero({
     <>
       <OverrideTheme mode={!!heroConfig.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`${
-            !!heroConfig.bannerOnAllPages
-              ? "bg-cover xl:bg-auto bg-right-bottom"
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
-                : "bg-main-6"
-          } flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          className={`${"bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"} flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
             backgroundImage: `url('${mode === "dark" ? images.heroDark : images.heroLight}')`,
           }}>
