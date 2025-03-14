@@ -16,4 +16,5 @@ export interface MerklBackendConfig {
   };
   rewardsTotalClaimableMode?: string;
   tokenSymbolPriority?: string[];
+  deposit: boolean;
 }

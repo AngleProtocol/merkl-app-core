@@ -1,9 +1,11 @@
 import type { Api } from "@core/api/types";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
+import type { Opportunity } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import type { TransactionName, TransactionPayload } from "./interaction.model";
 
-export const InteractionService = defineModule<{ api: Api }>().create(({ inject }) => {
+export const InteractionService = defineModule<{ api: Api; backend: MerklBackendConfig }>().create(({ inject }) => {
   const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Interaction")(call);
 
   const get = async <Tx extends TransactionName>(
@@ -41,9 +43,24 @@ export const InteractionService = defineModule<{ api: Api }>().create(({ inject 
     );
   });
 
+  const getTargetsByOpportunity = inject(["api", "backend"]).inFunction(
+    async ({ api, backend }, opportunity: Pick<Opportunity, "protocol" | "chainId" | "identifier"> | undefined) => {
+      if (!opportunity || !opportunity.protocol || !backend.deposit) return undefined;
+      const targets = await getTargets.handler(
+        { api },
+        opportunity.chainId,
+        opportunity?.protocol?.id,
+        opportunity?.identifier,
+      );
+
+      return targets;
+    },
+  );
+
   return {
     get,
     getTargets,
     getBalances,
+    getTargetsByOpportunity,
   };
 });

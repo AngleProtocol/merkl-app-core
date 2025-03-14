@@ -1,24 +1,23 @@
 import Tag from "@core/components/element/Tag";
 import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
-import useParticipate from "@core/hooks/useParticipate";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
+import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
-type IProps = {
+export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
+  targets?: InteractionTarget[];
   className?: string;
-};
+}
 
-export default function OpportunityBoxParticipate(props: IProps) {
-  const { opportunity, className } = props;
+export default function OpportunityBoxParticipate(props: OpportunityBoxParticipateProps) {
+  const { opportunity, className, targets } = props;
   const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
-
-  const { targets } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier);
 
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
   const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
@@ -38,7 +37,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
 
   return (
     <>
-      <OpportunityParticipateModal opportunity={opportunity} state={[isSupplyModalOpen, setSupplyModalOpen]} />
+      <OpportunityParticipateModal {...{ opportunity, targets }} state={[isSupplyModalOpen, setSupplyModalOpen]} />
       <Box
         className={`bg-main-0 w-full !gap-0 h-[fit-content] border-1 border-accent-5 overflow-hidden ${className} !p-0`}
         size="xl">
@@ -63,7 +62,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
             {!!isSupplyButtonVisible && (
               <Button className="inline-flex" look="hype" size="xl" onClick={onSupply}>
                 Supply
-                <Icon remix="RiArrowRightUpLine" size="sm" />
+                {!targets && <Icon remix="RiArrowRightUpLine" size="sm" />}
               </Button>
             )}
           </Group>
@@ -77,7 +76,7 @@ export default function OpportunityBoxParticipate(props: IProps) {
               <Tag type="protocol" value={opportunity.protocol} size="xs" />
             </Group>
           </Group>
-          <Group className="flex-nowrap">
+          <Group size="lg" className="flex-nowrap">
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
                 <Text bold className="flex items-center gap-sm ">

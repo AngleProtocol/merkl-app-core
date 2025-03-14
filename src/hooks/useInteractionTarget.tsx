@@ -4,7 +4,12 @@ import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interacti
 import { useEffect, useState } from "react";
 import { InteractionService } from "../modules/interaction/interaction.service";
 
-export default function useInteractionTargets(chainId?: number, protocolId?: string, identifier?: string) {
+export default function useInteractionTargets(
+  chainId?: number,
+  protocolId?: string,
+  identifier?: string,
+  serverTargets?: InteractionTarget[],
+) {
   const [loading, setLoading] = useState(false);
   const [targets, setTargets] = useState<InteractionTarget[] | undefined>();
 
@@ -22,8 +27,8 @@ export default function useInteractionTargets(chainId?: number, protocolId?: str
       setLoading(false);
     }
 
-    fetchTarget();
-  }, [chainId, protocolId, identifier]);
+    !serverTargets && fetchTarget();
+  }, [chainId, protocolId, identifier, serverTargets]);
 
-  return { targets, loading };
+  return { targets: serverTargets || targets, loading };
 }

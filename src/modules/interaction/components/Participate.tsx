@@ -4,6 +4,7 @@ import OpportunityShortCard from "@core/modules/opportunity/components/items/Opp
 import TokenSelect from "@core/modules/token/components/element/TokenSelect";
 import { TokenService } from "@core/modules/token/token.service";
 import type { Opportunity } from "@merkl/api";
+import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { Button, EventBlocker, Group, Icon, Input, PrimitiveTag, Space, Text, Value } from "dappkit";
 import { Box, Collapsible } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -17,6 +18,7 @@ export type ParticipateProps = {
   displayMode?: boolean | "withdraw" | "deposit";
   displayLinks?: boolean;
   hideInteractor?: boolean;
+  targets?: InteractionTarget[];
 };
 
 const DEFAULT_SLIPPAGE = 200n;
@@ -27,6 +29,7 @@ export default function Participate({
   displayMode,
   displayLinks,
   hideInteractor,
+  targets: serverTargets,
 }: ParticipateProps) {
   const [tokenAddress, setTokenAddress] = useState("");
   const [amount, setAmount] = useState<bigint>();
@@ -41,7 +44,14 @@ export default function Participate({
     balance,
     token: inputToken,
     loading,
-  } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
+    loadingBalances,
+  } = useParticipate(
+    opportunity.chainId,
+    opportunity.protocol?.id,
+    opportunity.identifier,
+    tokenAddress,
+    serverTargets,
+  );
 
   const [success, setSuccess] = useState(false);
 
@@ -71,7 +81,7 @@ export default function Participate({
   const interactor = useMemo(() => {
     if (hideInteractor || loading || !targets?.length) return;
     return (
-      <Group className="mt-md !gap-0">
+      <Group className="mt-md !gap-0" key="interactor">
         <Space size="md" />
         <Input.BigInt
           className="w-full gap-xs"
@@ -92,7 +102,7 @@ export default function Participate({
           header={
             <Group className="justify-between w-full">
               <Text size={"md"}>{mode === "deposit" ? "Deposit" : "Withdraw"}</Text>
-              {inputToken && (
+              {inputToken && !loadingBalances && (
                 <Group>
                   <Group className="items-center">
                     {!!inputToken && (
@@ -186,6 +196,7 @@ export default function Participate({
     hideInteractor,
     mode,
     inputToken,
+    loadingBalances,
     slippage,
     loading,
     amount,
