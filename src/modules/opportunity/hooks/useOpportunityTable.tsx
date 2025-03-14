@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Icon, Title, createTable } from "dappkit";
 import { type ReactNode, useMemo } from "react";
@@ -60,7 +60,8 @@ const defaultColumns: OpportuntyLibraryOverride<"table"> = {
  * Formats rewards for a given opportunity
  */
 export default function useOpportunityTable(opportunity?: Opportunity) {
-  const columnConfig = merklConfig.opportunity.library.overrideDisplay;
+  const columnConfig = useMerklConfig(store => store.config.opportunity.library.overrideDisplay);
+
   const columns = useMemo(() => {
     if (!columnConfig) return defaultColumns;
 

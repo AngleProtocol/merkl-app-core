@@ -1,24 +1,20 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Button, Container, Group, Icon, Space, Text } from "dappkit";
 import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
-import merklConfig from "../../../config";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return withUrl(request, {});
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
+  return MetadataService({ request, backend, routes }).fill();
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrap(data?.url, location.pathname);
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
+  const bridgeHelperLink = useMerklConfig(store => store.config.bridge.helperLink);
+
   return (
     <>
       <Container>
@@ -30,8 +26,8 @@ export default function Index() {
                 <Icon remix="RiInformation2Fill" className="inline mr-md text-2xl text-accent-11" />
                 {I18n.trad.get.pages.bridge.helper}
               </Text>
-              {!!merklConfig.bridge.helperLink && (
-                <Button to={merklConfig.bridge.helperLink} external look="tint">
+              {!!bridgeHelperLink && (
+                <Button to={bridgeHelperLink} external look="tint">
                   Bridge now
                 </Button>
               )}

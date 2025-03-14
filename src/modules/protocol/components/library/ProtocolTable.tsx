@@ -1,20 +1,4 @@
 import { Title, createTable } from "dappkit";
-import merklConfig from "../../../../config";
-
-// biome-ignore lint/suspicious/noExplicitAny: TODO
-export function filterColumns<T extends Record<string, any>>(columns: T): T {
-  const libraryColumnsConfig = merklConfig.opportunity?.library?.columns;
-  if (!libraryColumnsConfig) return columns;
-  const disabledColumns = Object.entries(libraryColumnsConfig)
-    .filter(([, settings]) => settings.enabled === false)
-    .map(([key]) => key);
-
-  const filteredColumns = Object.fromEntries(
-    Object.entries(columns).filter(([key]) => !disabledColumns.includes(key)),
-  ) as T;
-
-  return filteredColumns;
-}
 
 export const columns = {
   protocol: {
@@ -44,5 +28,4 @@ export const columns = {
   },
 };
 
-const filteredProtocolColumns = filterColumns(columns);
-export const [ProtocolTable, ProtocolRow, protocolColumns] = createTable(filteredProtocolColumns);
+export const [ProtocolTable, ProtocolRow, protocolColumns] = createTable(columns);

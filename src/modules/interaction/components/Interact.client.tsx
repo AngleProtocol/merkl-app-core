@@ -1,6 +1,6 @@
-import merklConfig from "@core/config";
 import useBalances from "@core/hooks/useBalances";
 import useInteractionTransaction from "@core/hooks/useInteractionTransaction";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import TransactionOverview from "@core/modules/interaction/components/TransactionOverview";
 import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
@@ -67,6 +67,7 @@ export default function Interact({
   const [_approvalHash, setApprovalHash] = useState<string>();
   const { reload: reloadBalances } = useBalances();
   const { Icons } = useOpportunityMetadata(opportunity);
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const priceImpactValue = useMemo(
     () => transaction && inputToken && transaction.depositValue - Fmt.toPrice(BigInt(amount ?? 0), inputToken),
@@ -190,13 +191,13 @@ export default function Interact({
       <TransactionOverview settings={settings} allowTxSponsoring={canTransactionBeSponsored}>
         {!!amount && !!inputToken && (
           <Text className="flex animate-drop grow flex-nowrap items-center gap-sm" size={6}>
-            <PrimitiveTag size="sm">
+            {/* <PrimitiveTag size="sm">
               <Icon src={inputToken.icon} />
-              <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+              <Value size="sm" format={dollarFormat}>
                 {Fmt.toPrice(amount, inputToken)}
               </Value>
-            </PrimitiveTag>
-            <Icon remix="RiArrowRightLine" />
+            </PrimitiveTag> */}
+            {/* <Icon remix="RiArrowRightLine" /> */}
             {providerIcon}
             {transaction && (
               <>
@@ -209,7 +210,7 @@ export default function Interact({
                       <PrimitiveTag size="sm">
                         <Icon src={opportunity?.protocol?.icon} />
                         <Icons />
-                        <Value size="sm" format={merklConfig.decimalFormat.dollar}>
+                        <Value size="sm" format={dollarFormat}>
                           {transaction?.depositValue}
                         </Value>
                       </PrimitiveTag>

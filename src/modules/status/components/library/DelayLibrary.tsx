@@ -1,11 +1,13 @@
+import type { Api } from "@core/api/types";
 import type { Chain } from "@merkl/api";
 import { useMemo } from "react";
-import type { StatusService } from "../../status.service";
 import DelayTableRow from "../element/DelayTableRow";
 import { DelayTable } from "./DelayTable";
 
 export type DelayLibraryProps = {
-  delays: Awaited<ReturnType<typeof StatusService.getStatusAndDelays>>[number]["delayed"];
+  delays: NonNullable<
+    Awaited<ReturnType<Api["v4"]["campaign-status"]["delay"]["status"]["get"]>>["data"]
+  >[0]["delayed"];
   chain: Chain;
 };
 

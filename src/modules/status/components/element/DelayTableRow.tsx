@@ -1,3 +1,4 @@
+import type { Api } from "@core/api/types";
 import type { Chain } from "@merkl/api";
 import {
   type BoxProps,
@@ -12,11 +13,12 @@ import {
   useWalletContext,
 } from "dappkit";
 import { useMemo } from "react";
-import type { StatusService } from "../../status.service";
 import { DelayRow } from "../library/DelayTable";
 
 export type DelayTableRowProps = {
-  delay: Awaited<ReturnType<typeof StatusService.getStatusAndDelays>>[number]["delayed"][number];
+  delay: NonNullable<
+    Awaited<ReturnType<Api["v4"]["campaign-status"]["delay"]["status"]["get"]>>["data"]
+  >[number]["delayed"][0];
   chain: Chain;
 } & BoxProps;
 
@@ -30,7 +32,7 @@ export default function DelayTableRow({ delay, chain, className, ...props }: Del
    */
   const link = useMemo(
     () =>
-      `/opportunities/${computeChain?.name?.toLowerCase?.().replace(" ", "-")}/${delay.Opportunity.type}/${delay.Opportunity.id}`,
+      `/opportunities/${computeChain?.name?.toLowerCase?.().replace(" ", "-")}/${delay.Opportunity.type}/${delay.Opportunity.identifier}`,
     [delay, computeChain],
   );
 

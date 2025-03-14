@@ -1,5 +1,5 @@
-import merklConfig from "@core/config";
-import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/config/type";
+import { useMerklConfig } from "@core/modules/config/config.context";
+import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
 import { useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
@@ -21,7 +21,10 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
   const { mode } = useTheme();
   const { address } = useWalletContext();
   const navigation = useNavigation();
-
+  const images = useMerklConfig(store => store.config.images);
+  const navigationConfig = useMerklConfig(store => store.config.navigation);
+  const appName = useMerklConfig(store => store.config.appName);
+  const hideLayerMenuHomePage = useMerklConfig(store => store.config.hideLayerMenuHomePage);
   /**
    * Links in navigation menu
    */
@@ -83,16 +86,16 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
    * Brand logo
    */
   const brand = useMemo(() => {
-    const logo = mode === "dark" ? merklConfig.images.logoDark : merklConfig.images.logoLight;
+    const logo = mode === "dark" ? images.logoDark : images.logoLight;
 
-    return <Image imgClassName="max-w-[200px] max-h-[2rem]" alt={`${merklConfig.appName} logo`} src={logo} />;
-  }, [mode]);
+    return <Image imgClassName="max-w-[200px] max-h-[2rem]" alt={`${appName} logo`} src={logo} />;
+  }, [mode, images, appName]);
 
-  if (merklConfig.hideLayerMenuHomePage || disabled) return brand;
+  if (hideLayerMenuHomePage || disabled) return brand;
   return (
     <Menu options={options}>
       <Group>
-        {merklConfig.navigation.brand?.() || brand}
+        {navigationConfig.brand?.() || brand}
         {typeof document === "undefined" || navigation.state === "loading" ? (
           <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
         ) : (

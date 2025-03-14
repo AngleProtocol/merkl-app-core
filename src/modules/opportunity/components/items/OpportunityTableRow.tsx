@@ -1,6 +1,6 @@
 import AprModal from "@core/components/element/apr/AprModal";
-import merklConfig from "@core/config";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
@@ -26,7 +26,9 @@ export default function OpportunityTableRow({
 }: OpportunityTableRowProps) {
   const { name, tags, link, icons, Tags } = useOpportunityData(opportunity);
   const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
-
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
+  const opportunityLibraryRowView = useMerklConfig(store => store.config.opportunityLibrary.rowView);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
   const { OpportunityRow, opportunityColumns } = useOpportunityTable(opportunity);
 
@@ -35,32 +37,32 @@ export default function OpportunityTableRow({
       <EventBlocker>
         <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} />}>
           <Text bold look="tint" size="lg">
-            <Value value format={merklConfig.decimalFormat.apr}>
+            <Value value format={aprFormat}>
               {opportunity.apr / 100}
             </Value>
           </Text>
         </Dropdown>
       </EventBlocker>
     ),
-    [opportunity],
+    [opportunity, aprFormat],
   );
 
   const tvlColumn = useMemo(
     () => (
       <Text bold look="tint" size="lg">
-        <Value value format={merklConfig.decimalFormat.dollar}>
+        <Value value format={dollarFormat}>
           {opportunity.tvl ?? 0}
         </Value>
       </Text>
     ),
-    [opportunity],
+    [opportunity, dollarFormat],
   );
 
   const rewardsColumn = useMemo(
     () => (
       <Group size="sm">
         <Text look="hype" bold size="lg">
-          <Value value format={merklConfig.decimalFormat.dollar}>
+          <Value value format={dollarFormat}>
             {opportunity.dailyRewards ?? 0}
           </Value>
         </Text>
@@ -71,12 +73,12 @@ export default function OpportunityTableRow({
         </IconGroup>
       </Group>
     ),
-    [opportunity, rewardsBreakdown],
+    [opportunity, rewardsBreakdown, dollarFormat],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: cannot include props
   const row = useMemo(() => {
-    switch (merklConfig.opportunityLibrary.rowView) {
+    switch (opportunityLibraryRowView) {
       case "classic":
         return (
           <OpportunityRow
@@ -124,7 +126,18 @@ export default function OpportunityTableRow({
           />
         );
     }
-  }, [opportunity, aprColumn, tvlColumn, className, rewardsColumn, icons, overflowing, ref, tags]);
+  }, [
+    opportunity,
+    opportunityLibraryRowView,
+    aprColumn,
+    tvlColumn,
+    className,
+    rewardsColumn,
+    icons,
+    overflowing,
+    ref,
+    tags,
+  ]);
 
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{row}</OpportunityParticipateModal>;

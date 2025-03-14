@@ -1,22 +1,6 @@
 import { Title, createTable } from "dappkit";
-import merklConfig from "../../../../config";
 
-// biome-ignore lint/suspicious/noExplicitAny: TODO
-export function filterColumns<T extends Record<string, any>>(columns: T): T {
-  const libraryColumnsConfig = merklConfig.opportunity?.library?.columns;
-  if (!libraryColumnsConfig) return columns;
-  const disabledColumns = Object.entries(libraryColumnsConfig)
-    .filter(([, settings]) => settings.enabled === false)
-    .map(([key]) => key);
-
-  const filteredColumns = Object.fromEntries(
-    Object.entries(columns).filter(([key]) => !disabledColumns.includes(key)),
-  ) as T;
-
-  return filteredColumns;
-}
-
-export const columns = {
+const columns = {
   opportunity: {
     name: (
       <Title h={5} look="soft">
@@ -54,5 +38,4 @@ export const columns = {
   },
 };
 
-const filteredOpportunityColumns = filterColumns(columns);
-export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTable(filteredOpportunityColumns);
+export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTable(columns);

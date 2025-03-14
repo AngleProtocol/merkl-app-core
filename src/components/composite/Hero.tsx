@@ -1,7 +1,8 @@
-import { useLocation } from "@remix-run/react";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import {
   Button,
   Container,
+  Divider,
   Group,
   Icon,
   type IconProps,
@@ -15,7 +16,6 @@ import {
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
 import { v4 as uuidv4 } from "uuid";
-import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -47,22 +47,17 @@ export default function Hero({
   tabs,
   children,
 }: HeroProps) {
-  const location = useLocation();
   const { mode } = useTheme();
+  const heroConfig = useMerklConfig(store => store.config.hero);
+  const images = useMerklConfig(store => store.config.images);
 
   return (
     <>
-      <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
+      <OverrideTheme mode={!!heroConfig.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`${
-            !!merklConfig.hero.bannerOnAllPages
-              ? "bg-cover xl:bg-auto bg-right-bottom"
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"
-                : "bg-main-6"
-          } flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          className={`${"bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"} flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
-            backgroundImage: `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`,
+            backgroundImage: `url('${mode === "dark" ? images.heroDark : images.heroLight}')`,
           }}>
           <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
@@ -104,9 +99,12 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <Text size="lg" look="base">
-                      {description}
-                    </Text>
+                    <>
+                      <Divider />
+                      <Text size="lg" look="base">
+                        {description}
+                      </Text>
+                    </>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>
@@ -139,6 +137,8 @@ export default function Hero({
 }
 
 export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards: number) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
   return [
     !!count && {
       data: (
@@ -151,7 +151,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
     },
     !!dailyRewards && {
       data: (
-        <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
+        <Value format={dollarFormat} size={4} className="!text-main-12">
           {dailyRewards}
         </Value>
       ),

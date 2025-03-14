@@ -18,7 +18,6 @@ export type OpportunityCellProps = {
 export default function OpportunityCell({ opportunity, navigationMode, tags }: OpportunityCellProps) {
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
-
   const { opportunityMetrics } = useOpportunityCell(opportunity);
 
   const cell = useMemo(
@@ -48,7 +47,9 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
         </Group>
         <Divider className="my-0" look="soft" />
         <Group className="flex-nowrap p-md md:p-xl justify-between">
-          <div>{Object.values(opportunityMetrics ?? {})}</div>
+          <Group className="flex-col" size="xs">
+            {Object.values(opportunityMetrics ?? {})}
+          </Group>
 
           <Group className="flex-col justify-end">
             <Button look="hype" size="lg">

@@ -1,12 +1,12 @@
-import type { ChainService } from "@core/modules/chain/chain.service";
+import type { Api } from "@core/api/types";
+import type { Chain } from "@merkl/api";
 import { useMemo } from "react";
-import type { StatusService } from "../../status.service";
 import StatusTableRow from "../element/StatusTableRow";
 import { StatusTable } from "./StatusTable";
 
 export type StatusLibraryProps = {
-  data: Awaited<ReturnType<typeof StatusService.getStatusAndDelays>>;
-  chains: Awaited<ReturnType<typeof ChainService.getAll>>;
+  data: NonNullable<Awaited<ReturnType<Api["v4"]["campaign-status"]["delay"]["status"]["get"]>>["data"]>;
+  chains: Chain[];
   hideChainWithoutLiveCampaigns?: boolean;
 };
 

@@ -1,10 +1,11 @@
+import { api } from "@core/api";
+import type { Api } from "@core/api/types";
 import { useWalletContext } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
-import type { api as clientApi } from "../api/index";
 import { InteractionService } from "../modules/interaction/interaction.service";
 
-type TokenBalances = Awaited<ReturnType<typeof clientApi.v4.tokens.balances.get>>["data"];
+type TokenBalances = Awaited<ReturnType<Api["v4"]["tokens"]["balances"]["get"]>>["data"];
 type BalanceStore = {
   balance: { [chainId: number]: { [address: string]: TokenBalances } };
   update: (chainId: number, address: string, balances: TokenBalances) => void;
@@ -52,7 +53,7 @@ export default function useBalances(chainId?: number, userAddress?: string) {
 
     setLoading(true);
     try {
-      const tokens = await InteractionService.getBalances(chain, address);
+      const tokens = await InteractionService({ api }).getBalances(chain, address);
 
       update(chain, address, tokens);
     } catch {}

@@ -24,7 +24,7 @@ export default function OpportunityCellAmountRewards({
     <Group size="sm">
       <Text look="hype" bold size="lg">
         <Value value format={"0.###a"}>
-          {Fmt.toNumber(amount, token.decimals)}
+          {Fmt.toNumber(amount, token?.decimals)}
         </Value>
       </Text>
       <Icon src={token.icon} />

@@ -11,23 +11,23 @@ export default function OpportunityTableAmountRewards({
   opportunity,
   size: _,
 }: Component<OpportunityTableAmountRewardsProps>) {
-  const [token, amount] = useMemo(() => {
+  const { token, breakdownAmount } = useMemo(() => {
     const tokenAddress = opportunity.rewardsRecord.breakdowns?.[0]?.token?.address;
     const breakdowns = opportunity.rewardsRecord.breakdowns.filter(({ token }) => token?.address === tokenAddress);
-    const token = breakdowns?.[0]?.token;
+    const breakdownToken = breakdowns?.[0]?.token;
     const breakdownAmount = breakdowns.reduce((acc, breakdown) => BigInt(acc) + BigInt(breakdown.amount), 0n);
 
-    return [token, breakdownAmount];
+    return { token: breakdownToken, breakdownAmount };
   }, [opportunity]);
 
   return (
     <Group size="sm">
       <Text look="hype" bold size="lg">
         <Value value format={"0.###a"}>
-          {Fmt.toNumber(amount, token.decimals)}
+          {Fmt.toNumber(breakdownAmount, token?.decimals)}
         </Value>
       </Text>
-      <Icon src={token.icon} />
+      <Icon src={token?.icon} />
     </Group>
   );
 }

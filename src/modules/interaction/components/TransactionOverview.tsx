@@ -26,21 +26,19 @@ export default function TransactionOverview({ allowTxSponsoring, settings, child
   const [settingsCollapsed, setSettingsCollapsed] = useState<boolean>(false);
 
   return (
-    <Box content="sm" className="w-full !gap-0 !bg-main-2" look="base">
+    <Box
+      content="sm"
+      size="lg"
+      className="w-full !gap-0 !bg-main-0 border-main-10"
+      onClick={() => setSettingsCollapsed(o => !o)}
+      look="soft">
       <Group className="w-full flex-nowrap">
         <Group className="grow items-center flex-nowrap overflow-x-scroll">{children}</Group>
-        <PrimitiveTag
-          onClick={() => setSettingsCollapsed(o => !o)}
-          size="sm"
-          look="base"
-          className="flex flex-nowrap gap-md">
-          <Icon remix="RiSettings3Line" />
-          <Icon
-            data-state={!settingsCollapsed ? "closed" : "opened"}
-            className={"transition duration-150 ease-out data-[state=opened]:rotate-180"}
-            remix="RiArrowDownSLine"
-          />
-        </PrimitiveTag>
+        <Icon
+          data-state={!settingsCollapsed ? "closed" : "opened"}
+          className={"text-main-11 transition duration-150 ease-out data-[state=opened]:rotate-180"}
+          remix="RiArrowDownSLine"
+        />
       </Group>
       <Collapsible state={[settingsCollapsed, setSettingsCollapsed]}>
         <Space size="md" />

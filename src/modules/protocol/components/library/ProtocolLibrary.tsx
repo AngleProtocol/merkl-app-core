@@ -1,10 +1,10 @@
 import type { OpportunityView } from "@core/config/opportunity";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import ProtocolFilters from "@core/modules/protocol/components/ProtocolFilters";
 import type { Chain, Protocol } from "@merkl/api";
 import { useLocation, useNavigate, useSearchParams } from "@remix-run/react";
 import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import merklConfig from "../../../../config";
 import ProtocolCell from "../element/ProtocolCell";
 import ProtocolTableRow from "../element/ProtocolTableRow";
 import { ProtocolTable } from "./ProtocolTable";
@@ -20,7 +20,9 @@ export type ProtocolLibraryProps = {
  * @Information Custom Pagination and front filtering for protocols to allow computed fields filtering to replace when protcols metadata jobs are up tos tore this datas in api database
  */
 export default function ProtocolLibrary({ protocols: protocolsProps, count, forceView }: ProtocolLibraryProps) {
-  const [view, setView] = useState<OpportunityView>(forceView ?? merklConfig.opportunityLibrary.defaultView ?? "table");
+  const opportunityLibraryDefaultView = useMerklConfig(store => store.config.opportunityLibrary.defaultView);
+  const opportunityLibraryViews = useMerklConfig(store => store.config.opportunityLibrary?.views);
+  const [view, setView] = useState<OpportunityView>(forceView ?? opportunityLibraryDefaultView ?? "table");
 
   // ---- Start of Custom Pagination and front filtering
   //  Custom Pagination and front filtering (to be removed when protocols metadata jobs are up to store this datas in api database)
@@ -88,7 +90,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
             }
             dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
             ctaHeader={
-              (merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
+              (opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) &&
               view && (
                 <Group className="flex-nowrap" size="sm">
                   <Button look="soft" onClick={() => setView?.("cells")}>
@@ -117,21 +119,20 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
                 <Text look="hype" size={5}>
                   {count ?? ""} Protocols
                 </Text>
-                {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
-                  view && (
-                    <Group className="flex-nowrap" size="sm">
-                      <Button
-                        className={"text-accent-11 !opacity-100"}
-                        disabled
-                        look="soft"
-                        onClick={() => setView?.("cells")}>
-                        <Icon remix="RiDashboardFill" />
-                      </Button>
-                      <Button look="soft" onClick={() => setView?.("table")}>
-                        <Icon remix="RiSortDesc" />
-                      </Button>
-                    </Group>
-                  )}
+                {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
+                  <Group className="flex-nowrap" size="sm">
+                    <Button
+                      className={"text-accent-11 !opacity-100"}
+                      disabled
+                      look="soft"
+                      onClick={() => setView?.("cells")}>
+                      <Icon remix="RiDashboardFill" />
+                    </Button>
+                    <Button look="soft" onClick={() => setView?.("table")}>
+                      <Icon remix="RiSortDesc" />
+                    </Button>
+                  </Group>
+                )}
               </Group>
             </Box>
             <Box>
@@ -150,7 +151,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
           </List>
         );
     }
-  }, [protocols, view, count]);
+  }, [protocols, view, count, opportunityLibraryViews]);
 
   return (
     <div className="w-full">
@@ -165,21 +166,20 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
               <Text look="hype" size={5}>
                 {count ?? ""} Opportunities
               </Text>
-              {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
-                view && (
-                  <Group className="flex-nowrap" size="sm">
-                    <Button
-                      className={"text-accent-11 !opacity-100"}
-                      disabled
-                      look="soft"
-                      onClick={() => setView?.("cells")}>
-                      <Icon remix="RiDashboardFill" />
-                    </Button>
-                    <Button look="soft" onClick={() => setView?.("table")}>
-                      <Icon remix="RiSortDesc" />
-                    </Button>
-                  </Group>
-                )}
+              {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
+                <Group className="flex-nowrap" size="sm">
+                  <Button
+                    className={"text-accent-11 !opacity-100"}
+                    disabled
+                    look="soft"
+                    onClick={() => setView?.("cells")}>
+                    <Icon remix="RiDashboardFill" />
+                  </Button>
+                  <Button look="soft" onClick={() => setView?.("table")}>
+                    <Icon remix="RiSortDesc" />
+                  </Button>
+                </Group>
+              )}
             </Group>
           </Box>
           <Box className="py-xl*4 flex items-center justify-center gap-xl">

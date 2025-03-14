@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import { Icon, Text } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -10,6 +10,7 @@ import { type ReactNode, useMemo } from "react";
  */
 export default function useChains(chainsData?: Chain[]) {
   const { chainId } = useWalletContext();
+  const chainsConfig = useMerklConfig(store => store.config.chains);
 
   /**
    * Filtered Options
@@ -19,9 +20,9 @@ export default function useChains(chainsData?: Chain[]) {
     () =>
       chainsData?.filter(({ id }) => {
         if (id === 1337) return false;
-        return !merklConfig.chains?.length || merklConfig.chains.some(enabledChains => enabledChains.id === id);
+        return !chainsConfig?.length || chainsConfig?.some(enabledChains => enabledChains.id === id);
       }) ?? [],
-    [chainsData],
+    [chainsData, chainsConfig],
   );
 
   /**

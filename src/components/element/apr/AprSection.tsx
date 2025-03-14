@@ -17,29 +17,27 @@ export default function AprSection({ opportunity }: AprSectionProps) {
     switch (breakdown?.type) {
       case "CAMPAIGN":
         return (
-          <Group className="items-center">
-            Campaign
-            <PrimitiveTag look="soft" size="xs">
-              <Hash size="xs" format="short" copy className="text-main-12">
-                {breakdown.identifier}
-              </Hash>
-            </PrimitiveTag>
-          </Group>
+          <Text className="flex items-center gap-sm" size="sm">
+            <span>Campaign</span>
+            <Hash format="prefix" copy>
+              {breakdown.identifier}
+            </Hash>
+          </Text>
         );
       case "PROTOCOL":
         return (
-          <Group>
+          <Text className="flex items-center gap-sm" size="sm">
             {breakdown.identifier.split(" ")[0]}
-            <Hash format="short" copy size="xs">
+            <Hash format="prefix" copy>
               {breakdown.identifier.split(" ")[1]}
             </Hash>
-          </Group>
+          </Text>
         );
       case "TOKEN":
         return breakdown.identifier;
       default:
         return (
-          <Hash format="short" size="xs" copy>
+          <Hash format="prefix" size="xs" copy>
             {breakdown.identifier}
           </Hash>
         );
@@ -50,12 +48,10 @@ export default function AprSection({ opportunity }: AprSectionProps) {
 
   return (
     <Group className="flex-col mt-md">
-      <Group className="items-center" size="sm">
-        <Icon className="text-main-11" remix="RiFileList3Line" />
-        <Text size="sm" bold>
-          APR details
-        </Text>
-      </Group>
+      <Text bold className="flex items-center gap-xs " size="sm" look="bold">
+        <Icon remix="RiFileList3Line" />
+        APR details
+      </Text>
 
       <Divider />
       <Group className="flex-col">

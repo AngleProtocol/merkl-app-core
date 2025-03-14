@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { useLocation } from "@remix-run/react";
 import {
   Box,
@@ -29,11 +29,12 @@ export default function Refer({ url }: ReferProps) {
   const { copy: copyLink, isCopied: isLinkCopied } = useClipboard();
   const location = useLocation();
   const { vars } = useTheme();
+  const appName = useMerklConfig(store => store.config.appName);
+  const referralConfig = useMerklConfig(store => store.config.referral);
 
   const shareMessage = useMemo(() => {
-    if (referral)
-      return `Join me on ${merklConfig.appName} and earn a +5% boost using my referral code: ${referral.code}`;
-  }, [referral]);
+    if (referral) return `Join me on ${appName} and earn a +5% boost using my referral code: ${referral.code}`;
+  }, [referral, appName]);
 
   if (isReferrer && referral)
     return (
@@ -120,7 +121,7 @@ export default function Refer({ url }: ReferProps) {
         Generate a referral code via a quick on-chain transaction. Share it. When your friend deposits, Earn an
         additional 5% yield on your referee deposit. <ReferralCalculationTooltip />
       </Text>
-      <Connected chain={merklConfig.referral?.chainId} size="lg" look="hype" className="justify-center">
+      <Connected chain={referralConfig?.chainId} size="lg" look="hype" className="justify-center">
         <TransactionButton
           name="Become a referrer"
           onSuccess={reload}

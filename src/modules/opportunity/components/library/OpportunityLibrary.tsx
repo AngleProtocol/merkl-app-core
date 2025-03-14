@@ -1,10 +1,10 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useLocation, useNavigate } from "@remix-run/react";
 import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
-import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
 import useOpportunityTable from "../../hooks/useOpportunityTable";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
@@ -31,17 +31,22 @@ export default function OpportunityLibrary({
   hideFilters,
   forceView,
 }: OpportunityLibrary) {
+  const opportunityLibraryDefaultView = useMerklConfig(store => store.config.opportunityLibrary.defaultView);
+  const opportunityLibraryViews = useMerklConfig(store => store.config.opportunityLibrary?.views);
+  const excludeFilters = useMerklConfig(store => store.config.opportunityLibrary?.excludeFilters);
+  const opportunityNavigationMode = useMerklConfig(store => store.config.opportunityNavigationMode);
+
   // Merge global and local exclusions
   const mergedExclusions = useMemo(() => {
     // Get global exclusions from config
-    const globalExclusions = merklConfig?.opportunityLibrary.excludeFilters || [];
+    const globalExclusions = excludeFilters || [];
     // Combine global and local exclusions
     const combinedExclusions = [...globalExclusions, ...exclude];
     // Remove duplicates
     return Array.from(new Set(combinedExclusions));
-  }, [exclude]);
+  }, [exclude, excludeFilters]);
 
-  const [view, setView] = useState<OpportunityView>(forceView ?? merklConfig.opportunityLibrary.defaultView ?? "table");
+  const [view, setView] = useState<OpportunityView>(forceView ?? opportunityLibraryDefaultView ?? "table");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,7 +79,7 @@ export default function OpportunityLibrary({
             }
             dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
             ctaHeader={
-              (merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
+              (opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) &&
               view && (
                 <Group className="flex-nowrap" size="sm">
                   <Button look="soft" onClick={() => setView?.("cells")}>
@@ -93,7 +98,7 @@ export default function OpportunityLibrary({
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
               <OpportunityTableRow
-                navigationMode={merklConfig.opportunityNavigationMode}
+                navigationMode={opportunityNavigationMode}
                 key={`${o.chainId}_${o.type}_${o.identifier}`}
                 opportunity={o}
               />
@@ -108,28 +113,27 @@ export default function OpportunityLibrary({
                 <Text look="hype" size={5}>
                   {count ?? ""} Opportunities
                 </Text>
-                {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
-                  view && (
-                    <Group className="flex-nowrap" size="sm">
-                      <Button
-                        className={"text-accent-11 !opacity-100"}
-                        disabled
-                        look="soft"
-                        onClick={() => setView?.("cells")}>
-                        <Icon remix="RiDashboardFill" />
-                      </Button>
-                      <Button look="soft" onClick={() => setView?.("table")}>
-                        <Icon remix="RiSortDesc" />
-                      </Button>
-                    </Group>
-                  )}
+                {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
+                  <Group className="flex-nowrap" size="sm">
+                    <Button
+                      className={"text-accent-11 !opacity-100"}
+                      disabled
+                      look="soft"
+                      onClick={() => setView?.("cells")}>
+                      <Icon remix="RiDashboardFill" />
+                    </Button>
+                    <Button look="soft" onClick={() => setView?.("table")}>
+                      <Icon remix="RiSortDesc" />
+                    </Button>
+                  </Group>
+                )}
               </Group>
             </Box>
             <Box>
               <Group className="grid md:grid-cols-2 lg:grid-cols-3" size="lg">
                 {opportunities?.map(o => (
                   <OpportunityCell
-                    navigationMode={merklConfig.opportunityNavigationMode}
+                    navigationMode={opportunityNavigationMode}
                     key={`${o.chainId}_${o.type}_${o.identifier}`}
                     opportunity={o}
                   />
@@ -144,7 +148,7 @@ export default function OpportunityLibrary({
           </List>
         );
     }
-  }, [opportunities, view, count, OpportunityTable]);
+  }, [opportunities, view, count, OpportunityTable, opportunityNavigationMode, opportunityLibraryViews]);
 
   return (
     <div className="w-full">
@@ -166,21 +170,20 @@ export default function OpportunityLibrary({
               <Text look="hype" size={5}>
                 {count ?? ""} Opportunities
               </Text>
-              {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) &&
-                view && (
-                  <Group className="flex-nowrap" size="sm">
-                    <Button
-                      className={"text-accent-11 !opacity-100"}
-                      disabled
-                      look="soft"
-                      onClick={() => setView?.("cells")}>
-                      <Icon remix="RiDashboardFill" />
-                    </Button>
-                    <Button look="soft" onClick={() => setView?.("table")}>
-                      <Icon remix="RiSortDesc" />
-                    </Button>
-                  </Group>
-                )}
+              {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
+                <Group className="flex-nowrap" size="sm">
+                  <Button
+                    className={"text-accent-11 !opacity-100"}
+                    disabled
+                    look="soft"
+                    onClick={() => setView?.("cells")}>
+                    <Icon remix="RiDashboardFill" />
+                  </Button>
+                  <Button look="soft" onClick={() => setView?.("table")}>
+                    <Icon remix="RiSortDesc" />
+                  </Button>
+                </Group>
+              )}
             </Group>
           </Box>
           <Box className="py-xl*4 flex items-center justify-center gap-xl">

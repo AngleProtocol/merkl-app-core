@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { type Component, Text, Value } from "packages/dappkit/src";
 
@@ -7,9 +7,11 @@ export type OpportunityCellTvlProps = {
 };
 
 export default function OpportunityCellTvl({ opportunity }: Component<OpportunityCellTvlProps>) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
   return (
     <Text look="base">
-      <Value value format={merklConfig.decimalFormat.dollar}>
+      <Value value format={dollarFormat}>
         {opportunity.tvl ?? 0}
       </Value>{" "}
       TVL

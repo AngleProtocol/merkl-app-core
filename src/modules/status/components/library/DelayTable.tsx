@@ -1,6 +1,6 @@
 import { createTable } from "dappkit";
 
-export const [DelayTable, DelayRow, statusColumns] = createTable({
+export const [DelayTable, DelayRow, delayColumns] = createTable({
   computeChain: {
     name: "Compute Chain",
     size: "minmax(100px,0.5fr)",
