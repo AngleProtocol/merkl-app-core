@@ -73,7 +73,6 @@ export default function useOpportunityTable(opportunity?: Opportunity) {
     return createTable(columns as OpportuntyLibraryOverride<"table", false>);
   }, [columns]);
 
-  console.log({ columns });
   const opportunityColumns = useMemo(() => {
     if (!opportunity) return;
 

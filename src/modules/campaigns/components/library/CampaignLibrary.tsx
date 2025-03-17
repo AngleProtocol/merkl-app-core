@@ -2,7 +2,7 @@ import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useOutletContext } from "@remix-run/react";
-import { Box, Button, Group, Icon, OverrideTheme, Text, Title } from "dappkit";
+import { Box, Button, Group, Icon, OverrideTheme, Text } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import CampaignTableRow from "../element/CampaignTableRow";
