@@ -115,7 +115,7 @@ export default function OpportunityLibrary({
               </Group>
             </Box>
             <Box>
-              <Group className="grid md:grid-cols-2 lg:grid-cols-3" size="lg">
+              <Group className="grid md:grid-cols-2 lg:grid-cols-3 my-md" size="lg">
                 {opportunities?.map(o => (
                   <OpportunityCell
                     navigationMode={opportunityNavigationMode}
