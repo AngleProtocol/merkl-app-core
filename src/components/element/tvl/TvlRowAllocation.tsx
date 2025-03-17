@@ -81,7 +81,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   }
   if (!content) return null;
   return (
-    <Group className="flex-col">
+    <Group className="flex-col" size="sm">
       <Text bold className="flex items-center gap-xs " size="sm" look="bold">
         <Icon remix="RiWaterFlashFill" />
         TVL Allocation

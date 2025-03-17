@@ -22,7 +22,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return (
           <Text className="flex items-center gap-sm" size="sm">
             <span>Campaign</span>
-            <Hash format="prefix" copy>
+            <Hash format="prefix" copy size={"sm"}>
               {breakdown.identifier}
             </Hash>
           </Text>
@@ -31,7 +31,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return (
           <Text className="flex items-center gap-sm" size="sm">
             {breakdown.identifier.split(" ")[0]}
-            <Hash format="prefix" copy>
+            <Hash format="prefix" copy size={"sm"}>
               {breakdown.identifier.split(" ")[1]}
             </Hash>
           </Text>
@@ -40,7 +40,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return breakdown.identifier;
       default:
         return (
-          <Hash format="prefix" size="xs" copy>
+          <Hash format="prefix" size="sm" copy>
             {breakdown.identifier}
           </Hash>
         );
@@ -50,14 +50,13 @@ export default function AprSection({ opportunity }: AprSectionProps) {
   if (!breakdowns?.length) return null;
 
   return (
-    <Group className="flex-col mt-md">
+    <Group className="flex-col" size="sm">
       <Text bold className="flex items-center gap-xs " size="sm" look="bold">
         <Icon remix="RiFileList3Line" />
         APR details
       </Text>
-
       <Divider />
-      <Group className="flex-col">
+      <Group className="flex-col" size="sm">
         {breakdowns?.map(breakdown => (
           <Group key={breakdown.id} className="items-center justify-between" size="sm">
             <Text size="sm" look="bold">

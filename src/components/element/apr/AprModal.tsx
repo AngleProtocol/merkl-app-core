@@ -15,7 +15,7 @@ export default function AprModal(props: AprModalProps) {
   const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
 
   return (
-    <Group className="flex-col -my-md">
+    <Group className="flex-col">
       <Group className="justify-between items-center">
         <Title look="soft" h={5}>
           AVERAGE APR
@@ -27,7 +27,7 @@ export default function AprModal(props: AprModalProps) {
         </PrimitiveTag>
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
-      <Group className="flex-col" size="lg">
+      <Group className="flex-col" size="md">
         <TvlRowAllocation opportunity={opportunity} />
         <AprSection opportunity={opportunity} />
         <TvlSection opportunity={opportunity} />
