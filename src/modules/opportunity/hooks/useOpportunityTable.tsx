@@ -20,12 +20,6 @@ const defaultColumns: OpportuntyLibraryOverride<"table"> = {
     main: true,
     table: opportunity => <OpportunityTableName opportunity={opportunity} />,
   },
-  action: {
-    name: "Action",
-    size: "minmax(min-content,150px)",
-    className: "justify-end",
-    table: opportunity => <OpportunityTableName opportunity={opportunity} />,
-  },
   apr: {
     name: "APR",
     size: "minmax(min-content,80px)",

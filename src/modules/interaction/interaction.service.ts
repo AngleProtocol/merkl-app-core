@@ -53,6 +53,7 @@ export const InteractionService = defineModule<{ api: Api; backend: MerklBackend
         opportunity?.identifier,
       );
 
+      if (targets && targets.length === 0) return;
       return targets;
     },
   );
