@@ -2,7 +2,7 @@ import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useOutletContext } from "@remix-run/react";
-import { Box, Button, Group, Icon, OverrideTheme, Text, Title } from "dappkit";
+import { Box, Button, Group, Icon, OverrideTheme, Text } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import CampaignTableRow from "../element/CampaignTableRow";
@@ -47,9 +47,9 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
         <Box className="bg-main-3">
           <Group className="justify-between items-center w-full">
             <OverrideTheme coloring={"good"}>
-              <Title look="soft" h={5}>
-                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "Active Campaigns" : "Active Campaign"}
-              </Title>
+              <Text bold look="soft">
+                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "ACTIVE CAMPAIGN"}
+              </Text>
             </OverrideTheme>
 
             <Group>
