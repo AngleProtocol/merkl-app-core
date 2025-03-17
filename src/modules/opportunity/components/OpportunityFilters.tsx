@@ -161,17 +161,22 @@ export default function OpportunityFilters({
     return filters;
   }, [only, exclude]);
 
-  function onSearchSubmit() {
-    if (innerSearch === search) return;
-    setSearch(innerSearch);
-  }
-
   const updateParams = useCallback(
     (key: string, value: string[], searchParams: URLSearchParams) => {
       if (!fields.includes(key as (typeof fields)[number])) return;
 
       if (value?.length === 0 || !value) searchParams.delete(key);
       else searchParams.set(key, value?.join(","));
+    },
+    [fields],
+  );
+
+  const updateStringParam = useCallback(
+    (key: string, value: string, searchParams: URLSearchParams) => {
+      if (!fields.includes(key as (typeof fields)[number])) return;
+
+      if (!value) searchParams.delete(key);
+      else searchParams.set(key, value);
     },
     [fields],
   );
@@ -213,9 +218,9 @@ export default function OpportunityFilters({
       updateParams("action", actionsInput, params);
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
+      updateStringParam("search", innerSearch, params);
       return params;
     });
-    onSearchSubmit();
   }
 
   function onClearFilters() {
@@ -271,7 +276,6 @@ export default function OpportunityFilters({
               className="min-w-[12ch]"
               state={[innerSearch, v => setInnerSearch(v ?? "")]}
               suffix={<Icon remix="RiSearchLine" />}
-              onClick={onSearchSubmit}
               placeholder="Search"
             />
           </Form>
