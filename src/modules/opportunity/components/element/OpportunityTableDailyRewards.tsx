@@ -1,8 +1,8 @@
+import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import { type Component, Dropdown, EventBlocker, Group } from "packages/dappkit/src";
-import useOpportunityRewards from "../../hooks/useOpportunityRewards";
-import Token from "@core/modules/token/components/element/Token";
 import { useMemo } from "react";
+import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 
 export type OpportunityTableDailyRewardsProps = {
   opportunity: Opportunity;

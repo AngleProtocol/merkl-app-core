@@ -1,8 +1,8 @@
 import type { Protocol } from "@merkl/api";
-import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
-import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 import { useNavigate } from "@remix-run/react";
+import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 import { useCallback } from "react";
+import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 
 export default function ProtocolTag({ protocol, ...props }: { protocol: Protocol } & PrimitiveTagProps) {
   const { name, icon } = useProtocolMetadata(protocol);
