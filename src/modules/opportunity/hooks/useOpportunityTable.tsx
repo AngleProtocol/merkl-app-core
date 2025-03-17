@@ -20,12 +20,6 @@ const defaultColumns: OpportuntyLibraryOverride<"table"> = {
     main: true,
     table: opportunity => <OpportunityTableName opportunity={opportunity} />,
   },
-  action: {
-    name: "Action",
-    size: "minmax(min-content,150px)",
-    className: "justify-end",
-    table: opportunity => <OpportunityTableName opportunity={opportunity} />,
-  },
   apr: {
     name: "APR",
     size: "minmax(min-content,80px)",
@@ -79,6 +73,7 @@ export default function useOpportunityTable(opportunity?: Opportunity) {
     return createTable(columns as OpportuntyLibraryOverride<"table", false>);
   }, [columns]);
 
+  console.log({ columns });
   const opportunityColumns = useMemo(() => {
     if (!opportunity) return;
 
