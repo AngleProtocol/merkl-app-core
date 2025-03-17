@@ -13,6 +13,8 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
   const [isShowingMore, setIsShowingMore] = useState(false);
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
+  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
+
   const tvlFiltered = useMemo(() => {
     return opportunity.tvlRecord?.breakdowns
       ?.filter(breakdown => breakdown.type === "PROTOCOL")
@@ -89,7 +91,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
 
                 {aprBreakdown && (
                   <PrimitiveTag className="w-fit ml-auto" look="bold" size="sm">
-                    <Value value format="0a%">
+                    <Value value format={aprFormat}>
                       {aprBreakdown.value / 100}
                     </Value>
                   </PrimitiveTag>
