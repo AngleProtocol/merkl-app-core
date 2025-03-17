@@ -211,7 +211,7 @@ export default function OpportunityFilters({
     setStatusInput(statusFilter ?? []);
   }, [location.search]);
 
-  function onApplyFilters() {
+  const onApplyFilters = useCallback(() => {
     setApplying(true);
     setSearchParams(params => {
       updateParams("chain", chainIdsInput, params);
@@ -221,7 +221,16 @@ export default function OpportunityFilters({
       updateStringParam("search", innerSearch, params);
       return params;
     });
-  }
+  }, [
+    updateParams,
+    updateStringParam,
+    setSearchParams,
+    chainIdsInput,
+    actionsInput,
+    statusInput,
+    protocolInput,
+    innerSearch,
+  ]);
 
   function onClearFilters() {
     setApplying(false);
