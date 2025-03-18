@@ -22,7 +22,7 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
             {count} Opportunities
           </Title>
         ),
-        size: "minmax(400px,1fr)",
+        size: "minmax(min-content,1fr)",
         className: "justify-start",
         main: true,
         table: (opportunity?: Opportunity) =>
@@ -30,19 +30,19 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
       },
       apr: {
         name: "APR",
-        size: "minmax(min-content,80px)",
+        size: "minmax(min-content,115px)",
         className: "md:justify-center",
         table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableApr opportunity={opportunity} /> : <></>),
       },
       tvl: {
         name: "TVL",
-        size: "minmax(min-content,100px)",
+        size: "minmax(min-content,115px)",
         className: "md:justify-center",
         table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableTvl opportunity={opportunity} /> : <></>),
       },
       dailyRewards: {
         name: "Daily rewards",
-        size: "minmax(150px,180px)",
+        size: "minmax(min-content,125px)",
         className: "md:justify-center",
         table: (opportunity?: Opportunity) =>
           opportunity ? <OpportunityTableDailyRewards opportunity={opportunity} /> : <></>,

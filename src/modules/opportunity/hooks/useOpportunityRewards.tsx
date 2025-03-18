@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Fmt, Icon, Text, Value } from "dappkit";
+import { Fmt, Group, Icon, Text, Value } from "dappkit";
 import { useMemo } from "react";
 
 const rewards = ["dailyRewards", "rewardsRecord"] satisfies (keyof Opportunity)[];
@@ -60,19 +60,42 @@ export default function useOpportunityRewards({
         </>
       );
     }
+
+    const tokens = rewardsRecord.breakdowns.reduce<Token[]>((acc, { token }) => {
+      if (!acc.some(t => t.id === token.id)) acc.push(token);
+      return acc;
+    }, []);
+
     return (
-      <>
-        <Text bold look="soft">
+      <Group className="flex items-center" size="sm">
+        <Text bold look="hype" size="lg">
           <Value value format={dollarFormat}>
             {dailyRewards ?? 0}
           </Value>
         </Text>
-      </>
+        <Group className="relative">
+          <Group className="flex items-center !gap-0">
+            {tokens.map((token, index) => {
+              const zIndex = (tokens.length - index) * 10;
+              return (
+                <Icon
+                  key={token.address}
+                  size="sm"
+                  rounded
+                  src={token?.icon}
+                  className={`inline-block ${index !== 0 && "-ml-sm*2"} z-${zIndex}`}
+                />
+              );
+            })}
+          </Group>
+        </Group>
+      </Group>
     );
   }, [rewardsRecord, dailyRewards, dollarFormat, dailyRewardsTokenAddress]);
 
   return {
     rewardsBreakdown,
     formattedDailyRewards,
+    dailyRewards,
   };
 }
