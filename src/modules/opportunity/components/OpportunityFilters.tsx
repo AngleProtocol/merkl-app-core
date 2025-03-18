@@ -110,7 +110,12 @@ export default function OpportunityFilters({
   };
 
   const { options: protocolOptions, isSingleProtocol } = useProtocols(protocols);
-  const { options: chainOptions, isSingleChain } = useChains(chains);
+  const {
+    options: chainOptions,
+    searchOptions: chainSearchOptions,
+    indexOptions: chainIndexOptions,
+    isSingleChain,
+  } = useChains(chains);
 
   const [actionsFilter] = useSearchParamState<string[]>(
     "action",
@@ -320,6 +325,8 @@ export default function OpportunityFilters({
                 multiple
                 search
                 options={chainOptions}
+                searchOptions={chainSearchOptions}
+                indexOptions={chainIndexOptions}
                 look="tint"
                 placeholder="Chain"
                 placeholderIcon={<Icon remix="RiLink" />}
