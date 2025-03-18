@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import { useLocation } from "@remix-run/react";
-import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
+import { Button, Container, Group, Icon, Select, Text, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useChains from "../../modules/chain/hooks/useChains";
@@ -104,7 +104,16 @@ export default function Header() {
         className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
         <Container className="py-xl">
           <Group className="justify-between items-center">
-            <BrandNavigationMenu routes={navigationConfig.menu} footer={<SwitchMode />} />
+            <BrandNavigationMenu
+              routes={navigationConfig.menu}
+              footer={
+                <Group className="w-full justify-between">
+                  <SwitchMode />
+                  {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+                  <Text size="xs" className="self-end">{typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}</Text>
+                </Group>
+              }
+            />
             <Group>
               <Group className="items-center" size="xl">
                 <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
