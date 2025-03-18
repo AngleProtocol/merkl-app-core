@@ -1,12 +1,11 @@
-import type { NavigationMenuRoute } from "@core/config/type";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import { useLocation } from "@remix-run/react";
 import { Button, Container, Group, Icon, Select, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
-import SearchBar from "../element/functions/SearchBar";
 import BrandNavigationMenu from "./BrandNavigationMenu";
 
 const container = {
@@ -26,7 +25,6 @@ export default function Header() {
   const location = useLocation();
   const hideSpyMode = useMerklConfig(store => store.config.hideSpyMode);
   const navigationConfig = useMerklConfig(store => store.config.navigation);
-  const isSearchbarEnabled = useMerklConfig(store => store.config.header.searchbar.enabled);
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -67,6 +65,8 @@ export default function Header() {
     isOnSingleChain,
     chains: enabledChains,
     options: chainOptions,
+    searchOptions: chainSearchOptions,
+    indexOptions: chainIndexOptions,
   } = useChains(chains);
 
   const chainSwitcher = useMemo(() => {
@@ -74,8 +74,27 @@ export default function Header() {
       return <Button onClick={() => switchChain(singleChain?.id!)}>Switch to {enabledChains?.[0]?.name}</Button>;
     if (isSingleChain) return <></>;
 
-    return <Select search placeholder="Select Chain" state={[chainId, c => switchChain(+c)]} options={chainOptions} />;
-  }, [chainId, switchChain, chainOptions, enabledChains, isSingleChain, isOnSingleChain, singleChain]);
+    return (
+      <Select
+        search
+        placeholder="Select Chain"
+        state={[chainId, c => switchChain(+c)]}
+        searchOptions={chainSearchOptions}
+        indexOptions={chainIndexOptions}
+        options={chainOptions}
+      />
+    );
+  }, [
+    chainId,
+    switchChain,
+    chainOptions,
+    chainSearchOptions,
+    enabledChains,
+    isSingleChain,
+    isOnSingleChain,
+    singleChain,
+    chainIndexOptions,
+  ]);
 
   return (
     <div ref={headerRef} style={{ minHeight: height }}>
@@ -122,10 +141,6 @@ export default function Header() {
                       </Group>
                     );
                   })}
-                  <Group className="items-center">
-                    <SwitchMode />
-                    {isSearchbarEnabled && <SearchBar icon={true} />}
-                  </Group>
                 </Group>
 
                 <Group className="flex">
