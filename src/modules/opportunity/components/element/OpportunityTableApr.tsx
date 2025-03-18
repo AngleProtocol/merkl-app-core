@@ -15,14 +15,14 @@ export default function OpportunityTableApr({
   size: _,
   ...props
 }: Component<OpportunityTableAprProps>) {
-  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
 
   return (
     <EventBlocker>
       <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} {...props} />}>
         <Text bold look="tint" size="lg">
           {children ?? (
-            <Value value format={format ?? dollarFormat}>
+            <Value value format={format ?? aprFormat}>
               {opportunity.apr / 100}
             </Value>
           )}

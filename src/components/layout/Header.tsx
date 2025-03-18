@@ -109,8 +109,9 @@ export default function Header() {
               footer={
                 <Group className="w-full justify-between">
                   <SwitchMode />
-                  {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-                  <Text size="xs" className="self-end">{typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}</Text>
+                  <Text size="xs" className="self-end">
+                    {typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}
+                  </Text>
                 </Group>
               }
             />

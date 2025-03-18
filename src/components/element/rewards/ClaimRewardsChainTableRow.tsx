@@ -7,7 +7,7 @@ import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useReward from "../../../hooks/resources/useReward";
 import { UserService } from "../../../modules/user/user.service";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
@@ -82,6 +82,11 @@ export default function ClaimRewardsChainTableRow({
       ));
   }, [reward, selectedTokens.size, selectedTokens, isOnCorrectChain, isAbleToClaim]);
 
+  const onSwitchChain = useCallback(() => {
+    if (!reward.chain.id) return;
+    switchChain(reward.chain.id);
+  }, [switchChain, reward.chain.id]);
+
   return (
     <ClaimRewardsChainRow
       {...props}
@@ -109,7 +114,7 @@ export default function ClaimRewardsChainTableRow({
                   Claim
                 </TransactionButton>
               ) : (
-                <Button className="ml-xl" onClick={() => switchChain(reward.chain.id)}>
+                <Button className="ml-xl" onClick={onSwitchChain}>
                   Switch Network <Icon remix="RiArrowLeftRightLine" />
                 </Button>
               ))}

@@ -91,6 +91,7 @@ export default function OpportunityFilters({
   };
 
   const statusOptions = {
+    "LIVE,SOON,PAST": <>All status</>,
     LIVE: (
       <>
         <Icon size="sm" remix="RiFlashlightLine" /> Live
@@ -131,12 +132,18 @@ export default function OpportunityFilters({
   );
   const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
 
-  const [statusFilter] = useSearchParamState<string[]>(
+  const [statusFilter, setStatusFilters] = useSearchParamState<string[]>(
     "status",
     v => v?.join(","),
     v => v?.split(","),
   );
-  const [statusInput, setStatusInput] = useState(statusFilter ?? []);
+
+  const [statusInput, setStatusInput] = useState(statusFilter ?? ["LIVE", "SOON"]);
+
+  const onStatusChange = useCallback((status: string[]) => {
+    const uniqueStatus = Array.from(new Set(status.flatMap(s => s.split(","))));
+    setStatusInput(uniqueStatus);
+  }, []);
 
   const [chainIdsFilter] = useSearchParamState<string[]>(
     "chain",
@@ -145,7 +152,7 @@ export default function OpportunityFilters({
   );
   const [chainIdsInput, setChainIdsInput] = useState<string[]>(chainIdsFilter ?? []);
 
-  const [search, setSearch] = useSearchParamState<string>(
+  const [search] = useSearchParamState<string>(
     "search",
     v => v,
     v => v,
@@ -166,17 +173,22 @@ export default function OpportunityFilters({
     return filters;
   }, [only, exclude]);
 
-  function onSearchSubmit() {
-    if (innerSearch === search) return;
-    setSearch(innerSearch);
-  }
-
   const updateParams = useCallback(
     (key: string, value: string[], searchParams: URLSearchParams) => {
       if (!fields.includes(key as (typeof fields)[number])) return;
 
       if (value?.length === 0 || !value) searchParams.delete(key);
       else searchParams.set(key, value?.join(","));
+    },
+    [fields],
+  );
+
+  const updateStringParam = useCallback(
+    (key: string, value: string, searchParams: URLSearchParams) => {
+      if (!fields.includes(key as (typeof fields)[number])) return;
+
+      if (!value) searchParams.delete(key);
+      else searchParams.set(key, value);
     },
     [fields],
   );
@@ -205,23 +217,26 @@ export default function OpportunityFilters({
     innerSearch,
   ]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
-  useEffect(() => {
-    setActionsInput(actionsFilter ?? []);
-    setStatusInput(statusFilter ?? []);
-  }, [location.search]);
-
-  function onApplyFilters() {
+  const onApplyFilters = useCallback(() => {
     setApplying(true);
     setSearchParams(params => {
       updateParams("chain", chainIdsInput, params);
       updateParams("action", actionsInput, params);
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
+      updateStringParam("search", innerSearch, params);
       return params;
     });
-    onSearchSubmit();
-  }
+  }, [
+    updateParams,
+    updateStringParam,
+    setSearchParams,
+    chainIdsInput,
+    actionsInput,
+    statusInput,
+    protocolInput,
+    innerSearch,
+  ]);
 
   function onClearFilters() {
     setApplying(false);
@@ -276,7 +291,6 @@ export default function OpportunityFilters({
               className="min-w-[12ch]"
               state={[innerSearch, v => setInnerSearch(v ?? "")]}
               suffix={<Icon remix="RiSearchLine" />}
-              onClick={onSearchSubmit}
               placeholder="Search"
             />
           </Form>
@@ -296,8 +310,7 @@ export default function OpportunityFilters({
             )}
             {fields.includes("status") && (
               <Select
-                state={[statusInput, setStatusInput]}
-                allOption={"All status"}
+                state={[statusInput, onStatusChange]}
                 multiple
                 options={statusOptions}
                 look="tint"

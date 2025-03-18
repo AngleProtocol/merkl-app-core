@@ -1,3 +1,4 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
 import { useMemo } from "react";
@@ -11,6 +12,8 @@ export default function AprSection({ opportunity }: AprSectionProps) {
     return opportunity.aprRecord?.breakdowns.filter(aprBreakdown => aprBreakdown.type !== "PROTOCOL");
   }, [opportunity]);
 
+  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
+
   const getAprName = (breakdown: Opportunity["aprRecord"]["breakdowns"][number]) => {
     if (!breakdown?.identifier) return null;
 
@@ -19,7 +22,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return (
           <Text className="flex items-center gap-sm" size="sm">
             <span>Campaign</span>
-            <Hash format="prefix" copy>
+            <Hash format="prefix" copy size={"sm"}>
               {breakdown.identifier}
             </Hash>
           </Text>
@@ -28,7 +31,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return (
           <Text className="flex items-center gap-sm" size="sm">
             {breakdown.identifier.split(" ")[0]}
-            <Hash format="prefix" copy>
+            <Hash format="prefix" copy size={"sm"}>
               {breakdown.identifier.split(" ")[1]}
             </Hash>
           </Text>
@@ -37,7 +40,7 @@ export default function AprSection({ opportunity }: AprSectionProps) {
         return breakdown.identifier;
       default:
         return (
-          <Hash format="prefix" size="xs" copy>
+          <Hash format="prefix" size="sm" copy>
             {breakdown.identifier}
           </Hash>
         );
@@ -47,21 +50,20 @@ export default function AprSection({ opportunity }: AprSectionProps) {
   if (!breakdowns?.length) return null;
 
   return (
-    <Group className="flex-col mt-md">
+    <Group className="flex-col" size="sm">
       <Text bold className="flex items-center gap-xs " size="sm" look="bold">
         <Icon remix="RiFileList3Line" />
         APR details
       </Text>
-
       <Divider />
-      <Group className="flex-col">
+      <Group className="flex-col" size="sm">
         {breakdowns?.map(breakdown => (
           <Group key={breakdown.id} className="items-center justify-between" size="sm">
             <Text size="sm" look="bold">
               {getAprName(breakdown)}
             </Text>
             <PrimitiveTag look="bold" size="sm">
-              <Value value format="0a%">
+              <Value value format={aprFormat}>
                 {breakdown.value / 100}
               </Value>
             </PrimitiveTag>

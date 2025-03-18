@@ -1,5 +1,7 @@
-import type { Opportunity } from "@merkl/api";
-import { type Component, Group } from "packages/dappkit/src";
+import Token from "@core/modules/token/components/element/Token";
+import type { Opportunity, Token as TokenType } from "@merkl/api";
+import { type Component, Dropdown, EventBlocker, Group } from "packages/dappkit/src";
+import { useMemo } from "react";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 
 export type OpportunityTableDailyRewardsProps = {
@@ -13,9 +15,40 @@ export default function OpportunityTableDailyRewards({
 }: Component<OpportunityTableDailyRewardsProps>) {
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
+  const displayTokenBreakdowns = useMemo(() => {
+    if (!opportunity.rewardsRecord?.breakdowns) return null;
+
+    const mergedBreakdowns = opportunity.rewardsRecord.breakdowns.reduce<
+      Record<string, { token: TokenType; amount: bigint }>
+    >((acc, tokenBreakdown) => {
+      const { token, amount } = tokenBreakdown;
+      const key = token.address;
+
+      if (acc[key]) {
+        acc[key].amount = acc[key].amount + BigInt(amount);
+      } else {
+        acc[key] = { token, amount: BigInt(amount) };
+      }
+
+      return acc;
+    }, {});
+
+    return Object.values(mergedBreakdowns).map(({ token, amount }) => (
+      <Group key={token.id}>
+        <Token token={token} amount={amount} />
+      </Group>
+    ));
+  }, [opportunity]);
+
   return (
-    <Group className="flex-nowrap items-center" size="sm">
-      <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
-    </Group>
+    <EventBlocker>
+      <Dropdown
+        className="flex-nowrap items-center"
+        size="sm"
+        onHover
+        content={<Group className="flex-col p-sm">{displayTokenBreakdowns}</Group>}>
+        <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
+      </Dropdown>
+    </EventBlocker>
   );
 }

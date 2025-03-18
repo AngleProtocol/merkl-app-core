@@ -77,6 +77,26 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
 
+  const renderSwitchDisplayButton = useMemo(() => {
+    if (opportunityLibraryViews === null) return null;
+    if (opportunityLibraryViews?.length === 1) return null;
+    if (!view) return null;
+    return (
+      <Group className="flex-nowrap" size="sm">
+        {view === "table" && (
+          <Button look="soft" onClick={() => setView?.("cells")}>
+            <Icon remix="RiDashboardFill" />
+          </Button>
+        )}
+        {view === "cells" && (
+          <Button look="soft" onClick={() => setView?.("table")} className="min-w-[36px] justify-center">
+            <Icon remix="RiSortDesc" />
+          </Button>
+        )}
+      </Group>
+    );
+  }, [view, opportunityLibraryViews]);
+
   const display = useMemo(() => {
     switch (view) {
       case "table":
@@ -89,23 +109,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
               </Title>
             }
             dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
-            ctaHeader={
-              (opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) &&
-              view && (
-                <Group className="flex-nowrap" size="sm">
-                  <Button look="soft" onClick={() => setView?.("cells")}>
-                    <Icon remix="RiDashboardFill" />
-                  </Button>
-                  <Button
-                    disabled={view === "table"}
-                    className={view === "table" ? "text-accent-11 !opacity-100" : ""}
-                    look="soft"
-                    onClick={() => setView?.("table")}>
-                    <Icon remix="RiSortDesc" />
-                  </Button>
-                </Group>
-              )
-            }>
+            ctaHeader={renderSwitchDisplayButton}>
             {protocols?.map(p => (
               <ProtocolTableRow key={`${p.id}`} protocol={p} />
             ))}
@@ -119,20 +123,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
                 <Text look="hype" size={5}>
                   {count ?? ""} Protocols
                 </Text>
-                {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
-                  <Group className="flex-nowrap" size="sm">
-                    <Button
-                      className={"text-accent-11 !opacity-100"}
-                      disabled
-                      look="soft"
-                      onClick={() => setView?.("cells")}>
-                      <Icon remix="RiDashboardFill" />
-                    </Button>
-                    <Button look="soft" onClick={() => setView?.("table")}>
-                      <Icon remix="RiSortDesc" />
-                    </Button>
-                  </Group>
-                )}
+                {renderSwitchDisplayButton}
               </Group>
             </Box>
             <Box>
@@ -151,7 +142,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
           </List>
         );
     }
-  }, [protocols, view, count, opportunityLibraryViews]);
+  }, [protocols, view, count, opportunityLibraryViews, renderSwitchDisplayButton]);
 
   return (
     <div className="w-full">
@@ -166,20 +157,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
               <Text look="hype" size={5}>
                 {count ?? ""} Opportunities
               </Text>
-              {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
-                <Group className="flex-nowrap" size="sm">
-                  <Button
-                    className={"text-accent-11 !opacity-100"}
-                    disabled
-                    look="soft"
-                    onClick={() => setView?.("cells")}>
-                    <Icon remix="RiDashboardFill" />
-                  </Button>
-                  <Button look="soft" onClick={() => setView?.("table")}>
-                    <Icon remix="RiSortDesc" />
-                  </Button>
-                </Group>
-              )}
+              {renderSwitchDisplayButton}
             </Group>
           </Box>
           <Box className="py-xl*4 flex items-center justify-center gap-xl">

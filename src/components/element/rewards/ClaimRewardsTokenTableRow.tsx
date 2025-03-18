@@ -40,9 +40,23 @@ export default function ClaimRewardsTokenTableRow({
           />
         </Group>
       }
-      amountColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(unclaimed)} />}
-      claimedColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.claimed)} />}
-      pendingColumn={<Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.pending)} />}>
+      amountColumn={
+        !!unclaimed ? <Token size="md" token={reward.token} format="amount_price" amount={BigInt(unclaimed)} /> : "-"
+      }
+      claimedColumn={
+        !!BigInt(reward.claimed) ? (
+          <Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.claimed)} />
+        ) : (
+          "-"
+        )
+      }
+      pendingColumn={
+        !!BigInt(reward.pending) ? (
+          <Token size="md" token={reward.token} format="amount_price" amount={BigInt(reward.pending)} />
+        ) : (
+          "-"
+        )
+      }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
         {reward.breakdowns

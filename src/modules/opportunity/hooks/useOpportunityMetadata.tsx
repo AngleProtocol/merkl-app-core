@@ -252,7 +252,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by holding ${symbols} or by staking it in a supported contract
+            Earn rewards by holding {symbols} or by staking it in a supported contract
           </Tooltip>
         );
       case "LEND":
@@ -322,7 +322,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}
+            Earn rewards by taking a long position on {protocol?.name} {symbols} on {chain.name}
           </Tooltip>
         );
       case "DROP":
@@ -392,7 +392,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}
+            Earn rewards by taking a long position on {protocol?.name} {symbols} on {chain.name}
           </Tooltip>
         );
       case "SHORT":
@@ -427,7 +427,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by taking a short position on ${protocol?.name} ${symbols} on ${chain.name}
+            Earn rewards by taking a short position on {protocol?.name} {symbols} on {chain.name}
           </Tooltip>
         );
       default:

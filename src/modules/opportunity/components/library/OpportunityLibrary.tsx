@@ -2,7 +2,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useLocation, useNavigate } from "@remix-run/react";
-import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
+import { Box, Button, Group, Icon, List, Text } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import type { OpportunityView } from "../../../../config/opportunity";
@@ -53,9 +53,8 @@ export default function OpportunityLibrary({
   const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
-    if (clearing) {
-      setClearing(false);
-    }
+    if (!clearing) return;
+    setClearing(false);
   }, [clearing]);
 
   const handleClearFilters = useCallback(() => {
@@ -63,7 +62,27 @@ export default function OpportunityLibrary({
     navigate(location.pathname, { replace: true });
   }, [location.pathname, navigate]);
 
-  const { OpportunityTable } = useOpportunityTable();
+  const { OpportunityTable } = useOpportunityTable(undefined, count);
+
+  const renderSwitchDisplayButton = useMemo(() => {
+    if (opportunityLibraryViews === null) return null;
+    if (opportunityLibraryViews?.length === 1) return null;
+    if (!view) return null;
+    return (
+      <Group className="flex-nowrap" size="sm">
+        {view === "table" && (
+          <Button look="soft" onClick={() => setView?.("cells")}>
+            <Icon remix="RiDashboardFill" />
+          </Button>
+        )}
+        {view === "cells" && (
+          <Button look="soft" onClick={() => setView?.("table")} className="min-w-[36px] justify-center">
+            <Icon remix="RiSortDesc" />
+          </Button>
+        )}
+      </Group>
+    );
+  }, [view, opportunityLibraryViews]);
 
   const display = useMemo(() => {
     switch (view) {
@@ -72,29 +91,8 @@ export default function OpportunityLibrary({
           <OpportunityTable
             responsive
             exclude={["tvl"]}
-            opportunityHeader={
-              <Title look="hype" h={5}>
-                {count ?? ""} Opportunities
-              </Title>
-            }
             dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
-            ctaHeader={
-              (opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) &&
-              view && (
-                <Group className="flex-nowrap" size="sm">
-                  <Button look="soft" onClick={() => setView?.("cells")}>
-                    <Icon remix="RiDashboardFill" />
-                  </Button>
-                  <Button
-                    disabled={view === "table"}
-                    className={view === "table" ? "text-accent-11 !opacity-100" : ""}
-                    look="soft"
-                    onClick={() => setView?.("table")}>
-                    <Icon remix="RiSortDesc" />
-                  </Button>
-                </Group>
-              )
-            }
+            ctaHeader={renderSwitchDisplayButton}
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
               <OpportunityTableRow
@@ -110,27 +108,14 @@ export default function OpportunityLibrary({
           <List dividerClassName={() => "bg-accent-11"}>
             <Box size="lg" className="!p-lg !rounded-lg+md">
               <Group className="justify-between">
-                <Text look="hype" size={5}>
+                <Text look="soft" size={5}>
                   {count ?? ""} Opportunities
                 </Text>
-                {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
-                  <Group className="flex-nowrap" size="sm">
-                    <Button
-                      className={"text-accent-11 !opacity-100"}
-                      disabled
-                      look="soft"
-                      onClick={() => setView?.("cells")}>
-                      <Icon remix="RiDashboardFill" />
-                    </Button>
-                    <Button look="soft" onClick={() => setView?.("table")}>
-                      <Icon remix="RiSortDesc" />
-                    </Button>
-                  </Group>
-                )}
+                {renderSwitchDisplayButton}
               </Group>
             </Box>
             <Box>
-              <Group className="grid md:grid-cols-2 lg:grid-cols-3" size="lg">
+              <Group className="grid md:grid-cols-2 lg:grid-cols-3 my-md" size="lg">
                 {opportunities?.map(o => (
                   <OpportunityCell
                     navigationMode={opportunityNavigationMode}
@@ -148,7 +133,7 @@ export default function OpportunityLibrary({
           </List>
         );
     }
-  }, [opportunities, view, count, OpportunityTable, opportunityNavigationMode, opportunityLibraryViews]);
+  }, [opportunities, view, count, OpportunityTable, opportunityNavigationMode, renderSwitchDisplayButton]);
 
   return (
     <div className="w-full">
@@ -170,20 +155,7 @@ export default function OpportunityLibrary({
               <Text look="hype" size={5}>
                 {count ?? ""} Opportunities
               </Text>
-              {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
-                <Group className="flex-nowrap" size="sm">
-                  <Button
-                    className={"text-accent-11 !opacity-100"}
-                    disabled
-                    look="soft"
-                    onClick={() => setView?.("cells")}>
-                    <Icon remix="RiDashboardFill" />
-                  </Button>
-                  <Button look="soft" onClick={() => setView?.("table")}>
-                    <Icon remix="RiSortDesc" />
-                  </Button>
-                </Group>
-              )}
+              {renderSwitchDisplayButton}
             </Group>
           </Box>
           <Box className="py-xl*4 flex items-center justify-center gap-xl">
