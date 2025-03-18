@@ -91,6 +91,7 @@ export default function OpportunityFilters({
   };
 
   const statusOptions = {
+    "LIVE,SOON,PAST": <>All status</>,
     LIVE: (
       <>
         <Icon size="sm" remix="RiFlashlightLine" /> Live
@@ -126,12 +127,18 @@ export default function OpportunityFilters({
   );
   const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
 
-  const [statusFilter] = useSearchParamState<string[]>(
+  const [statusFilter, setStatusFilters] = useSearchParamState<string[]>(
     "status",
     v => v?.join(","),
     v => v?.split(","),
   );
-  const [statusInput, setStatusInput] = useState(statusFilter ?? []);
+
+  const [statusInput, setStatusInput] = useState(statusFilter ?? ["LIVE", "SOON"]);
+
+  const onStatusChange = useCallback((status: string[]) => {
+    const uniqueStatus = Array.from(new Set(status.flatMap(s => s.split(","))));
+    setStatusInput(uniqueStatus);
+  }, []);
 
   const [chainIdsFilter] = useSearchParamState<string[]>(
     "chain",
@@ -140,7 +147,7 @@ export default function OpportunityFilters({
   );
   const [chainIdsInput, setChainIdsInput] = useState<string[]>(chainIdsFilter ?? []);
 
-  const [search, setSearch] = useSearchParamState<string>(
+  const [search] = useSearchParamState<string>(
     "search",
     v => v,
     v => v,
@@ -204,12 +211,6 @@ export default function OpportunityFilters({
     search,
     innerSearch,
   ]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
-  useEffect(() => {
-    setActionsInput(actionsFilter ?? []);
-    setStatusInput(statusFilter ?? []);
-  }, [location.search]);
 
   const onApplyFilters = useCallback(() => {
     setApplying(true);
@@ -304,8 +305,7 @@ export default function OpportunityFilters({
             )}
             {fields.includes("status") && (
               <Select
-                state={[statusInput, setStatusInput]}
-                allOption={"All status"}
+                state={[statusInput, onStatusChange]}
                 multiple
                 options={statusOptions}
                 look="tint"
