@@ -132,7 +132,7 @@ export default function OpportunityFilters({
   );
   const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
 
-  const [statusFilter, setStatusFilters] = useSearchParamState<string[]>(
+  const [statusFilter] = useSearchParamState<string[]>(
     "status",
     v => v?.join(","),
     v => v?.split(","),
