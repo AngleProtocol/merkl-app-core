@@ -123,20 +123,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
                 <Text look="hype" size={5}>
                   {count ?? ""} Protocols
                 </Text>
-                {(opportunityLibraryViews == null || opportunityLibraryViews?.length > 1) && view && (
-                  <Group className="flex-nowrap" size="sm">
-                    <Button
-                      className={"text-accent-11 !opacity-100"}
-                      disabled
-                      look="soft"
-                      onClick={() => setView?.("cells")}>
-                      <Icon remix="RiDashboardFill" />
-                    </Button>
-                    <Button look="soft" onClick={() => setView?.("table")}>
-                      <Icon remix="RiSortDesc" />
-                    </Button>
-                  </Group>
-                )}
+                {renderSwitchDisplayButton}
               </Group>
             </Box>
             <Box>
