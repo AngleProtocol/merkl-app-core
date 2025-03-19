@@ -1,8 +1,8 @@
 import { Cache } from "@core/modules/cache/cache.service";
-import { useOutletContext } from "@remix-run/react";
-import type { OutletContextTokens } from "./token.$symbol.header";
-import { Container, Group, Space } from "packages/dappkit/src";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
+import { useOutletContext } from "@remix-run/react";
+import { Container, Group, Space } from "packages/dappkit/src";
+import type { OutletContextTokens } from "./token.$symbol.header";
 
 export async function loader() {
   return {};

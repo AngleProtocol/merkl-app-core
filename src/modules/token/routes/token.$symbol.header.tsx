@@ -1,13 +1,13 @@
 import { api } from "@core/api";
+import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import type { Chain, Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
 import { TokenService } from "../../../modules/token/token.service";
-import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import { ChainService } from "@core/modules/chain/chain.service";
-import type { Chain, Opportunity } from "@merkl/api";
 
 export async function loader({ context: { backend, routes }, params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService({ backend, api, request }).getSymbol(symbol);
