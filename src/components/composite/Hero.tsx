@@ -136,7 +136,7 @@ export default function Hero({
   );
 }
 
-export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards: number) {
+export function defaultHeroSideDatas(count: number, maxApr?: number, dailyRewards?: number) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   return [

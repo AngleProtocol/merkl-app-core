@@ -40,6 +40,8 @@ export default function useOpportunityRewards({
    * Formatted daily rewards displayed
    */
   const formattedDailyRewards = useMemo(() => {
+    if (!rewardsRecord?.breakdowns) return;
+
     if (dailyRewardsTokenAddress) {
       const breakdowns = rewardsRecord.breakdowns.filter(({ token }) => token?.address === dailyRewardsTokenAddress);
       const token = breakdowns?.[0]?.token;
@@ -61,7 +63,7 @@ export default function useOpportunityRewards({
       );
     }
 
-    const tokens = rewardsRecord.breakdowns.reduce<Token[]>((acc, { token }) => {
+    const tokens = rewardsRecord?.breakdowns.reduce<Token[]>((acc, { token }) => {
       if (!acc.some(t => t.id === token.id)) acc.push(token);
       return acc;
     }, []);

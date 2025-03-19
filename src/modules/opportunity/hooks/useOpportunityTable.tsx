@@ -8,6 +8,7 @@ import OpportunityTableName from "../components/element/OpportunityTableName";
 import OpportunityTableTvl from "../components/element/OpportunityTableTvl";
 import type { OpportuntyLibraryOverride } from "../opportunity.model";
 
+export const CTA_BUTTON_WiDTH_OPPORTUNITY = 64;
 /**
  * Formats rewards for a given opportunity
  */
@@ -42,14 +43,14 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
       },
       dailyRewards: {
         name: "Daily rewards",
-        size: "minmax(min-content,125px)",
-        className: "md:justify-center",
+        size: "minmax(min-content,115px)",
+        className: "md:justify-end",
         table: (opportunity?: Opportunity) =>
           opportunity ? <OpportunityTableDailyRewards opportunity={opportunity} /> : <></>,
       },
       cta: {
         name: "",
-        size: "36px",
+        size: `${CTA_BUTTON_WiDTH_OPPORTUNITY}px`,
         className: "md:justify-center",
         table: () => (
           <Button look="hype">
