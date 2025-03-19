@@ -39,6 +39,11 @@ export type MerklConfig = {
   backend: MerklBackendConfig;
 
   /**
+   * Hide the price of reward tokens in the UI
+   */
+  hideRewardTokenPrice?: string[];
+
+  /**
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
