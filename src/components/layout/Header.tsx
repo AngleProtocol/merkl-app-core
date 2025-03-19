@@ -101,14 +101,13 @@ export default function Header() {
       <motion.header
         variants={container}
         whileInView="visible"
-        className={mergeClass("w-full left-0 top-0 z-20 backdrop-blur", !height ? "" : "fixed")}>
+        className={mergeClass("w-full left-0 top-0 z-[100] backdrop-blur", !height ? "" : "fixed")}>
         <Container className="py-xl">
           <Group className="justify-between items-center">
             <BrandNavigationMenu
               routes={navigationConfig.menu}
               footer={
                 <Group className="w-full justify-between">
-                  <SwitchMode />
                   <Text size="xs" className="self-end">
                     {typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}
                   </Text>
@@ -152,6 +151,7 @@ export default function Header() {
                     );
                   })}
                 </Group>
+                <SwitchMode />
 
                 <Group className="flex">
                   <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
