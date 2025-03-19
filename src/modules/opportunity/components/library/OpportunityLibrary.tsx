@@ -6,7 +6,7 @@ import { Box, Button, Group, Icon, List, Text } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import type { OpportunityView } from "../../../../config/opportunity";
-import useOpportunityTable from "../../hooks/useOpportunityTable";
+import useOpportunityTable, { CTA_BUTTON_WiDTH_OPPORTUNITY } from "../../hooks/useOpportunityTable";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
 import OpportunityCell from "../items/OpportunityCell";
 import OpportunityTableRow from "../items/OpportunityTableRow";
@@ -76,7 +76,10 @@ export default function OpportunityLibrary({
           </Button>
         )}
         {view === "cells" && (
-          <Button look="soft" onClick={() => setView?.("table")} className="min-w-[36px] justify-center">
+          <Button
+            look="soft"
+            onClick={() => setView?.("table")}
+            className={`min-w-[${CTA_BUTTON_WiDTH_OPPORTUNITY}px] justify-center`}>
             <Icon remix="RiSortDesc" />
           </Button>
         )}
