@@ -108,7 +108,6 @@ export default function Header() {
               routes={navigationConfig.menu}
               footer={
                 <Group className="w-full justify-between">
-                  <SwitchMode />
                   <Text size="xs" className="self-end">
                     {typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}
                   </Text>
@@ -152,6 +151,7 @@ export default function Header() {
                     );
                   })}
                 </Group>
+                <SwitchMode />
 
                 <Group className="flex">
                   <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
