@@ -25,13 +25,13 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
 
   const isSupplyButtonVisible = useMemo(() => {
-    if (!!targets) return true;
-    if (!protocolUrl) return false;
+    if (!!isDepositEnabled && !!targets) return true;
+    if (!isDepositEnabled && !protocolUrl) return false;
     return true;
-  }, [protocolUrl, targets]);
+  }, [protocolUrl, targets, isDepositEnabled]);
 
   const onSupply = useCallback(() => {
-    if ((!isDepositEnabled && !!protocolUrl) || !targets) return window.open(protocolUrl, "_blank");
+    if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
   }, [protocolUrl, targets, isDepositEnabled]);
 
