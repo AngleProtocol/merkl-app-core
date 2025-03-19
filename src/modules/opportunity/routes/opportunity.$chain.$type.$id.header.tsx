@@ -30,7 +30,7 @@ export async function loader({
   });
 
   return {
-    //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
+    //TODO: remove workaround by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
     backend,
@@ -55,7 +55,7 @@ export default function Index() {
 
   const { copy: copyCall, isCopied } = useClipboard();
 
-  const showCopyOpportunityIdToClipboard = useMerklConfig(store => store.config.showCopyOpportunityIdToClipboard);
+  const showDevelopmentHelpers = useMerklConfig(store => store.config.showDevelopmentHelpers);
 
   return (
     <>
@@ -65,7 +65,7 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {!!showCopyOpportunityIdToClipboard && (
+            {!!showDevelopmentHelpers && (
               <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
                 <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
               </Button>
