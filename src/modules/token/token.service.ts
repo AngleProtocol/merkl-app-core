@@ -55,11 +55,7 @@ export const TokenService = defineModule<{ api: Api; request: Request; backend: 
     });
 
     const getSymbol = inject(["api"]).inFunction(async ({ api }, symbol: string | undefined) => {
-      if (!symbol) throw new Response("Token not found");
-
       const tokens = await fetchApi(async () => api.v4.tokens.index.get({ query: { displaySymbol: symbol } }));
-
-      if (tokens.length === 0) throw new Response("Token not found", { status: 404 });
       return tokens;
     });
 
