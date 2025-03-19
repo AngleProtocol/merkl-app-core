@@ -42,14 +42,14 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
       },
       dailyRewards: {
         name: "Daily rewards",
-        size: "minmax(min-content,125px)",
-        className: "md:justify-center",
+        size: "minmax(min-content,115px)",
+        className: "md:justify-end",
         table: (opportunity?: Opportunity) =>
           opportunity ? <OpportunityTableDailyRewards opportunity={opportunity} /> : <></>,
       },
       cta: {
         name: "",
-        size: "36px",
+        size: "64px",
         className: "md:justify-center",
         table: () => (
           <Button look="hype">
