@@ -16,7 +16,7 @@ export default function OpportunityCellDailyRewards({
   return (
     <Group className="flex-nowrap items-center" size="sm">
       <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
-      <Text bold look="soft">
+      <Text bold look="hype">
         Daily Rewards
       </Text>
     </Group>

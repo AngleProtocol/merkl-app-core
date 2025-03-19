@@ -142,7 +142,7 @@ export default function ProtocolLibrary({ protocols: protocolsProps, count, forc
           </List>
         );
     }
-  }, [protocols, view, count, opportunityLibraryViews, renderSwitchDisplayButton]);
+  }, [protocols, view, count, renderSwitchDisplayButton]);
 
   return (
     <div className="w-full">
