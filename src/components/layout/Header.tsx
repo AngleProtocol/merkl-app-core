@@ -25,6 +25,7 @@ export default function Header() {
   const location = useLocation();
   const hideSpyMode = useMerklConfig(store => store.config.hideSpyMode);
   const navigationConfig = useMerklConfig(store => store.config.navigation);
+  const appName = useMerklConfig(store => store.config.backend.appName);
 
   const chain = useMemo(() => {
     return chains?.find(c => c.id === chainId);
@@ -107,9 +108,13 @@ export default function Header() {
             <BrandNavigationMenu
               routes={navigationConfig.menu}
               footer={
-                <Group className="w-full justify-between">
+                <Group className="w-full justify-end">
                   <Text size="xs" className="self-end">
-                    {typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}
+                    {/**
+                     * @todo override env global for appContext & window ENV / make a env hook
+                     */}
+                    {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+                    {appName} {typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION}
                   </Text>
                 </Group>
               }
