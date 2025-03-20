@@ -55,7 +55,7 @@ export default function Index() {
 
   const { copy: copyCall, isCopied } = useClipboard();
 
-  const showDevelopmentHelpers = useMerklConfig(store => store.config.showDevelopmentHelpers);
+  const showDevelopmentHelpers = useMerklConfig(store => store.config.backend.showDevelopmentHelpers);
 
   const opportunityService = OpportunityService({ api });
 

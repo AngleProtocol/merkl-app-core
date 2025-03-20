@@ -76,10 +76,7 @@ export type MerklConfig = {
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
   alwaysShowTestTokens?: boolean;
-  /**
-   * Toggle various back-office tools for development
-   */
-  showDevelopmentHelpers?: boolean;
+
   walletOptions?: WalletOptions;
   /**
    * Provides a default order of to sort tokens when no balance or not connected
