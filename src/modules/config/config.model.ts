@@ -77,9 +77,9 @@ export type MerklConfig = {
    */
   alwaysShowTestTokens?: boolean;
   /**
-   * Toggle ability to copy the id of an opportunity
+   * Toggle various back-office tools for development
    */
-  showCopyOpportunityIdToClipboard?: boolean;
+  showDevelopmentHelpers?: boolean;
   walletOptions?: WalletOptions;
   /**
    * Provides a default order of to sort tokens when no balance or not connected
