@@ -57,6 +57,8 @@ export default function Index() {
 
   const showDevelopmentHelpers = useMerklConfig(store => store.config.showDevelopmentHelpers);
 
+  const opportunityService = OpportunityService({ api });
+
   return (
     <>
       <Meta />
@@ -66,9 +68,18 @@ export default function Index() {
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
             {!!showDevelopmentHelpers && (
-              <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
-                <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
-              </Button>
+              <Group>
+                <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
+                  <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
+                </Button>
+                <Button
+                  className="inline-flex"
+                  look="hype"
+                  size="md"
+                  onClick={async () => (await opportunityService).reparse(opportunity.id)}>
+                  <Icon remix="RiRestartLine" size="sm" />
+                </Button>
+              </Group>
             )}
           </Group>
         }

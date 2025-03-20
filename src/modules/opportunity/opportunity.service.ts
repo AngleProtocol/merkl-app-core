@@ -49,11 +49,13 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         const overrideQuery = { ...query, sort: query.sort ?? backend.sortedBy };
         const opportunities = await fetchApi(async () =>
           api.v4.opportunities.index.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
         const count = await fetchApi(async () =>
           api.v4.opportunities.count.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
@@ -76,6 +78,24 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       },
     );
 
+    const reparse = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
+      const res = await fetchApi(async () =>
+        api.v4
+          .opportunities({
+            id: opportunityId,
+          })
+          .post(
+            {},
+            {
+              headers: {
+                authorization: `Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`,
+              },
+            },
+          ),
+      );
+      console.log(res);
+    });
+
     const getCampaignsByParams = inject(["api", "backend"]).inFunction(
       async (
         { api, backend },
@@ -88,6 +108,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         const { chainId, type, identifier } = query;
         const opportunityWithCampaigns = await fetchApi(async () =>
           api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: {
               test: backend.alwaysShowTestTokens ?? false,
             },
@@ -102,13 +123,18 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       },
     );
 
-    const getAggregate = inject(["api"]).inFunction(
-      ({ api }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>, params: "dailyRewards") => {
-        return fetchApi(async () => api.v4.opportunities.aggregate({ field: params }).get({ query }));
+    const getAggregate = inject(["api", "backend"]).inFunction(
+      ({ api, backend }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>, params: "dailyRewards") => {
+        return fetchApi(async () =>
+          api.v4.opportunities
+            .aggregate({ field: params })
+            .get({ headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined, query }),
+        );
       },
     );
 
     return {
+      reparse,
       getMany,
       getAggregate,
       getManyFromRequest,
