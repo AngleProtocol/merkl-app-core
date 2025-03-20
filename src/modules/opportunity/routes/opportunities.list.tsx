@@ -1,4 +1,4 @@
-import CustomBanner from "@core/components/element/CustomBanner";
+import { I18n } from "@core/I18n";
 import { ErrorContent } from "@core/components/layout/ErrorContent";
 import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
@@ -8,7 +8,7 @@ import { OpportunityService } from "@core/modules/opportunity/opportunity.servic
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Container, Group, Show, Space, Title } from "dappkit";
+import { Container, Group, Icon, Show, Space, Text, Title } from "dappkit";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { opportunities, count } = await OpportunityService.getManyFromRequest(request);
@@ -28,7 +28,17 @@ export default function Index() {
 
   return (
     <Container>
-      <CustomBanner />
+      {!!I18n.trad.get.pages.dashboard.explanation && (
+        <>
+          <Group className="rounded-md p-md bg-main-5 flex-nowrap items-start mt-xl">
+            <Icon remix="RiInformation2Fill" className="text-lg text-accent-11 flex-shrink-0" />
+            <Text look="bold" size="sm">
+              {I18n.trad.get.pages.dashboard.explanation}
+            </Text>
+          </Group>
+          <Space size="md" />
+        </>
+      )}
       <Group size="xl" className="py-xl">
         <Show if={merklConfig.opportunity.featured.enabled}>
           <Title className="!text-main-11" h={3}>
