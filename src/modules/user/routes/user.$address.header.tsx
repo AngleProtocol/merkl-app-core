@@ -68,7 +68,7 @@ export default function Index() {
   const rawRewards = useMemo(() => fetcher?.data?.rewards ?? raw, [raw, fetcher?.data?.rewards]);
   const token = useMemo(() => fetcher?.data?.token ?? rawToken, [rawToken, fetcher?.data?.token]);
 
-  const rewards = useRewards(rawRewards);
+  const { earned, pending, sortedRewards, unclaimed, isOnlyPointOrTest, pointAggregation } = useRewards(rawRewards);
 
   const merklChains = useMerklConfig(store => store.config.chains);
   const isSingleChain = merklChains?.length === 1;
@@ -146,10 +146,10 @@ export default function Index() {
                 Claimable Now
               </Text>
               {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" token={token} amount={BigInt(rewards.unclaimed)} format="amount_price" showZero />
+                <Token size="xl" token={token} amount={BigInt(unclaimed)} format="amount_price" showZero />
               ) : (
                 <Value format={decimalFormat} size={2} className="text-main-12">
-                  {rewards.unclaimed}
+                  {isOnlyPointOrTest ? pointAggregation?.unclaimed : unclaimed}
                 </Value>
               )}
             </Group>
@@ -158,10 +158,10 @@ export default function Index() {
                 Total Earned
               </Text>
               {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" symbol token={token} amount={BigInt(rewards.earned)} format="amount_price" showZero />
+                <Token size="xl" symbol token={token} amount={BigInt(earned)} format="amount_price" showZero />
               ) : (
                 <Value format={decimalFormat} size={2} className="text-main-12">
-                  {rewards.earned + rewards.pending}
+                  {isOnlyPointOrTest ? pointAggregation?.total : earned + pending}
                 </Value>
               )}
             </Group>
@@ -185,7 +185,7 @@ export default function Index() {
       }
       description={"Claim your rewards"}
       tabs={tabs}>
-      <Outlet context={{ rewards: rewards.sortedRewards, onClaimSuccess, isBlacklisted } as OutletContextRewards} />
+      <Outlet context={{ rewards: sortedRewards, onClaimSuccess, isBlacklisted } as OutletContextRewards} />
     </Hero>
   );
 }

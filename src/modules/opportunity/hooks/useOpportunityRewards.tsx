@@ -113,6 +113,7 @@ export default function useOpportunityRewards({
       0,
     );
   }, [isOnlyPoint, rewardsRecord]);
+
   return {
     rewardsBreakdown,
     formattedDailyRewards,
