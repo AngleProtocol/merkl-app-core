@@ -116,8 +116,8 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                     {opportunity.apr / 100}
                   </Value>
                 )}
-                <Text size={"xs"}>{isOnlyPoint && " /per $ per day"}</Text>
               </Title>
+              <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               {opportunity.type === "CLAMM" ? (

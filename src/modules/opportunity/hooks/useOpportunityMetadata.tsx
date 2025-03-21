@@ -177,6 +177,10 @@ export default function useOpportunityMetadata({
     [icons],
   );
 
+  const navigateToMerklStatusPage = useCallback(() => {
+    window.open("https://beta.merkl.xyz/status", "_blank");
+  }, []);
+
   /**
    * Explainer for the opportunity with Helpers
    */
@@ -213,12 +217,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -258,12 +260,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -302,12 +302,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -346,12 +344,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         <Text className="inline"> anytime via Merkl (updated every 3-12 hours).</Text>
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -390,12 +386,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -433,12 +427,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -477,12 +469,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -521,12 +511,10 @@ export default function useOpportunityMetadata({
                           rewards
                         </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank" className="inline">
-                          <Text className="inline" look="tint">
-                            {" "}
-                            Check next reward update
-                          </Text>
-                        </Link>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -539,7 +527,7 @@ export default function useOpportunityMetadata({
       default:
         break;
     }
-  }, [tokens, protocol, chain, action]);
+  }, [tokens, protocol, chain, action, navigateToMerklStatusPage]);
 
   return {
     name: configuredName,
