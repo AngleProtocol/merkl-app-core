@@ -10,7 +10,7 @@ export default function ProtocolTag({ protocol, ...props }: { protocol: Protocol
   const navigate = useNavigate();
   const navigateToProtocolPage = useCallback(() => {
     if (!protocol) return;
-    navigate(`/protocols/${protocol.name.toLowerCase()}`);
+    navigate(`/protocols/${protocol.id}`);
   }, [protocol, navigate]);
 
   return (

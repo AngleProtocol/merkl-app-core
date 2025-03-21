@@ -2,7 +2,7 @@ import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useOutletContext } from "@remix-run/react";
-import { Box, Button, Group, Icon, OverrideTheme, Text } from "dappkit";
+import { Button, Group, Icon, OverrideTheme, Text } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import CampaignTableRow from "../element/CampaignTableRow";
@@ -39,41 +39,39 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
     return shownCampaigns.length;
   }, [opportunity]);
 
+  const hasSomeInactiveCampaigns = opportunity.campaigns.some(c => Number(c.endTimestamp) < moment().unix());
+  const hasOnlyInactiveCampaigns = opportunity.campaigns.every(c => Number(c.endTimestamp) < moment().unix());
+
   return (
     <CampaignTable
       className="w-full"
       hideLabels={true}
-      header={
-        <Box className="bg-main-3">
-          <Group className="justify-between items-center w-full">
-            <OverrideTheme coloring={"good"}>
-              <Text bold look="soft">
-                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "ACTIVE CAMPAIGN"}
-              </Text>
-            </OverrideTheme>
-
-            <Group>
-              <Button onClick={() => setShowInactive(r => !r)} look="soft">
-                <Icon remix={!showInactive ? "RiEyeLine" : "RiEyeOffLine"} />
-                {!showInactive ? "Show" : "Hide"} inactive campaigns
-              </Button>
-            </Group>
-          </Group>
-        </Box>
-      }>
-      {!!rows?.length ? (
-        rows
-      ) : (
-        <Box look="base" className="py-xl*2 flex-col text-center">
-          <Text>No active campaign</Text>
-          <div className="w-full">
-            <Button onClick={() => setShowInactive(r => !r)} look="soft" className="m-auto">
+      footer={
+        hasSomeInactiveCampaigns && (
+          <Group className="w-full justify-center">
+            <Button onClick={() => setShowInactive(r => !r)} look="soft" className="text-accent-11">
               <Icon remix={!showInactive ? "RiEyeLine" : "RiEyeOffLine"} />
               {!showInactive ? "Show" : "Hide"} inactive campaigns
             </Button>
-          </div>
-        </Box>
-      )}
+          </Group>
+        )
+      }
+      header={
+        <Group className="justify-between items-center w-full">
+          <OverrideTheme coloring={!hasOnlyInactiveCampaigns ? "good" : undefined}>
+            {hasOnlyInactiveCampaigns ? (
+              <Text bold look="soft">
+                NO INACTIVE CAMPAIGNS
+              </Text>
+            ) : (
+              <Text bold look="soft">
+                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "LIVE CAMPAIGN"}
+              </Text>
+            )}
+          </OverrideTheme>
+        </Group>
+      }>
+      {rows}
     </CampaignTable>
   );
 }

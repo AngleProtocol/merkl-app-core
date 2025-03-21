@@ -100,10 +100,18 @@ export const RewardService = defineModule<{ api: Api; request: Request; backend:
       );
     });
 
+    const getCampaignStats = inject(["api"]).inFunction(async ({ api }, chainId: number, campaignId: string) => {
+      const count = await fetchApi(() => api.v4.rewards.count.get({ query: { chainId, campaignId } }));
+      const total = await fetchApi(() => api.v4.rewards.total.get({ query: { chainId, campaignId } }));
+
+      return { count: count?.count, total };
+    });
+
     return {
       getForUser,
       getTokenLeaderboard,
       getCampaignLeaderboard,
+      getCampaignStats,
       total,
     };
   },
