@@ -41,34 +41,19 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
       <Box
         className={`bg-main-0 w-full !gap-0 h-[fit-content] border-1 border-accent-5 overflow-hidden ${className} !p-0`}
         size="xl">
-        <Group className="justify-between flex-nowrap h-[fit-content] p-xl w-full items-center">
-          <Text bold look="hype">
-            OPPORTUNITY
-          </Text>
-          <Tag type="status" value={opportunity.status} size="md" />
-        </Group>
-
-        <Group className="flex-col bg-main-4 p-xl w-full justify-between" size="sm">
-          <Text bold className="flex items-center gap-sm w-full" look="tint">
-            <Icon remix="RiStarFill" className="fill-accent-10" />
+        <Group className="items-center flex-nowrap bg-main-4 py-xl*2 p-xl w-full justify-between" size="sm">
+          <Text size="md" bold className="uppercase flex items-center gap-sm w-full" look="hype">
+            <Icon remix="RiStarFill" />
             Daily Rewards
           </Text>
-          <Group className="items-center justify-between">
-            <Title look="hype" h={3}>
-              <Value value format={decimalFormatDolar}>
-                {opportunity.dailyRewards}
-              </Value>
-            </Title>
-            {!!isSupplyButtonVisible && (
-              <Button className="inline-flex" look="hype" size="xl" onClick={onSupply}>
-                Supply
-                {!targets && <Icon remix="RiArrowRightUpLine" size="sm" />}
-              </Button>
-            )}
-          </Group>
+          <Title look="hype" h={2}>
+            <Value value format={decimalFormatDolar}>
+              {opportunity.dailyRewards}
+            </Value>
+          </Title>
         </Group>
 
-        <Group className="p-xl h-[fit-content] w-full justify-between flex-col gap-xl">
+        <Group className="p-xl py-lg*2  h-[fit-content] w-full justify-between flex-col gap-xl">
           <Group className="justify-between items-center">
             <Text size={"sm"}> Details </Text>
             <Group className="gap-sm">
@@ -111,6 +96,12 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               </Title>
             </Group>
           </Group>
+          {!!isSupplyButtonVisible && (
+            <Button className="inline-flex justify-center" look="hype" size="xl" onClick={onSupply}>
+              Supply Liquidity
+              {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
+            </Button>
+          )}
         </Group>
       </Box>
     </>

@@ -6,7 +6,7 @@ import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
-import { Container, Group, Text } from "dappkit";
+import { Container, Group } from "dappkit";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
 import { OpportunityService } from "../opportunity.service";
 
@@ -37,14 +37,9 @@ export default function Index() {
 
   return (
     <Container>
-      <Group className="flex-wrap lg:flex-nowrap lg:flex-row gap-xl py-xl">
+      <Group className="flex-col flex-wrap-reverse lg:flex-nowrap lg:flex-row-reverse gap-xl py-xl">
         <OpportunityBoxParticipate {...{ opportunity, targets }} className="w-full lg:min-w-[24ch] lg:max-w-sm " />
-        <Group className="flex flex-col items-start gap-xl">
-          <Text className="h-[fit-content] border-1 rounded-xl+md border-main-5 p-xl">
-            Each opportunity can have multiple campaigns, with different reward rules. Some reward bigger deposits,
-            others longer participation or specific tokens. Check campaigns details to find the best way to maximize
-            your rewards!
-          </Text>
+        <Group className="flex grow flex-col items-start gap-xl">
           <Outlet context={{ opportunity, chain }} />
         </Group>
       </Group>

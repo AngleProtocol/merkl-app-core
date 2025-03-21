@@ -47,12 +47,12 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
   if (!breakdowns?.length) return null;
 
   return (
-    <Group className="flex-col mt-md">
+    <Group className="flex-col">
       <Text bold className="flex items-center gap-xs" size="sm" look="bold">
         <Icon remix="RiWaterFlashFill" />
-        TVL Allocation
+        APR
       </Text>
-      <Divider />
+      <Divider className="border-main-8" />
       <Group className="flex-col" size="sm">
         <Group className="items-center justify-between gap-xl" size="sm">
           <Text size="sm" look="soft">

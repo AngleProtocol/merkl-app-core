@@ -2,6 +2,7 @@ import EtherScan from "@core/assets/images/etherscan.svg";
 import Tag from "@core/components/element/Tag";
 import useCampaignMetadata from "@core/modules/campaigns/hooks/useCampaignMetadata";
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useNavigate } from "@remix-run/react";
@@ -12,6 +13,7 @@ import {
   Divider,
   Dropdown,
   EventBlocker,
+  Fmt,
   Group,
   Hash,
   Icon,
@@ -20,6 +22,7 @@ import {
   PrimitiveTag,
   Space,
   Text,
+  Value,
   mergeClass,
 } from "dappkit";
 import { Collapsible } from "dappkit";
@@ -30,6 +33,7 @@ import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useChain from "../../../chain/hooks/useChain";
 import Token from "../../../token/components/element/Token";
+import useCampaignStats from "../../hooks/useCampaignStats";
 import CampaignTooltipDates from "../CampaignTooltipDates";
 import { CampaignRow } from "../library/CampaignTable";
 import Rule from "../rules/Rule";
@@ -51,11 +55,12 @@ export default function CampaignTableRow({
   size,
   ...props
 }: CampaignTableRowProps) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   const { time, dailyRewards, active, amount } = useCampaignMetadata(campaign);
   const { chain: distributionChain } = useChain(campaign.distributionChain);
   const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
-
+  const { loading, stats } = useCampaignStats(distributionChain!.id, campaign.campaignId, isOpen);
   const navigate = useNavigate();
 
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
@@ -108,6 +113,14 @@ export default function CampaignTableRow({
           </Button>
         </Group>,
       ],
+      [
+        "ID",
+        <Group key="creator" className="gap-xs">
+          <Hash look="tint" size="sm" format="short" copy>
+            {campaign.campaignId}
+          </Hash>
+        </Group>,
+      ],
     ] as const satisfies [ReactNode, ReactNode][];
 
     return columns.map(([label, content]) => {
@@ -126,7 +139,7 @@ export default function CampaignTableRow({
     <CampaignRow
       {...props}
       size={size}
-      className={mergeClass("cursor-pointer py-4 bg-main-2", className)}
+      className={mergeClass("cursor-pointer select-none py-4 bg-main-2", className)}
       onClick={toggleIsOpen}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
@@ -134,10 +147,7 @@ export default function CampaignTableRow({
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
           <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
-            CAMPAIGN #
-            <Hash size="md" format="prefix" copy bold look="tint">
-              {campaign.campaignId}
-            </Hash>
+            Daily Rewards
           </Text>
           <Token
             size="md"
@@ -154,14 +164,14 @@ export default function CampaignTableRow({
         </Group>
       }
       timeRemainingColumn={
-        <PrimitiveTag look={isCampaignLive ? "bold" : "soft"} size="xs" coloring={isCampaignLive ? "good" : undefined}>
+        <PrimitiveTag look={isCampaignLive ? "base" : "soft"} size="sm">
           {isCampaignLive && <Icon remix="RiFlashlightFill" />}
           {time}
         </PrimitiveTag>
       }>
       <Collapsible state={[isOpen, setIsOpen]}>
         <Space size="md" />
-        <Box size="md" className="p-0 bg-main-4 !rounded-md ">
+        <Box size="md" className="p-0 bg-main-4 !rounded-md select-text">
           <Group className="flex-nowrap p-lg flex-col" size="xs">
             <Group className="justify-between flex-grow flex-col size-full gap-xs">
               <Text bold size="sm">
@@ -176,14 +186,27 @@ export default function CampaignTableRow({
                   bold
                   size="sm"
                   look="soft"
-                  className="flex items-center gap-xs"
+                  className="flex items-center gap-xs text-accent-11"
                   onClick={onNavigateToLeaderBoard}>
                   Leaderboard
                   <Icon remix="RiArrowRightLine" />
                 </Button>
               </EventBlocker>
               <Text key="leaderboard" size={"sm"} look="tint">
-                Todo
+                {loading ? (
+                  <Icon remix="RiLoader2Fill" className="animate-spin" />
+                ) : (
+                  <Group className="flex-nowrap">
+                    <Value value format={"0"}>
+                      {stats?.count}
+                    </Value>
+                    {" Users / "}
+                    <Value value format={dollarFormat}>
+                      {Fmt.toPrice(stats?.total?.amount ?? "0", campaign.rewardToken)}
+                    </Value>{" "}
+                    Distributed
+                  </Group>
+                )}
               </Text>
             </Group>
             <Divider look="soft" />
