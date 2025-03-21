@@ -9,6 +9,7 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
+import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
@@ -23,6 +24,8 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
   const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
+  const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
+
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
   const { isOnlyPoint, pointAggregation } = useOpportunityRewards(opportunity);
 
@@ -88,7 +91,15 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Group>
           <Group size="lg" className="flex-nowrap">
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
-              <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
+              <Dropdown
+                onHover
+                content={
+                  isOnlyPoint ? (
+                    <PointsModalCampaigns opportunity={opportunity} />
+                  ) : (
+                    <AprSectionCampaigns opportunity={opportunity} />
+                  )
+                }>
                 <Text bold className="flex items-center gap-sm ">
                   {isOnlyPoint ? "SCORE" : "APR"}
                   <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
@@ -96,9 +107,16 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               </Dropdown>
 
               <Title h={3} look="tint">
-                <Value value format={isOnlyPoint ? decimalFormatDolar : decimalFormatApr}>
-                  {opportunity.apr / 100}
-                </Value>
+                {isOnlyPoint ? (
+                  <Value value format={decimalFormatPoint}>
+                    {opportunity.apr}
+                  </Value>
+                ) : (
+                  <Value value format={decimalFormatApr}>
+                    {opportunity.apr / 100}
+                  </Value>
+                )}
+                <Text size={"xs"}>{isOnlyPoint && " /per $ per day"}</Text>
               </Title>
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">

@@ -73,7 +73,8 @@ export default function Index() {
   const merklChains = useMerklConfig(store => store.config.chains);
   const isSingleChain = merklChains?.length === 1;
   const rewardsTotalClaimableMode = useMerklConfig(store => store.config.rewardsTotalClaimableMode);
-  const decimalFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const decimalFormatUsd = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
   const { chainId, chains, address: user } = useWalletContext();
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
@@ -115,6 +116,7 @@ export default function Index() {
     return baseTabs;
   }, [address]);
 
+  console.log({ unclaimed: pointAggregation?.unclaimed });
   return (
     <Hero
       compact
@@ -148,7 +150,10 @@ export default function Index() {
               {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(unclaimed)} format="amount_price" showZero />
               ) : (
-                <Value format={decimalFormat} size={2} className="text-main-12">
+                <Value
+                  format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd}
+                  size={2}
+                  className="text-main-12">
                   {isOnlyPointOrTest ? pointAggregation?.unclaimed : unclaimed}
                 </Value>
               )}
@@ -160,7 +165,10 @@ export default function Index() {
               {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" symbol token={token} amount={BigInt(earned)} format="amount_price" showZero />
               ) : (
-                <Value format={decimalFormat} size={2} className="text-main-12">
+                <Value
+                  format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd}
+                  size={2}
+                  className="text-main-12">
                   {isOnlyPointOrTest ? pointAggregation?.total : earned + pending}
                 </Value>
               )}

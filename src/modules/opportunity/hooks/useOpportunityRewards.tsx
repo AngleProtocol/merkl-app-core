@@ -103,15 +103,14 @@ export default function useOpportunityRewards({
   }, [rewardsRecord]);
 
   /**
-   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity)
+   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity) test token excluded
    */
   const pointAggregation = useMemo(() => {
     if (!isOnlyPoint) return null;
-
-    return rewardsRecord.breakdowns.reduce(
-      (acc, record) => acc + FormatterService.toNumber(record.amount, record.token.decimals),
-      0,
-    );
+    return rewardsRecord.breakdowns.reduce((acc, record) => {
+      if (record.token.isTest) return acc;
+      return acc + FormatterService.toNumber(record.amount, record.token.decimals);
+    }, 0);
   }, [isOnlyPoint, rewardsRecord]);
 
   return {

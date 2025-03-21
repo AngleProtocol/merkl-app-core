@@ -201,6 +201,7 @@ export type MerklConfig = {
   decimalFormat: {
     dollar: string;
     apr: string;
+    point: string;
   };
   hero: {
     bannerOnAllPages: boolean; // show banner on all pages
