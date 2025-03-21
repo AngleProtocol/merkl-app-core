@@ -49,6 +49,10 @@ export type MerklConfig = {
   tags?: string[];
 
   /**
+   * Filters enabled in the opportunities header list
+   */
+  opportunitiesFilters: Record<string, { name: string }>;
+  /**
    * Navigation Menu and Header links configuration
    */
   navigation: {
