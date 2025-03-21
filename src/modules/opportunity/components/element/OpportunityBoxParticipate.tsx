@@ -1,5 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
+import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
@@ -7,9 +8,8 @@ import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interacti
 import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
-import OpportunityParticipateModal from "./OpportunityParticipateModal";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
-import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
+import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
