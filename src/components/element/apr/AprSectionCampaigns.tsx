@@ -50,7 +50,7 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
     <Group className="flex-col mt-md">
       <Text bold className="flex items-center gap-xs" size="sm" look="bold">
         <Icon remix="RiWaterFlashFill" />
-        TVL Allocation
+        APR Breakdowns
       </Text>
       <Divider />
       <Group className="flex-col" size="sm">

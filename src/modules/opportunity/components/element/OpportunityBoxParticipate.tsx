@@ -8,6 +8,7 @@ import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
+import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
@@ -23,6 +24,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
+  const { isOnlyPoint, pointAggregation } = useOpportunityRewards(opportunity);
 
   const isSupplyButtonVisible = useMemo(() => {
     if (!!isDepositEnabled && !!targets) return true;
@@ -55,9 +57,17 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Text>
           <Group className="items-center justify-between">
             <Title look="hype" h={3}>
-              <Value value format={decimalFormatDolar}>
-                {opportunity.dailyRewards}
-              </Value>
+              {isOnlyPoint ? (
+                <>
+                  <Value value format={decimalFormatDolar}>
+                    {pointAggregation!}
+                  </Value>
+                </>
+              ) : (
+                <Value value format={decimalFormatDolar}>
+                  {opportunity.dailyRewards}
+                </Value>
+              )}
             </Title>
             {!!isSupplyButtonVisible && (
               <Button className="inline-flex" look="hype" size="xl" onClick={onSupply}>
@@ -80,13 +90,13 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
                 <Text bold className="flex items-center gap-sm ">
-                  APR
+                  {isOnlyPoint ? "SCORE" : "APR"}
                   <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
                 </Text>
               </Dropdown>
 
               <Title h={3} look="tint">
-                <Value value format={decimalFormatApr}>
+                <Value value format={isOnlyPoint ? decimalFormatDolar : decimalFormatApr}>
                   {opportunity.apr / 100}
                 </Value>
               </Title>
