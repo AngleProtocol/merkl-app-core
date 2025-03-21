@@ -62,7 +62,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             <Title look="hype" h={3}>
               {isOnlyPoint ? (
                 <>
-                  <Value value format={decimalFormatDolar}>
+                  <Value value format={decimalFormatPoint}>
                     {pointAggregation!}
                   </Value>
                 </>
