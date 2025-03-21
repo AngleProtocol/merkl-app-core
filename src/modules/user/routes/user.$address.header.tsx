@@ -62,7 +62,7 @@ export default function Index() {
 
   const onClaimSuccess = async (_hash: string) => {
     reloadBalances();
-    await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
+    // await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
   };
 
   const rawRewards = useMemo(() => fetcher?.data?.rewards ?? raw, [raw, fetcher?.data?.rewards]);
@@ -116,7 +116,6 @@ export default function Index() {
     return baseTabs;
   }, [address]);
 
-  console.log({ unclaimed: pointAggregation?.unclaimed });
   return (
     <Hero
       compact
