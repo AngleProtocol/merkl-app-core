@@ -11,6 +11,11 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       ({ backend, request }, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
         const url = new URL(request.url);
 
+        // If search string is a campaignId, we should not search by name
+        const searchString = url.searchParams.get("search");
+        const name = searchString?.startsWith("0x") && searchString.length === 66 ? undefined : searchString;
+        const campaignId = searchString?.startsWith("0x") && searchString.length === 66 ? searchString : undefined;
+
         const filters = {
           status: url.searchParams.get("status") ?? undefined,
           mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
@@ -20,7 +25,8 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
           sort: url.searchParams.get("sort")?.split("-")[0],
           order: url.searchParams.get("sort")?.split("-")[1],
-          name: url.searchParams.get("search") ?? undefined,
+          name,
+          campaignId,
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
           ...override,
