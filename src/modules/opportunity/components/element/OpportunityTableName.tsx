@@ -1,5 +1,6 @@
 import { api } from "@core/api";
 import type { TagTypes } from "@core/components/element/Tag";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import {
   Button,
@@ -15,7 +16,6 @@ import {
   useOverflowingRef,
 } from "dappkit";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
-import { useMerklConfig } from "@core/modules/config/config.context";
 import { OpportunityService } from "../../opportunity.service";
 
 export type OpportunityTableNameProps = {
