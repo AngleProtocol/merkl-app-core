@@ -28,6 +28,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           name,
           campaignId,
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+          point: backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
           ...override,
         };

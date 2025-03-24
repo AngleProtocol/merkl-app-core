@@ -91,6 +91,26 @@ export const defaultMerklConfig: MerklConfig = {
   fonts: {
     italic: false,
   },
+  opportunitiesFilters: {
+    "rewards-asc": {
+      name: "By Daily rewards",
+    },
+    "rewards-desc": {
+      name: "By Daily rewards",
+    },
+    "apr-asc": {
+      name: "By APR",
+    },
+    "apr-desc": {
+      name: "By APR",
+    },
+    "tvl-asc": {
+      name: "By TVL",
+    },
+    "tvl-desc": {
+      name: "By TVL",
+    },
+  },
   opportunityNavigationMode: "supply",
   tokenSymbolPriority: ["ZK", "USDC", "USDC.e", "ETH", "WETH", "WBTC", "wstETH", "USDT", "USDe", "weETH", "DAI"],
   rewardsNavigationMode: "chain",
@@ -116,6 +136,7 @@ export const defaultMerklConfig: MerklConfig = {
       return c;
     },
   },
+
   chains: [],
   opportunity: {
     enabled: false,
@@ -160,6 +181,7 @@ export const defaultMerklConfig: MerklConfig = {
   decimalFormat: {
     dollar: "$0,0.##a",
     apr: "0.##%a",
+    point: "0.00##a",
   },
   sizing: {
     width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },

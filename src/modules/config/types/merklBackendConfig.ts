@@ -5,6 +5,7 @@ export interface MerklBackendConfig {
   tags?: string[];
   chains?: Pick<Chain, "id">[];
   alwaysShowTestTokens?: boolean;
+  alwaysShowPointTokens?: boolean;
   showDevelopmentHelpers?: boolean;
   sortedBy: "apr" | "rewards";
   featured?: {
