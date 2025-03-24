@@ -116,7 +116,7 @@ export default function Refer({ url }: ReferProps) {
       <Group>
         <Icon className="text-[70px] text-accent-10" remix="RiGiftFill" />
       </Group>
-      <Title h={3}>Invite Friend & get +5% more!</Title>
+      <Title h={3}>Invite Friends & get +5% more!</Title>
       <Text look="base">
         Generate a referral code via a quick on-chain transaction. Share it. When your friend deposits, Earn an
         additional 5% yield on your referee deposit. <ReferralCalculationTooltip />

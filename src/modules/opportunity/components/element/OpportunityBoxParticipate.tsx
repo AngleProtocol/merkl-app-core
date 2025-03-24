@@ -1,5 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
+import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
@@ -7,6 +8,7 @@ import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interacti
 import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
+import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export interface OpportunityBoxParticipateProps {
@@ -22,7 +24,10 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
   const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
+  const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
+
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
+  const { isOnlyPoint, pointAggregation } = useOpportunityRewards(opportunity);
 
   const isSupplyButtonVisible = useMemo(() => {
     if (!!isDepositEnabled && !!targets) return true;
@@ -46,11 +51,21 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             <Icon remix="RiStarFill" />
             Daily Rewards
           </Text>
-          <Title look="hype" h={2}>
-            <Value value format={decimalFormatDolar}>
-              {opportunity.dailyRewards}
-            </Value>
-          </Title>
+          <Group className="items-center justify-between">
+            <Title look="hype" h={3}>
+              {isOnlyPoint ? (
+                <>
+                  <Value value format={decimalFormatPoint}>
+                    {pointAggregation!}
+                  </Value>
+                </>
+              ) : (
+                <Value value format={decimalFormatDolar}>
+                  {opportunity.dailyRewards}
+                </Value>
+              )}
+            </Title>
+          </Group>
         </Group>
 
         <Group className="p-xl py-lg*2  h-[fit-content] w-full justify-between flex-col gap-xl">
@@ -63,18 +78,33 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Group>
           <Group size="lg" className="flex-nowrap">
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
-              <Dropdown onHover content={<AprSectionCampaigns opportunity={opportunity} />}>
+              <Dropdown
+                onHover
+                content={
+                  isOnlyPoint ? (
+                    <PointsModalCampaigns opportunity={opportunity} />
+                  ) : (
+                    <AprSectionCampaigns opportunity={opportunity} />
+                  )
+                }>
                 <Text bold className="flex items-center gap-sm ">
-                  APR
+                  {isOnlyPoint ? "SCORE" : "APR"}
                   <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
                 </Text>
               </Dropdown>
 
               <Title h={3} look="tint">
-                <Value value format={decimalFormatApr}>
-                  {opportunity.apr / 100}
-                </Value>
+                {isOnlyPoint ? (
+                  <Value value format={decimalFormatPoint}>
+                    {opportunity.apr}
+                  </Value>
+                ) : (
+                  <Value value format={decimalFormatApr}>
+                    {opportunity.apr / 100}
+                  </Value>
+                )}
               </Title>
+              <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               {opportunity.type === "CLAMM" ? (

@@ -2,6 +2,7 @@ import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import useChains from "@core/modules/chain/hooks/useChains";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
@@ -35,6 +36,8 @@ export default function OpportunityFilters({
   const location = useLocation();
   const [applying, setApplying] = useState(false);
 
+  const filtersConfigEnabled = useMerklConfig(store => store.config.opportunitiesFilters);
+
   //TODO: componentify theses
   const actionOptions = Object.entries(actions)
     .filter(([key]) => key !== "INVALID")
@@ -51,44 +54,46 @@ export default function OpportunityFilters({
       {},
     );
 
-  const sortOptions = {
-    "apr-asc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By APR</Text>
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "apr-desc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By APR</Text>
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-    "tvl-asc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By TVL</Text>
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "tvl-desc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By TVL</Text>
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-    "rewards-asc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By Daily Rewards</Text>
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "rewards-desc": (
-      <Group className="flex-nowrap !gap-sm">
-        <Text look="bold">By Daily Rewards</Text>
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-  };
+  const sortOptions = useMemo(() => {
+    return {
+      "apr-asc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["apr-asc"].name || "By APR"}</Text>
+          <Icon remix="RiArrowUpLine" />
+        </Group>
+      ),
+      "apr-desc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["apr-desc"].name || "By APR"}</Text>
+          <Icon remix="RiArrowDownLine" />
+        </Group>
+      ),
+      "tvl-asc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["tvl-asc"].name || "By TVL"}</Text>
+          <Icon remix="RiArrowUpLine" />
+        </Group>
+      ),
+      "tvl-desc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["tvl-desc"].name || "By TVL"}</Text>
+          <Icon remix="RiArrowDownLine" />
+        </Group>
+      ),
+      "rewards-asc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["rewards-asc"]?.name || "By Daily Rewards"}</Text>
+          <Icon remix="RiArrowUpLine" />
+        </Group>
+      ),
+      "rewards-desc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["rewards-desc"]?.name || "By Daily Rewards"}</Text>
+          <Icon remix="RiArrowDownLine" />
+        </Group>
+      ),
+    };
+  }, [filtersConfigEnabled]);
 
   const statusOptions = {
     "LIVE,SOON,PAST": <>All status</>,
@@ -279,6 +284,18 @@ export default function OpportunityFilters({
     [updateParams, setSearchParams],
   );
 
+  const filteredSortOptions = useMemo(() => {
+    return Object.keys(sortOptions)
+      .filter((key): key is keyof typeof sortOptions => key in filtersConfigEnabled)
+      .reduce(
+        (acc, key) => {
+          acc[key] = sortOptions[key];
+          return acc;
+        },
+        {} as Partial<typeof sortOptions>,
+      );
+  }, [filtersConfigEnabled, sortOptions]);
+
   return (
     <Group className="justify-between flex-nowrap overflow-x-scroll">
       <Group className="items-center flex-nowrap">
@@ -367,7 +384,7 @@ export default function OpportunityFilters({
       <Select
         onChange={onSortByChange}
         state={[sortInput, setSortInput]}
-        options={sortOptions}
+        options={filteredSortOptions}
         look="hype"
         placeholder={"By Daily Rewards"}
       />

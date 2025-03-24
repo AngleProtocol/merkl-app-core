@@ -177,6 +177,10 @@ export default function useOpportunityMetadata({
     [icons],
   );
 
+  const navigateToMerklStatusPage = useCallback(() => {
+    window.open("https://beta.merkl.xyz/status", "_blank");
+  }, []);
+
   /**
    * Explainer for the opportunity with Helpers
    */
@@ -203,13 +207,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -239,13 +250,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -274,13 +292,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -309,13 +334,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
+                        <Text className="inline"> anytime via Merkl (updated every 3-12 hours).</Text>
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -344,13 +376,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -379,13 +418,19 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
-                          Check next reward update
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          rewards
                         </Link>
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -414,13 +459,20 @@ export default function useOpportunityMetadata({
                       </Group>
                     </li>
                     <li>
-                      <Group className="flexitems-center flex-wrap" size="sm">
-                        <Text bold>Step 3:</Text> Claim
-                        <Link to="/users">rewards</Link>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
                         anytime via Merkl (updated every 3-12 hours).
-                        <Link to="/status" target="_blank">
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
                           Check next reward update
-                        </Link>
+                        </Text>
                       </Group>
                     </li>
                   </ul>
@@ -430,10 +482,52 @@ export default function useOpportunityMetadata({
             Earn rewards by taking a short position on {protocol?.name} {symbols} on {chain.name}
           </Tooltip>
         );
+      case "SWAP":
+        return (
+          <Tooltip
+            helper={
+              <>
+                <Title h={5}>Steps to Earn Rewards</Title>
+                <Text>
+                  <ul className="list-disc ml-lg">
+                    <li>
+                      <Group>
+                        <Text bold>Step 1:</Text>Open a short position on {protocol?.name}.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group>
+                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      </Group>
+                    </li>
+                    <li>
+                      <Group className="flexitems-center flex-wrap inline" size="sm">
+                        <Text bold className="inline">
+                          Step 3:
+                        </Text>{" "}
+                        Claim
+                        <Link to="/users" className="inline">
+                          {" "}
+                          rewards
+                        </Link>{" "}
+                        anytime via Merkl (updated every 3-12 hours).
+                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
+                          {" "}
+                          Check next reward update
+                        </Text>
+                      </Group>
+                    </li>
+                  </ul>
+                </Text>
+              </>
+            }>
+            Earn rewards by trading {symbols} on {chain.name}
+          </Tooltip>
+        );
       default:
         break;
     }
-  }, [tokens, protocol, chain, action]);
+  }, [tokens, protocol, chain, action, navigateToMerklStatusPage]);
 
   return {
     name: configuredName,

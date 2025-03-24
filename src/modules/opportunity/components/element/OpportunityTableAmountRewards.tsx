@@ -21,7 +21,7 @@ export default function OpportunityTableAmountRewards({
   }, [opportunity]);
 
   return (
-    <Group size="sm">
+    <Group size="sm" className="flex-nowrap items-center">
       <Text look="hype" bold size="lg">
         <Value value format={"0.###a"}>
           {Fmt.toNumber(breakdownAmount, token?.decimals)}

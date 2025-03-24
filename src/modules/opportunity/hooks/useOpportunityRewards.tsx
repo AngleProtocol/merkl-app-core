@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Fmt, Group, Icon, Text, Value } from "dappkit";
+import { Fmt, FormatterService, Group, Icon, Text, Value } from "dappkit";
 import { useMemo } from "react";
 
 const rewards = ["dailyRewards", "rewardsRecord"] satisfies (keyof Opportunity)[];
@@ -95,9 +95,29 @@ export default function useOpportunityRewards({
     );
   }, [rewardsRecord, dailyRewards, dollarFormat, dailyRewardsTokenAddress]);
 
+  /**
+   * Determines if the opportunity has only reward token points
+   */
+  const isOnlyPoint = useMemo(() => {
+    return rewardsRecord.breakdowns.every(breakdown => breakdown.token.isPoint === true);
+  }, [rewardsRecord]);
+
+  /**
+   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity) test token excluded
+   */
+  const pointAggregation = useMemo(() => {
+    if (!isOnlyPoint) return null;
+    return rewardsRecord.breakdowns.reduce((acc, record) => {
+      if (record.token.isTest) return acc;
+      return acc + FormatterService.toNumber(record.amount, record.token.decimals);
+    }, 0);
+  }, [isOnlyPoint, rewardsRecord]);
+
   return {
     rewardsBreakdown,
     formattedDailyRewards,
     dailyRewards,
+    isOnlyPoint,
+    pointAggregation,
   };
 }

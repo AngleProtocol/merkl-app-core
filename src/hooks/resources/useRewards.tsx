@@ -55,5 +55,34 @@ export default function useRewards(rewards: Reward[]) {
     });
   }, [rewards, rewardsTotalClaimableMode]);
 
-  return { earned, unclaimed, sortedRewards, pending };
+  /**
+   * Determines if the opportunity has only reward token points
+   */
+  const isOnlyPointOrTest = useMemo(() => {
+    return rewards.every(rewardsPerChain =>
+      rewardsPerChain.rewards.every(reward => !!reward.token.isPoint || !!reward.token.isTest),
+    );
+  }, [rewards]);
+
+  /**
+   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity) test tokensa are excluded
+   */
+  const pointAggregation = useMemo(() => {
+    if (!isOnlyPointOrTest) return null;
+
+    return rewards.reduce(
+      (totals, rewardsPerChain) => {
+        rewardsPerChain.rewards.forEach(record => {
+          if (!record.token.isTest) {
+            totals.unclaimed += Fmt.toNumber(record.amount - record.claimed, record.token.decimals);
+            totals.total += Fmt.toNumber(record.amount, record.token.decimals);
+          }
+        });
+        return totals;
+      },
+      { unclaimed: 0, total: 0 },
+    );
+  }, [isOnlyPointOrTest, rewards]);
+
+  return { earned, unclaimed, sortedRewards, pending, isOnlyPointOrTest, pointAggregation };
 }

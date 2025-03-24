@@ -1,3 +1,4 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, Hash, Icon, Text, Value } from "dappkit";
 import { useMemo } from "react";
@@ -6,10 +7,12 @@ type AprSectionProps = {
   opportunity: Opportunity;
 };
 
-export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
+export default function PointsModalCampaigns({ opportunity }: AprSectionProps) {
   const breakdowns = useMemo(() => {
     return opportunity.aprRecord?.breakdowns.filter(aprBreakdown => aprBreakdown.type !== "PROTOCOL");
   }, [opportunity]);
+
+  const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
   const getAprName = (breakdown: Opportunity["aprRecord"]["breakdowns"][number]) => {
     if (!breakdown?.identifier) return null;
@@ -47,20 +50,20 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
   if (!breakdowns?.length) return null;
 
   return (
-    <Group className="flex-col">
+    <Group className="flex-col mt-md">
       <Text bold className="flex items-center gap-xs" size="sm" look="bold">
         <Icon remix="RiWaterFlashFill" />
-        APR Breakdowns
+        Score Breakdowns
       </Text>
-      <Divider className="border-main-8" />
+      <Divider />
       <Group className="flex-col" size="sm">
         <Group className="items-center justify-between gap-xl" size="sm">
           <Text size="sm" look="soft">
-            Average APR
+            Average Score
           </Text>
           <Text look="soft" bold size="sm">
-            <Value value format="0a%">
-              {opportunity.apr / 100}
+            <Value value format={decimalFormatPoint}>
+              {opportunity.apr}
             </Value>
           </Text>
         </Group>
@@ -70,8 +73,8 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
               {getAprName(breakdown)}
             </Text>
             <Text look="soft" size="sm">
-              <Value value format="0a%">
-                {breakdown.value / 100}
+              <Value value format={decimalFormatPoint}>
+                {breakdown.value}
               </Value>
             </Text>
           </Group>

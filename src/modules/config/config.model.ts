@@ -39,10 +39,19 @@ export type MerklConfig = {
   backend: MerklBackendConfig;
 
   /**
+   * Hide the price of reward tokens in the UI
+   */
+  hideRewardTokenPrice?: string[];
+
+  /**
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
 
+  /**
+   * Filters enabled in the opportunities header list
+   */
+  opportunitiesFilters: Record<string, { name: string }>;
   /**
    * Navigation Menu and Header links configuration
    */
@@ -193,6 +202,7 @@ export type MerklConfig = {
   decimalFormat: {
     dollar: string;
     apr: string;
+    point: string;
   };
   hero: {
     bannerOnAllPages: boolean; // show banner on all pages
