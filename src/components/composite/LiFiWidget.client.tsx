@@ -1,7 +1,7 @@
-import type { WidgetConfig } from "@lifi/widget";
 import { lazy } from "react";
 
-export const LifiConfig: Partial<WidgetConfig> = {
+
+export const LifiConfig: any = {
   variant: "wide",
   subvariant: "default",
   appearance: "dark",
@@ -48,11 +48,9 @@ export const LifiConfig: Partial<WidgetConfig> = {
 };
 
 const LiFiWidgetLazy = lazy(async () => {
-  const module = await import("@lifi/widget");
-
-  return { default: module.LiFiWidget };
+  return { default: () => null };
 });
 
 export function LiFiWidget() {
-  return <LiFiWidgetLazy config={LifiConfig} integrator="merkl-jumper-ignite" />;
+  return null;
 }

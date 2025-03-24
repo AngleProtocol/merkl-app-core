@@ -1,7 +1,7 @@
 import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
 import { ChainService } from "../../../modules/chain/chain.service";

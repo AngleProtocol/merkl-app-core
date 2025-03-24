@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet } from "react-router";
 import { Group } from "dappkit";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";

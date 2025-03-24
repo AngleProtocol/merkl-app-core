@@ -1,5 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import {
   Box,
   Button,

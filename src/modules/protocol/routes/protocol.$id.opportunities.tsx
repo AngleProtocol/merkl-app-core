@@ -1,8 +1,8 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import { Container, Group, Space, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";

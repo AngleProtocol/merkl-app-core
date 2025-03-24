@@ -1,6 +1,6 @@
 import { api } from "@core/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
 import { Cache } from "../../../modules/cache/cache.service";
 import { TokenService } from "../../../modules/token/token.service";

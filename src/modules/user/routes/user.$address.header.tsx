@@ -1,8 +1,8 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { Outlet, useFetcher, useLoaderData } from "react-router";
 import { Button, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";

@@ -1,7 +1,7 @@
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import { Icon } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo, useState } from "react";

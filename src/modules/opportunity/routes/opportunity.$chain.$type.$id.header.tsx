@@ -9,8 +9,8 @@ import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMe
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Meta, Outlet, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { Meta, Outlet, useLoaderData } from "react-router";
 import { Button, Group, Icon } from "dappkit";
 import { useClipboard } from "dappkit";
 

@@ -1,7 +1,7 @@
 import type { Api } from "@core/api/types";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Chain, Token } from "@merkl/api";
-import { useSearchParams } from "@remix-run/react";
+import { useSearchParams } from "react-router";
 import { Group, Text } from "dappkit";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -28,20 +28,20 @@ export default function LeaderboardLibrary(props: LeaderboardLibraryProps) {
 
   const Table = reason ? LeaderboardTable : LeaderboardTableWithoutReason;
 
-  const rows = useMemo(() => {
-    return leaderboard?.map((row, index) => (
-      <LeaderboardTableRow
-        key={uuidv4()}
-        total={BigInt(total ?? 0n)}
-        row={row}
-        showreason={reason}
-        rank={index + 1 + Math.max(Number(page) - 1, 0) * Number(items)}
-        token={token}
-        chain={chain}
-      />
-    ));
-  }, [leaderboard, page, items, total, token, chain, reason]);
-
+  
+    const rows = useMemo(() => {
+      return (leaderboard as any)?.map((row: any, index: any) => (
+        <LeaderboardTableRow
+          key={uuidv4()}
+          total={BigInt(total ?? 0n)}
+          row={row}
+          showreason={reason}
+          rank={index + 1 + Math.max(Number(page) - 1, 0) * Number(items)}
+          token={token}
+          chain={chain}
+        />
+      ));
+    }, [leaderboard, page, items, total, token, chain, reason]);
   return (
     <Group className="flex-row w-full [&>*]:flex-grow">
       {!!rows?.length ? (

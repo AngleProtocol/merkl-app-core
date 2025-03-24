@@ -4,7 +4,7 @@ import useCampaignMetadata from "@core/modules/campaigns/hooks/useCampaignMetada
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import {
   Box,
   Button,

@@ -3,7 +3,7 @@ import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import type { BoxProps } from "dappkit";
 import { Box, Button, Divider, Group, Icon, Text, Title, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";

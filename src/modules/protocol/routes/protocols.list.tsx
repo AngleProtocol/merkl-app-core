@@ -3,8 +3,8 @@ import { Cache } from "@core/modules/cache/cache.service";
 import useChains from "@core/modules/chain/hooks/useChains";
 import ProtocolLibrary from "@core/modules/protocol/components/library/ProtocolLibrary";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
 
 export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {

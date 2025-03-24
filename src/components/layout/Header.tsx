@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
-import { useLocation } from "@remix-run/react";
+import { useLocation } from "react-router";
 import { Button, Container, Group, Icon, Select, Text, WalletButton, mergeClass, useWalletContext } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";

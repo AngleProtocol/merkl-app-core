@@ -2,8 +2,8 @@ import { api } from "@core/api";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
 
 export async function loader(_args: LoaderFunctionArgs) {

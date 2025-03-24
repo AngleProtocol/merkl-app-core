@@ -15,6 +15,9 @@ export const ChainService = defineModule<{ api: Api }>().create(({ inject }) => 
     },
   );
 
+  /**
+   * Hello
+   */
   const get = inject(["api"]).inFunction(
     async ({ api }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
       const chains = await fetch(async () =>
@@ -38,6 +41,10 @@ export const ChainService = defineModule<{ api: Api }>().create(({ inject }) => 
 
   return {
     getAll,
+    /**
+     * A
+     * @see get
+     */
     get,
     getMany,
     getById,

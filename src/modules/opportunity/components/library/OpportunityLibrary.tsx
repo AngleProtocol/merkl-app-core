@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useLocation, useNavigate } from "@remix-run/react";
+import { useLocation, useNavigate } from "react-router";
 import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
