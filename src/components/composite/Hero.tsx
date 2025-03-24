@@ -35,7 +35,6 @@ export type HeroInformations = {
 };
 
 export default function Hero({
-  navigation,
   compact = false,
   breadcrumbs,
   icons,
@@ -61,14 +60,11 @@ export default function Hero({
           <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
-                <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
-                  Home
-                </Button>
-                {breadcrumbs?.map(breadcrumb => {
+                {breadcrumbs?.map((breadcrumb, index) => {
                   if (breadcrumb.component) return <>{breadcrumb.component}</>;
                   return (
                     <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
-                      <Icon remix="RiArrowRightSLine" />
+                      {index > 0 && <Icon remix="RiArrowRightSLine" />}
                       {breadcrumb.name}
                     </Button>
                   );

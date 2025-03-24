@@ -201,7 +201,7 @@ export default function CampaignTableRow({
                       {stats?.count}
                     </Value>
                     {" Users / "}
-                    {campaign.rewardToken?.isPoint || !(campaign.rewadToken?.price > 0) ? (
+                    {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
                       <Value value format={"0.###a"}>
                         {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
                       </Value>
