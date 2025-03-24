@@ -17,7 +17,6 @@ export default function Index() {
     <Hero
       icons={[{ remix: "RiCoinFill" }]}
       title={"Tokens"}
-      breadcrumbs={[{ link: "/tokens", name: "Tokens" }]}
       description={metadata.find(metadata.wrap(), "description")}>
       <Outlet />
     </Hero>
