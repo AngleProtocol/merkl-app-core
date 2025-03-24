@@ -31,6 +31,11 @@ export default function Socials() {
           <Icon remix="RiMediumFill" />
         </Button>
       )}
+      {!!socials.blog && (
+        <Button look="base" size="lg" external to={socials.blog}>
+          <Icon remix="RiArticleFill" />
+        </Button>
+      )}
     </Group>
   );
 }
