@@ -107,6 +107,7 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
       resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
     ) => {
       const routes = deps.routes as MerklRoutes & { layout?: Omit<MerklRoute, "label"> };
+
       const matches = matchRoute.handler(deps, routes);
       const metadatas = matches.map(({ type: routeType, metadata, pagedata }) => {
         const pageOrMetaData = { metadata, pagedata }[key];
@@ -177,20 +178,28 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
   };
 
   const fill = inject(["backend", "request", "routes"]).inFunction(
-    (dependencies: Pick<Dependencies, "backend" | "request" | "routes">) => {
+    <T extends keyof MerklRouteType | undefined>(
+      dependencies: Pick<Dependencies, "backend" | "request" | "routes">,
+      type?: T,
+      resource?: T extends keyof MerklRouteType ? MerklRouteType[T] : undefined,
+    ) => {
       const { request } = dependencies;
       const url = `${request.url.split("/")?.[0]}//${request.headers.get("host")}`;
-      const metadata = wrap.handler({
-        ...dependencies,
-        url,
-        location: {
-          pathname: request.url.replace(url, ""),
-          key: "",
-          search: "",
-          hash: "",
-          state: "",
+      const metadata = wrap.handler(
+        {
+          ...dependencies,
+          url,
+          location: {
+            pathname: request.url.replace(url, ""),
+            key: "",
+            search: "",
+            hash: "",
+            state: "",
+          },
         },
-      });
+        type,
+        resource,
+      );
 
       return {
         url,

@@ -85,7 +85,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
     );
 
     const reparse = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
-      const res = await fetchApi(async () =>
+      const _res = await fetchApi(async () =>
         api.v4
           .opportunities({
             id: opportunityId,
@@ -99,7 +99,6 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
             },
           ),
       );
-      console.log(res);
     });
 
     const getCampaignsByParams = inject(["api", "backend"]).inFunction(

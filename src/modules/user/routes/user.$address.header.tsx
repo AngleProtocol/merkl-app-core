@@ -1,15 +1,16 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
-import { Button, Dropdown, Group, Hash, Icon, Text, Value } from "dappkit";
+import { Container, Group, Hash, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
-import AddressEdit from "../../../components/element/AddressEdit";
 import useReward from "../../../hooks/resources/useReward";
 import useRewards from "../../../hooks/resources/useRewards";
 import useBalances from "../../../hooks/useBalances";
@@ -38,7 +39,7 @@ export async function loader({ context: { backend, routes }, params: { address }
     isBlacklisted,
     backend,
     routes,
-    ...MetadataService({ backend, routes, request }).fill(),
+    ...MetadataService({ backend, routes, request }).fill("user", { address }),
   };
 }
 
@@ -55,7 +56,7 @@ export type OutletContextRewards = {
  * @returns
  */
 export default function Index() {
-  const { rewards: raw, address, token: rawToken, isBlacklisted } = useLoaderData<typeof loader>();
+  const { rewards: raw, address, token: rawToken, isBlacklisted, url } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof loader>();
 
   const { reload: reloadBalances } = useBalances();
@@ -80,6 +81,8 @@ export default function Index() {
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
   const reward = useMemo(() => rawRewards.find(({ chain: { id } }) => id === chainId), [chainId, rawRewards]);
   const { claimTransaction } = useReward(reward, user);
+
+  const metadata = useMetadata(url);
 
   const isUserRewards = useMemo(() => UserService({}).isSame(user, address), [user, address]);
   const isAbleToClaim = useMemo(
@@ -120,78 +123,76 @@ export default function Index() {
     <Hero
       compact
       breadcrumbs={[
-        { link: "/users/", name: "Users" },
+        { link: "/users/", name: "Dashboard" },
         {
           link: `/users/${address ?? ""}`,
           component: (
             <>
               <Icon remix="RiArrowRightSLine" className="text-main-12" />
-              <Hash copy format="full" size="xs" className="text-main-12">
+              <Hash format="short" size="xs" className="text-main-12">
                 {address}
               </Hash>
-              <Dropdown size="md" padding="xs" content={<AddressEdit />}>
-                <Button look="soft" size="xs" aria-label="Edit address">
-                  <Icon remix="RiEdit2Line" />
-                </Button>
-              </Dropdown>
             </>
           ),
         },
       ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={
-        <Group className="w-full items-center flex justify-between gap-xl md:gap-x-xl*4">
-          <Group className="flex-1 gap-xl md:gap-x-xl*4 items-center">
-            <Group className="flex-col gap-sm md:gap-md">
-              <Text size={"lg"} bold className="text-lg md:text-xl not-italic">
-                Claimable Now
-              </Text>
-              {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
+      title={metadata.find(metadata.wrapInPage("user", { address }), "title")}
+      description={metadata.find(metadata.wrapInPage("user", { address }), "description")}>
+      <Container>
+        <Group className="w-full mt-xl*2 mb-xl" size="xl">
+          <MetricBox
+            label="Total Earned"
+            value={
+              <Value format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd} value className="text-main-12">
+                {isOnlyPointOrTest ? pointAggregation?.total : earned + pending}
+              </Value>
+            }
+          />
+          <MetricBox
+            label="Claimable soon"
+            value={
+              <Value format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd} value className="text-main-12">
+                {isOnlyPointOrTest ? pointAggregation?.total : pending}
+              </Value>
+            }
+          />
+          <MetricBox
+            label="Claimable now"
+            look={unclaimed > 0 ? "hype" : "bold"}
+            value={
+              isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
                 <Token size="xl" token={token} amount={BigInt(unclaimed)} format="amount_price" showZero />
               ) : (
                 <Value
                   format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd}
-                  size={2}
+                  value
                   className="text-main-12">
                   {isOnlyPointOrTest ? pointAggregation?.unclaimed : unclaimed}
                 </Value>
-              )}
+              )
+            }
+          />
+          {isAbleToClaim && (
+            <Group className="justify-center items-center">
+              <TransactionButton
+                name="Claim Rewards"
+                enableSponsorCheckbox
+                disabled={!claimTransaction}
+                look="hype"
+                size="lg"
+                tx={claimTransaction}
+                onSuccess={onClaimSuccess}>
+                {isSingleChain ? "Claim Now" : `Claim on ${chain?.name}`}
+                <Icon remix="RiHandCoinFill" />
+              </TransactionButton>
             </Group>
-            <Group className="flex-col gap-sm md:gap-md">
-              <Text size="lg" bold className="text-lg md:text-xl not-italic">
-                Total Earned
-              </Text>
-              {isAddress(rewardsTotalClaimableMode ?? "") && !!token ? (
-                <Token size="xl" symbol token={token} amount={BigInt(earned)} format="amount_price" showZero />
-              ) : (
-                <Value
-                  format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd}
-                  size={2}
-                  className="text-main-12">
-                  {isOnlyPointOrTest ? pointAggregation?.total : earned + pending}
-                </Value>
-              )}
-            </Group>
-            <Group className="flex-col gap-sm md:gap-md">
-              {isAbleToClaim && (
-                <TransactionButton
-                  name="Claim Rewards"
-                  enableSponsorCheckbox
-                  disabled={!claimTransaction}
-                  look="hype"
-                  size="lg"
-                  tx={claimTransaction}
-                  onSuccess={onClaimSuccess}>
-                  {isSingleChain ? "Claim Now" : `Claim on ${chain?.name}`}
-                  <Icon remix="RiHandCoinFill" />
-                </TransactionButton>
-              )}
-            </Group>
-          </Group>
+          )}
         </Group>
-      }
-      description={"Claim your rewards"}
-      tabs={tabs}>
+        <Space size="xl" />
+        <Tabs tabs={tabs} look="base" size="lg" />
+        <Space size="xl" />
+      </Container>
       <Outlet context={{ rewards: sortedRewards, onClaimSuccess, isBlacklisted } as OutletContextRewards} />
     </Hero>
   );
