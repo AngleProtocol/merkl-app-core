@@ -43,8 +43,8 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     const live = BigInt(campaign.endTimestamp) * 1000n > moment.now();
     return (
       <>
-        {!live && "Ended "}
-        <Time timestamp={Number(campaign.endTimestamp) * 1000} />
+        <Time prefix=" " timestamp={Number(campaign.endTimestamp) * 1000} />
+        {live && " left"}
       </>
     );
   }, [campaign.endTimestamp]);

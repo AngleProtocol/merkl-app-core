@@ -11,6 +11,11 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       ({ backend, request }, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
         const url = new URL(request.url);
 
+        // If search string is a campaignId, we should not search by name
+        const searchString = url.searchParams.get("search");
+        const name = searchString?.startsWith("0x") && searchString.length === 66 ? undefined : searchString;
+        const campaignId = searchString?.startsWith("0x") && searchString.length === 66 ? searchString : undefined;
+
         const filters = {
           status: url.searchParams.get("status") ?? undefined,
           mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
@@ -20,7 +25,8 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
           sort: url.searchParams.get("sort")?.split("-")[0],
           order: url.searchParams.get("sort")?.split("-")[1],
-          name: url.searchParams.get("search") ?? undefined,
+          name,
+          campaignId,
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
           ...override,
@@ -49,11 +55,13 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         const overrideQuery = { ...query, sort: query.sort ?? backend.sortedBy };
         const opportunities = await fetchApi(async () =>
           api.v4.opportunities.index.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
         const count = await fetchApi(async () =>
           api.v4.opportunities.count.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
@@ -76,6 +84,24 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       },
     );
 
+    const reparse = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
+      const res = await fetchApi(async () =>
+        api.v4
+          .opportunities({
+            id: opportunityId,
+          })
+          .post(
+            {},
+            {
+              headers: {
+                authorization: `Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`,
+              },
+            },
+          ),
+      );
+      console.log(res);
+    });
+
     const getCampaignsByParams = inject(["api", "backend"]).inFunction(
       async (
         { api, backend },
@@ -88,6 +114,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         const { chainId, type, identifier } = query;
         const opportunityWithCampaigns = await fetchApi(async () =>
           api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
+            headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: {
               test: backend.alwaysShowTestTokens ?? false,
             },
@@ -102,13 +129,18 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       },
     );
 
-    const getAggregate = inject(["api"]).inFunction(
-      ({ api }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>, params: "dailyRewards") => {
-        return fetchApi(async () => api.v4.opportunities.aggregate({ field: params }).get({ query }));
+    const getAggregate = inject(["api", "backend"]).inFunction(
+      ({ api, backend }, query: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>, params: "dailyRewards") => {
+        return fetchApi(async () =>
+          api.v4.opportunities
+            .aggregate({ field: params })
+            .get({ headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined, query }),
+        );
       },
     );
 
     return {
+      reparse,
       getMany,
       getAggregate,
       getManyFromRequest,

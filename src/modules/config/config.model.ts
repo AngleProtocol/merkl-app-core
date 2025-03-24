@@ -85,10 +85,7 @@ export type MerklConfig = {
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
   alwaysShowTestTokens?: boolean;
-  /**
-   * Toggle ability to copy the id of an opportunity
-   */
-  showCopyOpportunityIdToClipboard?: boolean;
+
   walletOptions?: WalletOptions;
   /**
    * Provides a default order of to sort tokens when no balance or not connected

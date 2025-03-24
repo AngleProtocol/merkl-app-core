@@ -167,7 +167,6 @@ export const defaultMerklConfig: MerklConfig = {
     radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
   },
   alwaysShowTestTokens: true,
-  showCopyOpportunityIdToClipboard: true,
   socials: {
     discord: "",
     telegram: "https://t.me/+2T0RNabX2ANkMzAx",
