@@ -99,7 +99,7 @@ export default function useOpportunityRewards({
    * Determines if the opportunity has only reward token points
    */
   const isOnlyPoint = useMemo(() => {
-    return rewardsRecord.breakdowns.every(breakdown => breakdown.token.isPoint === true);
+    return rewardsRecord?.breakdowns.every(breakdown => breakdown.token.isPoint === true);
   }, [rewardsRecord]);
 
   /**
@@ -107,7 +107,7 @@ export default function useOpportunityRewards({
    */
   const pointAggregation = useMemo(() => {
     if (!isOnlyPoint) return null;
-    return rewardsRecord.breakdowns.reduce((acc, record) => {
+    return rewardsRecord?.breakdowns.reduce((acc, record) => {
       if (record.token.isTest) return acc;
       return acc + FormatterService.toNumber(record.amount, record.token.decimals);
     }, 0);
