@@ -61,7 +61,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
           <OverrideTheme coloring={!hasOnlyInactiveCampaigns ? "good" : undefined}>
             {hasOnlyInactiveCampaigns ? (
               <Text bold look="soft">
-                NO INACTIVE CAMPAIGNS
+                NO ACTIVE CAMPAIGN
               </Text>
             ) : (
               <Text bold look="soft">
