@@ -201,11 +201,15 @@ export default function CampaignTableRow({
                       {stats?.count}
                     </Value>
                     {" Users / "}
-                    {campaign.rewardToken?.isPoint || !(campaign.rewadToken?.price > 0) ? <Value value format={"0.###a"}>
-                      {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
-                    </Value> :  <Value value format={dollarFormat}>
-                      {Fmt.toPrice(stats?.total?.amount ?? "0", campaign.rewardToken)}
-                    </Value>}{" "}
+                    {campaign.rewardToken?.isPoint || !(campaign.rewadToken?.price > 0) ? (
+                      <Value value format={"0.###a"}>
+                        {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
+                      </Value>
+                    ) : (
+                      <Value value format={dollarFormat}>
+                        {Fmt.toPrice(stats?.total?.amount ?? "0", campaign.rewardToken)}
+                      </Value>
+                    )}{" "}
                     Distributed
                   </Group>
                 )}

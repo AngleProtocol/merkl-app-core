@@ -2,7 +2,6 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import {
   Button,
   Container,
-  Divider,
   Group,
   Icon,
   type IconProps,
