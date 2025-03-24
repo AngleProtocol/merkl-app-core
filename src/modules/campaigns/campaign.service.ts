@@ -19,12 +19,13 @@ export const CampaignService = defineModule<{ backend: MerklBackend; request: Re
         const chainId = new URL(request.url).searchParams.get("chain");
         const page = new URL(request.url).searchParams.get("page");
         const test = backend.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
+        const point = backend.alwaysShowPointTokens ? true : (new URL(request.url).searchParams.get("point") ?? false);
         const items = new URL(request.url).searchParams.get("items");
         const search = new URL(request.url).searchParams.get("search");
         const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
         const filters = Object.assign(
-          { status, action, chainId, items, sort, order, name: search, page, test },
+          { status, action, chainId, items, sort, order, name: search, page, test, point },
           override ?? {},
           page !== null && { page: Number(page) - 1 },
         );
