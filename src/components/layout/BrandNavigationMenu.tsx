@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
-import { Link, useNavigation } from "@remix-run/react";
+import { Link, useNavigate, useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
@@ -26,30 +26,29 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
   const navigationConfig = useMerklConfig(store => store.config.navigation);
   const appName = useMerklConfig(store => store.config.appName);
   const hideLayerMenuHomePage = useMerklConfig(store => store.config.hideLayerMenuHomePage);
+  const navigate = useNavigate();
   /**
    * Links in navigation menu
    */
   const navigationOptions: MenuProps["options"] = useMemo(() => {
     const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
 
+    const onClick = (nav: NavigationMenuRoutes[string]) => {
+      setIsMenuOpen(false);
+      if (!hasLink(nav)) return;
+      let link = nav.link;
+      if (nav.flags?.replaceWithWallet)
+        link = link
+          .replaceAll(nav.flags?.replaceWithWallet, address ?? "")
+          .split("/")
+          .join("/");
+      if (!!nav.external) return window.open(link, "_blank");
+      navigate(link);
+    };
+
     const convert = (nav: NavigationMenuRoutes[string], key?: string): MenuOptions => {
       const label = (
-        <Button
-          {...(hasLink(nav)
-            ? {
-                to: nav.flags?.replaceWithWallet
-                  ? nav.link
-                      .replaceAll(nav.flags?.replaceWithWallet, address ?? "")
-                      .split("/")
-                      .join("/")
-                  : nav.link,
-                external: nav.external,
-              }
-            : {})}
-          look="soft"
-          size="lg"
-          key={key}
-          className={"dim flex items-center gap-md"}>
+        <Button onClick={() => onClick(nav)} look="soft" size="lg" key={key} className={"dim flex items-center gap-md"}>
           <Icon {...nav.icon} className="text-xl text-main-11" />
           <Text size="lg" bold className="text-main-12">
             {nav.name}
@@ -71,7 +70,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
     };
 
     return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }), {});
-  }, [routes, address]);
+  }, [routes, address, navigate]);
 
   /**
    * Navigation + Footer elements
