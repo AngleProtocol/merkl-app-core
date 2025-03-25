@@ -15,7 +15,7 @@ export type HistoricalClaimsLibraryProps = {
 export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryProps) {
   const { claims } = props;
   const { chains } = useWalletContext();
-  const { options: chainOptions, isSingleChain } = useChains(chains);
+  const { options: chainOptions, isSingleChain, indexOptions } = useChains(chains);
   const [_, setSearchParams] = useSearchParams();
 
   const rows = useMemo(() => {
@@ -56,6 +56,7 @@ export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryPr
                 allOption={"All chains"}
                 multiple
                 search
+                indexOptions={indexOptions}
                 options={chainOptions}
                 look="base"
                 placeholder="Chain"
