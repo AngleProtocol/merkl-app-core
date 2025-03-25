@@ -151,6 +151,9 @@ export default function Header() {
                               }
                             : {})}>
                           {route.name}
+                          {hasLink(route) && !!route.external && (
+                            <Icon remix="RiArrowRightUpLine" className="text-main-12" />
+                          )}
                         </Button>
                       </Group>
                     );

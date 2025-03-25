@@ -59,27 +59,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
       header={
         <Group className="justify-between items-center w-full">
           <OverrideTheme coloring={!hasOnlyInactiveCampaigns ? "good" : undefined}>
-            <Tooltip
-              className="w-[286px] p-xl"
-              helper={
-                <Group>
-                  <Group size={"sm"}>
-                    <Icon remix="RiMegaphoneFill" className="text-main-11" />
-                    <Text bold look="tint">
-                      Campaigns
-                    </Text>
-                  </Group>
-                  <Divider />
-                  <Text look="soft" size={"sm"}>
-                    You can earn rewards from multiple campaigns that incentivize the same asset. Check the rules and
-                    eligibility criteria.
-                  </Text>
-                  <Button look="soft" size="xs" className="text-accent-11">
-                    <Icon remix="RiArrowRightLine" />
-                    More on Docs
-                  </Button>
-                </Group>
-              }>
+            <Group size="xs">
               {hasOnlyInactiveCampaigns ? (
                 <Text bold look="soft">
                   NO ACTIVE CAMPAIGN
@@ -89,7 +69,29 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
                   {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "LIVE CAMPAIGN"}
                 </Text>
               )}
-            </Tooltip>
+              <Tooltip
+                className="w-[286px] p-xl"
+                helper={
+                  <Group>
+                    <Group size={"sm"}>
+                      <Icon remix="RiMegaphoneFill" className="text-main-11" />
+                      <Text bold look="tint">
+                        Campaigns
+                      </Text>
+                    </Group>
+                    <Divider />
+                    <Text look="soft" size={"sm"}>
+                      You can earn rewards from multiple campaigns that incentivize the same asset. Check the rules and
+                      eligibility criteria.
+                    </Text>
+                    <Button look="soft" size="xs" className="text-accent-11">
+                      <Icon remix="RiArrowRightLine" />
+                      More on Docs
+                    </Button>
+                  </Group>
+                }
+              />
+            </Group>
           </OverrideTheme>
         </Group>
       }>

@@ -47,12 +47,12 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
         className={`bg-main-0 w-full !gap-0 h-[fit-content] border-1 border-accent-5 overflow-hidden ${className} !p-0`}
         size="xl">
         <Group className="items-center flex-nowrap bg-main-4 py-xl*2 p-xl w-full justify-between" size="sm">
-          <Text size="md" bold className="uppercase flex items-center gap-sm w-full" look="hype">
+          <Text size="md" bold className="uppercase flex items-center gap-sm w-full !text-accent-12">
             <Icon remix="RiStarFill" />
             Daily Rewards
           </Text>
           <Group className="items-center justify-between">
-            <Title look="hype" h={3}>
+            <Title look="hype" h={3} className="!text-accent-12">
               {isOnlyPoint ? (
                 <>
                   <Value value format={decimalFormatPoint}>
