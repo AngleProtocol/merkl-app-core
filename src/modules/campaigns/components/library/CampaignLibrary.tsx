@@ -2,7 +2,7 @@ import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useOutletContext } from "@remix-run/react";
-import { Button, Group, Icon, OverrideTheme, Text } from "dappkit";
+import { Button, Divider, Group, Icon, OverrideTheme, Text, Tooltip } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import CampaignTableRow from "../element/CampaignTableRow";
@@ -59,15 +59,37 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
       header={
         <Group className="justify-between items-center w-full">
           <OverrideTheme coloring={!hasOnlyInactiveCampaigns ? "good" : undefined}>
-            {hasOnlyInactiveCampaigns ? (
-              <Text bold look="soft">
-                NO ACTIVE CAMPAIGN
-              </Text>
-            ) : (
-              <Text bold look="soft">
-                {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "LIVE CAMPAIGN"}
-              </Text>
-            )}
+            <Tooltip
+              className="w-[286px] p-xl"
+              helper={
+                <Group>
+                  <Group size={"sm"}>
+                    <Icon remix="RiMegaphoneFill" className="text-main-11" />
+                    <Text bold look="tint">
+                      Campaigns
+                    </Text>
+                  </Group>
+                  <Divider />
+                  <Text look="soft" size={"sm"}>
+                    You can earn rewards from multiple campaigns that incentivize the same asset. Check the rules and
+                    eligibility criteria.
+                  </Text>
+                  <Button look="soft" size="xs" className="text-accent-11">
+                    <Icon remix="RiArrowRightLine" />
+                    More on Docs
+                  </Button>
+                </Group>
+              }>
+              {hasOnlyInactiveCampaigns ? (
+                <Text bold look="soft">
+                  NO ACTIVE CAMPAIGN
+                </Text>
+              ) : (
+                <Text bold look="soft">
+                  {nbActiveCampaigns} {(nbActiveCampaigns ?? 0) > 1 ? "ACTIVE CAMPAIGNS" : "LIVE CAMPAIGN"}
+                </Text>
+              )}
+            </Tooltip>
           </OverrideTheme>
         </Group>
       }>

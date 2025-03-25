@@ -1,20 +1,6 @@
 import Safe from "@core/assets/images/SAFE.png";
-import EtherScan from "@core/assets/images/etherscan.svg";
 import type { Chain } from "@merkl/api";
-import {
-  type BoxProps,
-  Button,
-  Collapsible,
-  Copy,
-  Group,
-  Hash,
-  Icon,
-  Image,
-  Space,
-  Text,
-  Time,
-  mergeClass,
-} from "dappkit";
+import { type BoxProps, Button, Collapsible, Copy, Group, Hash, Icon, Space, Text, Time, mergeClass } from "dappkit";
 
 import type { Api } from "@core/api/types";
 import { useState } from "react";
@@ -102,7 +88,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Distributor
-                <Image className="w-3" src={EtherScan} />
+                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
               </Button>
               <Copy value={status.distributor} />
             </Group>
@@ -115,7 +101,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Creator
-                <Image className="w-3" src={EtherScan} />
+                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
               </Button>
               <Copy value={status.distributionCreator} />
             </Group>
@@ -128,7 +114,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Admin
-                <Image className="w-3" src={EtherScan} />
+                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
               </Button>
               <Copy value={status.admin} />
               <Button key={status.adminUrl} to={status.adminUrl} external size="xs" look="soft">
