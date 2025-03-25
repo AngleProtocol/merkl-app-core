@@ -1,6 +1,6 @@
 import EtherScan from "@core/assets/images/etherscan.svg";
 import Tag from "@core/components/element/Tag";
-import useCampaignMetadata from "@core/modules/campaigns/hooks/useCampaignMetadata";
+import useCampaignMetadata, { ECampaignStatus } from "@core/modules/campaigns/hooks/useCampaignMetadata";
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
@@ -56,7 +56,7 @@ export default function CampaignTableRow({
   ...props
 }: CampaignTableRowProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
-  const { time, dailyRewards, active, amount } = useCampaignMetadata(campaign);
+  const { time, dailyRewards, active, amount, campaignStatus } = useCampaignMetadata(campaign);
   const { chain: distributionChain } = useChain(campaign.distributionChain);
   const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
@@ -133,7 +133,39 @@ export default function CampaignTableRow({
     });
   }, [campaign, amount, chain, distributionChain]);
 
-  const isCampaignLive = useMemo(() => BigInt(campaign.endTimestamp) * 1000n > moment.now(), [campaign]);
+  const campaignStatusLook = useMemo(() => {
+    if (campaignStatus === ECampaignStatus.LIVE) return "tint";
+    if (campaignStatus === ECampaignStatus.UPCOMING) return "base";
+    return "soft";
+  }, [campaignStatus]);
+
+  const campaignCircleColor = useMemo(() => {
+    if (campaignStatus === ECampaignStatus.LIVE) return "good";
+    if (campaignStatus === ECampaignStatus.UPCOMING) return "info";
+  }, [campaignStatus]);
+
+  const leaderboardsStatistics = useMemo(() => {
+    if (campaignStatus === ECampaignStatus.UPCOMING) return "Coming soon";
+    if (loading) return <Icon remix="RiLoader2Fill" className="animate-spin" />;
+    return (
+      <Group className="flex-nowrap">
+        <Value value format={"0"}>
+          {stats?.count}
+        </Value>
+        {" Users / "}
+        {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
+          <Value value format={"0.###a"}>
+            {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
+          </Value>
+        ) : (
+          <Value value format={dollarFormat}>
+            {Fmt.toPrice(stats?.total?.amount ?? "0", campaign.rewardToken)}
+          </Value>
+        )}{" "}
+        Distributed
+      </Group>
+    );
+  }, [campaignStatus, loading, stats, campaign.rewardToken, dollarFormat]);
 
   return (
     <CampaignRow
@@ -143,7 +175,7 @@ export default function CampaignTableRow({
       onClick={toggleIsOpen}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
-          <OverrideTheme accent={"good"}>
+          <OverrideTheme accent={campaignCircleColor}>
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
           <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
@@ -164,9 +196,14 @@ export default function CampaignTableRow({
         </Group>
       }
       timeRemainingColumn={
-        <PrimitiveTag look={isCampaignLive ? "base" : "soft"} size="sm">
-          {isCampaignLive && <Icon remix="RiFlashlightFill" />}
-          {time}
+        <PrimitiveTag look={campaignStatusLook} size="sm">
+          {campaignStatus === ECampaignStatus.LIVE && <Icon remix="RiFlashlightFill" />}
+          {campaignStatus === ECampaignStatus.UPCOMING && (
+            <OverrideTheme accent={"info"}>
+              <Icon remix="RiTimer2Fill" className="text-accent-10" />
+            </OverrideTheme>
+          )}
+          {campaignStatus === ECampaignStatus.UPCOMING ? "Coming soon" : time}
         </PrimitiveTag>
       }>
       <Collapsible state={[isOpen, setIsOpen]}>
@@ -187,32 +224,14 @@ export default function CampaignTableRow({
                   size="sm"
                   look="soft"
                   className="flex items-center gap-xs text-accent-11"
-                  onClick={onNavigateToLeaderBoard}>
+                  onClick={onNavigateToLeaderBoard}
+                  disabled={campaignStatus === ECampaignStatus.UPCOMING}>
                   Leaderboard
                   <Icon remix="RiArrowRightLine" />
                 </Button>
               </EventBlocker>
               <Text key="leaderboard" size={"sm"} look="tint">
-                {loading ? (
-                  <Icon remix="RiLoader2Fill" className="animate-spin" />
-                ) : (
-                  <Group className="flex-nowrap">
-                    <Value value format={"0"}>
-                      {stats?.count}
-                    </Value>
-                    {" Users / "}
-                    {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
-                      <Value value format={"0.###a"}>
-                        {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
-                      </Value>
-                    ) : (
-                      <Value value format={dollarFormat}>
-                        {Fmt.toPrice(stats?.total?.amount ?? "0", campaign.rewardToken)}
-                      </Value>
-                    )}{" "}
-                    Distributed
-                  </Group>
-                )}
+                {leaderboardsStatistics}
               </Text>
             </Group>
             <Divider look="soft" />
