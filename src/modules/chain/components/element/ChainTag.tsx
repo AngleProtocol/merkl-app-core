@@ -1,9 +1,14 @@
 import useChain from "@core/modules/chain/hooks/useChain";
 import { useNavigate } from "@remix-run/react";
 import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
-import { useCallback } from "react";
+import { type ReactNode, useCallback } from "react";
 
-export default function ChainTag({ chain: { id }, ...props }: { chain: { id: number } } & PrimitiveTagProps) {
+export default function ChainTag({
+  chain: { id },
+  suffix,
+  onClick,
+  ...props
+}: { chain: { id: number }; suffix?: ReactNode } & PrimitiveTagProps) {
   const { chain } = useChain({ id });
 
   const navigate = useNavigate();
@@ -15,9 +20,10 @@ export default function ChainTag({ chain: { id }, ...props }: { chain: { id: num
   if (!chain) return;
   return (
     <EventBlocker>
-      <PrimitiveTag look="base" key={chain.name} {...props} onClick={navigateToChainPage}>
+      <PrimitiveTag look="base" key={chain.name} {...props} onClick={onClick || navigateToChainPage}>
         <Icon size={props?.size} src={chain?.icon} />
         {chain?.name}
+        {suffix}
       </PrimitiveTag>
     </EventBlocker>
   );

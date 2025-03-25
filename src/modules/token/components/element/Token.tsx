@@ -45,9 +45,9 @@ export default function Token({
   const tokenAddressesToHidePrice = useMerklConfig(store => store.config.hideRewardTokenPrice);
 
   const display = useMemo(() => {
-    const shouldHidePrice = tokenAddressesToHidePrice?.some(
-      address => address.toLowerCase() === token.address.toLowerCase(),
-    );
+    const shouldHidePrice =
+      tokenAddressesToHidePrice?.some(address => address.toLowerCase() === token.address.toLowerCase()) ||
+      !((token?.price ?? 0) > 0);
 
     switch (format) {
       case "amount_price":

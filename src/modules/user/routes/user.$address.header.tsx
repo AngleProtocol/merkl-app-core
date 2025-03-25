@@ -107,7 +107,7 @@ export default function Index() {
         label: (
           <>
             <Icon size="sm" remix="RiListCheck3" />
-            Claims
+            History
           </>
         ),
         link: `/users/${address}/claims`,
