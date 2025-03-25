@@ -4,7 +4,7 @@ import { Link, useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 export interface BrandNavigationMenuProps {
   routes: NavigationMenuRoutes;
@@ -26,6 +26,11 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
   const navigationConfig = useMerklConfig(store => store.config.navigation);
   const appName = useMerklConfig(store => store.config.appName);
   const hideLayerMenuHomePage = useMerklConfig(store => store.config.hideLayerMenuHomePage);
+
+  useEffect(() => {
+    if (navigation.state === "loading" && !!isMenuOpen) return setIsMenuOpen(false);
+  }, [navigation.state, isMenuOpen]);
+
   /**
    * Links in navigation menu
    */
