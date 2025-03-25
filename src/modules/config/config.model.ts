@@ -20,6 +20,7 @@ import type { MerklThemeConfig } from "./types/merklThemeConfig";
 export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
   icon: IconProps;
   name: string;
+  external?: boolean;
 } & (L extends "link"
   ? { link: string; flags?: { replaceWithWallet: string }; external?: boolean; disabled?: boolean }
   : { routes: NavigationMenuRoutes });
