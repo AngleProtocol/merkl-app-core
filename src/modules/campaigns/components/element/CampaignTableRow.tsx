@@ -145,11 +145,10 @@ export default function CampaignTableRow({
   const leaderboardsStatistics = useMemo(() => {
     if (campaignStatus === ECampaignStatus.UPCOMING) return "Not available yet";
     if (loading) return <Icon remix="RiLoader2Fill" className="animate-spin" />;
-    console.log({ COUNT: stats?.count });
     return (
       <Group className="flex-nowrap">
         <Value value format={"0"}>
-          {1}
+          {stats?.count}
         </Value>
         {" Users / "}
         {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
