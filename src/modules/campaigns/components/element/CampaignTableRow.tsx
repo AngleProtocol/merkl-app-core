@@ -176,7 +176,7 @@ export default function CampaignTableRow({
           <OverrideTheme accent={campaignCircleColor}>
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
-          <Text bold className="flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
+          <Text bold className="hidden md:block flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
             Daily Rewards
           </Text>
           <Token

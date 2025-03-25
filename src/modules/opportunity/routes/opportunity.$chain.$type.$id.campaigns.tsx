@@ -39,7 +39,7 @@ export default function Index() {
     <Container>
       <Group className="flex-col flex-wrap-reverse lg:flex-nowrap lg:flex-row-reverse gap-xl py-xl">
         <OpportunityBoxParticipate {...{ opportunity, targets }} className="w-full lg:min-w-[24ch] lg:max-w-sm " />
-        <Group className="flex grow flex-col items-start gap-xl">
+        <Group className="flex grow flex-col items-start gap-xl max-w-[100%]">
           <Outlet context={{ opportunity, chain }} />
         </Group>
       </Group>

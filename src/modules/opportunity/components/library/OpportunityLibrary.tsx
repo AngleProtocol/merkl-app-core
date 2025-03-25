@@ -94,7 +94,7 @@ export default function OpportunityLibrary({
           <OpportunityTable
             responsive
             exclude={["tvl"]}
-            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
+            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-6")}
             ctaHeader={renderSwitchDisplayButton}
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (

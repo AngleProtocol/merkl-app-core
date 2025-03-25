@@ -8,6 +8,7 @@ import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
 import TokenChainTag from "../../modules/token/components/element/TokenChainTag";
 import TokenTag from "../../modules/token/components/element/TokenTag";
+import ExplorerTag from "./ExplorerTag";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
@@ -16,6 +17,7 @@ export type TagTypes = {
   protocol: Opportunity["protocol"] | undefined;
   action: Opportunity["action"];
   status: Opportunity["status"];
+  explorer: { address: string; chainId: number };
 };
 
 export type TagType<T extends keyof TagTypes = keyof TagTypes> = {
@@ -39,6 +41,10 @@ export default function Tag<T extends keyof TagTypes>({
   ...props
 }: Component<TagProps<T>, HTMLButtonElement>) {
   switch (type) {
+    case "explorer": {
+      const explorer = value as TagTypes["explorer"];
+      return <ExplorerTag chain={{ id: explorer.chainId }} address={explorer.address} suffix={suffix} {...props} />;
+    }
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
       return (
