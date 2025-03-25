@@ -1,4 +1,3 @@
-import EtherScan from "@core/assets/images/etherscan.svg";
 import Tag from "@core/components/element/Tag";
 import useCampaignMetadata, { ECampaignStatus } from "@core/modules/campaigns/hooks/useCampaignMetadata";
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
@@ -17,7 +16,6 @@ import {
   Group,
   Hash,
   Icon,
-  Image,
   OverrideTheme,
   PrimitiveTag,
   Space,
@@ -109,7 +107,7 @@ export default function CampaignTableRow({
             {campaign.creatorAddress}
           </Hash>
           <Button to={`${chain.explorers?.[0]?.url}/address/${campaign.creatorAddress}`} external size="xs" look="soft">
-            <Image className="w-3" alt="Merkl Footer logo" src={EtherScan} />
+            <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
           </Button>
         </Group>,
       ],
@@ -145,12 +143,13 @@ export default function CampaignTableRow({
   }, [campaignStatus]);
 
   const leaderboardsStatistics = useMemo(() => {
-    if (campaignStatus === ECampaignStatus.UPCOMING) return "Coming soon";
+    if (campaignStatus === ECampaignStatus.UPCOMING) return "Not available yet";
     if (loading) return <Icon remix="RiLoader2Fill" className="animate-spin" />;
+    console.log({ COUNT: stats?.count });
     return (
       <Group className="flex-nowrap">
         <Value value format={"0"}>
-          {stats?.count}
+          {1}
         </Value>
         {" Users / "}
         {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
