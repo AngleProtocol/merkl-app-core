@@ -44,8 +44,8 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
 
   return (
     <CampaignTable
-      className="w-full"
       hideLabels={true}
+      responsive
       footer={
         hasSomeInactiveCampaigns && (
           <Group className="w-full justify-center">

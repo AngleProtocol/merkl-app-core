@@ -74,6 +74,13 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             <Group className="gap-sm">
               <Tag type="chain" value={opportunity.chain} size="xs" />
               <Tag type="protocol" value={opportunity.protocol} size="xs" />
+              {opportunity.explorerAddress && (
+                <Tag
+                  type="explorer"
+                  value={{ address: opportunity.explorerAddress, chainId: opportunity.chain.id }}
+                  size="xs"
+                />
+              )}
             </Group>
           </Group>
           <Group size="lg" className="flex-nowrap">

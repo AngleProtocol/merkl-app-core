@@ -23,7 +23,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
   const cell = useMemo(
     () => (
       <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0">
-        <Group className="p-md md:p-xl justify-between flex-1 items-end">
+        <Group className="p-xl flex-col flex-1 items-end">
           <Group className="flex-nowrap">
             <Text className="text-3xl">
               <Icons groupProps={{ className: "flex-nowrap" }} />
