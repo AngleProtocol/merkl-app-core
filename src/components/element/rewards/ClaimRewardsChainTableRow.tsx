@@ -90,15 +90,20 @@ export default function ClaimRewardsChainTableRow({
   return (
     <ClaimRewardsChainRow
       {...props}
-      className={mergeClass("cursor-pointer [&>*>*]:cursor-auto", className)}
-      onClick={() => setOpen(o => !o)}
+      className={mergeClass("", className)}
       chainColumn={
         <>
-          <Tag type="chain" value={reward.chain} />
-          <Icon
-            data-state={!open ? "closed" : "opened"}
-            className=" data-[state=opened]:rotate-180"
-            remix={"RiArrowDropDownLine"}
+          <Tag
+            onClick={() => setOpen(o => !o)}
+            type="chain"
+            value={reward.chain}
+            suffix={
+              <Icon
+                data-state={!open ? "closed" : "opened"}
+                className=" data-[state=opened]:rotate-180"
+                remix={"RiArrowDropDownLine"}
+              />
+            }
           />
           <EventBlocker>
             {isAbleToClaim &&

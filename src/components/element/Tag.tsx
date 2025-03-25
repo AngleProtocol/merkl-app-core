@@ -3,6 +3,7 @@ import ProtocolTag from "@core/modules/protocol/components/element/ProtocolTag";
 import type { Chain, Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Button, type Component, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
+import type { ReactNode } from "react";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
 import TokenChainTag from "../../modules/token/components/element/TokenChainTag";
@@ -27,12 +28,14 @@ export type TagProps<T extends keyof TagTypes> = {
   value: TagTypes[T];
   filter?: boolean;
   size?: PrimitiveTagProps["size"];
+  suffix?: ReactNode;
 };
 
 export default function Tag<T extends keyof TagTypes>({
   type,
   filter,
   value,
+  suffix,
   ...props
 }: Component<TagProps<T>, HTMLButtonElement>) {
   switch (type) {
@@ -42,11 +45,12 @@ export default function Tag<T extends keyof TagTypes>({
         <PrimitiveTag className={!filter ? "pointer-events-none" : ""} look="soft" {...props}>
           <Icon size={props?.size} {...status.icon} />
           {status?.label}
+          {suffix}
         </PrimitiveTag>
       );
     }
     case "chain": {
-      return <ChainTag chain={value as TagTypes["chain"]} {...props} />;
+      return <ChainTag suffix={suffix} chain={value as TagTypes["chain"]} {...props} />;
     }
     case "action": {
       const action = actions[value as TagTypes["action"]];
@@ -55,22 +59,28 @@ export default function Tag<T extends keyof TagTypes>({
         <PrimitiveTag className={!filter ? "pointer-events-none" : ""} look="soft" key={action.label} {...props}>
           <Icon size={props?.size} {...action.icon} />
           {action?.label}
+          {suffix}
         </PrimitiveTag>
       );
     }
     case "token": {
-      return <TokenTag token={value as TagTypes["token"]} {...props} />;
+      return <TokenTag suffix={suffix} token={value as TagTypes["token"]} {...props} />;
     }
     case "tokenChain": {
-      return <TokenChainTag token={value as TagTypes["tokenChain"]} />;
+      return <TokenChainTag suffix={suffix} token={value as TagTypes["tokenChain"]} />;
     }
     case "protocol": {
       const protocol = value as TagTypes["protocol"];
 
       if (!protocol) return;
-      return <ProtocolTag look="bold" protocol={protocol} {...props} />;
+      return <ProtocolTag suffix={suffix} look="bold" protocol={protocol} {...props} />;
     }
     default:
-      return <PrimitiveTag {...props}>{value as string}</PrimitiveTag>;
+      return (
+        <PrimitiveTag {...props}>
+          {value as string}
+          {suffix}
+        </PrimitiveTag>
+      );
   }
 }

@@ -22,20 +22,18 @@ export default function TokenTooltip({ token, size }: TokenTooltipProps) {
             <Icon size={size} remix="RiArrowRightLine" />
           </Button>
         </Group>
+        <Divider look="soft" horizontal />
         {token.price !== null && token.price !== undefined && (
-          <>
-            <Divider look="soft" horizontal />
-            <Group className="w-full justify-between">
-              <Text>Unit Price:</Text>
-              <Value format={"$0.######"}>{token.price}</Value>
-            </Group>
-            <Group className="w-full justify-between">
-              <Hash copy format="short" size="md">
-                {token.address}
-              </Hash>
-            </Group>
-          </>
+          <Group className="w-full justify-between">
+            <Text>Unit Price:</Text>
+            <Value format={"$0.######"}>{token.price}</Value>
+          </Group>
         )}
+        <Group className="w-full justify-between">
+          <Hash copy format="short" size="md">
+            {token.address}
+          </Hash>
+        </Group>
       </Group>
     </>
   );
