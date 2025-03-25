@@ -12,6 +12,7 @@ export default function OpportunityTableAmountRewards({
   size: _,
 }: Component<OpportunityTableAmountRewardsProps>) {
   const { token, breakdownAmount } = useMemo(() => {
+    if (!opportunity.rewardsRecord) return { token: undefined, breakdownAmount: 0n };
     const tokenAddress = opportunity.rewardsRecord.breakdowns?.[0]?.token?.address;
     const breakdowns = opportunity.rewardsRecord.breakdowns.filter(({ token }) => token?.address === tokenAddress);
     const breakdownToken = breakdowns?.[0]?.token;

@@ -117,6 +117,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
             headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: {
               test: backend.alwaysShowTestTokens ?? false,
+              point: backend.alwaysShowPointTokens ?? false,
             },
           }),
         );
