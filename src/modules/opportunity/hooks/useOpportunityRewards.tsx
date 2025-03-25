@@ -99,6 +99,7 @@ export default function useOpportunityRewards({
    * Determines if the opportunity has only reward token points
    */
   const isOnlyPoint = useMemo(() => {
+    if (!rewardsRecord?.breakdowns.length) return false;
     return rewardsRecord?.breakdowns.every(breakdown => breakdown.token.isPoint === true);
   }, [rewardsRecord]);
 
