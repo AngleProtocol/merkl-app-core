@@ -1,10 +1,10 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
-import { useNavigation } from "@remix-run/react";
+import { Link, useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
 export interface BrandNavigationMenuProps {
   routes: NavigationMenuRoutes;
@@ -21,6 +21,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
   const { mode } = useTheme();
   const { address } = useWalletContext();
   const navigation = useNavigation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const images = useMerklConfig(store => store.config.images);
   const navigationConfig = useMerklConfig(store => store.config.navigation);
   const appName = useMerklConfig(store => store.config.appName);
@@ -93,15 +94,17 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
 
   if (hideLayerMenuHomePage || disabled) return brand;
   return (
-    <Menu options={options}>
-      <Group>
-        {navigationConfig.brand?.() || brand}
+    <Group size="xl">
+      <Menu state={[isMenuOpen, setIsMenuOpen]} options={options}>
+        <Link to="/">{navigationConfig.brand?.() || brand}</Link>
+      </Menu>
+      <Button onClick={() => setIsMenuOpen(o => !o)} look="base">
         {typeof document === "undefined" || navigation.state === "loading" ? (
           <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
         ) : (
-          <Icon remix="RiArrowDownSLine" className="text-main-12" />
+          <Icon remix="RiMenu5Fill" className="text-main-12" />
         )}
-      </Group>
-    </Menu>
+      </Button>
+    </Group>
   );
 }

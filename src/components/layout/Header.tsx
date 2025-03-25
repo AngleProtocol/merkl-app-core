@@ -161,7 +161,7 @@ export default function Header() {
                 <Group className="flex">
                   <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
                     <Button to={`/users/${user}`} size="sm" look="soft">
-                      <Icon remix="RiArrowRightLine" /> Check claims
+                      <Icon remix="RiArrowRightLine" /> Check dashboard
                     </Button>
                     {chain?.explorers?.map(explorer => (
                       <Button external key={explorer.url} to={`${explorer.url}/address/${user}`} size="sm" look="soft">
