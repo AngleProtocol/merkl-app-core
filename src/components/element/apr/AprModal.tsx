@@ -1,9 +1,9 @@
-import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { Divider, Group, PrimitiveTag, Title, Value } from "dappkit";
+import { Divider, Group, PrimitiveTag, Title } from "dappkit";
 import TvlRowAllocation from "../tvl/TvlRowAllocation";
 import TvlSection from "../tvl/TvlSection";
 import AprSection from "./AprSection";
+import AprValue from "./AprValue";
 
 type AprModalProps = {
   opportunity: Opportunity;
@@ -12,8 +12,6 @@ type AprModalProps = {
 export default function AprModal(props: AprModalProps) {
   const { opportunity } = props;
 
-  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
-
   return (
     <Group className="flex-col">
       <Group className="justify-between items-center">
@@ -21,9 +19,7 @@ export default function AprModal(props: AprModalProps) {
           AVERAGE APR
         </Title>
         <PrimitiveTag look="tint" size="lg">
-          <Value value format={aprFormat}>
-            {opportunity.apr / 100}
-          </Value>
+          <AprValue value>{opportunity.apr}</AprValue>
         </PrimitiveTag>
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />

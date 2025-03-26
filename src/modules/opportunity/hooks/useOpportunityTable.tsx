@@ -8,7 +8,6 @@ import OpportunityTableName from "../components/element/OpportunityTableName";
 import OpportunityTableTvl from "../components/element/OpportunityTableTvl";
 import type { OpportuntyLibraryOverride } from "../opportunity.model";
 
-export const CTA_BUTTON_WiDTH_OPPORTUNITY = 64;
 /**
  * Formats rewards for a given opportunity
  */
@@ -50,7 +49,7 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
       },
       cta: {
         name: "",
-        size: `${CTA_BUTTON_WiDTH_OPPORTUNITY}px`,
+        size: "64px",
         className: "md:justify-center",
         table: () => (
           <Button look="hype">

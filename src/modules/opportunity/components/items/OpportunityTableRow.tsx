@@ -1,4 +1,5 @@
 import AprModal from "@core/components/element/apr/AprModal";
+import AprValue from "@core/components/element/apr/AprValue";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
@@ -27,7 +28,6 @@ export default function OpportunityTableRow({
   const { name, tags, link, icons, Tags } = useOpportunityData(opportunity);
   const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
-  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
   const opportunityLibraryRowView = useMerklConfig(store => store.config.opportunityLibrary.rowView);
   const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
   const { OpportunityRow, opportunityColumns } = useOpportunityTable(opportunity);
@@ -37,14 +37,12 @@ export default function OpportunityTableRow({
       <EventBlocker>
         <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} />}>
           <Text bold look="tint" size="lg">
-            <Value value format={aprFormat}>
-              {opportunity.apr / 100}
-            </Value>
+            <AprValue value>{opportunity.apr}</AprValue>
           </Text>
         </Dropdown>
       </EventBlocker>
     ),
-    [opportunity, aprFormat],
+    [opportunity],
   );
 
   const tvlColumn = useMemo(

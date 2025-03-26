@@ -5,7 +5,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
-import { Container, Group, Hash, Icon, Space, Tabs, Value } from "dappkit";
+import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";
@@ -122,20 +122,6 @@ export default function Index() {
   return (
     <Hero
       compact
-      breadcrumbs={[
-        { link: "/users/", name: "Dashboard" },
-        {
-          link: `/users/${address ?? ""}`,
-          component: (
-            <>
-              <Icon remix="RiArrowRightSLine" className="text-main-12" />
-              <Hash format="short" size="xs" className="text-main-12">
-                {address}
-              </Hash>
-            </>
-          ),
-        },
-      ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={metadata.find(metadata.wrapInPage("user", { address }), "title")}
       description={metadata.find(metadata.wrapInPage("user", { address }), "description")}>

@@ -1,3 +1,4 @@
+import AprValue from "@core/components/element/apr/AprValue";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
@@ -22,10 +23,7 @@ export default function OpportunityShortCard({ opportunity, displayLinks }: Oppo
       <Group className="justify-between">
         <Group className="flex-col">
           <Text look="bold" className="flex items-center">
-            <Value value format={decimalFormat.apr}>
-              {opportunity.apr ?? 0}
-            </Value>{" "}
-            APR
+            <AprValue value>{opportunity.apr}</AprValue> APR
           </Text>
           <Text look="bold" className="flex items-center">
             <Value value format={decimalFormat.dollar}>

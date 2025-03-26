@@ -50,16 +50,12 @@ export type OutletContextProtocol = {
 
 export default function Index() {
   const { opportunities, count, protocol, liveOpportunityCount, maxApr, dailyRewards } = useLoaderData<typeof loader>();
-  const { icon, name, description, link } = useProtocolMetadata(protocol);
+  const { icon, name, description } = useProtocolMetadata(protocol);
 
   return (
     <Hero
       icons={[{ src: icon }]}
       title={<Group className="items-center">{name}</Group>}
-      breadcrumbs={[
-        { link: "/protocols", name: "Protocols" },
-        { link, name },
-      ]}
       description={description}
       sideDatas={defaultHeroSideDatas(liveOpportunityCount, maxApr, Number.parseFloat(dailyRewards))}>
       <Outlet context={{ opportunities, count }} />

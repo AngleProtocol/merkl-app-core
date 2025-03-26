@@ -41,10 +41,6 @@ export default function Index() {
   return (
     <Hero
       icons={[{ src: chain.icon }]}
-      breadcrumbs={[
-        { link: "/chains", name: "Chains" },
-        { link: "/", name: chain.name },
-      ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={chain.name}
       description={`Earn rewards by supplying liquidity on ${chain.name}`}

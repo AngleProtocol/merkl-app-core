@@ -1,6 +1,7 @@
 import type { Opportunity } from "@merkl/api";
-import { Divider, Group, Hash, Icon, Text, Value } from "dappkit";
+import { Divider, Group, Hash, Icon, Text } from "dappkit";
 import { useMemo } from "react";
+import AprValue from "./AprValue";
 
 type AprSectionProps = {
   opportunity: Opportunity;
@@ -59,9 +60,7 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
             Average APR
           </Text>
           <Text look="soft" bold size="sm">
-            <Value value format="0a%">
-              {opportunity.apr / 100}
-            </Value>
+            <AprValue value>{opportunity.apr}</AprValue>
           </Text>
         </Group>
         {breakdowns?.map(breakdown => (
@@ -70,9 +69,7 @@ export default function AprSectionCampaigns({ opportunity }: AprSectionProps) {
               {getAprName(breakdown)}
             </Text>
             <Text look="soft" size="sm">
-              <Value value format="0a%">
-                {breakdown.value / 100}
-              </Value>
+              <AprValue value>{breakdown.value}</AprValue>
             </Text>
           </Group>
         ))}

@@ -1,5 +1,6 @@
+import AprValue from "@core/components/element/apr/AprValue";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Text, Value } from "packages/dappkit/src";
+import { type Component, Text } from "packages/dappkit/src";
 
 export type OpportunityCellAprProps = {
   opportunity: Opportunity;
@@ -8,10 +9,7 @@ export type OpportunityCellAprProps = {
 export default function OpportunityCellApr({ opportunity, size: _ }: Component<OpportunityCellAprProps>) {
   return (
     <Text look="bold" className="items-center">
-      <Value value format="0a%">
-        {opportunity.apr / 100}
-      </Value>{" "}
-      APR
+      <AprValue value>{opportunity.apr}</AprValue> APR
     </Text>
   );
 }

@@ -1,7 +1,7 @@
 import AprModal from "@core/components/element/apr/AprModal";
-import { useMerklConfig } from "@core/modules/config/config.context";
+import AprValue from "@core/components/element/apr/AprValue";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Dropdown, EventBlocker, Text, Value } from "packages/dappkit/src";
+import { type Component, Dropdown, EventBlocker, Text } from "packages/dappkit/src";
 
 export type OpportunityTableAprProps = {
   opportunity: Opportunity;
@@ -15,17 +15,11 @@ export default function OpportunityTableApr({
   size: _,
   ...props
 }: Component<OpportunityTableAprProps>) {
-  const aprFormat = useMerklConfig(store => store.config.decimalFormat.apr);
-
   return (
     <EventBlocker>
       <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} {...props} />}>
         <Text bold look="tint" size="lg">
-          {children ?? (
-            <Value value format={format ?? aprFormat}>
-              {opportunity.apr / 100}
-            </Value>
-          )}
+          {children ?? <AprValue value>{opportunity.apr}</AprValue>}
         </Text>
       </Dropdown>
     </EventBlocker>

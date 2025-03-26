@@ -25,7 +25,6 @@ export default function Index() {
       compact
       icons={[{ remix: "RiVipCrown2Fill", className: "text-main-11 !w-lg*4 !h-lg*4" }]}
       title={I18n.trad.get.pages.protocols.title}
-      breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
       description={metadata.find(metadata.wrap(), "description")}
       sideDatas={[
         {
