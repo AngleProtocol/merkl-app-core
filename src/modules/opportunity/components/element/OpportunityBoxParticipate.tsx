@@ -34,11 +34,33 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
     if (!isDepositEnabled && !protocolUrl) return false;
     return true;
   }, [protocolUrl, targets, isDepositEnabled]);
-
   const onSupply = useCallback(() => {
     if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
   }, [protocolUrl, targets, isDepositEnabled]);
+
+  const description = useMemo(() => {
+    switch (opportunity.action) {
+      case "POOL":
+        return "Supply Liquidity";
+      case "HOLD":
+        return "Acquire & Hold";
+      case "LEND":
+        return "Lend Assets";
+      case "BORROW":
+        return "Borrow Assets";
+      case "DROP":
+        return "";
+      case "LONG":
+        return "Open Long";
+      case "SHORT":
+        return "Open Short";
+      case "SWAP":
+        return "Swap Assets";
+      default:
+        break;
+    }
+  }, [opportunity]);
 
   return (
     <>
@@ -133,7 +155,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Group>
           {!!isSupplyButtonVisible && (
             <Button className="inline-flex justify-center" look="hype" size="xl" onClick={onSupply}>
-              Supply Liquidity
+              {description}
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}
