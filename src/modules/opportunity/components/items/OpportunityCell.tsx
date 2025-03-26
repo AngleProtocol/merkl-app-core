@@ -5,7 +5,7 @@ import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMe
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Box, Button, Divider, Group, Icon, Text, Title, mergeClass, useOverflowingRef } from "dappkit";
+import { Box, Button, Divider, Group, Icon, Text, Title } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityCell from "../../hooks/useOpportunityCell";
 
@@ -27,9 +27,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
             <Text className="text-3xl">
               <Icons groupProps={{ className: "flex-nowrap" }} />
             </Text>
-            <Title
-              h={3}
-              size={4}>
+            <Title h={3} size={4}>
               {name}
             </Title>
           </Group>

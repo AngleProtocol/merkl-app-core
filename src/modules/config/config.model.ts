@@ -39,7 +39,7 @@ export type MerklConfig = {
   backend: MerklBackendConfig;
   mixpanel?: {
     token: string;
-  },
+  };
 
   /**
    * Hide the price of reward tokens in the UI
