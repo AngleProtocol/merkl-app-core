@@ -3,6 +3,7 @@ import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaign
 import AprValue from "@core/components/element/apr/AprValue";
 import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
+import { getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
@@ -40,26 +41,9 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   }, [protocolUrl, targets, isDepositEnabled]);
 
   const description = useMemo(() => {
-    switch (opportunity.action) {
-      case "POOL":
-        return "Supply Liquidity";
-      case "HOLD":
-        return "Acquire & Hold";
-      case "LEND":
-        return "Lend Assets";
-      case "BORROW":
-        return "Borrow Assets";
-      case "DROP":
-        return "Participate in Airdrop";
-      case "LONG":
-        return "Open Long";
-      case "SHORT":
-        return "Open Short";
-      case "SWAP":
-        return "Swap Assets";
-      default:
-        break;
-    }
+    const action = getActionData(opportunity.action);
+    console.log({ action });
+    return action?.cta ?? "Supply Liquidity";
   }, [opportunity]);
 
   return (
