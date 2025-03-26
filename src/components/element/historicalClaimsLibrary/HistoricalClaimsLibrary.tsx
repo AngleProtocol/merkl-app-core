@@ -37,7 +37,7 @@ export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryPr
     <Group className="flex-row w-full [&>*]:flex-grow">
       <HistoricalClaimsTable
         responsive
-        dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
+        dividerClassName={() => "bg-main-6"}
         header={
           <Group className="flex-nowrap items-center">
             <Title h={5} look="soft">

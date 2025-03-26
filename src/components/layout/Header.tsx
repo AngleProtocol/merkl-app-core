@@ -115,7 +115,7 @@ export default function Header() {
         <Group
           key={`${key}-link`}
           className={mergeClass(
-            "h-full",
+            "h-[min-content] border-b-2 border-accent-0 mt-[2px]",
             hasLink(route) &&
               location.pathname ===
                 (route.flags?.replaceWithWallet
@@ -124,7 +124,7 @@ export default function Header() {
               "border-accent-11 border-b-2",
           )}>
           <Button
-            className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
+            className={"!py-sm"}
             look="soft"
             size="md"
             key={`${key}-link`}
@@ -197,7 +197,7 @@ export default function Header() {
             />
             <Group>
               <Group className="items-center" size="xl">
-                <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
+                <Group className="hidden lg:flex h-full [&>*]:items-center items-center" size="xl">
                   {renderHeaderLinks}
                   {renderAdditionalHeaderLinks}
                 </Group>

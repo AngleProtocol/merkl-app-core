@@ -42,6 +42,7 @@ export default function TokenTooltip({ token, size }: TokenTooltipProps) {
           </Group>
         )}
         <Group className="w-full justify-between">
+          <Text>Token Address:</Text>
           <Hash copy format="short" size="md">
             {token.address}
           </Hash>

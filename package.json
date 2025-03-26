@@ -22,6 +22,7 @@
     "@remix-run/dev": "^2.15.2",
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
+    "mixpanel-browser": "^2.61.2",
     "@remix-run/serve": "^2.15.2",
     "@remixicon/react": "^4.6.0",
     "@svgr/rollup": "^8.1.0",

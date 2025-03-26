@@ -90,7 +90,7 @@ export default function ClaimRewardsChainTableRow({
   return (
     <ClaimRewardsChainRow
       {...props}
-      className={mergeClass("", className)}
+      className={mergeClass("bg-main-2", className)}
       chainColumn={
         <>
           <Tag

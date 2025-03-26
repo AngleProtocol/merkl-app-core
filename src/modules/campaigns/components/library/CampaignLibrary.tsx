@@ -46,6 +46,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
     <CampaignTable
       hideLabels={true}
       responsive
+      dividerClassName={() => "bg-main-6"}
       footer={
         hasSomeInactiveCampaigns && (
           <Group className="w-full justify-center">

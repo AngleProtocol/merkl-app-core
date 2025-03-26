@@ -17,7 +17,7 @@ export default function HistoricalClaimsTableRow({ claim, className, size, ...pr
     <HistoricalClaimsRow
       {...props}
       size={size}
-      className={mergeClass("cursor-pointer", className)}
+      className={mergeClass("cursor-pointer bg-main-2", className)}
       chainColumn={chain && <Tag type="chain" value={chain} />}
       tokenColumn={
         !!claim?.token && (
