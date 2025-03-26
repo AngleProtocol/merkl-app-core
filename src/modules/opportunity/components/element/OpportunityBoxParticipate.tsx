@@ -10,6 +10,7 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
+import AprValue from "@core/components/element/apr/AprValue";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
@@ -23,7 +24,6 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
 
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
   const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
-  const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
   const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
@@ -106,9 +106,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                     {opportunity.apr}
                   </Value>
                 ) : (
-                  <Value value format={decimalFormatApr}>
-                    {opportunity.apr / 100}
-                  </Value>
+                  <AprValue value>{opportunity.apr}</AprValue>
                 )}
               </Title>
               <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
