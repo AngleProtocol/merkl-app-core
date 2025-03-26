@@ -165,6 +165,26 @@ export default function CampaignTableRow({
     );
   }, [campaignStatus, loading, stats, campaign.rewardToken, dollarFormat]);
 
+  const timeBadge = useMemo(() => {
+    if (campaignStatus === ECampaignStatus.LIVE)
+      return (
+        <>
+          <Icon remix="RiFlashlightFill" />
+          {time}
+        </>
+      );
+    if (campaignStatus === ECampaignStatus.UPCOMING)
+      return (
+        <>
+          <OverrideTheme accent={"info"}>
+            <Icon remix="RiTimer2Fill" className="text-accent-10" />
+          </OverrideTheme>{" "}
+          Coming soon
+        </>
+      );
+    return <>Ended {time}</>;
+  }, [campaignStatus, time]);
+
   return (
     <CampaignRow
       {...props}
@@ -195,13 +215,7 @@ export default function CampaignTableRow({
       }
       timeRemainingColumn={
         <PrimitiveTag look={campaignStatusLook} size="sm">
-          {campaignStatus === ECampaignStatus.LIVE && <Icon remix="RiFlashlightFill" />}
-          {campaignStatus === ECampaignStatus.UPCOMING && (
-            <OverrideTheme accent={"info"}>
-              <Icon remix="RiTimer2Fill" className="text-accent-10" />
-            </OverrideTheme>
-          )}
-          {campaignStatus === ECampaignStatus.UPCOMING ? "Coming soon" : time}
+          {timeBadge}
         </PrimitiveTag>
       }>
       <Collapsible state={[isOpen, setIsOpen]}>
