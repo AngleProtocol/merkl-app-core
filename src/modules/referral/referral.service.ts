@@ -12,8 +12,8 @@ export const ReferralService = defineModule<{ api: Api }>().create(({ inject }) 
   );
 
   const getReferralTransaction = inject(["api"]).inFunction(
-    ({ api }, chainId: number, referralKey: string, address: string) => {
-      return fetchApi(() => api.v4.referral.code.get({ query: { chainId, referralKey, address } }));
+    ({ api }, chainId: number, referralKey: string, code: string) => {
+      return fetchApi(() => api.v4.referral.redeem.get({ query: { chainId, referralKey, code } }));
     },
   );
 
