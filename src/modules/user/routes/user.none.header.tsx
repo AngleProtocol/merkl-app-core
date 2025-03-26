@@ -19,7 +19,6 @@ export default function Index() {
 
   return (
     <Hero
-      breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={metadata.find(metadata.wrapInPage(), "title")}
       description={metadata.find(metadata.wrap(), "description")}>

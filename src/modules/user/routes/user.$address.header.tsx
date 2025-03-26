@@ -122,20 +122,6 @@ export default function Index() {
   return (
     <Hero
       compact
-      breadcrumbs={[
-        { link: "/users/", name: "Dashboard" },
-        {
-          link: `/users/${address ?? ""}`,
-          component: (
-            <>
-              <Icon remix="RiArrowRightSLine" className="text-main-12" />
-              <Hash format="short" size="xs" className="text-main-12">
-                {address}
-              </Hash>
-            </>
-          ),
-        },
-      ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={metadata.find(metadata.wrapInPage("user", { address }), "title")}
       description={metadata.find(metadata.wrapInPage("user", { address }), "description")}>

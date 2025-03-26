@@ -11,11 +11,7 @@ export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export default function Index() {
   return (
-    <Hero
-      icons={[{ remix: "RiTimeFill" }]}
-      breadcrumbs={[{ link: "/status", name: "status" }]}
-      navigation={{ label: "Back to opportunities", link: "/" }}
-      title={"Status"}>
+    <Hero icons={[{ remix: "RiTimeFill" }]} navigation={{ label: "Back to opportunities", link: "/" }} title={"Status"}>
       <Outlet />
     </Hero>
   );
