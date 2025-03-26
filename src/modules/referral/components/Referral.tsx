@@ -70,7 +70,7 @@ export default function Referral({ code: defaultCode }: ReferalProps) {
       </Group>
       <Title h={3}>Have a Friend’s Code? Unlock up to 5% boost!</Title>
       <Text look="base">
-        Enter your friend's code, confirm on-chain, and you referrer will get up to 5% extra yield once you deposit.
+        Enter your friend's code, confirm on-chain, and you will get up to 5% extra yield once you deposit.
         <ReferralCalculationTooltip />
       </Text>
       <OverrideTheme coloring={validity}>
