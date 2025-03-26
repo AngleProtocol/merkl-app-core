@@ -54,6 +54,13 @@ export default function OpportunityFilters({
       {},
     );
 
+  const defaultSortBy = useMerklConfig(store => store.config.backend.sortedBy);
+
+  const defaultSortPlaceholder = useMemo(
+    () => filtersConfigEnabled?.[defaultSortBy.concat("-desc")].name,
+    [defaultSortBy, filtersConfigEnabled],
+  );
+
   const sortOptions = useMemo(() => {
     return {
       "apr-asc": (
@@ -386,7 +393,7 @@ export default function OpportunityFilters({
         state={[sortInput, setSortInput]}
         options={filteredSortOptions}
         look="hype"
-        placeholder={"By Daily Rewards"}
+        placeholder={defaultSortPlaceholder}
       />
     </Group>
   );
