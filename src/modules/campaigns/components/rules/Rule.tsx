@@ -1,12 +1,14 @@
 import type { PrimitiveTagProps } from "dappkit";
 import AddressListRule from "./AddressListRule";
 import BooleanRule from "./BooleanRule";
+import JumperBridgeRule from "./JumperBridgeRule";
 import LiquidityRule from "./LiquidityRule";
 
 export const RULES = {
   boolean: BooleanRule,
   liquidity: LiquidityRule,
   address: AddressListRule,
+  jumper: JumperBridgeRule,
 };
 export type Rules = typeof RULES;
 
@@ -27,6 +29,8 @@ export default function Rule<T extends keyof Rules>({
       return <AddressListRule value={value as RuleType<"address">["value"]} {...props} />;
     case "boolean":
       return <BooleanRule value={value as RuleType<"boolean">["value"]} {...props} />;
+    case "jumper":
+      return <JumperBridgeRule value={value as RuleType<"jumper">["value"]} {...props} />;
     default:
       return;
   }
