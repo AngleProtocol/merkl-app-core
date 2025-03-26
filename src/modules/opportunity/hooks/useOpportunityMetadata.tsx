@@ -312,7 +312,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by lending {symbols} to {protocol?.name}  on {chain.name}
+            Earn rewards by lending {symbols} to {protocol?.name} on {chain.name}
           </Tooltip>
         );
       case "BORROW":
