@@ -1,7 +1,18 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import { useLocation } from "@remix-run/react";
-import { Button, Container, Group, Icon, Select, Text, WalletButton, mergeClass, useWalletContext } from "dappkit";
+import {
+  Button,
+  Container,
+  Divider,
+  Group,
+  Icon,
+  Select,
+  Text,
+  WalletButton,
+  mergeClass,
+  useWalletContext,
+} from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useChains from "../../modules/chain/hooks/useChains";
@@ -97,6 +108,71 @@ export default function Header() {
     chainIndexOptions,
   ]);
 
+  const renderHeaderLinks = useMemo(() => {
+    return Object.entries(navigationConfig.header).map(([key, route]) => {
+      const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
+      return (
+        <Group
+          key={`${key}-link`}
+          className={mergeClass(
+            "h-full",
+            hasLink(route) &&
+              location.pathname ===
+                (route.flags?.replaceWithWallet
+                  ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
+                  : route.link) &&
+              "border-accent-11 border-b-2",
+          )}>
+          <Button
+            className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
+            look="soft"
+            size="md"
+            key={`${key}-link`}
+            {...(hasLink(route)
+              ? {
+                  to: route.flags?.replaceWithWallet
+                    ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
+                    : route.link,
+                  external: route.external,
+                }
+              : {})}>
+            {route.name}
+            {hasLink(route) && !!route.external && <Icon remix="RiArrowRightUpLine" className="text-main-12" />}
+          </Button>
+        </Group>
+      );
+    });
+  }, [navigationConfig.header, location.pathname, user]);
+
+  const renderAdditionalHeaderLinks = useMemo(() => {
+    if (!navigationConfig.addtionalHeaderLinks) return null;
+    return (
+      <>
+        <Divider vertical className="my-md" />
+        {Object.entries(navigationConfig.addtionalHeaderLinks).map(([key, route]) => {
+          const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
+
+          return (
+            <Button
+              className={`${["faq"].includes(key) ? "uppercase" : "capitalize"} text-main-11`}
+              look="soft"
+              size="sm"
+              key={`${key}-link`}
+              {...(hasLink(route)
+                ? {
+                    to: route.link,
+                    external: route.external,
+                  }
+                : {})}>
+              {route.name}
+              {hasLink(route) && !!route.external && <Icon {...route.icon} className="text-main-11" />}
+            </Button>
+          );
+        })}
+      </>
+    );
+  }, [navigationConfig.addtionalHeaderLinks]);
+
   return (
     <div ref={headerRef} style={{ minHeight: height }}>
       <motion.header
@@ -122,45 +198,10 @@ export default function Header() {
             <Group>
               <Group className="items-center" size="xl">
                 <Group className="hidden lg:flex h-full [&>*]:items-center" size="xl">
-                  {Object.entries(navigationConfig.header).map(([key, route]) => {
-                    const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> =>
-                      "link" in route;
-                    return (
-                      <Group
-                        key={`${key}-link`}
-                        className={mergeClass(
-                          "h-full",
-                          hasLink(route) &&
-                            location.pathname ===
-                              (route.flags?.replaceWithWallet
-                                ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
-                                : route.link) &&
-                            "border-accent-11 border-b-2",
-                        )}>
-                        <Button
-                          className={`${["faq"].includes(key) ? "uppercase" : "capitalize"}`}
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          {...(hasLink(route)
-                            ? {
-                                to: route.flags?.replaceWithWallet
-                                  ? route.link.replaceAll(route.flags?.replaceWithWallet, user ?? "")
-                                  : route.link,
-                                external: route.external,
-                              }
-                            : {})}>
-                          {route.name}
-                          {hasLink(route) && !!route.external && (
-                            <Icon remix="RiArrowRightUpLine" className="text-main-12" />
-                          )}
-                        </Button>
-                      </Group>
-                    );
-                  })}
+                  {renderHeaderLinks}
+                  {renderAdditionalHeaderLinks}
                 </Group>
                 <SwitchMode />
-
                 <Group className="flex">
                   <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
                     <Button to={`/users/${user}`} size="sm" look="soft">

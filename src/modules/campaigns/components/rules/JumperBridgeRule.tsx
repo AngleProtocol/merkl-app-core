@@ -96,7 +96,7 @@ export default function JumperBridgeRule({
             </Box>
             <Box>
               <Text look="bold" size={"sm"}>
-                With one of this token:
+                With one of these tokens:
               </Text>
               <Divider />
               <Group className="flex-col">

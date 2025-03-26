@@ -58,6 +58,7 @@ export type MerklConfig = {
   navigation: {
     brand?: () => JSX.Element;
     header: NavigationMenuRoutes;
+    addtionalHeaderLinks?: NavigationMenuRoutes;
     menu: NavigationMenuRoutes;
   };
   /**
