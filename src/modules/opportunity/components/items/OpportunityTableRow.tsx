@@ -1,4 +1,5 @@
 import AprModal from "@core/components/element/apr/AprModal";
+import AprValue from "@core/components/element/apr/AprValue";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
@@ -12,7 +13,6 @@ import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityTable from "../../hooks/useOpportunityTable";
-import AprValue from "@core/components/element/apr/AprValue";
 
 export type OpportunityTableRowProps = {
   opportunity: Opportunity;

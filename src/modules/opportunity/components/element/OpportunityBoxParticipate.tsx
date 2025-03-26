@@ -1,5 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
+import AprValue from "@core/components/element/apr/AprValue";
 import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import { useMerklConfig } from "@core/modules/config/config.context";
@@ -10,7 +11,6 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
-import AprValue from "@core/components/element/apr/AprValue";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;

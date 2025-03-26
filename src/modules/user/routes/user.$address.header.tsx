@@ -5,7 +5,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
-import { Container, Group, Hash, Icon, Space, Tabs, Value } from "dappkit";
+import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { useMemo } from "react";

@@ -1,10 +1,10 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import { textStyles } from "dappkit/src/components/primitives/Text";
-import { tv } from "tailwind-variants";
 import { mergeClass } from "dappkit/src/utils/css";
 import type { Component, Styled } from "dappkit/src/utils/types";
-import { useMerklConfig } from "@core/modules/config/config.context";
 import { Value } from "packages/dappkit/src";
 import { useMemo } from "react";
+import { tv } from "tailwind-variants";
 
 export const valueStyles = tv({
   base: "text-main-11 font-text font-normal",
