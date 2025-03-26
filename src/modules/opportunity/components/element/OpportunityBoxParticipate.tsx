@@ -50,7 +50,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
       case "BORROW":
         return "Borrow Assets";
       case "DROP":
-        return "";
+        return "Participate in Airdrop";
       case "LONG":
         return "Open Long";
       case "SHORT":
