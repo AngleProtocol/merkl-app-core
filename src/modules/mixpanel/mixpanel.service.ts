@@ -6,6 +6,8 @@ export type MorphoPayload = Awaited<ReturnType<Api["v3"]["morphoMarkets"]["get"]
 import mixpanel from "mixpanel-browser";
 
 export type MixpanelEvents = {
+  Page: { page: string };
+  "Click on Supply": Opportunity & { url: string };
   "Click on Opportunity": Opportunity & { view: "table" | "cell" };
   "Check filters": object;
 };

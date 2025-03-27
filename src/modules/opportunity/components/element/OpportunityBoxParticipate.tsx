@@ -5,6 +5,7 @@ import PointsModalCampaigns from "@core/components/element/points/PointsModalCam
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
 import { getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Opportunity } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
 import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
@@ -35,10 +36,14 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
     if (!isDepositEnabled && !protocolUrl) return false;
     return true;
   }, [protocolUrl, targets, isDepositEnabled]);
+  const { track } = useMixpanelTracking();
+
   const onSupply = useCallback(() => {
+    if (protocolUrl) track("Click on Supply", { ...opportunity, url: protocolUrl });
+
     if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
-  }, [protocolUrl, targets, isDepositEnabled]);
+  }, [protocolUrl, targets, isDepositEnabled, track, opportunity]);
 
   const description = useMemo(() => {
     const action = getActionData(opportunity.action);
