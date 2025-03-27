@@ -15,7 +15,7 @@ export async function loader({ context: { backend }, request }: LoaderFunctionAr
   // --- Default sortering
   const url = new URL(request.url);
   const hasSearchParams = url.searchParams.size > 0;
-  if (!hasSearchParams) url.searchParams.set("status", "LIVE,SOON");
+  if (!hasSearchParams) url.searchParams.set("status", backend.opportunityDefaultStatus.join(","));
   const defaultRequest = { ...request, url: url.toString() };
   // ---
 
