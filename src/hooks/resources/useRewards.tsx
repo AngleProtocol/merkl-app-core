@@ -65,22 +65,23 @@ export default function useRewards(rewards: Reward[]) {
   }, [rewards]);
 
   /**
-   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity) test tokensa are excluded
+   * SINGLE Point aggregation (will be refacto to handle multiple points on same opportunity) test tokens are excluded
    */
   const pointAggregation = useMemo(() => {
     if (!isOnlyPointOrTest) return null;
 
     return rewards.reduce(
-      (totals, rewardsPerChain) => {
+      ({earned, unclaimed, pending}, rewardsPerChain) => {
         rewardsPerChain.rewards.forEach(record => {
           if (!record.token.isTest) {
-            totals.unclaimed += Fmt.toNumber(record.amount - record.claimed, record.token.decimals);
-            totals.total += Fmt.toNumber(record.amount, record.token.decimals);
+            unclaimed += Fmt.toNumber(record.amount - record.claimed, record.token.decimals);
+            earned += Fmt.toNumber(record.amount, record.token.decimals);
+            pending += Fmt.toNumber(record.pending, record.token.decimals);
           }
         });
-        return totals;
+        return {earned, unclaimed, pending};
       },
-      { unclaimed: 0, total: 0 },
+      { unclaimed: 0, earned: 0, pending: 0 },
     );
   }, [isOnlyPointOrTest, rewards]);
 
