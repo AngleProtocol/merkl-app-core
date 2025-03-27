@@ -1,5 +1,6 @@
 import type { TagTypes } from "@core/components/element/Tag";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
@@ -55,10 +56,12 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
     [Icons, name, Tags, tags, opportunityMetrics],
   );
 
+  const { track } = useMixpanelTracking();
+
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{cell}</OpportunityParticipateModal>;
   return (
-    <Link prefetch="intent" to={link}>
+    <Link prefetch="intent" onClick={() => track("Click on Opportunity", { ...opportunity, view: "cell" })} to={link}>
       {cell}
     </Link>
   );

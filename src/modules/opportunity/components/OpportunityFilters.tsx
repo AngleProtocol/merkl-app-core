@@ -3,6 +3,7 @@ import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import useChains from "@core/modules/chain/hooks/useChains";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain, Protocol } from "@merkl/api";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
@@ -30,7 +31,7 @@ export default function OpportunityFilters({
   onClear,
   clearing,
 }: OpportunityFilterProps) {
-  const [_, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -229,6 +230,8 @@ export default function OpportunityFilters({
     innerSearch,
   ]);
 
+  const { track } = useMixpanelTracking();
+
   const onApplyFilters = useCallback(() => {
     setApplying(true);
     setSearchParams(params => {
@@ -237,12 +240,15 @@ export default function OpportunityFilters({
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
       updateStringParam("search", innerSearch, params);
+
+      track("Check filters", Object.fromEntries(params.entries()));
       return params;
     });
   }, [
     updateParams,
     updateStringParam,
     setSearchParams,
+    track,
     chainIdsInput,
     actionsInput,
     statusInput,
