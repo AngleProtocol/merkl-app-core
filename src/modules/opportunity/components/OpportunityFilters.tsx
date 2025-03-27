@@ -37,6 +37,7 @@ export default function OpportunityFilters({
   const [applying, setApplying] = useState(false);
 
   const filtersConfigEnabled = useMerklConfig(store => store.config.opportunitiesFilters);
+  const opportunityDefaultStatus = useMerklConfig(store => store.config.backend.opportunityDefaultStatus);
 
   //TODO: componentify theses
   const actionOptions = Object.entries(actions)
@@ -150,7 +151,7 @@ export default function OpportunityFilters({
     v => v?.split(","),
   );
 
-  const [statusInput, setStatusInput] = useState(statusFilter ?? ["LIVE", "SOON"]);
+  const [statusInput, setStatusInput] = useState(statusFilter ?? opportunityDefaultStatus);
 
   const onStatusChange = useCallback((status: string[]) => {
     const uniqueStatus = Array.from(new Set(status.flatMap(s => s.split(","))));
@@ -170,7 +171,7 @@ export default function OpportunityFilters({
     v => v,
   );
 
-  const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
+  const [innerSearch, setInnerSearch] = useState<string | undefined>(search ?? "");
 
   const [protocolFilter] = useSearchParamState<string[]>(
     "protocol",
@@ -211,9 +212,9 @@ export default function OpportunityFilters({
 
     const sameChains = isSameArray(chainIdsInput, chainIdsFilter);
     const sameActions = isSameArray(actionsInput, actionsFilter);
-    const sameStatus = isSameArray(statusInput, statusFilter);
     const sameProtocols = isSameArray(protocolInput, protocolFilter);
     const sameSearch = (search ?? "") === innerSearch;
+    const sameStatus = isSameArray(statusInput, statusFilter ?? opportunityDefaultStatus);
 
     return [sameChains, sameActions, sameStatus, sameSearch, sameProtocols].some(v => v === false);
   }, [
@@ -227,6 +228,7 @@ export default function OpportunityFilters({
     statusInput,
     search,
     innerSearch,
+    opportunityDefaultStatus,
   ]);
 
   const onApplyFilters = useCallback(() => {
@@ -236,7 +238,7 @@ export default function OpportunityFilters({
       updateParams("action", actionsInput, params);
       updateParams("status", statusInput, params);
       updateParams("protocol", protocolInput, params);
-      updateStringParam("search", innerSearch, params);
+      updateStringParam("search", innerSearch ?? "", params);
       return params;
     });
   }, [
@@ -284,11 +286,13 @@ export default function OpportunityFilters({
   const onSortByChange = useCallback(
     (sort: FormEvent<HTMLDivElement>) => {
       setSearchParams(params => {
-        updateParams("sort", [sort.toString()], params);
-        return params;
+        const updatedParams = new URLSearchParams(params.toString());
+        if (!params.toString()) updatedParams.set("status", opportunityDefaultStatus.join(","));
+        updatedParams.set("sort", sort.toString());
+        return updatedParams;
       });
     },
-    [updateParams, setSearchParams],
+    [setSearchParams, opportunityDefaultStatus],
   );
 
   const filteredSortOptions = useMemo(() => {
@@ -313,7 +317,7 @@ export default function OpportunityFilters({
               name="search"
               value={innerSearch}
               className="min-w-[12ch]"
-              state={[innerSearch, v => setInnerSearch(v ?? "")]}
+              state={[innerSearch, setInnerSearch]}
               suffix={<Icon remix="RiSearchLine" />}
               placeholder="Search"
             />

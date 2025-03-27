@@ -8,6 +8,7 @@ export interface MerklBackendConfig {
   alwaysShowPointTokens?: boolean;
   showDevelopmentHelpers?: boolean;
   sortedBy: "apr" | "rewards";
+  opportunityDefaultStatus: Array<"LIVE" | "SOON" | "PAST">;
   featured?: {
     enabled: boolean;
     length: number;
