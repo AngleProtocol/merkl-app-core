@@ -42,7 +42,6 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
 
   const description = useMemo(() => {
     const action = getActionData(opportunity.action);
-    console.log({ action });
     return action?.cta ?? "Supply Liquidity";
   }, [opportunity]);
 
