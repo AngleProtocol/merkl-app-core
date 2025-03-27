@@ -1,7 +1,5 @@
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, PrimitiveTag, Title } from "dappkit";
-import TvlRowAllocation from "../tvl/TvlRowAllocation";
-import TvlSection from "../tvl/TvlSection";
 import AprSection from "./AprSection";
 import AprValue from "./AprValue";
 

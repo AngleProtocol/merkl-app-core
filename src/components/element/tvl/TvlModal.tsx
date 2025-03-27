@@ -1,8 +1,8 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Divider, Group, PrimitiveTag, Title, Value } from "dappkit";
 import TvlRowAllocation from "./TvlRowAllocation";
 import TvlSection from "./TvlSection";
-import { useMerklConfig } from "@core/modules/config/config.context";
 
 type TvlModalProps = {
   opportunity: Opportunity;
