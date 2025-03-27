@@ -182,7 +182,7 @@ export default function CampaignTableRow({
           Coming soon
         </>
       );
-    return <>Ended {time}</>;
+    return <>{time}</>;
   }, [campaignStatus, time]);
 
   return (
