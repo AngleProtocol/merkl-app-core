@@ -20,7 +20,7 @@ export default function Index() {
     <Container>
       {Array(3).fill(<Space size="xl" />)}
       <Group className="w-full items-center flex-col">
-        <Box size="xl" className="p-xl*4 min-w-[500px]">
+        <Box size="xl" className="p-xl min-w-full  md:p-xl*4 md:min-w-[500px]">
           {/* <Space size="xl" /> */}
           <Title h={5} className="uppercase text-main-11">
             Enter an address
