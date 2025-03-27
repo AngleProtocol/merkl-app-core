@@ -30,9 +30,15 @@ export const ProtocolService = defineModule<{ api: Api; backend: MerklBackendCon
 
     const get = inject(["api", "backend"]).inFunction(
       ({ api, backend }, query: ApiQuery<Api["v4"]["protocols"]["index"]["get"]>) => {
+        const testParam: Record<string, boolean> = {};
+        if (backend.alwaysShowTestTokens === true) testParam.test = true;
+
         return fetchApi(() =>
           api.v4.protocols.index.get({
-            query: Object.assign({ ...query }, backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {}),
+            query: Object.assign(
+              { ...query, ...testParam },
+              backend.tags?.[0] ? { opportunityTag: backend.tags?.[0], ...testParam } : {},
+            ),
           }),
         );
       },
@@ -50,14 +56,23 @@ export const ProtocolService = defineModule<{ api: Api; backend: MerklBackendCon
 
     const getManyFromRequest = inject(["api", "request", "backend"]).inFunction(async ({ api, request, backend }) => {
       const query: Parameters<typeof api.v4.protocols.index.get>[0]["query"] = queryFromRequest(request);
+      const showTest: Record<string, boolean> = {};
+      if (backend.alwaysShowTestTokens === true) showTest.test = true;
+
       const protocols = await fetchApi(async () =>
         api.v4.protocols.index.get({
-          query: Object.assign({ ...query }, backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {}),
+          query: Object.assign(
+            { ...query, ...showTest },
+            backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {},
+          ),
         }),
       );
       const count = await fetchApi(async () =>
         api.v4.protocols.count.get({
-          query: Object.assign({ ...query }, backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {}),
+          query: Object.assign(
+            { ...query, ...showTest },
+            backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {},
+          ),
         }),
       );
 
