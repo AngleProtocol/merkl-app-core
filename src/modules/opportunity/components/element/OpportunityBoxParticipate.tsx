@@ -3,6 +3,7 @@ import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaign
 import AprValue from "@core/components/element/apr/AprValue";
 import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
+import { getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
@@ -34,11 +35,15 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
     if (!isDepositEnabled && !protocolUrl) return false;
     return true;
   }, [protocolUrl, targets, isDepositEnabled]);
-
   const onSupply = useCallback(() => {
     if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
   }, [protocolUrl, targets, isDepositEnabled]);
+
+  const description = useMemo(() => {
+    const action = getActionData(opportunity.action);
+    return action?.cta ?? "Supply Liquidity";
+  }, [opportunity]);
 
   return (
     <>
@@ -133,7 +138,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Group>
           {!!isSupplyButtonVisible && (
             <Button className="inline-flex justify-center" look="hype" size="xl" onClick={onSupply}>
-              Supply Liquidity
+              {description}
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}

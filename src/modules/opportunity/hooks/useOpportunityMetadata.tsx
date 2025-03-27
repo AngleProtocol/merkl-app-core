@@ -318,7 +318,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by supplying liquidity to the {protocol?.name} {symbols} on {chain.name}
+            Earn rewards by lending {symbols} to {protocol?.name} on {chain.name}
           </Tooltip>
         );
       case "BORROW":
@@ -455,7 +455,7 @@ export default function useOpportunityMetadata({
                 </Text>
               </>
             }>
-            Earn rewards by taking a long position on {protocol?.name} {symbols} on {chain.name}
+            Borrow {symbols} on {protocol?.name} on {chain.name}
           </Tooltip>
         );
       case "SHORT":
