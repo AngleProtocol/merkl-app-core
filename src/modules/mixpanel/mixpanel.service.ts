@@ -17,6 +17,9 @@ export const MixpanelService = defineModule<{ token: string }>().create(({ injec
       track_pageview: true,
       persistence: "localStorage",
       ip: false,
+      autocapture: {
+        pageview: "full-url",
+      },
     });
   });
 
