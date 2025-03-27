@@ -49,11 +49,6 @@ export default function AprSection({ opportunity }: AprSectionProps) {
 
   return (
     <Group className="flex-col" size="sm">
-      <Text bold className="flex items-center gap-xs " size="sm" look="bold">
-        <Icon remix="RiFileList3Line" />
-        APR details
-      </Text>
-      <Divider />
       <Group className="flex-col" size="sm">
         {breakdowns?.map(breakdown => (
           <Group key={breakdown.id} className="items-center justify-between" size="sm">
