@@ -2,6 +2,7 @@ import AprModal from "@core/components/element/apr/AprModal";
 import AprValue from "@core/components/element/apr/AprValue";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
@@ -137,10 +138,12 @@ export default function OpportunityTableRow({
     tags,
   ]);
 
+  const { track } = useMixpanelTracking();
+
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{row}</OpportunityParticipateModal>;
   return (
-    <Link prefetch="intent" to={link}>
+    <Link prefetch="intent" onClick={() => track("Click on Opportunity", { ...opportunity, view: "table" })} to={link}>
       {row}
     </Link>
   );
