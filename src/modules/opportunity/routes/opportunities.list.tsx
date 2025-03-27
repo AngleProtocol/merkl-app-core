@@ -25,7 +25,7 @@ export async function loader({ context: { backend }, request }: LoaderFunctionAr
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured();
 
   //TODO: embed this in client/service
-  const chains = await ChainService({ api }).getAll();
+  const chains = await ChainService({ api, backend }).getAll();
   const { protocols } = await ProtocolService({ api, backend, request }).getManyFromRequest();
 
   return { opportunities, chains, count, protocols, featuredOpportunities };

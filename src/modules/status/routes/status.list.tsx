@@ -8,8 +8,8 @@ import { useState } from "react";
 import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const chains = await ChainService({ api }).getAll();
+export async function loader({ request, context: { backend } }: LoaderFunctionArgs) {
+  const chains = await ChainService({ api, backend }).getAll();
   const statusAndDelays = await StatusService({ api }).getStatusAndDelays();
 
   return withUrl(request, {

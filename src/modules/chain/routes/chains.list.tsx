@@ -1,14 +1,13 @@
-import { api } from "@core/api";
 import { Cache } from "@core/modules/cache/cache.service";
-import { ChainService } from "@core/modules/chain/chain.service";
 import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 
+// DEPRECATED
 export async function loader(_args: LoaderFunctionArgs) {
-  const chains = await ChainService({ api }).getAll();
-  return { chains, count: chains.length };
+  // const chains = await ChainService({ api, backend }).getAll();
+  return { chains: [], count: 0 };
 }
 
 export const clientLoader = Cache.wrap("chains", 300);

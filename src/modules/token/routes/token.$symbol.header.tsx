@@ -12,7 +12,7 @@ import { TokenService } from "../../../modules/token/token.service";
 export async function loader({ context: { backend, routes }, params: { symbol }, request }: LoaderFunctionArgs) {
   const tokens = await TokenService({ backend, api, request }).getSymbol(symbol);
 
-  const chains = await ChainService({ api }).getAll();
+  const chains = await ChainService({ api, backend }).getAll();
   const opportunityService = OpportunityService({ api, backend, request });
 
   const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
