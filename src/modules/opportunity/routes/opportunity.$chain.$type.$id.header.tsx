@@ -3,7 +3,6 @@ import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
-import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
@@ -11,8 +10,8 @@ import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
-import { Button, Group, Icon } from "dappkit";
-import { useClipboard } from "dappkit";
+import { Group } from "dappkit";
+import OpportunityDevHelpers from "../components/element/OpportunityDevHelpers";
 
 export async function loader({
   context: { backend, routes },
@@ -53,12 +52,6 @@ export default function Index() {
 
   const { title, description, icons } = useOpportunityData(opportunity);
 
-  const { copy: copyCall, isCopied } = useClipboard();
-
-  const showDevelopmentHelpers = useMerklConfig(store => store.config.backend.showDevelopmentHelpers);
-
-  const opportunityService = OpportunityService({ api });
-
   return (
     <>
       <Meta />
@@ -67,20 +60,7 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {!!showDevelopmentHelpers && (
-              <Group>
-                <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
-                  <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
-                </Button>
-                <Button
-                  className="inline-flex"
-                  look="hype"
-                  size="md"
-                  onClick={async () => (await opportunityService).reparse(opportunity.id)}>
-                  <Icon remix="RiRestartLine" size="sm" />
-                </Button>
-              </Group>
-            )}
+            <OpportunityDevHelpers opportunityId={opportunity.id} />
           </Group>
         }
         description={description}>

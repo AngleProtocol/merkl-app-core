@@ -86,7 +86,8 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
     );
 
     const reparse = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
-      const _res = await fetchApi(async () =>
+      console.log(`Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`);
+      await fetchApi(async () =>
         api.v4
           .opportunities({
             id: opportunityId,
