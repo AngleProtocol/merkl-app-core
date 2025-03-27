@@ -123,7 +123,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
           type: "address",
           value: {
             description:
-              "Only the following addresses are eligible for rewards. If a liquidity manager (ALM) address is whitelisted, any addresses that provided liquidity via the ALM are also eligible",
+              "Only the following whitelisted addresses are eligible for rewards. If one of this address is a liquidity manager (ALM)vault, any addresses that provided liquidity via such ALM will be eligible.",
             label: (
               <>
                 <Icon remix="RiProhibitedFill" />

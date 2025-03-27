@@ -91,7 +91,7 @@ export default function OpportunityLibrary({
           <OpportunityTable
             responsive
             exclude={["tvl"]}
-            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-6")}
+            dividerClassName={() => "bg-main-6"}
             ctaHeader={renderSwitchDisplayButton}
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
@@ -105,7 +105,7 @@ export default function OpportunityLibrary({
         );
       case "cells":
         return (
-          <List dividerClassName={() => "bg-accent-11"}>
+          <List dividerClassName={() => "bg-main-6"}>
             <Box size="lg" className="!p-lg !rounded-lg+md">
               <Group className="justify-between">
                 <Text look="soft" size={5}>

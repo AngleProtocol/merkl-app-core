@@ -5,7 +5,7 @@ import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMe
 import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Box, Button, Divider, Group, Icon, Text, Title, mergeClass, useOverflowingRef } from "dappkit";
+import { Box, Button, Divider, Group, Icon, Text, Title } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityCell from "../../hooks/useOpportunityCell";
 
@@ -17,25 +17,17 @@ export type OpportunityCellProps = {
 
 export default function OpportunityCell({ opportunity, navigationMode, tags }: OpportunityCellProps) {
   const { name, link, Tags, Icons } = useOpportunityData(opportunity);
-  const { ref, overflowing } = useOverflowingRef<HTMLHeadingElement>();
   const { opportunityMetrics } = useOpportunityCell(opportunity);
 
   const cell = useMemo(
     () => (
       <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0">
-        <Group className="p-xl flex-col flex-1 items-end">
+        <Group className="p-xl flex-col flex-1">
           <Group className="flex-nowrap">
             <Text className="text-3xl">
               <Icons groupProps={{ className: "flex-nowrap" }} />
             </Text>
-            <Title
-              h={3}
-              size={4}
-              ref={ref}
-              className={mergeClass(
-                "[overflow-wrap:anywhere]",
-                overflowing && "hover:overflow-visible hover:animate-textScroll hover:text-clip",
-              )}>
+            <Title h={3} size={4}>
               {name}
             </Title>
           </Group>
@@ -60,7 +52,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
         </Group>
       </Box>
     ),
-    [Icons, name, overflowing, ref, Tags, tags, opportunityMetrics],
+    [Icons, name, Tags, tags, opportunityMetrics],
   );
 
   if (navigationMode === "supply")

@@ -1,6 +1,6 @@
-import type { Chain, Explorer, Token } from "@merkl/api";
-import { Button, Divider, Group, Hash, Icon, mergeClass, Show, Text, Value } from "dappkit";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import type { Chain, Explorer, Token } from "@merkl/api";
+import { Button, Divider, Group, Hash, Icon, Show, Text, Value, mergeClass } from "dappkit";
 
 export type TokenTooltipProps = {
   token: Token;
@@ -42,6 +42,7 @@ export default function TokenTooltip({ token, size }: TokenTooltipProps) {
           </Group>
         )}
         <Group className="w-full justify-between">
+          <Text>Token Address:</Text>
           <Hash copy format="short" size="md">
             {token.address}
           </Hash>

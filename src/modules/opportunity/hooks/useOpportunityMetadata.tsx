@@ -282,13 +282,19 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Lend assets on {protocol?.name}.
+                      <Group className="inline">
+                        <Text bold className="inline">
+                          Step 1:
+                        </Text>
+                        Lend assets on {protocol?.name}.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold className="inline">
+                          Step 2:
+                        </Text>
+                        Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -324,13 +330,19 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Borrow assets on {protocol?.name}.
+                      <Group className="inline">
+                        <Text bold className="inline">
+                          Step 1:
+                        </Text>
+                        Borrow assets on {protocol?.name}.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold className="inline">
+                          Step 2:
+                        </Text>
+                        Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -366,13 +378,15 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Check your eligibility on Merkl.
+                      <Group className="inline">
+                        <Text bold>Step 1:</Text>
+                        {""}
+                        Check your eligibility on Merkl.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Eligible rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold>Step 2:</Text> Eligible rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -408,13 +422,17 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Open a long position on {protocol?.name}.
+                      <Group className="inline">
+                        <Text bold>Step 1:</Text>
+                        {""}
+                        Open a long position on {protocol?.name}.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold>Step 2:</Text>
+                        {""}
+                        Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -449,13 +467,13 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Open a short position on {protocol?.name}.
+                      <Group className="inline">
+                        <Text bold>Step 1:</Text> Open a short position on {protocol?.name}.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
@@ -491,13 +509,13 @@ export default function useOpportunityMetadata({
                 <Text>
                   <ul className="list-disc ml-lg">
                     <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Open a short position on {protocol?.name}.
+                      <Group className="inline">
+                        <Text bold>Step 1:</Text> Swap on {protocol?.name}.
                       </Group>
                     </li>
                     <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
+                      <Group className="inline">
+                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
                       </Group>
                     </li>
                     <li>
