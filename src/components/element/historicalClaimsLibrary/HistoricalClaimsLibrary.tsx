@@ -58,7 +58,6 @@ export default function HistoricalClaimsLibrary(props: HistoricalClaimsLibraryPr
                 search
                 indexOptions={indexOptions}
                 options={chainOptions}
-                indexOptions={indexOptions}
                 look="base"
                 placeholder="Chain"
                 placeholderIcon={<Icon remix="RiLink" />}
