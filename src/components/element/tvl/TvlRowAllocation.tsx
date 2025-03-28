@@ -31,7 +31,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
         <Group className="flex-col" size="sm">
           <Text className="flex items-center gap-sm" size="sm" look="soft">
             <Icon src={opportunity.tokens[0].icon} />
-            <Text bold className="flex gap-sm">
+            <Text bold className="flex gap-sm" size="sm">
               <Value value format="0.0a">
                 {tvlBreakdownToken0?.value}
               </Value>
