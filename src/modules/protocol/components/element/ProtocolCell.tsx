@@ -2,7 +2,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Box, Divider, Group, Image, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
+import { Box, Divider, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 
@@ -20,7 +20,7 @@ export default function ProtocolCell({ protocol }: ProtocolCellProps) {
       <Box className="flex-col hover:bg-main-1 bg-main-2 ease !gap-0 h-full cursor-pointer !p-0">
         <Group className="p-md md:p-xl flex-1 flex-col">
           <Group className="flex-nowrap items-center">
-            <Image className="size-10" src={protocol.icon} alt={protocol.name} />
+            <Icon className="size-10" src={protocol.icon} alt={protocol.name} rounded />
             <Title
               h={3}
               size={4}

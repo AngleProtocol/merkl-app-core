@@ -3,7 +3,7 @@ import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadat
 import type { Protocol } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import type { BoxProps } from "dappkit";
-import { Button, Group, Icon, Image, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
+import { Button, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
 import { ProtocolRow } from "../library/ProtocolTable";
 
@@ -50,8 +50,7 @@ export default function ProtocolTableRow({ protocol, className, ...props }: Prot
           <Group className="flex-col w-full" size="lg">
             <Group className="min-w-0 flex-nowrap overflow-hidden max-w-full">
               <Group className="text-xl items-center">
-                <Image className="size-9" src={protocol.icon} alt={protocol.name} />
-
+                <Icon className="size-9" src={protocol.icon} alt={protocol.name} rounded />
                 <Title
                   h={3}
                   size={4}
