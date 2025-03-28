@@ -1,3 +1,4 @@
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
@@ -15,11 +16,11 @@ export type CampaignLibraryProps = {
 
 export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryProps) {
   const [showInactive, setShowInactive] = useState(false);
-
   const { opportunity: opportunityOutlet, chain: chainOutlet } = useOutletContext<OutletContextOpportunity>();
-
   opportunity = opportunityOutlet || opportunity;
   chain = chainOutlet || chain;
+
+  const { howToEarnRewardsHelper } = useOpportunityMetadata(opportunity);
 
   const rows = useMemo(() => {
     if (!opportunity?.campaigns) return null;
@@ -94,6 +95,14 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
               />
             </Group>
           </OverrideTheme>
+          {!!howToEarnRewardsHelper && (
+            <Group size="sm">
+              <Text look="tint" size="md" bold>
+                How to earn rewards ?
+              </Text>
+              <Tooltip helper={howToEarnRewardsHelper} className="p-xl" />
+            </Group>
+          )}
         </Group>
       }>
       {rows}
