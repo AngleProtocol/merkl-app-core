@@ -13,8 +13,6 @@ import {
   type IconProps,
   type IconsProps,
   Text,
-  Title,
-  Tooltip,
 } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -344,7 +342,7 @@ export default function useOpportunityMetadata({
       default:
         return null;
     }
-  }, [tokens, protocol, chain, action, navigateToMerklStatusPage]);
+  }, [tokens, protocol, action, navigateToMerklStatusPage]);
 
   return {
     name: configuredName,
