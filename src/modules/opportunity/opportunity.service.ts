@@ -15,6 +15,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         const searchString = url.searchParams.get("search");
         const name = searchString?.startsWith("0x") && searchString.length === 66 ? undefined : searchString;
         const campaignId = searchString?.startsWith("0x") && searchString.length === 66 ? searchString : undefined;
+        
 
         const filters = {
           status: url.searchParams.get("status") ?? undefined,
@@ -30,6 +31,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           point: backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
+          tag: url.searchParams.get("tag") ?? undefined,
           ...override,
         };
 
@@ -60,6 +62,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
             query: Object.assign({ ...overrideQuery }, backend.tags?.[0] ? { tags: backend.tags?.[0] } : {}),
           }),
         );
+        
         const count = await fetchApi(async () =>
           api.v4.opportunities.count.get({
             headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
