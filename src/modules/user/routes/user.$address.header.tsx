@@ -131,7 +131,9 @@ export default function Index() {
             label="Total Earned"
             value={
               <Value format={isOnlyPointOrTest ? decimalFormatPoint : decimalFormatUsd} value className="text-main-12">
-                {isOnlyPointOrTest ? (pointAggregation?.earned ?? 0) + (pointAggregation?.pending ?? 0) : earned + pending}
+                {isOnlyPointOrTest
+                  ? (pointAggregation?.earned ?? 0) + (pointAggregation?.pending ?? 0)
+                  : earned + pending}
               </Value>
             }
           />

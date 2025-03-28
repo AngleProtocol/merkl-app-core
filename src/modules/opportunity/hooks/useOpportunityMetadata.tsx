@@ -6,14 +6,13 @@ import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import {
   type Component,
+  Divider,
   Group,
   Icon,
   Icons as IconGroup,
   type IconProps,
   type IconsProps,
   Text,
-  Title,
-  Tooltip,
 } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -189,363 +188,161 @@ export default function useOpportunityMetadata({
 
     switch (action) {
       case "POOL":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Provide liquidity on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Earn rewards based on your liquidity position.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by providing liquidity to the {protocol?.name} {symbols} pool on {chain.name}, or through a
-            liquidity manager supported by Merkl
-          </Tooltip>
-        );
+        return `Earn rewards by providing liquidity to the ${protocol?.name} ${symbols} pool on ${chain.name}, or through a
+            liquidity manager supported by Merkl`;
       case "HOLD":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group>
-                        <Text bold>Step 1:</Text>Hold {symbols}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group>
-                        <Text bold>Step 2:</Text>Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by holding {symbols} or by staking it in a supported contract
-          </Tooltip>
-        );
+        return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
       case "LEND":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold className="inline">
-                          Step 1:
-                        </Text>
-                        Lend assets on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold className="inline">
-                          Step 2:
-                        </Text>
-                        Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by lending {symbols} to {protocol?.name} on {chain.name}
-          </Tooltip>
-        );
+        return `Earn rewards by lending ${symbols} to ${protocol?.name} on ${chain.name}`;
       case "BORROW":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold className="inline">
-                          Step 1:
-                        </Text>
-                        Borrow assets on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold className="inline">
-                          Step 2:
-                        </Text>
-                        Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        <Text className="inline"> anytime via Merkl (updated every 3-12 hours).</Text>
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by taking a long position on {protocol?.name} {symbols} on {chain.name}
-          </Tooltip>
-        );
+        return `Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}`;
       case "DROP":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 1:</Text>
-                        {""}
-                        Check your eligibility on Merkl.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 2:</Text> Eligible rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Visit your dashboard to check if you've earned rewards from this airdrop
-          </Tooltip>
-        );
+        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
       case "LONG":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 1:</Text>
-                        {""}
-                        Open a long position on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 2:</Text>
-                        {""}
-                        Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          rewards
-                        </Link>
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Borrow {symbols} on {protocol?.name} on {chain.name}
-          </Tooltip>
-        );
+        return `Borrow ${symbols} on ${protocol?.name} on ${chain.name}`;
       case "SHORT":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 1:</Text> Open a short position on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by taking a short position on {protocol?.name} {symbols} on {chain.name}
-          </Tooltip>
-        );
+        return `Earn rewards by taking a short position on ${protocol?.name} ${symbols} on ${chain.name}`;
       case "SWAP":
-        return (
-          <Tooltip
-            helper={
-              <>
-                <Title h={5}>Steps to Earn Rewards</Title>
-                <Text>
-                  <ul className="list-disc ml-lg">
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 1:</Text> Swap on {protocol?.name}.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="inline">
-                        <Text bold>Step 2:</Text> Rewards accumulate automatically.
-                      </Group>
-                    </li>
-                    <li>
-                      <Group className="flexitems-center flex-wrap inline" size="sm">
-                        <Text bold className="inline">
-                          Step 3:
-                        </Text>{" "}
-                        Claim
-                        <Link to="/users" className="inline">
-                          {" "}
-                          rewards
-                        </Link>{" "}
-                        anytime via Merkl (updated every 3-12 hours).
-                        <Text className="inline cursor-pointer" look="tint" onClick={navigateToMerklStatusPage}>
-                          {" "}
-                          Check next reward update
-                        </Text>
-                      </Group>
-                    </li>
-                  </ul>
-                </Text>
-              </>
-            }>
-            Earn rewards by trading {symbols} on {chain.name}
-          </Tooltip>
-        );
+        return `Earn rewards by trading ${symbols} on ${chain.name}`;
       default:
         break;
     }
-  }, [tokens, protocol, chain, action, navigateToMerklStatusPage]);
+  }, [tokens, protocol, chain, action]);
+
+  const howToEarnRewardsHelper = useMemo(() => {
+    const symbols = tokens?.map(t => t.symbol).join("-");
+
+    const commonThirdStep = (
+      <>
+        Claim
+        <Link to="/users"> rewards</Link> anytime via Merkl (updated every 3-12 hours).{" "}
+        <Text className="cursor-pointer" look="tint" onClick={navigateToMerklStatusPage} size={"sm"}>
+          Check next reward update
+        </Text>
+      </>
+    );
+
+    const commonTitle = (
+      <>
+        <Group size={"sm"}>
+          <Icon remix="RiMegaphoneFill" className="text-main-11" />
+          <Text bold look="tint">
+            Step to earn rewards
+          </Text>
+        </Group>
+        <Divider />
+      </>
+    );
+
+    switch (action) {
+      case "POOL":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Provide liquidity on {protocol?.name}.</li>
+                <li>Earn rewards based on your liquidity position.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "HOLD":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Hold {symbols}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "LEND":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Lend assets on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "BORROW":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Borrow assets on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "DROP":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Check your eligibility on Merkl.</li>
+                <li>Eligible rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "LONG":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Open a long position on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "SHORT":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Open a short position on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "SWAP":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Swap on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      default:
+        return null;
+    }
+  }, [tokens, protocol, action, navigateToMerklStatusPage]);
 
   return {
     name: configuredName,
@@ -562,5 +359,6 @@ export default function useOpportunityMetadata({
     },
     tags,
     Tags,
+    howToEarnRewardsHelper,
   };
 }

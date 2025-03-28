@@ -71,7 +71,7 @@ export default function useRewards(rewards: Reward[]) {
     if (!isOnlyPointOrTest) return null;
 
     return rewards.reduce(
-      ({earned, unclaimed, pending}, rewardsPerChain) => {
+      ({ earned, unclaimed, pending }, rewardsPerChain) => {
         rewardsPerChain.rewards.forEach(record => {
           if (!record.token.isTest) {
             unclaimed += Fmt.toNumber(record.amount - record.claimed, record.token.decimals);
@@ -79,7 +79,7 @@ export default function useRewards(rewards: Reward[]) {
             pending += Fmt.toNumber(record.pending, record.token.decimals);
           }
         });
-        return {earned, unclaimed, pending};
+        return { earned, unclaimed, pending };
       },
       { unclaimed: 0, earned: 0, pending: 0 },
     );
