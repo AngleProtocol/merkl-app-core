@@ -1,6 +1,19 @@
 import Safe from "@core/assets/images/SAFE.png";
 import type { Chain } from "@merkl/api";
-import { type BoxProps, Button, Collapsible, Copy, Group, Hash, Icon, Space, Text, Time, mergeClass } from "dappkit";
+import {
+  type BoxProps,
+  Button,
+  Collapsible,
+  Copy,
+  Group,
+  Hash,
+  Icon,
+  Space,
+  Text,
+  Time,
+  Tooltip,
+  mergeClass,
+} from "dappkit";
 
 import type { Api } from "@core/api/types";
 import { useState } from "react";
@@ -57,24 +70,34 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
       }
       updateColumn={
         <Group>
-          <Button
-            to={`https://storage.cloud.google.com/merkl-production-reports/${chain.id}/${status.lastTree}_${status.tree}.html`}
-            external
-            look="soft">
-            <Icon remix="RiFileChart2Fill" />
-          </Button>
+          <Tooltip
+            icon={false}
+            helper={<>Open the report containing all changes pushed in the last Merkle Tree root update</>}>
+            <Button
+              to={`https://storage.cloud.google.com/merkl-production-reports/${chain.id}/${status.lastTree}_${status.tree}.html`}
+              external
+              look="soft">
+              <Icon remix="RiFileChart2Fill" />
+            </Button>
+          </Tooltip>
           <Time timestamp={status.endOfDisputePeriod * 1000} />
         </Group>
       }
       treeColumn={
         <Group className="items-center">
-          <Copy value={status.tree} />
+          <Tooltip icon={false} helper={<>Copy the root of the last tree pushed on the Distributor smart contract</>}>
+            <Copy value={status.tree} />
+          </Tooltip>
           <Hash format="prefix">{status.tree}</Hash>
         </Group>
       }
       lastTreeColumn={
         <Group className="items-center">
-          <Copy value={status.lastTree} />
+          <Tooltip
+            icon={false}
+            helper={<>Copy the root of the second last tree pushed on the Distributor smart contract</>}>
+            <Copy value={status.lastTree} />
+          </Tooltip>
           <Hash format="prefix">{status.lastTree}</Hash>
         </Group>
       }
@@ -88,7 +111,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Distributor
-                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
+                <Icon size={props?.size} remix="RiArrowRightUpLine" />
               </Button>
               <Copy value={status.distributor} />
             </Group>
@@ -101,7 +124,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Creator
-                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
+                <Icon size={props?.size} remix="RiArrowRightUpLine" />
               </Button>
               <Copy value={status.distributionCreator} />
             </Group>
@@ -114,7 +137,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
                 external
                 look="soft">
                 Admin
-                <Icon className="w-3" alt="Explorer link" remix="RiEarthFill" />
+                <Icon size={props?.size} remix="RiArrowRightUpLine" />
               </Button>
               <Copy value={status.admin} />
               <Button key={status.adminUrl} to={status.adminUrl} external size="xs" look="soft">

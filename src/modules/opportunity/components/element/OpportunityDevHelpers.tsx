@@ -1,6 +1,6 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { Button, type Component, EventBlocker, Group, Icon, useClipboard } from "dappkit";
+import { Button, type Component, EventBlocker, Group, Icon, Tooltip, useClipboard } from "dappkit";
 import { useState } from "react";
 import { OpportunityService } from "../../opportunity.service";
 
@@ -21,26 +21,30 @@ export default function OpportunityDevHelpers({ opportunityId }: Component<Oppor
     !!showDevelopmentHelpers && (
       <EventBlocker>
         <Group>
-          <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunityId)}>
-            <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
-          </Button>
-          <Button
-            className="inline-flex"
-            look="hype"
-            size="md"
-            onClick={async () => {
-              setIsReparsing(true);
-              try {
-                await (await opportunityService).reparse(opportunityId);
-              } catch {}
-              setIsReparsing(false);
-            }}>
-            {isReparsing ? (
-              <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
-            ) : (
-              <Icon remix="RiRestartLine" size="sm" />
-            )}
-          </Button>
+          <Tooltip icon={false} helper={<>Copy the Opportunity ID</>}>
+            <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunityId)}>
+              <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
+            </Button>{" "}
+          </Tooltip>
+          <Tooltip icon={false} helper={<>Ask for an automated reparsing of the Opportunity Metadata</>}>
+            <Button
+              className="inline-flex"
+              look="hype"
+              size="md"
+              onClick={async () => {
+                setIsReparsing(true);
+                try {
+                  await (await opportunityService).reparse(opportunityId);
+                } catch {}
+                setIsReparsing(false);
+              }}>
+              {isReparsing ? (
+                <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
+              ) : (
+                <Icon remix="RiRestartLine" size="sm" />
+              )}
+            </Button>
+          </Tooltip>
         </Group>
       </EventBlocker>
     )
