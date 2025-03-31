@@ -88,7 +88,6 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
     );
 
     const reparse = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
-      console.log(`Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`);
       await fetchApi(async () =>
         api.v4
           .opportunities({
@@ -105,21 +104,22 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       );
     });
 
-    const getCampaignsByParams = inject(["api", "backend"]).inFunction(
+    const getCampaignsByParams = inject(["api", "backend", "request"]).inFunction(
       async (
-        { api, backend },
+        { api, backend, request },
         query: {
           chainId: number;
           type: string;
           identifier: string;
         },
       ) => {
+        const url = new URL(request.url);
         const { chainId, type, identifier } = query;
         const opportunityWithCampaigns = await fetchApi(async () =>
           api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get({
             headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: {
-              test: backend.alwaysShowTestTokens ?? false,
+              test: backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true",
               point: backend.alwaysShowPointTokens ?? false,
             },
           }),
