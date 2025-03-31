@@ -1,5 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import { useLocation } from "@remix-run/react";
 import {
   Button,
@@ -108,6 +109,8 @@ export default function Header() {
     chainIndexOptions,
   ]);
 
+  const { track } = useMixpanelTracking();
+
   const renderHeaderLinks = useMemo(() => {
     return Object.entries(navigationConfig.header).map(([key, route]) => {
       const hasLink = (route: NavigationMenuRoute): route is NavigationMenuRoute<"link"> => "link" in route;
@@ -126,6 +129,7 @@ export default function Header() {
           <Button
             className={"!py-sm"}
             look="soft"
+            onLink={() => track("Click on button", { button: route.name, type: "header" })}
             size="md"
             key={`${key}-link`}
             {...(hasLink(route)
@@ -142,7 +146,7 @@ export default function Header() {
         </Group>
       );
     });
-  }, [navigationConfig.header, location.pathname, user]);
+  }, [navigationConfig.header, location.pathname, user, track]);
 
   const renderAdditionalHeaderLinks = useMemo(() => {
     if (!navigationConfig.addtionalHeaderLinks) return null;
@@ -155,6 +159,7 @@ export default function Header() {
           return (
             <Button
               className={`${["faq"].includes(key) ? "uppercase" : "capitalize"} text-main-11`}
+              onLink={() => track("Click on button", { button: route.name, type: "header" })}
               look="soft"
               size="sm"
               key={`${key}-link`}
@@ -171,7 +176,7 @@ export default function Header() {
         })}
       </>
     );
-  }, [navigationConfig.addtionalHeaderLinks]);
+  }, [navigationConfig.addtionalHeaderLinks, track]);
 
   return (
     <div ref={headerRef} style={{ minHeight: height }}>

@@ -12,6 +12,7 @@ import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
+import OpportunityEditor from "../OpportunityEditor";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export interface OpportunityBoxParticipateProps {
@@ -39,7 +40,9 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const { track } = useMixpanelTracking();
 
   const onSupply = useCallback(() => {
-    if (protocolUrl) track("Click on Supply", { ...opportunity, url: protocolUrl });
+    const isDirect = isDepositEnabled && targets;
+
+    if (protocolUrl) track("Click on supply", { ...opportunity, mode: isDirect ? "direct" : "indirect" });
 
     if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
@@ -97,6 +100,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               <Dropdown
                 onHover
+                onOpen={() => track("Click on button", { button: "apr", type: "tooltip" })}
                 content={
                   isOnlyPoint ? (
                     <PointsModalCampaigns opportunity={opportunity} />
@@ -123,7 +127,10 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
               {opportunity.type === "CLAMM" ? (
-                <Dropdown onHover content={<TvlRowAllocation opportunity={opportunity} />}>
+                <Dropdown
+                  onHover
+                  onOpen={() => track("Click on button", { button: "tvl", type: "tooltip" })}
+                  content={<TvlRowAllocation opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm " look="soft">
                     TVL
                     <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
@@ -147,6 +154,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}
+          <OpportunityEditor look="hype" size="xl" className="w-full justify-center" opportunity={opportunity} />
         </Group>
       </Box>
     </>

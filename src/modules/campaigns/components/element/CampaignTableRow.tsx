@@ -2,6 +2,7 @@ import Tag from "@core/components/element/Tag";
 import useCampaignMetadata, { ECampaignStatus } from "@core/modules/campaigns/hooks/useCampaignMetadata";
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { useNavigate } from "@remix-run/react";
@@ -63,9 +64,11 @@ export default function CampaignTableRow({
 
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
 
+  const { track } = useMixpanelTracking();
   const onNavigateToLeaderBoard = useCallback(() => {
     navigate(`leaderboard?campaignId=${campaign.campaignId}`);
-  }, [campaign.campaignId, navigate]);
+    track("Click on leadeboard", { ...opportunity });
+  }, [track, campaign.campaignId, navigate, opportunity]);
 
   const campaignInformation = useMemo(() => {
     const columns = [
@@ -77,6 +80,7 @@ export default function CampaignTableRow({
       [
         "Last Snapshot",
         <Tooltip
+          onOpen={() => track("Click on button", { button: "last_snapshot", type: "tooltip" })}
           helper={
             "Indicates when the campaign has last been processed by the Merkl engine. Once a campaign is processed, its rewards can then be included in the following distribution of the associated chain. Distributions on a chain may easily be delayed, for example by disputers, or by instabilities in Merkl dependencies"
           }
@@ -129,7 +133,7 @@ export default function CampaignTableRow({
         </Group>
       );
     });
-  }, [campaign, amount, chain, distributionChain]);
+  }, [campaign, amount, chain, distributionChain, track]);
 
   const campaignStatusLook = useMemo(() => {
     if (campaignStatus === ECampaignStatus.LIVE) return "tint";

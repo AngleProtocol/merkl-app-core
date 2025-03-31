@@ -49,11 +49,45 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
     ({ location }, routes: MerklRoutes, parentRoute = "/"): MerklRoute[] => {
       for (const [route, value] of Object.entries(routes)) {
         const matches = matchRoute.handler({ location }, value.routes ?? {}, parentRoute + route);
+        const valueWithRoute = { ...value, route };
 
-        if (matches.length > 0) return matches.concat(value);
-        if (compareRoute(parentRoute + route, location.pathname)) return [value];
+        if (matches.length > 0) return matches.concat(valueWithRoute);
+        if (compareRoute(parentRoute + route, location.pathname)) return [valueWithRoute];
       }
       return [];
+    },
+  );
+
+  /**
+   * Recursive route to find the matching routes amongst all subroutes
+   * @param location to test url against
+   * @param routes all
+   * @returns an array from deepest to shallowest match.
+   */
+  const findAbstractRoute = inject(["location"]).inFunction(
+    (
+      { location },
+      routes: MerklRoutes,
+      parentRoute = "/",
+    ): { path: string; route: string; label: string; fullLabel: string } => {
+      const matches = matchRoute?.handler({ location }, routes, parentRoute);
+      let joint = matches
+        .reverse()
+        .map(({ route }) => route)
+        .join("/");
+
+      const replacements = ["//", "///", "////"].reverse();
+      for (let i = 0; i < replacements.length; i++) joint = joint.replaceAll(replacements[i], "/");
+
+      return {
+        route: joint,
+        path: location.pathname,
+        fullLabel: matches
+          .map(({ label }) => label)
+          .join("/")
+          .toLowerCase(),
+        label: matches?.[0]?.label?.toLowerCase(),
+      };
     },
   );
 
@@ -222,5 +256,6 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
     fromRoute,
     fill,
     forwardMetadata,
+    findAbstractRoute,
   };
 });

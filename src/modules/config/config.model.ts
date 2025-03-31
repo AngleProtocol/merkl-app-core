@@ -41,6 +41,8 @@ export type MerklConfig = {
     token: string;
   };
 
+  editable?: boolean;
+
   /**
    * Hide the price of reward tokens in the UI
    */
