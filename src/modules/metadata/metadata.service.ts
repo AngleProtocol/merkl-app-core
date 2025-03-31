@@ -57,6 +57,20 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
     },
   );
 
+  /**
+   * Recursive route to find the matching routes amongst all subroutes
+   * @param location to test url against
+   * @param routes all
+   * @returns an array from deepest to shallowest match.
+   */
+  const findAbstractRoute = inject(["location"]).inFunction(
+    ({ location }, routes: MerklRoutes, parentRoute = "/"): string => {
+      const matches = matchRoute?.handler({ location }, routes, parentRoute);
+
+      console.log("MATCH", matches);
+    },
+  );
+
   const deduplicate = (metadatas: MetaDescriptor[][]) => {
     return metadatas.reduce(
       (all, metadata) =>
@@ -222,5 +236,6 @@ export const MetadataService = defineModule<Dependencies>().create(({ inject }) 
     fromRoute,
     fill,
     forwardMetadata,
+    findAbstractRoute,
   };
 });

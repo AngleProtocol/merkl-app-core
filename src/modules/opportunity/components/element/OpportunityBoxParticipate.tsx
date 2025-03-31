@@ -13,6 +13,7 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
+import OpportunityEditor from "../OpportunityEditor";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
@@ -39,7 +40,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const { track } = useMixpanelTracking();
 
   const onSupply = useCallback(() => {
-    if (protocolUrl) track("Click on Supply", { ...opportunity, url: protocolUrl });
+    if (protocolUrl) track("Click on supply", { ...opportunity });
 
     if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
     setSupplyModalOpen(true);
@@ -147,6 +148,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}
+          <OpportunityEditor  look="hype" size="xl" className="w-full justify-center" opportunity={opportunity} />
         </Group>
       </Box>
     </>

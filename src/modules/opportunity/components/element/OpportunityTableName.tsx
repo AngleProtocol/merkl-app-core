@@ -1,8 +1,19 @@
 import type { TagTypes } from "@core/components/element/Tag";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Group, Title, type TitleProps, mergeClass, type sizeScale, useOverflowingRef } from "dappkit";
+import {
+  Button,
+  type Component,
+  Group,
+  Icon,
+  Title,
+  type TitleProps,
+  mergeClass,
+  type sizeScale,
+  useOverflowingRef,
+} from "dappkit";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import OpportunityDevHelpers from "./OpportunityDevHelpers";
+import { useMerklConfig } from "@core/modules/config/config.context";
 
 export type OpportunityTableNameProps = {
   opportunity: Opportunity;
