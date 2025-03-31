@@ -143,10 +143,7 @@ export default function OpportunityTableRow({
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{row}</OpportunityParticipateModal>;
   return (
-    <Link
-      prefetch="intent"
-      onClick={() => track("Click on opportunity", { ...opportunity, page: "Opportunity", view: "table" })}
-      to={link}>
+    <Link prefetch="intent" onClick={() => track("Click on opportunity", { ...opportunity, view: "table" })} to={link}>
       {row}
     </Link>
   );

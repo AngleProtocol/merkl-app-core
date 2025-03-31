@@ -1,28 +1,13 @@
-import type { Opportunity } from "@merkl/api";
-import {
-  Box,
-  Button,
-  type ButtonProps,
-  Divider,
-  Group,
-  Icon,
-  Input,
-  Scroll,
-  Space,
-  Text,
-  Title,
-} from "packages/dappkit/src";
-import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
-import { useCallback, useState } from "react";
-import { OpportunityService } from "../opportunity.service";
-import { api } from "@core/api";
 import Editor from "@core/components/element/Editor";
+import type { Opportunity } from "@merkl/api";
+import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "packages/dappkit/src";
+import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 
 export interface OpportunityEditorModalProps extends ButtonProps {
   opportunity: Opportunity;
 }
 
-export default function OpportunityEditorModal({ opportunity, ...props }: OpportunityEditorModalProps) {
+export default function OpportunityEditorModal({ opportunity }: OpportunityEditorModalProps) {
   const { Tags } = useOpportunityMetadata(opportunity);
 
   return (

@@ -61,7 +61,7 @@ export default function OpportunityCell({ opportunity, navigationMode, tags }: O
   if (navigationMode === "supply")
     return <OpportunityParticipateModal opportunity={opportunity}>{cell}</OpportunityParticipateModal>;
   return (
-    <Link prefetch="intent" onClick={() => track("Click on Opportunity", { ...opportunity, view: "cell" })} to={link}>
+    <Link prefetch="intent" onClick={() => track("Click on opportunity", { ...opportunity, view: "cell" })} to={link}>
       {cell}
     </Link>
   );

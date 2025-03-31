@@ -1,3 +1,4 @@
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Chain } from "@merkl/api";
 import { Divider, Dropdown, Group, PrimitiveTag, Value } from "dappkit";
 import { type ReactNode, useMemo } from "react";
@@ -15,10 +16,13 @@ export default function AddressListRule({
     () => addresses.map(a => <User chain={chain} address={a} key={a} />),
     [addresses, chain],
   );
+  const { track } = useMixpanelTracking();
+
   return (
     <Dropdown
       size="lg"
       padding="xs"
+      onOpen={() => track("Click on button", { button: "whitelist/blacklist", type: "rule" })}
       content={
         <Group className="flex-col max-w-[42ch]">
           <Group className="flex-col">{description}</Group>

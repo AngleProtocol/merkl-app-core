@@ -2,67 +2,55 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import { useWalletContext } from "packages/dappkit/src";
 import { useCallback } from "react";
 import { type MixpanelEvents, MixpanelService } from "../mixpanel.service";
-import useMetadata from "@core/modules/metadata/hooks/useMetadata";
-import { useLocation } from "@remix-run/react";
+import useMixpanelContext from "./useMixpanelContext";
 
 export default function useMixpanelTracking() {
   const mixpanelConfiguration = useMerklConfig(store => store.config.mixpanel);
   const { chains } = useWalletContext();
-  const location = useLocation();
-  const metadata = useMetadata(location.pathname);
-  const routes = useMerklConfig(store => store.config.routes);
-
-  metadata?.findAbstractRoute(routes);
+  const context = useMixpanelContext();
 
   const track = useCallback(
     <const Event extends keyof MixpanelEvents>(event: Event, data: MixpanelEvents[Event]) => {
       if (!mixpanelConfiguration || !mixpanelConfiguration.token) return;
 
       const events: { [E in keyof MixpanelEvents]: (_data: MixpanelEvents[E]) => void } = {
-        "Click on opportunity": ({ view, page, ...opportunity }) => {
-          MixpanelService({}).trackOpportunityButton(
-            "Opportunity",
+        "View page": () => {
+          MixpanelService({ context }).trackPage();
+        },
+        "Click on opportunity": ({ view, ...opportunity }) => {
+          MixpanelService({ context }).trackOpportunityButton(
+            "opportunity",
             "none",
             {
               view,
-              page,
             },
             opportunity,
             chains,
           );
         },
-        "Click on button": ({ button, type, page }) => {
-          MixpanelService({}).trackButton(button, type, { page });
+        "Click on button": ({ button, type }) => {
+          MixpanelService({ context }).trackButton(button, type, {});
         },
-        "Click on supply": ({ page, mode, ...opportunity }) => {
-          MixpanelService({}).trackOpportunityButton("supply", mode, { page }, opportunity, chains);
+        "Click on supply": ({ mode, ...opportunity }) => {
+          MixpanelService({ context }).trackOpportunityButton("supply", mode, {}, opportunity, chains);
         },
-        "Click on leadeboard": ({ chainId, status, protocol, tokens, view, page, action }) => {
-          const chain = chains?.find(c => c.id === chainId)?.name?.toLowerCase();
-          const tkns = tokens?.reduce(
-            (obj, { symbol }, index) => {
-              obj[`token${index}`] = symbol;
-              return obj;
+        "Click on leadeboard": ({ view, ...opportunity }) => {
+          MixpanelService({ context }).trackOpportunityButton(
+            "leaderboard",
+            "campaign",
+            {
+              view,
             },
-            {} as { [key: string]: string },
+            opportunity,
+            chains,
           );
-
-          MixpanelService({}).trackButton("Leaderboard", "none", {
-            status,
-            action,
-            protocol: protocol?.id,
-            ...tkns,
-            view,
-            page,
-            chain,
-          });
         },
-        "Check filters": params => MixpanelService({}).track(event, params),
+        "Check filters": params => MixpanelService({ context }).trackButton("check", "check_filters", params),
       };
 
       return events[event]?.(data);
     },
-    [mixpanelConfiguration, chains],
+    [mixpanelConfiguration, chains, context],
   );
 
   return {

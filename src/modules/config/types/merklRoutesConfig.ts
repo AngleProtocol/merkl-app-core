@@ -19,6 +19,7 @@ export type MerklRoute<T extends keyof MerklRouteType | undefined = keyof MerklR
    * Label for links across the app
    */
   label: string;
+  route?: string;
   type?: T;
   /**
    * Meta Tags

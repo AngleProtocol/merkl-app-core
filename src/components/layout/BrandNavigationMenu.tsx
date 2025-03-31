@@ -1,5 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import { Link, useNavigation } from "@remix-run/react";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
@@ -25,6 +26,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
   const images = useMerklConfig(store => store.config.images);
   const navigationConfig = useMerklConfig(store => store.config.navigation);
   const appName = useMerklConfig(store => store.config.appName);
+  const { track } = useMixpanelTracking();
   const hideLayerMenuHomePage = useMerklConfig(store => store.config.hideLayerMenuHomePage);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
             : {})}
           look="soft"
           size="lg"
+          onLink={() => track("Click on button", { button: "merkl", type: nav.name?.toLowerCase() })}
           key={key}
           className={"dim flex items-center gap-md"}>
           <Icon {...nav.icon} className="text-xl text-main-11" />
@@ -76,7 +79,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
     };
 
     return Object.entries(routes).reduce((opt, [key, route]) => Object.assign(opt, { [key]: convert(route, key) }), {});
-  }, [routes, address]);
+  }, [routes, address, track]);
 
   /**
    * Navigation + Footer elements

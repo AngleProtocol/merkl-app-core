@@ -326,6 +326,7 @@ export default function OpportunityFilters({
               state={[innerSearch, setInnerSearch]}
               suffix={<Icon remix="RiSearchLine" />}
               placeholder="Search"
+              onClick={() => track("Click on button", { button: "search", type: "searchbar" })}
             />
           </Form>
         )}
@@ -340,6 +341,7 @@ export default function OpportunityFilters({
                 look="tint"
                 placeholder="Category"
                 placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
+                onOpen={() => track("Click on button", { button: "category", type: "searchbar" })}
               />
             )}
             {fields.includes("status") && (
@@ -350,6 +352,7 @@ export default function OpportunityFilters({
                 look="tint"
                 placeholder="Status"
                 placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
+                onOpen={() => track("Click on button", { button: "status", type: "searchbar" })}
               />
             )}
             {fields.includes("chain") && !isSingleChain && (
@@ -364,6 +367,7 @@ export default function OpportunityFilters({
                 look="tint"
                 placeholder="Chain"
                 placeholderIcon={<Icon remix="RiLink" />}
+                onOpen={() => track("Click on button", { button: "chain", type: "searchbar" })}
               />
             )}
             {fields.includes("protocol") && !isSingleProtocol && (
@@ -376,6 +380,7 @@ export default function OpportunityFilters({
                 look="tint"
                 placeholder="Protocol"
                 placeholderIcon={<Icon remix="RiShapesFill" />}
+                onOpen={() => track("Click on button", { button: "protocol", type: "searchbar" })}
               />
             )}
           </Group>
@@ -400,7 +405,13 @@ export default function OpportunityFilters({
       </Group>
       <Select
         onChange={onSortByChange}
-        state={[sortInput, setSortInput]}
+        state={[
+          sortInput,
+          s => {
+            setSortInput(s);
+            track("Click on button", { button: "sort", type: s });
+          },
+        ]}
         options={filteredSortOptions}
         look="hype"
         placeholder={defaultSortPlaceholder}

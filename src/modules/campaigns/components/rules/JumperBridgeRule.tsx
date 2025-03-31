@@ -1,5 +1,6 @@
 import Chain from "@core/modules/chain/components/element/Chain";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Chain as ChainType } from "@merkl/api";
 import { Box, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, Text, Value, useWalletContext } from "dappkit";
 import { type ReactNode, useMemo } from "react";
@@ -53,10 +54,13 @@ export default function JumperBridgeRule({
       ));
   }, [rawChainsEntities]);
 
+  const { track } = useMixpanelTracking();
+
   return (
     <Dropdown
       size="lg"
       padding="xs"
+      onOpen={() => track("Click on button", { button: "jumper", type: "rule" })}
       content={
         <Group className="flex-col">
           <Group size={"sm"}>

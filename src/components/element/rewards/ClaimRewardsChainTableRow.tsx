@@ -1,5 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, type ListProps, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
@@ -87,6 +88,8 @@ export default function ClaimRewardsChainTableRow({
     switchChain(reward.chain.id);
   }, [switchChain, reward.chain.id]);
 
+  const { track } = useMixpanelTracking();
+
   return (
     <ClaimRewardsChainRow
       {...props}
@@ -114,6 +117,7 @@ export default function ClaimRewardsChainTableRow({
                   disabled={!claimTransaction}
                   className="ml-xl"
                   look="hype"
+                  onClick={() => track("Click on button", { button: "claim", type: "chain" })}
                   tx={claimTransaction}
                   onSuccess={onClaimSuccess}>
                   Claim
