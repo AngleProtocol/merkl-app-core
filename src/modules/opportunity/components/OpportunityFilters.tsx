@@ -65,7 +65,7 @@ export default function OpportunityFilters({
         )}
         {fields.includes("action") && (
           <Select
-            state={[filtersState.actionsFilter.input, filtersState.actionsFilter.setInput]}
+            state={[filtersState.actionsFilter.input ?? [], filtersState.actionsFilter.setInput]}
             allOption={"All categories"}
             multiple
             options={filtersState.actionsFilter.options}
@@ -76,7 +76,7 @@ export default function OpportunityFilters({
         )}
         {fields.includes("status") && (
           <Select
-            state={[filtersState.statusFilter.input, filtersState.statusFilter.setInput]}
+            state={[filtersState.statusFilter.input ?? [], filtersState.statusFilter.setInput]}
             multiple
             options={filtersState.statusFilter.options}
             look="tint"
@@ -86,7 +86,7 @@ export default function OpportunityFilters({
         )}
         {fields.includes("chain") && !isSingleChain && (
           <Select
-            state={[filtersState.chainIdsFilter.input, filtersState.chainIdsFilter.setInput]}
+            state={[filtersState.chainIdsFilter.input ?? [], filtersState.chainIdsFilter.setInput]}
             allOption={"All chains"}
             multiple
             search
@@ -100,7 +100,7 @@ export default function OpportunityFilters({
         )}
         {fields.includes("protocol") && !isSingleProtocol && (
           <Select
-            state={[filtersState.protocolsFilter.input, filtersState.protocolsFilter.setInput]}
+            state={[filtersState.protocolsFilter.input ?? [], filtersState.protocolsFilter.setInput]}
             allOption={"All protocols"}
             multiple
             search
@@ -112,7 +112,7 @@ export default function OpportunityFilters({
         )}
         <Button onClick={clearFilters} look="soft" size="xs" className="text-nowrap">
           Clear all filters
-          <Icon remix="RiCloseLine" />{" "}
+          <Icon remix="RiCloseLine" />
         </Button>
       </Group>
       {fields.includes("sort") && (

@@ -77,8 +77,8 @@ export default function useOpportunityFilters() {
   }, [debouncedSearch, search, searchParams, searchTerm, setSearch, setSearchParams]);
 
   const clearFilters = useCallback(() => {
-    setSearchTerm(undefined);
     setSearchParams(undefined);
+    setSearchTerm(undefined);
   }, [setSearchParams]);
 
   const toggleSortOrder = useCallback(
@@ -95,7 +95,6 @@ export default function useOpportunityFilters() {
 
       const newParam = `${baseParam}-${nextOrder}`;
       if (!filtersConfigEnabled[newParam]) return;
-      console.log({});
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("sort", newParam);
       setSearchParams(newSearchParams);
