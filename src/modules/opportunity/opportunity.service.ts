@@ -13,7 +13,6 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
 
         // If search string is a campaignId, we should not search by name
         const searchString = url.searchParams.get("search");
-        const name = searchString?.startsWith("0x") && searchString.length === 66 ? undefined : searchString;
         const campaignId = searchString?.startsWith("0x") && searchString.length === 66 ? searchString : undefined;
 
         const filters = {
@@ -25,7 +24,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
           sort: url.searchParams.get("sort")?.split("-")[0],
           order: url.searchParams.get("sort")?.split("-")[1],
-          name,
+          search: searchString,
           campaignId,
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           point: backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false),

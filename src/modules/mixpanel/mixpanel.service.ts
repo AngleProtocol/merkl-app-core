@@ -27,6 +27,11 @@ export const MixpanelService = defineModule<{ context: MixpanelPageContext; toke
     });
   });
 
+  const opt = (consent: boolean) => {
+    if (!consent) return mixpanel.opt_out_tracking();
+    return mixpanel.opt_in_tracking();
+  };
+
   const track = (name: string, metadata: object) => {
     mixpanel.track(name, metadata);
   };
@@ -112,5 +117,6 @@ export const MixpanelService = defineModule<{ context: MixpanelPageContext; toke
     trackOpportunityButton,
     contextToProperties,
     trackPage,
+    opt,
   };
 });
