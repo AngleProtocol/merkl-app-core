@@ -1,13 +1,16 @@
+import type { Protocol } from "@merkl/api";
 import { type PropsWithChildren, createContext, useContext, useState } from "react";
 import { create } from "zustand";
 import type { MerklConfig } from "./config.model";
 
 export interface ConfigContextStore {
   config: Omit<MerklConfig, "wagmi">;
+  protocols: Protocol[];
 }
-export const initConfigProvider = (config: MerklConfig) =>
+export const initConfigProvider = (config: MerklConfig, protocols: Protocol[]) =>
   create<ConfigContextStore>(() => ({
     config,
+    protocols,
   }));
 
 export interface ConfigContextData {
@@ -33,8 +36,8 @@ export function useMerklConfig<
   return useStore<R>(access);
 }
 
-export function ConfigProvider({ config, children }: PropsWithChildren<ConfigContextStore>) {
-  const [useStore] = useState<ReturnType<typeof initConfigProvider>>(() => initConfigProvider(config));
+export function ConfigProvider({ config, children, protocols }: PropsWithChildren<ConfigContextStore>) {
+  const [useStore] = useState<ReturnType<typeof initConfigProvider>>(() => initConfigProvider(config, protocols));
 
   return <ConfigContext.Provider value={{ useStore }}>{children}</ConfigContext.Provider>;
 }

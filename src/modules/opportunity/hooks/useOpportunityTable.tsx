@@ -6,7 +6,9 @@ import OpportunityTableApr from "../components/element/OpportunityTableApr";
 import OpportunityTableDailyRewards from "../components/element/OpportunityTableDailyRewards";
 import OpportunityTableName from "../components/element/OpportunityTableName";
 import OpportunityTableTvl from "../components/element/OpportunityTableTvl";
+import SortableElement from "../components/element/SortableElement";
 import type { OpportuntyLibraryOverride } from "../opportunity.model";
+import { SortOrder } from "./useOpportunityFilters";
 
 /**
  * Formats rewards for a given opportunity
@@ -14,7 +16,7 @@ import type { OpportuntyLibraryOverride } from "../opportunity.model";
 export default function useOpportunityTable(opportunity?: Opportunity, count?: number) {
   const columnConfig = useMerklConfig(store => store.config.opportunity.library.overrideDisplay);
 
-  const defaultColumns: OpportuntyLibraryOverride<"table"> = useMemo(() => {
+  const defaultColumns: OpportuntyLibraryOverride<"table"> | undefined = useMemo(() => {
     return {
       name: {
         name: (
@@ -25,27 +27,25 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
         size: "minmax(400px,1fr)",
         className: "justify-start",
         main: true,
-        table: (opportunity?: Opportunity) =>
-          opportunity ? <OpportunityTableName opportunity={opportunity} /> : <></>,
+        table: (opportunity: Opportunity) => <OpportunityTableName opportunity={opportunity} />,
       },
       apr: {
-        name: "APR",
+        name: <SortableElement label="APR" sortingKey="apr" />,
         size: "minmax(100px,115px)",
         className: "md:justify-center",
-        table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableApr opportunity={opportunity} /> : <></>),
+        table: (opportunity: Opportunity) => <OpportunityTableApr opportunity={opportunity} />,
       },
       tvl: {
-        name: "TVL",
+        name: <SortableElement label="TVL" sortingKey="tvl" />,
         size: "minmax(100px,115px)",
         className: "md:justify-center",
-        table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableTvl opportunity={opportunity} /> : <></>),
+        table: (opportunity: Opportunity) => <OpportunityTableTvl opportunity={opportunity} />,
       },
       dailyRewards: {
-        name: "Daily rewards",
-        size: "minmax(100px,115px)",
+        name: <SortableElement label="Daily rewards" sortingKey="rewards" initialSortOrder={SortOrder.DESC} />,
+        size: "minmax(120px,130px)",
         className: "md:justify-end text-nowrap",
-        table: (opportunity?: Opportunity) =>
-          opportunity ? <OpportunityTableDailyRewards opportunity={opportunity} /> : <></>,
+        table: (opportunity: Opportunity) => <OpportunityTableDailyRewards opportunity={opportunity} />,
       },
       cta: {
         name: "",
