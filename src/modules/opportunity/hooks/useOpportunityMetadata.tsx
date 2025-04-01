@@ -16,6 +16,7 @@ import {
 } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { OpportunityService } from "../opportunity.service";
 
 const metadata = [
   "name",
@@ -183,31 +184,10 @@ export default function useOpportunityMetadata({
   /**
    * Explainer for the opportunity with Helpers
    */
-  const description = useMemo(() => {
-    const symbols = tokens?.map(t => t.symbol).join("-");
-
-    switch (action) {
-      case "POOL":
-        return `Earn rewards by providing liquidity to the ${protocol?.name} ${symbols} pool on ${chain.name}, or through a
-            liquidity manager supported by Merkl`;
-      case "HOLD":
-        return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
-      case "LEND":
-        return `Earn rewards by lending ${symbols} to ${protocol?.name} on ${chain.name}`;
-      case "BORROW":
-        return `Earn rewards by taking a long position on ${protocol?.name} ${symbols} on ${chain.name}`;
-      case "DROP":
-        return `Visit your dashboard to check if you've earned rewards from this airdrop`;
-      case "LONG":
-        return `Borrow ${symbols} on ${protocol?.name} on ${chain.name}`;
-      case "SHORT":
-        return `Earn rewards by taking a short position on ${protocol?.name} ${symbols} on ${chain.name}`;
-      case "SWAP":
-        return `Earn rewards by trading ${symbols} on ${chain.name}`;
-      default:
-        break;
-    }
-  }, [tokens, protocol, chain, action]);
+  const description = useMemo(
+    () => OpportunityService({}).getDescription({ tokens, protocol, chain, action }),
+    [tokens, protocol, chain, action],
+  );
 
   const howToEarnRewardsHelper = useMemo(() => {
     const symbols = tokens?.map(t => t.symbol).join("-");

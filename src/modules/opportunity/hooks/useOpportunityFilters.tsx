@@ -4,7 +4,7 @@ import useDebounce from "@core/hooks/useDebounce";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Icon, Text } from "packages/dappkit/src";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export enum SortOrder {
   ASC = "asc",

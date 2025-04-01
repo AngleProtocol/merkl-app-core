@@ -1,12 +1,12 @@
 import type { OpportunityView } from "@core/config/opportunity";
 import useChains from "@core/modules/chain/hooks/useChains";
 import { useConfigContext, useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
 import type { Chain } from "@merkl/api";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityFilters from "../hooks/useOpportunityFilters";
-import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 
@@ -88,7 +88,7 @@ export default function OpportunityFilters({
             placeholder="Category"
             placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
             onOpen={() => track("Click on button", { button: "category", type: "searchbar" })}
-            />
+          />
         )}
         {fields.includes("status") && (
           <Select
@@ -99,7 +99,7 @@ export default function OpportunityFilters({
             placeholder="Status"
             placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
             onOpen={() => track("Click on button", { button: "status", type: "searchbar" })}
-            />
+          />
         )}
         {fields.includes("chain") && !isSingleChain && (
           <Select
@@ -114,7 +114,7 @@ export default function OpportunityFilters({
             placeholder="Chain"
             placeholderIcon={<Icon remix="RiLink" />}
             onOpen={() => track("Click on button", { button: "chain", type: "searchbar" })}
-            />
+          />
         )}
         {fields.includes("protocol") && !isSingleProtocol && (
           <Select

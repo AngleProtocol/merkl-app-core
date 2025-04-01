@@ -34,7 +34,7 @@ export async function loader({
     chain,
     backend,
     routes,
-    ...MetadataService({ request, backend, routes }).fill(),
+    ...MetadataService({ request, backend, routes }).fill("opportunity", opportunity as Opportunity),
   };
 }
 
