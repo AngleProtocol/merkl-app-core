@@ -6,9 +6,9 @@ import OpportunityTableApr from "../components/element/OpportunityTableApr";
 import OpportunityTableDailyRewards from "../components/element/OpportunityTableDailyRewards";
 import OpportunityTableName from "../components/element/OpportunityTableName";
 import OpportunityTableTvl from "../components/element/OpportunityTableTvl";
+import SortableElement from "../components/element/SortableElement";
 import type { OpportuntyLibraryOverride } from "../opportunity.model";
 import { SortOrder } from "./useOpportunityFilters";
-import SortableElement from "../components/element/SortableElement";
 
 /**
  * Formats rewards for a given opportunity

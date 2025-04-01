@@ -1,6 +1,6 @@
+import { Group, Icon, Text } from "packages/dappkit/src";
 import { useMemo } from "react";
 import useOpportunityFilters, { SortOrder } from "../../hooks/useOpportunityFilters";
-import { Group, Icon, Text } from "packages/dappkit/src";
 
 type SortableElementProps = {
   label: React.ReactNode;
