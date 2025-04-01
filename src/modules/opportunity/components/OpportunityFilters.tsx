@@ -60,7 +60,17 @@ export default function OpportunityFilters({
             value={filtersState.searchFilter.input ?? ""}
             className="min-w-[12ch]"
             state={[filtersState.searchFilter.input ?? "", filtersState.searchFilter.setInput]}
-            suffix={<Icon remix="RiSearchLine" />}
+            onKeyDown={e => {
+              if (e.key !== "Enter") return;
+              filtersState.searchFilter.executeSearch();
+            }}
+            suffix={
+              <Icon
+                remix="RiSearchLine"
+                className="cursor-pointer hover:text-main-12"
+                onClick={filtersState.searchFilter.executeSearch}
+              />
+            }
             placeholder="Search"
           />
         )}

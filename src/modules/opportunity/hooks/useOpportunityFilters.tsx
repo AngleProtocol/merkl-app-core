@@ -56,25 +56,25 @@ export default function useOpportunityFilters() {
     v => v?.split(","),
   );
 
-  const [search, setSearch] = useSearchParamState<string>(
+  const [, setSearch] = useSearchParamState<string>(
     "search",
     v => v,
     v => v,
   );
 
   // Allow setting params on debounced value
-  useEffect(() => {
-    if (searchTerm === undefined || debouncedSearch === undefined) return;
-    if (debouncedSearch === search) return;
-    if (debouncedSearch === "") {
-      if (searchTerm === debouncedSearch && search === undefined) return;
-      const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.delete("search");
-      setSearchParams(newSearchParams);
-      return;
-    }
-    setSearch(debouncedSearch as string);
-  }, [debouncedSearch, search, searchParams, searchTerm, setSearch, setSearchParams]);
+  // useEffect(() => {
+  //   if (searchTerm === undefined || debouncedSearch === undefined) return;
+  //   if (debouncedSearch === search) return;
+  //   if (debouncedSearch === "") {
+  //     if (searchTerm === debouncedSearch && search === undefined) return;
+  //     const newSearchParams = new URLSearchParams(searchParams);
+  //     newSearchParams.delete("search");
+  //     setSearchParams(newSearchParams);
+  //     return;
+  //   }
+  //   setSearch(debouncedSearch as string);
+  // }, [debouncedSearch, search, searchParams, searchTerm, setSearch, setSearchParams]);
 
   const clearFilters = useCallback(() => {
     setSearchParams(undefined);
@@ -101,6 +101,10 @@ export default function useOpportunityFilters() {
     },
     [filtersConfigEnabled, searchParams, setSearchParams],
   );
+
+  const executeSearch = useCallback(() => {
+    setSearch(searchTerm ?? "");
+  }, [searchTerm, setSearch]);
 
   const sortOptions = useMemo(() => {
     return {
@@ -205,7 +209,7 @@ export default function useOpportunityFilters() {
         options: statusOptions,
       },
       chainIdsFilter: { input: chainIds, setInput: setChainIds },
-      searchFilter: { input: searchTerm, setInput: setSearchTerm },
+      searchFilter: { input: searchTerm, setInput: setSearchTerm, executeSearch },
       sortFilter: {
         input: sort ?? (defaultSortKey as keyof typeof filteredSortOptions),
         setInput: setSort,
