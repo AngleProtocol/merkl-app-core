@@ -6,7 +6,6 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Show, Space, Title } from "dappkit";
@@ -26,15 +25,14 @@ export async function loader({ context: { backend }, request }: LoaderFunctionAr
 
   //TODO: embed this in client/service
   const chains = await ChainService({ api, backend }).getAll();
-  const { protocols } = await ProtocolService({ api, backend, request }).getManyFromRequest();
 
-  return { opportunities, chains, count, protocols, featuredOpportunities };
+  return { opportunities, chains, count, featuredOpportunities };
 }
 
 export const clientLoader = Cache.wrap("opportunities", 300);
 
 export default function Index() {
-  const { opportunities, chains, count, protocols, featuredOpportunities } = useLoaderData<typeof loader>();
+  const { opportunities, chains, count, featuredOpportunities } = useLoaderData<typeof loader>();
   const areFeaturedOpportunitiesEnabled = useMerklConfig(store => store.config.opportunity.featured.enabled);
 
   return (
@@ -51,7 +49,7 @@ export default function Index() {
             ALL OPPORTUNITIES
           </Title>
         </Show>
-        <OpportunityLibrary opportunities={opportunities} chains={chains} count={count} protocols={protocols} />
+        <OpportunityLibrary opportunities={opportunities} chains={chains} count={count} />
       </Group>
     </Container>
   );

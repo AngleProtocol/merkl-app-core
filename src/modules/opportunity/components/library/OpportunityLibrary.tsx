@@ -27,7 +27,6 @@ export default function OpportunityLibrary({
   only,
   exclude = [],
   chains,
-  protocols,
   hideFilters,
   forceView,
 }: OpportunityLibrary) {
@@ -126,7 +125,7 @@ export default function OpportunityLibrary({
     <div className="w-full">
       {!hideFilters && (
         <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
-          <OpportunityFilters {...{ only, chains, protocols, view, setView }} exclude={mergedExclusions} />
+          <OpportunityFilters {...{ only, chains, view, setView }} exclude={mergedExclusions} />
         </Box>
       )}
 

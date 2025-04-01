@@ -24,7 +24,7 @@ export default function useOpportunityFilters() {
   const defaultSortKey = useMemo(() => sortByConfig.concat("-desc"), [sortByConfig]);
 
   const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
-  const debouncedSearch = useDebounce(searchTerm, 700);
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [sort, setSort] = useSearchParamState<keyof typeof filteredSortOptions>(

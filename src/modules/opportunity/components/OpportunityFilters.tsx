@@ -1,8 +1,8 @@
 import type { OpportunityView } from "@core/config/opportunity";
 import useChains from "@core/modules/chain/hooks/useChains";
-import { useMerklConfig } from "@core/modules/config/config.context";
+import { useConfigContext, useMerklConfig } from "@core/modules/config/config.context";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
-import type { Chain, Protocol } from "@merkl/api";
+import type { Chain } from "@merkl/api";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityFilters from "../hooks/useOpportunityFilters";
@@ -13,7 +13,6 @@ export type OpportunityFilterProps = {
   only?: OpportunityFilter[];
   chains?: Chain[];
   setView?: (v: OpportunityView) => void;
-  protocols?: Protocol[];
   exclude?: OpportunityFilter[];
 };
 
@@ -22,16 +21,18 @@ export default function OpportunityFilters({
   only, // Only these filters
   exclude, // Exclude these filters
   chains,
-  protocols,
 }: OpportunityFilterProps) {
-  const { options: protocolOptions, isSingleProtocol } = useProtocols(protocols);
-
   const {
     options: chainOptions,
     searchOptions: chainSearchOptions,
     indexOptions: chainIndexOptions,
     isSingleChain,
   } = useChains(chains);
+
+  const { useStore } = useConfigContext();
+
+  const { options: protocolOptions } = useProtocols(useStore.getState().protocols);
+  const isSingleProtocol = useMemo(() => !(useStore.getState().protocols.length > 1), [useStore]);
 
   const filtersConfigEnabled = useMerklConfig(store => store.config.opportunitiesFilters);
   const defaultSortBy = useMerklConfig(store => store.config.backend.sortedBy);
