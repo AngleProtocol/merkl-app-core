@@ -1,20 +1,24 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { Button, Icon, Title, createTable } from "dappkit";
+import { Button, Group, Icon, Title, createTable } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 import OpportunityTableApr from "../components/element/OpportunityTableApr";
 import OpportunityTableDailyRewards from "../components/element/OpportunityTableDailyRewards";
 import OpportunityTableName from "../components/element/OpportunityTableName";
 import OpportunityTableTvl from "../components/element/OpportunityTableTvl";
 import type { OpportuntyLibraryOverride } from "../opportunity.model";
+import useOpportunityFilters, { SortOrder } from "./useOpportunityFilters";
 
 /**
  * Formats rewards for a given opportunity
  */
 export default function useOpportunityTable(opportunity?: Opportunity, count?: number) {
   const columnConfig = useMerklConfig(store => store.config.opportunity.library.overrideDisplay);
+  const { filtersState, toggleSortOrder } = useOpportunityFilters();
 
-  const defaultColumns: OpportuntyLibraryOverride<"table"> = useMemo(() => {
+  const defaultColumns: OpportuntyLibraryOverride<"table"> | undefined = useMemo(() => {
+    const sortBase = filtersState.sortFilter.input?.split("-")?.[0];
+    const sortOrder = filtersState.sortFilter.input?.split("-")?.[1];
     return {
       name: {
         name: (
@@ -25,27 +29,42 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
         size: "minmax(400px,1fr)",
         className: "justify-start",
         main: true,
-        table: (opportunity?: Opportunity) =>
-          opportunity ? <OpportunityTableName opportunity={opportunity} /> : <></>,
+        table: (opportunity: Opportunity) => <OpportunityTableName opportunity={opportunity} />,
       },
       apr: {
-        name: "APR",
+        name: (
+          <Group onClick={() => toggleSortOrder("apr")} className="cursor-pointer">
+            APR
+            {sortBase === "apr" && <Icon remix={sortOrder === SortOrder.DESC ? "RiArrowDownLine" : "RiArrowUpLine"} />}
+          </Group>
+        ),
         size: "minmax(100px,115px)",
         className: "md:justify-center",
-        table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableApr opportunity={opportunity} /> : <></>),
+        table: (opportunity: Opportunity) => <OpportunityTableApr opportunity={opportunity} />,
       },
       tvl: {
-        name: "TVL",
+        name: (
+          <Group onClick={() => toggleSortOrder("tvl")} className="cursor-pointer">
+            TVL
+            {sortBase === "tvl" && <Icon remix={sortOrder === SortOrder.DESC ? "RiArrowDownLine" : "RiArrowUpLine"} />}
+          </Group>
+        ),
         size: "minmax(100px,115px)",
         className: "md:justify-center",
-        table: (opportunity?: Opportunity) => (opportunity ? <OpportunityTableTvl opportunity={opportunity} /> : <></>),
+        table: (opportunity: Opportunity) => <OpportunityTableTvl opportunity={opportunity} />,
       },
       dailyRewards: {
-        name: "Daily rewards",
-        size: "minmax(100px,115px)",
+        name: (
+          <Group onClick={() => toggleSortOrder("rewards", SortOrder.DESC)} className="cursor-pointer">
+            Daily rewards
+            {sortBase === "rewards" && (
+              <Icon remix={sortOrder === SortOrder.DESC ? "RiArrowDownLine" : "RiArrowUpLine"} />
+            )}
+          </Group>
+        ),
+        size: "minmax(120px,130px)",
         className: "md:justify-end text-nowrap",
-        table: (opportunity?: Opportunity) =>
-          opportunity ? <OpportunityTableDailyRewards opportunity={opportunity} /> : <></>,
+        table: (opportunity: Opportunity) => <OpportunityTableDailyRewards opportunity={opportunity} />,
       },
       cta: {
         name: "",
@@ -58,7 +77,7 @@ export default function useOpportunityTable(opportunity?: Opportunity, count?: n
         ),
       },
     };
-  }, [count]);
+  }, [count, toggleSortOrder, filtersState.sortFilter.input]);
 
   const columns = useMemo(() => {
     if (!defaultColumns) return null;

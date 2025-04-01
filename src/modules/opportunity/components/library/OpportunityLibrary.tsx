@@ -1,11 +1,11 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useLocation, useNavigate } from "@remix-run/react";
 import { Box, Button, Group, Icon, List, Text } from "dappkit";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
 import type { OpportunityView } from "../../../../config/opportunity";
+import useOpportunityFilters from "../../hooks/useOpportunityFilters";
 import useOpportunityTable from "../../hooks/useOpportunityTable";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
 import OpportunityCell from "../items/OpportunityCell";
@@ -47,20 +47,7 @@ export default function OpportunityLibrary({
   }, [exclude, excludeFilters]);
 
   const [view, setView] = useState<OpportunityView>(forceView ?? opportunityLibraryDefaultView ?? "table");
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [clearing, setClearing] = useState(false);
-
-  useEffect(() => {
-    if (!clearing) return;
-    setClearing(false);
-  }, [clearing]);
-
-  const handleClearFilters = useCallback(() => {
-    setClearing(true);
-    navigate(location.pathname, { replace: true });
-  }, [location.pathname, navigate]);
+  const { clearFilters } = useOpportunityFilters();
 
   const { OpportunityTable } = useOpportunityTable(undefined, count);
 
@@ -139,12 +126,7 @@ export default function OpportunityLibrary({
     <div className="w-full">
       {!hideFilters && (
         <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
-          <OpportunityFilters
-            {...{ only, chains, protocols, view, setView }}
-            exclude={mergedExclusions}
-            onClear={handleClearFilters}
-            clearing={clearing}
-          />
+          <OpportunityFilters {...{ only, chains, protocols, view, setView }} exclude={mergedExclusions} />
         </Box>
       )}
 
@@ -163,7 +145,7 @@ export default function OpportunityLibrary({
               <Icon remix="RiErrorWarningFill" />
               No opportunity yet :)
             </Text>
-            <Button onClick={handleClearFilters}>
+            <Button onClick={clearFilters}>
               Clear all filters <Icon remix="RiArrowRightLine" />
             </Button>
           </Box>

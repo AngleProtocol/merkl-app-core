@@ -11,12 +11,13 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       ({ backend, request }, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
         const url = new URL(request.url);
 
-        // If search string is a campaignId, we should not search by name
+        // TODO: Remove this art for a full search param handled by backend reository
         const searchString = url.searchParams.get("search");
         const campaignId = searchString?.startsWith("0x") && searchString.length === 66 ? searchString : undefined;
+        // ------
 
         const filters = {
-          status: url.searchParams.get("status") ?? undefined,
+          status: url.searchParams.get("status") ?? backend.opportunityDefaultStatus?.join(",") ?? undefined,
           mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
           action: url.searchParams.get("action") ?? undefined,
           chainId: url.searchParams.get("chain") ?? undefined,
