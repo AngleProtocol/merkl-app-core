@@ -129,7 +129,7 @@ export const defaultMerklConfig: MerklConfig = {
   images: {},
   deposit: true,
   walletOptions: {
-    hideInjectedWallets: ["phantom", "coinbase wallet"],
+    hideInjectedWallets: [],
     sponsorTransactions: true,
     async client(c) {
       if (c.chain?.id === zksync.id) return c.extend(eip712WalletActions());
