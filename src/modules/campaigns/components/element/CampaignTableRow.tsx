@@ -5,7 +5,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import {
   Box,
   Button,

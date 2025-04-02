@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Form, useLocation } from "@remix-run/react";
+import { Form, useLocation } from "react-router";
 import { Divider, Group, Icon, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
 import { Scroll } from "dappkit";

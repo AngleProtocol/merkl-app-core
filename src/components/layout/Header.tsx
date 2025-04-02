@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
-import { useLocation } from "@remix-run/react";
+import { useLocation } from "react-router";
 import {
   Button,
   Container,

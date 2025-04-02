@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute, NavigationMenuRoutes } from "@core/modules/config/config.model";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
-import { Link, useNavigation } from "@remix-run/react";
+import { Link, useNavigation } from "react-router";
 import { Button, Group, Icon, Image, Text, useTheme, useWalletContext } from "dappkit";
 import type { MenuOptions, MenuProps } from "packages/dappkit/src/components/extenders/Menu";
 import Menu from "packages/dappkit/src/components/extenders/Menu";

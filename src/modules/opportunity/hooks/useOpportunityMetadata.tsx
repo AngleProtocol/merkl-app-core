@@ -3,7 +3,7 @@ import Tag from "@core/components/element/Tag";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import {
   type Component,
   Divider,

@@ -1,4 +1,4 @@
-import { useLocation, useSearchParams } from "@remix-run/react";
+import { useLocation, useSearchParams } from "react-router";
 import { useCallback, useMemo } from "react";
 
 type Options = Parameters<ReturnType<typeof useSearchParams>["1"]>["1"];

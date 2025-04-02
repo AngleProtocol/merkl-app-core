@@ -1,7 +1,7 @@
 import type { Api } from "@core/api/types";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Chain, Token } from "@merkl/api";
-import { useSearchParams } from "@remix-run/react";
+import { useSearchParams } from "react-router";
 import { Group, Text } from "dappkit";
 import { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";

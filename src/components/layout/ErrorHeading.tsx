@@ -1,4 +1,4 @@
-import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "@remix-run/react";
+import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "react-router";
 import { Container } from "dappkit";
 import { useMemo } from "react";
 import Hero from "../composite/Hero";

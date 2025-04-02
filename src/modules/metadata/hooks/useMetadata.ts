@@ -1,5 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useLocation } from "@remix-run/react";
+import { useLocation } from "react-router";
 import { useMemo } from "react";
 import { MetadataService } from "../metadata.service";
 

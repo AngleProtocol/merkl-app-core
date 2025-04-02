@@ -1,7 +1,7 @@
 import Hero from "@core/components/composite/Hero";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {

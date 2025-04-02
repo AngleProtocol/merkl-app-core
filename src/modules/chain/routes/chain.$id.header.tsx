@@ -4,7 +4,7 @@ import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ context: { backend, routes }, params: { id }, request }: LoaderFunctionArgs) {

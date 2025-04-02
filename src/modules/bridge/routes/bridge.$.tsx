@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Button, Container, Group, Icon, Space, Text } from "dappkit";
 import { Suspense } from "react";
 import { I18n } from "../../../I18n";

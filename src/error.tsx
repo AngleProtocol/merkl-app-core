@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useNavigate, useRouteError } from "@remix-run/react";
+import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router";
 import { Group, Icon, Text, Title } from "packages/dappkit/src";
 import ThemeProvider from "packages/dappkit/src/context/Theme.context";
 import { useEffect } from "react";

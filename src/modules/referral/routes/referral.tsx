@@ -1,6 +1,6 @@
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space } from "dappkit";
 import Hero from "../../../components/composite/Hero";

@@ -1,6 +1,6 @@
 import { Cache } from "@core/modules/cache/cache.service";
 import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
 

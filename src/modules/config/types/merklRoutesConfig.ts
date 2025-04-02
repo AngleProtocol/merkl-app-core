@@ -1,6 +1,6 @@
 import type { MerklBackendConfig } from "@core/modules/config/types/merklBackendConfig";
 import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
-import type { MetaDescriptor } from "@remix-run/node";
+import\b.*react-router";
 
 /**
  * Types of single page resources

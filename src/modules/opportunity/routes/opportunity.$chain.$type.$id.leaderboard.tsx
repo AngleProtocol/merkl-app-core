@@ -3,7 +3,7 @@ import LeaderboardLibrary from "@core/components/element/leaderboard/Leaderboard
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
 import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
 import { useCallback } from "react";

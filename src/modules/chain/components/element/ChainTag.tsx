@@ -1,5 +1,5 @@
 import useChain from "@core/modules/chain/hooks/useChain";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 import { type ReactNode, useCallback } from "react";
 

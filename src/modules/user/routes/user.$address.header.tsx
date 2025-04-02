@@ -3,7 +3,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";

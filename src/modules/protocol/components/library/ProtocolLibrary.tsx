@@ -2,7 +2,7 @@ import type { OpportunityView } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import ProtocolFilters from "@core/modules/protocol/components/ProtocolFilters";
 import type { Chain, Protocol } from "@merkl/api";
-import { useLocation, useNavigate, useSearchParams } from "@remix-run/react";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { Box, Button, Group, Icon, List, Text, Title } from "dappkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ProtocolCell from "../element/ProtocolCell";

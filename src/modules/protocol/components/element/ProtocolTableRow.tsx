@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import type { Protocol } from "@merkl/api";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import type { BoxProps } from "dappkit";
 import { Button, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
