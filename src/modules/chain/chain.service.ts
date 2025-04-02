@@ -29,7 +29,7 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
           api.v4.chains.index.get({
             query: {
               name: query.name?.replace("-", " "),
-              ...showTest
+              ...showTest,
             },
           }),
         );
