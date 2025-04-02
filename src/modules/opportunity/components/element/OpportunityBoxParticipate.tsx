@@ -3,6 +3,7 @@ import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaign
 import AprValue from "@core/components/element/apr/AprValue";
 import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
 import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
+import TvlSection from "@core/components/element/tvl/TvlSection";
 import { getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
@@ -53,6 +54,8 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
     return action?.cta ?? "Supply Liquidity";
   }, [opportunity]);
 
+  const apr = useMemo(() => (!!opportunity.apr ? opportunity.apr : "-"), [opportunity.apr]);
+
   return (
     <>
       <OpportunityParticipateModal {...{ opportunity, targets }} state={[isSupplyModalOpen, setSupplyModalOpen]} />
@@ -98,29 +101,38 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
           </Group>
           <Group size="lg" className="flex-nowrap">
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
-              <Dropdown
-                onHover
-                onOpen={() => track("Click on opportunity button", { button: "apr", type: "tooltip", opportunity })}
-                content={
-                  isOnlyPoint ? (
-                    <PointsModalCampaigns opportunity={opportunity} />
-                  ) : (
-                    <AprSectionCampaigns opportunity={opportunity} />
-                  )
-                }>
+              {typeof apr === "number" ? (
+                <Dropdown
+                  onHover
+                  onOpen={() => track("Click on opportunity button", { button: "apr", type: "tooltip", opportunity })}
+                  content={
+                    isOnlyPoint ? (
+                      <PointsModalCampaigns opportunity={opportunity} />
+                    ) : (
+                      <Group className="flex-col" size="md">
+                        <AprSectionCampaigns opportunity={opportunity} />
+                        <TvlSection opportunity={opportunity} />
+                      </Group>
+                    )
+                  }>
+                  <Text bold className="flex items-center gap-sm ">
+                    {isOnlyPoint ? "SCORE" : "APR"}
+                    <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
+                  </Text>
+                </Dropdown>
+              ) : (
                 <Text bold className="flex items-center gap-sm ">
                   {isOnlyPoint ? "SCORE" : "APR"}
-                  <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
                 </Text>
-              </Dropdown>
+              )}
 
               <Title h={3} look="tint">
                 {isOnlyPoint ? (
                   <Value value format={decimalFormatPoint}>
-                    {opportunity.apr}
+                    {apr}
                   </Value>
                 ) : (
-                  <AprValue value>{opportunity.apr}</AprValue>
+                  <AprValue value>{apr}</AprValue>
                 )}
               </Title>
               <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
@@ -129,8 +141,13 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {opportunity.type === "CLAMM" ? (
                 <Dropdown
                   onHover
-                  onOpen={() => track("Click on opportunity buton", { button: "tvl", type: "tooltip", opportunity })}
-                  content={<TvlRowAllocation opportunity={opportunity} />}>
+                  onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
+                  content={
+                    <Group className="flex-col" size="md">
+                      <TvlRowAllocation opportunity={opportunity} />
+                      <TvlSection opportunity={opportunity} />
+                    </Group>
+                  }>
                   <Text bold className="flex items-center gap-sm " look="soft">
                     TVL
                     <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />

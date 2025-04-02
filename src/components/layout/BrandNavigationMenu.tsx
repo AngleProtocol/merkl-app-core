@@ -110,7 +110,7 @@ export default function BrandNavigationMenu({ routes, footer, disabled }: BrandN
         {typeof document === "undefined" || navigation.state === "loading" ? (
           <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
         ) : (
-          <Icon remix="RiMenu5Fill" className="text-main-12" />
+          <Icon remix={!!isMenuOpen ? "RiCloseLine" : "RiMenu5Fill"} className="text-main-12" />
         )}
       </Button>
     </Group>

@@ -45,10 +45,10 @@ export default function Footer() {
                 ©{new Date().getFullYear()} Angle Labs Inc. All rights reserved.
               </Text>
 
-              <Button look="soft" className="capitalize" size="sm" to={links.merklTermsConditions} external>
+              <Button look="soft" className="capitalize" size="sm" to={"/terms"}>
                 Terms
               </Button>
-              <Button look="soft" className="capitalize" size="sm" to={links.merklPrivacy} external>
+              <Button look="soft" className="capitalize" size="sm" to={"/privacy"}>
                 Privacy
               </Button>
             </Group>
