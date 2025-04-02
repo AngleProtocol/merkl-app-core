@@ -2,6 +2,7 @@ import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
@@ -18,7 +19,6 @@ import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
 import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
-import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 
 export async function loader({ context: { backend, routes }, params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
@@ -63,7 +63,7 @@ export default function Index() {
   const { reload: reloadBalances } = useBalances();
 
   const onClaimSuccess = async (_hash: string) => {
-    track("Click on button", { button: "claim", type: "header" })
+    track("Click on button", { button: "claim", type: "header" });
     reloadBalances();
     // await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
   };
