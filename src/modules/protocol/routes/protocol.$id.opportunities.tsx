@@ -1,12 +1,12 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Container, Group, Space, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend }, params: { id }, request }: LoaderFunctionArgs) {
   const opportunityFilters = { mainProtocolId: id } as const;

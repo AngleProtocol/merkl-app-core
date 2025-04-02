@@ -1,10 +1,10 @@
 import { api } from "@core/api";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
 import { Cache } from "../../../modules/cache/cache.service";
 import { TokenService } from "../../../modules/token/token.service";
 import TokenLibrary from "../components/library/TokenLibrary";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { tokens, count } = await TokenService({ api, request }).getManyFromRequest();

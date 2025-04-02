@@ -1,10 +1,10 @@
 import { api } from "@core/api";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Container } from "dappkit";
 import { isAddress } from "viem";
 import PositionLibrary from "../../../components/element/position/PositionLibrary";
 import { LiquidityService } from "../../../modules/liquidity/liquidity.service";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend }, params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";

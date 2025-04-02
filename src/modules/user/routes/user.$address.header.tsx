@@ -3,8 +3,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
-import\b.*react-router";
-import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
+import { Outlet, useFetcher, useLoaderData } from "react-router";
 import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
@@ -18,6 +17,7 @@ import { RewardService } from "../../../modules/reward/reward.service";
 import { TokenService } from "../../../modules/token/token.service";
 import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend, routes }, params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";

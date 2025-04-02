@@ -1,8 +1,7 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
@@ -10,6 +9,7 @@ import LeaderboardLibrary from "../../../components/element/leaderboard/Leaderbo
 import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
 import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({
   context: { backend },

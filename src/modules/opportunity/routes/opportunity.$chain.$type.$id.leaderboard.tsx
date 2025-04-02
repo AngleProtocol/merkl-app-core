@@ -3,12 +3,12 @@ import LeaderboardLibrary from "@core/components/element/leaderboard/Leaderboard
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
-import\b.*react-router";
-import { useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
+import { useLoaderData, useNavigate, useOutletContext } from "react-router";
 import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
 import { useCallback } from "react";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "./opportunity.$chain.$type.$id.header";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({
   context: { backend },
