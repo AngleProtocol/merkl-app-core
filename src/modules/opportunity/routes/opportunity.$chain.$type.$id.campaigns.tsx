@@ -4,11 +4,11 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { InteractionService } from "@core/modules/interaction/interaction.service";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Opportunity } from "@merkl/api";
-import\b.*react-router";
-import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
+import { Outlet, useLoaderData, useOutletContext } from "react-router";
 import { Container, Group } from "dappkit";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
 import { OpportunityService } from "../opportunity.service";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({
   context: { backend },

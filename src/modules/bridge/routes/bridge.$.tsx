@@ -1,10 +1,10 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import\b.*react-router";
 import { Button, Container, Group, Icon, Space, Text } from "dappkit";
 import { Suspense } from "react";
 import { I18n } from "../../../I18n";
 import { LiFiWidget } from "../../../components/composite/LiFiWidget.client";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   return MetadataService({ request, backend, routes }).fill();

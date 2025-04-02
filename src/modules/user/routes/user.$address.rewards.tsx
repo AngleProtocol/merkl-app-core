@@ -1,6 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import\b.*react-router";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
+import { useLoaderData, useOutletContext } from "react-router";
 import { Box, Button, Container, Fmt, Group, Icon, OverrideTheme, Space, Text, useWalletContext } from "dappkit";
 import { useMemo } from "react";
 import { isAddress } from "viem";
@@ -9,6 +8,7 @@ import ReinvestBanner from "../../../components/element/reinvest/ReinvestBanner"
 import ClaimRewardsLibrary from "../../../components/element/rewards/ClaimRewardsLibrary";
 import useBalances from "../../../hooks/useBalances";
 import type { OutletContextRewards } from "./user.$address.header";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";

@@ -8,10 +8,10 @@ import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMe
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import\b.*react-router";
-import { Meta, Outlet, useLoaderData } from "@remix-run/react";
+import { Meta, Outlet, useLoaderData } from "react-router";
 import { Group } from "dappkit";
 import OpportunityDevHelpers from "../components/element/OpportunityDevHelpers";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({
   context: { backend, routes },

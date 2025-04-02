@@ -6,9 +6,9 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Container, Group, Show, Space, Title } from "dappkit";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {
   const opportunityService = OpportunityService({ api, backend, request });

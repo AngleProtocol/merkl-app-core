@@ -6,9 +6,9 @@ import { OpportunityService } from "@core/modules/opportunity/opportunity.servic
 import useProtocolMetadata from "@core/modules/protocol/hooks/useProtocolMetadata";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { Opportunity } from "@merkl/api";
-import\b.*react-router";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "react-router";
 import { Group } from "dappkit";
+import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend, routes }, params: { id }, request }: LoaderFunctionArgs) {
   if (!id) throw new Error("Protocol not found");

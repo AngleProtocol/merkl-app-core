@@ -1,7 +1,7 @@
-import\b.*react-router";
 import { encodeFunctionData, parseAbi } from "viem";
 import { api } from "../../../api/";
 import { ZyfiService } from "../../../modules/zyfi/zyfi.service";
+import type { ActionFunctionArgs } from "react-router";
 
 // biome-ignore lint/suspicious/noExplicitAny: TODO: enhance this behavior
 (BigInt.prototype as any).toJSON = function () {

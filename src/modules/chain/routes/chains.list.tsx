@@ -1,8 +1,8 @@
 import { Cache } from "@core/modules/cache/cache.service";
 import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
-import\b.*react-router";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
+import type { LoaderFunctionArgs } from "react-router";
 
 // DEPRECATED
 export async function loader(_args: LoaderFunctionArgs) {
