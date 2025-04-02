@@ -1,5 +1,4 @@
 import { defineModule } from "@merkl/conduit";
-import\b.*react-router";
 import type { Location } from "@remix-run/react";
 import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import type { MerklRoute, MerklRouteType, MerklRoutes } from "../config/types/merklRoutesConfig";
