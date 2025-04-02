@@ -7,24 +7,27 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
   ({ inject }) => {
     const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
 
-    const getAll = inject(["api", "backend"]).inFunction(({ api, backend }) => {
+    const getAll = inject(["api", "backend", "request"]).inFunction(({ api, backend, request }) => {
+      const url = new URL(request.url);
       const showTest: Record<string, boolean> = {};
-      if (backend.alwaysShowTestTokens === true) showTest.test = true;
+      if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
       return fetch(() => api.v4.chains.index.get({ query: showTest }));
     });
 
-    const getMany = inject(["api", "backend"]).inFunction(
-      ({ api, backend }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+    const getMany = inject(["api", "backend", "request"]).inFunction(
+      ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+        const url = new URL(request.url);
         const showTest: Record<string, boolean> = {};
-        if (backend.alwaysShowTestTokens === true) showTest.test = true;
+        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
         return fetch(async () => api.v4.chains.index.get({ query: { ...query, ...showTest } }));
       },
     );
 
-    const get = inject(["api", "backend"]).inFunction(
-      async ({ api, backend }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+    const get = inject(["api", "backend", "request"]).inFunction(
+      async ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+        const url = new URL(request.url);
         const showTest: Record<string, boolean> = {};
-        if (backend.alwaysShowTestTokens === true) showTest.test = true;
+        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
         const chains = await fetch(async () =>
           api.v4.chains.index.get({
             query: {

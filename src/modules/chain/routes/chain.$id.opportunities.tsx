@@ -10,7 +10,7 @@ import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 
 export async function loader({ context: { backend }, params: { id: chainId }, request }: LoaderFunctionArgs) {
-  const chain = await ChainService({ api, backend }).get({ name: chainId });
+  const chain = await ChainService({ api, backend, request }).get({ name: chainId });
   const opportunityService = OpportunityService({ api, request, backend });
   const opportunityFilters = {
     chainId: chain.id.toString(),

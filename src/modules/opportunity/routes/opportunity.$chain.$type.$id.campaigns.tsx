@@ -17,7 +17,7 @@ export async function loader({
 }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService({ api, backend }).get({ name: chainId });
+  const chain = await ChainService({ api, request, backend }).get({ name: chainId });
   const opportunity = (await OpportunityService({ api, request, backend }).getCampaignsByParams({
     chainId: chain.id,
     type: type,
