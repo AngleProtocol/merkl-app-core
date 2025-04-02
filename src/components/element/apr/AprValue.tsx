@@ -3,7 +3,7 @@ import { Value } from "packages/dappkit/src";
 import { useMemo } from "react";
 
 export type ValueFormatProps = {
-  children: number;
+  children: number | string;
   format?: string;
   value?: boolean;
 };
@@ -12,6 +12,7 @@ export default function AprValue({ format, children, value, ...props }: ValueFor
   const decimalFormatApr = useMerklConfig(store => store.config.decimalFormat.apr);
 
   if (!children) return null;
+  if (typeof children === "string") return children;
   if (children < 0) return "0%";
   if (children > 10_000) return ">10K%"; // If APR is greater than 10_000%, display ">10K%"
   if (children < 1) return "<1%"; // If APR is under 1%, display "<1%"

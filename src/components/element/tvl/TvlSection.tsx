@@ -58,7 +58,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
             <Group
               className="grid"
               style={{
-                gridTemplateColumns: "minmax(350px, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
+                gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
               }}>
               <Text bold className="flex items-center gap-xs " size="sm" look="bold">
                 <Icon remix="RiForwardEndFill" />
@@ -83,7 +83,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                 <Group
                   className="grid"
                   style={{
-                    gridTemplateColumns: "minmax(350px, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
+                    gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
                   }}
                   size="md">
                   <Text size="sm" look="bold">
@@ -108,7 +108,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
           })}
         </Group>
       </Group>
-      {tvlFiltered?.length >= DEFAULT_ARRAY_SIZE && (
+      {tvlFiltered?.length > DEFAULT_ARRAY_SIZE && (
         <>
           <Divider look="soft" />
           <Button size="sm" className="mx-auto my-sm" look="soft" onClick={() => setIsShowingMore(!isShowingMore)}>
