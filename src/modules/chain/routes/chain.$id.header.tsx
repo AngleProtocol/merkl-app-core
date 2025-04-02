@@ -8,7 +8,7 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 
 export async function loader({ context: { backend, routes }, params: { id }, request }: LoaderFunctionArgs) {
-  const chain = await ChainService({ api }).get({ name: id });
+  const chain = await ChainService({ api, backend, request }).get({ name: id });
   const opportunityService = OpportunityService({ api, request, backend });
 
   const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({

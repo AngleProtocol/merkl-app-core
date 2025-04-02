@@ -17,7 +17,7 @@ export async function loader({
 }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService({ api, backend }).get({ name: chainId });
+  const chain = await ChainService({ api, request, backend }).get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
   // TODO Need to be replace by findFisrt campaign by id

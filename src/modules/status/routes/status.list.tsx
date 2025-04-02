@@ -9,7 +9,7 @@ import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";
 
 export async function loader({ request, context: { backend } }: LoaderFunctionArgs) {
-  const chains = await ChainService({ api, backend }).getAll();
+  const chains = await ChainService({ api, request, backend }).getAll();
   const statusAndDelays = await StatusService({ api }).getStatusAndDelays();
 
   return withUrl(request, {
