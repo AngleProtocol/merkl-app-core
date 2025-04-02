@@ -1,6 +1,5 @@
 import { actions as allActions } from "@core/config/actions";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
-import useDebounce from "@core/hooks/useDebounce";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { useSearchParams } from "@remix-run/react";
 import { Group, Icon, Text } from "packages/dappkit/src";
@@ -24,7 +23,6 @@ export default function useOpportunityFilters() {
   const defaultSortKey = useMemo(() => sortByConfig.concat("-desc"), [sortByConfig]);
 
   const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
-  const debouncedSearch = useDebounce(searchTerm, 500);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [sort, setSort] = useSearchParamState<keyof typeof filteredSortOptions>(

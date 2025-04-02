@@ -28,8 +28,8 @@ export default function useMixpanelTracking() {
             chains,
           );
         },
-        "Click on button": ({ button, type }) => {
-          MixpanelService({ context }).trackButton(button, type, {});
+        "Click on button": ({ button, type, ...rest }) => {
+          MixpanelService({ context }).trackButton(button, type, rest ?? {});
         },
         "Click on supply": ({ mode, ...opportunity }) => {
           MixpanelService({ context }).trackOpportunityButton("supply", mode, {}, opportunity, chains);

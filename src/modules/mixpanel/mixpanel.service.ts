@@ -12,7 +12,7 @@ export type MixpanelEvents = {
   "Click on leadeboard": Campaign & Opportunity;
   "Click on opportunity": Opportunity & { view: "table" | "cell" };
   "Check filters": object;
-  "Click on button": { type: string; button: string };
+  "Click on button": { type: string; button: string; [other: string]: unknown };
   "View page": object;
 };
 
