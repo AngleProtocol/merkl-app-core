@@ -1,6 +1,6 @@
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import type { Chain } from "@merkl/api";
-import { Form } from "@remix-run/react";
+import { Form } from "react-router";
 import { Group, Icon, Input } from "dappkit";
 import { useState } from "react";
 

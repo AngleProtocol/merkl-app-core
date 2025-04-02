@@ -5,7 +5,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 

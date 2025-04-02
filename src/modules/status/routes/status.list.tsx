@@ -1,7 +1,7 @@
 import { api } from "@core/api";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData } from "@remix-run/react";
 import { Box, Checkbox, Container, Group, Space, Text } from "dappkit";
 import { useState } from "react";

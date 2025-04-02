@@ -1,7 +1,7 @@
 import type { Api } from "@core/api/types";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import useChains from "@core/modules/chain/hooks/useChains";
-import { useSearchParams } from "@remix-run/react";
+import { useSearchParams } from "react-router";
 import { Box, Group, Icon, Select, Space, Text, Title, useWalletContext } from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";

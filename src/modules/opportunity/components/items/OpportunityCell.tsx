@@ -4,7 +4,7 @@ import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTrackin
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import type { BoxProps } from "dappkit";
 import { Box, Button, Divider, Group, Icon, Text, Title } from "dappkit";
 import { useMemo } from "react";

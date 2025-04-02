@@ -3,7 +3,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { Chain, Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";

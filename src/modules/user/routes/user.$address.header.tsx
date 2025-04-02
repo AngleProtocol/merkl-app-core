@@ -5,7 +5,7 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@react-router/react";
 import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";

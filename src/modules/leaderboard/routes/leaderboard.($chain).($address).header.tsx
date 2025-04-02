@@ -1,6 +1,6 @@
 import { api } from "@core/api";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "../../../components/composite/Hero";
 import { ErrorHeading } from "../../../components/layout/ErrorHeading";

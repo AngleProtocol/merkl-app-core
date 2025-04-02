@@ -6,7 +6,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Show, Space, Title } from "dappkit";
 

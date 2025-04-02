@@ -4,7 +4,7 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { InteractionService } from "@core/modules/interaction/interaction.service";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import\b.*react-router";
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { Container, Group } from "dappkit";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
