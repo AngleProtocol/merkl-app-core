@@ -1,5 +1,5 @@
 {
-  "name": "merkl-app-core",
+  "name": "@merkl/core",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -24,6 +24,7 @@
     "@react-router/dev": "^7.0.0",
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
+    "react-router-dom": "^7.0.0",
     "@remixicon/react": "^4.6.0",
     "@svgr/rollup": "^8.1.0",
     "@tanstack/react-query": "^5.55.4",
@@ -44,7 +45,6 @@
     "react-responsive": "^10.0.0",
     "react-router": "^7.0.0",
     "react-toastify": "^11.0.2",
-    "remix-utils": "^7.7.0",
     "save": "^2.9.0",
     "tailwindcss": "^3.4.12",
     "tailwindcss-animate": "^1.0.7",

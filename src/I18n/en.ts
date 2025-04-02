@@ -1,6 +1,5 @@
 //TODO: embed this in merkl config
 //@ts-ignore
-import clientEn from "../../../../I18n/en";
 
 const en = {
   pages: {
@@ -46,4 +45,4 @@ const en = {
   },
 };
 
-export default Object.assign(en, clientEn);
+export default Object.assign(en);
