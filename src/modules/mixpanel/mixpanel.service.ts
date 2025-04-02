@@ -11,8 +11,9 @@ export type MixpanelEvents = {
   "Click on supply": Opportunity & { mode: "direct" | "indirect" };
   "Click on leadeboard": Campaign & Opportunity;
   "Click on opportunity": Opportunity & { view: "table" | "cell" };
+  "Click on opportunity button": { opportunity: Opportunity; type: string; button: string };
   "Check filters": object;
-  "Click on button": { type: string; button: string };
+  "Click on button": { type: string; button: string; [other: string]: unknown };
   "View page": object;
 };
 

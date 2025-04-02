@@ -2,6 +2,7 @@ import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
@@ -62,6 +63,7 @@ export default function Index() {
   const { reload: reloadBalances } = useBalances();
 
   const onClaimSuccess = async (_hash: string) => {
+    track("Click on button", { button: "claim", type: "header" });
     reloadBalances();
     // await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
   };
@@ -83,6 +85,7 @@ export default function Index() {
   const { claimTransaction } = useReward(reward, user);
 
   const metadata = useMetadata(url);
+  const { track } = useMixpanelTracking();
 
   const isUserRewards = useMemo(() => UserService({}).isSame(user, address), [user, address]);
   const isAbleToClaim = useMemo(

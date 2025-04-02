@@ -66,13 +66,25 @@ export default function OpportunityFilters({
             onClick={() => track("Click on button", { button: "search", type: "searchbar" })}
             onKeyDown={e => {
               if (e.key !== "Enter") return;
+              track("Click on button", {
+                button: "search",
+                type: "searchbar",
+                search: filtersState.searchFilter.input,
+              });
               filtersState.searchFilter.executeSearch();
             }}
             suffix={
               <Icon
                 remix="RiSearchLine"
                 className="cursor-pointer hover:text-main-12"
-                onClick={filtersState.searchFilter.executeSearch}
+                onClick={() => {
+                  track("Click on button", {
+                    button: "search",
+                    type: "searchbar",
+                    search: filtersState.searchFilter.input,
+                  });
+                  filtersState.searchFilter.executeSearch();
+                }}
               />
             }
             placeholder="Search"
@@ -80,30 +92,50 @@ export default function OpportunityFilters({
         )}
         {fields.includes("action") && (
           <Select
-            state={[filtersState.actionsFilter.input ?? [], filtersState.actionsFilter.setInput]}
+            state={[
+              filtersState.actionsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.actionsFilter.setInput(ids);
+                track("Click on button", { button: "category", type: "searchbar", actions: ids });
+              },
+            ]}
             allOption={"All categories"}
             multiple
             options={filtersState.actionsFilter.options}
             look="tint"
             placeholder="Category"
             placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
-            onOpen={() => track("Click on button", { button: "category", type: "searchbar" })}
           />
         )}
         {fields.includes("status") && (
           <Select
-            state={[filtersState.statusFilter.input ?? [], filtersState.statusFilter.setInput]}
+            state={[
+              filtersState.statusFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.statusFilter.setInput(ids);
+                track("Click on button", { button: "status", type: "searchbar", statuses: ids });
+              },
+            ]}
             multiple
             options={filtersState.statusFilter.options}
             look="tint"
             placeholder="Status"
             placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
-            onOpen={() => track("Click on button", { button: "status", type: "searchbar" })}
           />
         )}
         {fields.includes("chain") && !isSingleChain && (
           <Select
-            state={[filtersState.chainIdsFilter.input ?? [], filtersState.chainIdsFilter.setInput]}
+            state={[
+              filtersState.chainIdsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.chainIdsFilter.setInput(ids);
+                track("Click on button", {
+                  button: "chain",
+                  type: "searchbar",
+                  chains: ids?.map(id => chains?.find(c => c.id === +id)?.name),
+                });
+              },
+            ]}
             allOption={"All chains"}
             multiple
             search
@@ -113,12 +145,17 @@ export default function OpportunityFilters({
             look="tint"
             placeholder="Chain"
             placeholderIcon={<Icon remix="RiLink" />}
-            onOpen={() => track("Click on button", { button: "chain", type: "searchbar" })}
           />
         )}
         {fields.includes("protocol") && !isSingleProtocol && (
           <Select
-            state={[filtersState.protocolsFilter.input ?? [], filtersState.protocolsFilter.setInput]}
+            state={[
+              filtersState.protocolsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.protocolsFilter.setInput(ids);
+                track("Click on button", { button: "protocol", type: "searchbar", protocols: ids });
+              },
+            ]}
             allOption={"All protocols"}
             multiple
             search
@@ -126,7 +163,6 @@ export default function OpportunityFilters({
             look="tint"
             placeholder="Protocol"
             placeholderIcon={<Icon remix="RiShapesFill" />}
-            onOpen={() => track("Click on button", { button: "protocol", type: "searchbar" })}
           />
         )}
         <Button onClick={clearFilters} look="soft" size="xs" className="text-nowrap">
@@ -136,7 +172,15 @@ export default function OpportunityFilters({
       </Group>
       {fields.includes("sort") && (
         <Select
-          state={[filtersState.sortFilter.input, filtersState.sortFilter.setInput]}
+          state={[
+            filtersState.sortFilter.input,
+            (ids: string) => {
+              //biome-ignore lint/suspicious/noExplicitAny: no reasons for it to have type errors
+              filtersState.sortFilter.setInput(ids as any);
+              // biome-ignore lint/suspicious/noExplicitAny: no reasons for it to have type errors
+              track("Click on button", { button: "sorting", type: "searchbar", sorting: ids as any });
+            },
+          ]}
           options={filtersState.sortFilter.options}
           look="hype"
           placeholder={defaultSortPlaceholder}

@@ -104,7 +104,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {typeof apr === "number" ? (
                 <Dropdown
                   onHover
-                  onOpen={() => track("Click on button", { button: "apr", type: "tooltip" })}
+                  onOpen={() => track("Click on opportunity button", { button: "apr", type: "tooltip", opportunity })}
                   content={
                     isOnlyPoint ? (
                       <PointsModalCampaigns opportunity={opportunity} />
@@ -141,7 +141,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {opportunity.type === "CLAMM" ? (
                 <Dropdown
                   onHover
-                  onOpen={() => track("Click on button", { button: "tvl", type: "tooltip" })}
+                  onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
                   content={
                     <Group className="flex-col" size="md">
                       <TvlRowAllocation opportunity={opportunity} />

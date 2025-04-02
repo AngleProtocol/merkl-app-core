@@ -80,7 +80,9 @@ export default function CampaignTableRow({
       [
         "Last Snapshot",
         <Tooltip
-          onOpen={() => track("Click on button", { button: "last_snapshot", type: "tooltip" })}
+          onOpen={() =>
+            track("Click on oppportunity button", { button: "last_snapshot", type: "tooltip", opportunity })
+          }
           helper={
             "Indicates when the campaign has last been processed by the Merkl engine. Once a campaign is processed, its rewards can then be included in the following distribution of the associated chain. Distributions on a chain may easily be delayed, for example by disputers, or by instabilities in Merkl dependencies"
           }
@@ -133,7 +135,7 @@ export default function CampaignTableRow({
         </Group>
       );
     });
-  }, [campaign, amount, chain, distributionChain, track]);
+  }, [campaign, amount, chain, distributionChain, track, opportunity]);
 
   const campaignStatusLook = useMemo(() => {
     if (campaignStatus === ECampaignStatus.LIVE) return "tint";
