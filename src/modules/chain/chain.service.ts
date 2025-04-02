@@ -21,12 +21,15 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
       },
     );
 
-    const get = inject(["api"]).inFunction(
-      async ({ api }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+    const get = inject(["api", "backend"]).inFunction(
+      async ({ api, backend }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+        const showTest: Record<string, boolean> = {};
+        if (backend.alwaysShowTestTokens === true) showTest.test = true;
         const chains = await fetch(async () =>
           api.v4.chains.index.get({
             query: {
               name: query.name?.replace("-", " "),
+              ...showTest
             },
           }),
         );
