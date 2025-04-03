@@ -98,7 +98,7 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
           {!!howToEarnRewardsHelper && (
             <Group size="sm">
               <Text look="tint" size="md" bold>
-                How to ?
+                How to?
               </Text>
               <Tooltip helper={howToEarnRewardsHelper} className="p-xl" />
             </Group>
