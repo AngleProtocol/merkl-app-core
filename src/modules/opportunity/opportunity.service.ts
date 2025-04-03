@@ -154,8 +154,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
 
       switch (action) {
         case "POOL":
-          return `Earn rewards by providing liquidity to the ${protocol?.name} ${symbols} pool on ${chain.name}, or through a
-              liquidity manager supported by Merkl`;
+          return `Earn rewards by providing liquidity to the ${protocol?.name} ${symbols} pool on ${chain.name}, or through a liquidity manager supported by Merkl`;
         case "HOLD":
           return `Earn rewards by holding ${symbols} or by staking it in a supported contract`;
         case "LEND":
