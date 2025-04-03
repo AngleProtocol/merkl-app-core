@@ -1,7 +1,7 @@
 import useChain from "@core/modules/chain/hooks/useChain";
 import { useNavigate } from "@remix-run/react";
 import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
-import { useCallback, type ReactNode } from "react";
+import { type ReactNode, useCallback } from "react";
 
 export default function ChainTag({
   chain: { id },
