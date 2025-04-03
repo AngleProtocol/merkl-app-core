@@ -17,12 +17,12 @@ export const statuses = {
     icon: { remix: "RiTimerFill", className: "text-accent-9", accent: "harm" },
   },
   SOON: {
-    label: "Upcoming",
+    label: "Coming soon",
     description: "Earn rewards by depositiong liquidity in this pool.",
     icon: {
       remix: "RiTimer2Fill",
       className: "text-accent-9",
-      accent: "warn",
+      accent: "info",
     },
   },
   NONE: {

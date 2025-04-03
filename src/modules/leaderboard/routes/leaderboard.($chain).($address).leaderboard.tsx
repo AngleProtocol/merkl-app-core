@@ -1,3 +1,5 @@
+import { api } from "@core/api";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -5,15 +7,18 @@ import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
-import merklConfig from "../../../config";
 import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
 import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
 
-export async function loader({ params: { address, chain: chainName }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend },
+  params: { address, chain: chainName },
+  request,
+}: LoaderFunctionArgs) {
   const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
 
-  const { rewards, count, total } = await RewardService.getTokenLeaderboard(request, {
+  const { rewards, count, total } = await RewardService({ api, backend, request }).getTokenLeaderboard({
     chainId: chain.id,
     address: token.address,
   });
@@ -31,6 +36,7 @@ export const clientLoader = Cache.wrap("leaderboard", 300);
 
 export default function Index() {
   const { rewards, token, chain, count, total } = useLoaderData<typeof loader>();
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const totalRewardsInUsd = useMemo(() => {
     const amountUSD = formatUnits(total, token.decimals);
@@ -49,7 +55,7 @@ export default function Index() {
           ],
           [
             "Total Rewards Distributed",
-            <Value value key="users" format={merklConfig.decimalFormat.dollar}>
+            <Value value key="users" format={dollarFormat}>
               {totalRewardsInUsd}
             </Value>,
           ],
@@ -61,14 +67,14 @@ export default function Index() {
           size="lg"
           content="xs"
           className="justify-between !p-xl items-center flex-row border-2 bg-main-0 border-main-8 flex-1">
-          <Title h={3} size="lg" className="!text-main-11 uppercase font-bold">
+          <Title h={3} size="lg" look="soft" className="uppercase font-bold">
             {label}
           </Title>
           {/* Probably a count from api */}
           <Title h={3}>{value}</Title>
         </Box>
       )),
-    [totalRewardsInUsd, count],
+    [totalRewardsInUsd, count, dollarFormat],
   );
 
   return (

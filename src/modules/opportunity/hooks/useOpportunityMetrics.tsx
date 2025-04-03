@@ -1,4 +1,4 @@
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Value } from "dappkit";
 import type { ValueProps } from "dappkit";
@@ -11,14 +11,16 @@ const metrics = ["dailyRewards", "apr", "tvl"] satisfies (keyof Opportunity)[];
  * Formats metrics for a given opportunity
  */
 export default function useOpportunityMetrics({ dailyRewards, apr, tvl }: Pick<Opportunity, (typeof metrics)[number]>) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
   /**
    * Main metrics formatted for page headers
    */
   const headerMetrics = useMemo(() => {
     const metricsDefinition = {
-      "Daily Rewards": [dailyRewards, { format: merklConfig.decimalFormat.dollar }],
+      "Daily Rewards": [dailyRewards, { format: dollarFormat }],
       APR: [apr / 100, { format: "0.00%" }],
-      "Total value locked": [tvl, { format: merklConfig.decimalFormat.dollar }],
+      "Total value locked": [tvl, { format: dollarFormat }],
     } satisfies { [label: string]: [number | string, ValueProps] };
 
     return Object.entries(metricsDefinition satisfies { [label: string]: [number | string, ValueProps] })
@@ -28,7 +30,7 @@ export default function useOpportunityMetrics({ dailyRewards, apr, tvl }: Pick<O
         data: <Value children={value} size={4} className="!text-main-12" {...props} />,
         key: uuidv4(),
       }));
-  }, [dailyRewards, apr, tvl]);
+  }, [dailyRewards, apr, tvl, dollarFormat]);
 
   return { headerMetrics };
 }

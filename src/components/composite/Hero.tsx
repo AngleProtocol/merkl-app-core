@@ -1,4 +1,4 @@
-import { useLocation } from "@remix-run/react";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import {
   Button,
   Container,
@@ -15,7 +15,6 @@ import {
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
 import { v4 as uuidv4 } from "uuid";
-import merklConfig from "../../config";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -23,7 +22,7 @@ export type HeroProps = PropsWithChildren<{
   title: ReactNode;
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
-  description: ReactNode;
+  description?: ReactNode;
   tags?: ReactNode[] | ReactNode;
   sideDatas?: HeroInformations[];
   tabs?: { label: ReactNode; link: string; key: string }[];
@@ -36,7 +35,6 @@ export type HeroInformations = {
 };
 
 export default function Hero({
-  navigation,
   compact = false,
   breadcrumbs,
   icons,
@@ -47,45 +45,33 @@ export default function Hero({
   tabs,
   children,
 }: HeroProps) {
-  const location = useLocation();
   const { mode } = useTheme();
+  const heroConfig = useMerklConfig(store => store.config.hero);
+  const images = useMerklConfig(store => store.config.images);
 
   return (
     <>
-      <OverrideTheme mode={!!merklConfig.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
+      <OverrideTheme mode={!!heroConfig.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`${
-            !!merklConfig.hero.bannerOnAllPages
-              ? "bg-cover xl:bg-auto bg-right-bottom"
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? "bg-cover xl:bg-auto bg-right-bottom"
-                : "bg-main-6"
-          } flex-row justify-between bg-no-repeat xl:aspect-auto ${compact ? "xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          className={`${"bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"} flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
           style={{
-            backgroundImage: !!merklConfig.hero.bannerOnAllPages
-              ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-              : location?.pathname === "/" || location?.pathname === "/opportunities"
-                ? `url('${mode === "dark" ? merklConfig.images.heroDark : merklConfig.images.heroLight}')`
-                : "none",
+            backgroundImage: `url('${mode === "dark" ? images.heroDark : images.heroLight}')`,
           }}>
-          <Container>
+          <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
-                <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
-                  Home
-                </Button>
-                {breadcrumbs?.map(breadcrumb => {
+                {breadcrumbs?.map((breadcrumb, index) => {
                   if (breadcrumb.component) return <>{breadcrumb.component}</>;
                   return (
                     <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
-                      <Icon remix="RiArrowRightSLine" />
+                      {index > 0 && <Icon remix="RiArrowRightSLine" />}
                       {breadcrumb.name}
                     </Button>
                   );
                 })}
               </Group>
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
-                <Group className={`${compact ? "py-xl md:py-lg*2" : ""} flex-col flex-1 gap-lg`}>
+                <Group className={`${compact ? "py-xl md:py-lg*2" : ""} flex-col flex-1`} size="xl">
                   <Group
                     className="gap-0 md:gap-lg flex-nowrap w-full items-center"
                     style={{
@@ -108,7 +94,7 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <Text size="lg" bold>
+                    <Text size="lg" look="base">
                       {description}
                     </Text>
                   )}
@@ -142,7 +128,9 @@ export default function Hero({
   );
 }
 
-export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards: number) {
+export function defaultHeroSideDatas(count: number, maxApr?: number, dailyRewards?: number) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+
   return [
     !!count && {
       data: (
@@ -155,7 +143,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
     },
     !!dailyRewards && {
       data: (
-        <Value format={merklConfig.decimalFormat.dollar} size={4} className="!text-main-12">
+        <Value format={dollarFormat} size={4} className="!text-main-12">
           {dailyRewards}
         </Value>
       ),

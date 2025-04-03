@@ -1,62 +1,71 @@
-import { api } from "@core/api";
+import type { Api } from "@core/api/types";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import type { Campaign } from "@merkl/api";
-import merklConfig from "../../config";
+import type { MerklBackend } from "@core/config/backend";
+import { defineModule } from "@merkl/conduit";
 
-export abstract class CampaignService {
-  static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Campaigns")(call);
+export const CampaignService = defineModule<{ backend: MerklBackend; request: Request; api: Api }>().create(
+  ({ inject }) => {
+    const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Campaigns")(call);
 
-  /**
-   * Retrieves opportunities query params from page request
-   * @param request request containing query params such as chains, status, pagination...
-   * @param override params for which to override value
-   * @returns query
-   */
-  static #getQueryFromRequest(
-    request: Request | undefined,
-    override?: Parameters<typeof api.v4.campaigns.index.get>[0]["query"],
-  ) {
-    if (!request) return {};
+    /**
+     *
+     */
+    const getQueryFromRequest = inject(["backend", "request"]).inFunction(
+      ({ request, backend }, override?: Parameters<Api["v4"]["campaigns"]["index"]["get"]>[0]["query"]) => {
+        if (!request) return override ?? {};
 
-    const status = new URL(request.url).searchParams.get("status");
-    const action = new URL(request.url).searchParams.get("action");
-    const chainId = new URL(request.url).searchParams.get("chain");
-    const page = new URL(request.url).searchParams.get("page");
-    const test = merklConfig.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
-    const items = new URL(request.url).searchParams.get("items");
-    const search = new URL(request.url).searchParams.get("search");
-    const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
+        const status = new URL(request.url).searchParams.get("status");
+        const action = new URL(request.url).searchParams.get("action");
+        const chainId = new URL(request.url).searchParams.get("chain");
+        const page = new URL(request.url).searchParams.get("page");
+        const test = backend.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
+        const point = backend.alwaysShowPointTokens ? true : (new URL(request.url).searchParams.get("point") ?? false);
+        const items = new URL(request.url).searchParams.get("items");
+        const search = new URL(request.url).searchParams.get("search");
+        const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
-    const filters = Object.assign(
-      { status, action, chainId, items, sort, order, name: search, page, test },
-      override ?? {},
-      page !== null && { page: Number(page) - 1 },
+        const filters = Object.assign(
+          { status, action, chainId, items, sort, order, name: search, page, test, point },
+          override ?? {},
+          page !== null && { page: Number(page) - 1 },
+        );
+
+        const query = Object.entries(filters).reduce(
+          (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
+          {},
+        );
+
+        return query;
+      },
     );
 
-    const query = Object.entries(filters).reduce(
-      (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
-      {},
+    /**
+     * Ingest request to filter a /v4/campaigns fetch
+     * @param request client request to the frontend server
+     * @param query of api route (might get overwritten by request)
+     * @returns an arr
+     */
+    const getByOpportunity = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<Api["v4"]["campaigns"]["index"]["get"]>[0]["query"]) => {
+        return await fetch(async () => await api.v4.campaigns.index.get({ query: { ...query, test: true } }));
+      },
     );
 
-    return query;
-  }
-
-  /**
-   * Ingest request to filter a /v4/campaigns fetch
-   * @param request client request to the frontend server
-   * @param query of api route (might get overwritten by request)
-   * @returns an arr
-   */
-  static async getByOpportunity(
-    request: Request | undefined,
-    query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"],
-  ) {
-    return await CampaignService.#fetch(
-      async () => await api.v4.campaigns.index.get({ query: CampaignService.#getQueryFromRequest(request, query) }),
+    /**
+     * Ingest request to filter a /v4/campaigns fetch
+     * @param request client request to the frontend server
+     * @param query of api route (might get overwritten by request)
+     * @returns an arr
+     */
+    const getByOpportunityFromRequest = inject(["backend", "request", "api"]).inFunction(
+      async ({ backend, request, api }, query: Parameters<Api["v4"]["campaigns"]["index"]["get"]>[0]["query"]) => {
+        return await fetch(
+          async () =>
+            await api.v4.campaigns.index.get({ query: getQueryFromRequest.handler({ backend, request }, query) }),
+        );
+      },
     );
-  }
 
-  static async getByID(_Id: string): Promise<Campaign | null> {
-    return null;
-  }
-}
+    return { getByOpportunity, getByOpportunityFromRequest };
+  },
+);

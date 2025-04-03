@@ -1,4 +1,6 @@
 import Tag from "@core/components/element/Tag";
+import { useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, type ListProps, Space, Value, mergeClass } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
@@ -6,8 +8,7 @@ import { Collapsible } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
-import { useMemo, useState } from "react";
-import merklConfig from "../../../config";
+import { useCallback, useMemo, useState } from "react";
 import useReward from "../../../hooks/resources/useReward";
 import { UserService } from "../../../modules/user/user.service";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
@@ -30,9 +31,10 @@ export default function ClaimRewardsChainTableRow({
 }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const { address: user, chainId, switchChain } = useWalletContext();
-  const isUserRewards = useMemo(() => UserService.isSame(user, from), [user, from]);
+  const isUserRewards = useMemo(() => UserService({}).isSame(user, from), [user, from]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],
@@ -81,18 +83,30 @@ export default function ClaimRewardsChainTableRow({
       ));
   }, [reward, selectedTokens.size, selectedTokens, isOnCorrectChain, isAbleToClaim]);
 
+  const onSwitchChain = useCallback(() => {
+    if (!reward.chain.id) return;
+    switchChain(reward.chain.id);
+  }, [switchChain, reward.chain.id]);
+
+  const { track } = useMixpanelTracking();
+
   return (
     <ClaimRewardsChainRow
       {...props}
-      className={mergeClass("cursor-pointer [&>*>*]:cursor-auto", className)}
-      onClick={() => setOpen(o => !o)}
+      className={mergeClass("bg-main-2", className)}
       chainColumn={
         <>
-          <Tag type="chain" value={reward.chain} />
-          <Icon
-            data-state={!open ? "closed" : "opened"}
-            className=" data-[state=opened]:rotate-180"
-            remix={"RiArrowDropDownLine"}
+          <Tag
+            onClick={() => setOpen(o => !o)}
+            type="chain"
+            value={reward.chain}
+            suffix={
+              <Icon
+                data-state={!open ? "closed" : "opened"}
+                className=" data-[state=opened]:rotate-180"
+                remix={"RiArrowDropDownLine"}
+              />
+            }
           />
           <EventBlocker>
             {isAbleToClaim &&
@@ -103,12 +117,13 @@ export default function ClaimRewardsChainTableRow({
                   disabled={!claimTransaction}
                   className="ml-xl"
                   look="hype"
+                  onClick={() => track("Click on button", { button: "claim", type: "chain" })}
                   tx={claimTransaction}
                   onSuccess={onClaimSuccess}>
                   Claim
                 </TransactionButton>
               ) : (
-                <Button className="ml-xl" onClick={() => switchChain(reward.chain.id)}>
+                <Button className="ml-xl" onClick={onSwitchChain}>
                   Switch Network <Icon remix="RiArrowLeftRightLine" />
                 </Button>
               ))}
@@ -117,14 +132,18 @@ export default function ClaimRewardsChainTableRow({
       }
       unclaimedColumn={
         unclaimed === 0 ? undefined : (
-          <Value size="lg" format={merklConfig.decimalFormat.dollar} look="bold" className="font-title">
+          <Value size="lg" format={dollarFormat} look="bold" className="font-title">
             {unclaimed}
           </Value>
         )
       }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
-        <ClaimRewardsTokenTable dividerClassName={() => "!bg-main-8"} className="[&>*]:bg-main-4" look="soft">
+        <ClaimRewardsTokenTable
+          responsive={true}
+          dividerClassName={() => "!bg-main-8"}
+          className="[&>*]:bg-main-4"
+          look="soft">
           {renderTokenRewards}
         </ClaimRewardsTokenTable>
       </Collapsible>

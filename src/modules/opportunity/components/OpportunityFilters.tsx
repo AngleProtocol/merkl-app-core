@@ -1,170 +1,49 @@
-import merklConfig from "@core/config";
-import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
-import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import useChains from "@core/modules/chain/hooks/useChains";
+import { useConfigContext, useMerklConfig } from "@core/modules/config/config.context";
+import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import useProtocols from "@core/modules/protocol/hooks/useProtocols";
-import type { Chain, Protocol } from "@merkl/api";
-import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
+import type { Chain } from "@merkl/api";
 import { Button, Group, Icon, Input, Select } from "dappkit";
-import { useCallback, useEffect, useMemo, useState } from "react";
-const filters = ["search", "action", "status", "chain", "protocol", "tvl", "sort"] as const;
+import { useMemo } from "react";
+import useOpportunityFilters from "../hooks/useOpportunityFilters";
+const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
   only?: OpportunityFilter[];
   chains?: Chain[];
-  view?: OpportunityView;
   setView?: (v: OpportunityView) => void;
-  protocols?: Protocol[];
   exclude?: OpportunityFilter[];
-  onClear?: () => void;
 };
 
-//TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
+// TODO reimplement MIXPANEL
 export default function OpportunityFilters({
-  only,
-  protocols,
-  exclude,
+  only, // Only these filters
+  exclude, // Exclude these filters
   chains,
-  view,
-  setView,
-  onClear,
 }: OpportunityFilterProps) {
-  const [_, setSearchParams] = useSearchParams();
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [applying, setApplying] = useState(false);
-  const [clearing, setClearing] = useState(false);
+  const {
+    options: chainOptions,
+    searchOptions: chainSearchOptions,
+    indexOptions: chainIndexOptions,
+    isSingleChain,
+  } = useChains(chains);
 
-  //TODO: componentify theses
-  const actionOptions = Object.entries(actions)
-    .filter(([key]) => key !== "INVALID")
-    .reduce(
-      (obj, [action, { icon, label }]) =>
-        Object.assign(obj, {
-          [action]: (
-            <>
-              <Icon size="sm" {...icon} />
-              {label}
-            </>
-          ),
-        }),
-      {},
-    );
+  const { useStore } = useConfigContext();
 
-  const sortOptions = {
-    "apr-asc": (
-      <Group className="flex-nowrap">
-        By APR
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "apr-desc": (
-      <Group className="flex-nowrap">
-        By APR
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-    "tvl-asc": (
-      <Group className="flex-nowrap">
-        By TVL
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "tvl-desc": (
-      <Group className="flex-nowrap">
-        By TVL
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-    "rewards-asc": (
-      <Group className="flex-nowrap">
-        By rewards
-        <Icon remix="RiArrowUpLine" />
-      </Group>
-    ),
-    "rewards-desc": (
-      <Group className="flex-nowrap">
-        By rewards
-        <Icon remix="RiArrowDownLine" />
-      </Group>
-    ),
-  };
+  const { options: protocolOptions } = useProtocols(useStore.getState().protocols);
+  const isSingleProtocol = useMemo(() => !(useStore.getState().protocols.length > 1), [useStore]);
 
-  const statusOptions = {
-    LIVE: (
-      <>
-        <Icon size="sm" remix="RiFlashlightLine" /> Live
-      </>
-    ),
-    SOON: (
-      <>
-        <Icon size="sm" remix="RiTimerLine" /> Soon
-      </>
-    ),
-    PAST: (
-      <>
-        <Icon size="sm" remix="RiHistoryLine" /> Past
-      </>
-    ),
-  };
+  const filtersConfigEnabled = useMerklConfig(store => store.config.opportunitiesFilters);
+  const defaultSortBy = useMerklConfig(store => store.config.backend.sortedBy);
 
-  const { options: protocolOptions } = useProtocols(protocols);
-  const { options: chainOptions, isSingleChain } = useChains(chains);
+  const { filtersState, clearFilters } = useOpportunityFilters();
 
-  const [actionsFilter] = useSearchParamState<string[]>(
-    "action",
-    v => v?.join(","),
-    v => v?.split(","),
+  const defaultSortPlaceholder = useMemo(
+    () => filtersConfigEnabled?.[defaultSortBy.concat("-desc")].name,
+    [defaultSortBy, filtersConfigEnabled],
   );
-
-  const [actionsInput, setActionsInput] = useState<string[]>(actionsFilter ?? []);
-
-  const [sortFilter] = useSearchParamState<string>(
-    "sort",
-    v => v,
-    v => v,
-  );
-  const [sortInput, setSortInput] = useState<string>(sortFilter ?? "");
-
-  const [statusFilter] = useSearchParamState<string[]>(
-    "status",
-    v => v?.join(","),
-    v => v?.split(","),
-  );
-  const [statusInput, setStatusInput] = useState(statusFilter ?? []);
-
-  const [chainIdsFilter] = useSearchParamState<string[]>(
-    "chain",
-    v => v?.join(","),
-    v => v?.split(","),
-  );
-  const [chainIdsInput, setChainIdsInput] = useState<string[]>(chainIdsFilter ?? []);
-
-  const [search, setSearch] = useSearchParamState<string>(
-    "search",
-    v => v,
-    v => v,
-  );
-
-  const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
-
-  const [tvlFilter] = useSearchParamState<string>(
-    "tvl",
-    v => v,
-    v => v,
-  );
-
-  const [tvlInput, setTvlInput] = useState<string>(tvlFilter ?? "");
-
-  const [protocolFilter] = useSearchParamState<string[]>(
-    "protocol",
-    v => v?.join(","),
-    v => v?.split(","),
-  );
-  const [protocolInput, setProtocolInput] = useState<string[]>(protocolFilter ?? []);
 
   const fields = useMemo(() => {
     if (only) return filters.filter(f => only.includes(f));
@@ -172,212 +51,140 @@ export default function OpportunityFilters({
     return filters;
   }, [only, exclude]);
 
-  function onSearchSubmit() {
-    if (!innerSearch || innerSearch === search) return;
-
-    setSearch(innerSearch);
-  }
-
-  const updateParams = useCallback(
-    (key: string, value: string[], searchParams: URLSearchParams) => {
-      if (!fields.includes(key as (typeof fields)[number])) return;
-
-      if (value?.length === 0 || !value) searchParams.delete(key);
-      else searchParams.set(key, value?.join(","));
-    },
-    [fields],
-  );
-
-  const canApply = useMemo(() => {
-    const isSameArray = (a: string[] | undefined, b: string[] | undefined) =>
-      a?.every(c => b?.includes(c)) && b?.every(c => a?.includes(c));
-
-    const sameChains = isSameArray(chainIdsInput, chainIdsFilter);
-    const sameActions = isSameArray(actionsInput, actionsFilter);
-    const sameStatus = isSameArray(statusInput, statusFilter);
-    const sameProtocols = isSameArray(protocolInput, protocolFilter);
-    const sameTvl = tvlFilter === tvlInput || tvlInput === "";
-    const sameSort = sortFilter === sortInput || sortInput === "";
-    const sameSearch = (search ?? "") === innerSearch;
-
-    return [sameChains, sameActions, sameTvl, sameStatus, sameSearch, sameProtocols, sameSort].some(v => v === false);
-  }, [
-    chainIdsInput,
-    chainIdsFilter,
-    actionsInput,
-    actionsFilter,
-    statusFilter,
-    tvlFilter,
-    tvlInput,
-    protocolInput,
-    protocolFilter,
-    statusInput,
-    search,
-    innerSearch,
-    sortFilter,
-    sortInput,
-  ]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
-  useEffect(() => {
-    setActionsInput(actionsFilter ?? []);
-    setStatusInput(statusFilter ?? []);
-  }, [location.search]);
-
-  function onApplyFilters() {
-    setApplying(true);
-    setClearing(false);
-    setSearchParams(params => {
-      updateParams("chain", chainIdsInput, params);
-      updateParams("action", actionsInput, params);
-      updateParams("status", statusInput, params);
-      updateParams("protocol", protocolInput, params);
-      tvlInput && updateParams("tvl", [tvlInput], params);
-      sortInput && updateParams("sort", [sortInput], params);
-
-      return params;
-    });
-  }
-
-  function onClearFilters() {
-    setApplying(false);
-    setClearing(true);
-
-    navigate(location.pathname, { replace: true });
-    setChainIdsInput([]);
-    setProtocolInput([]);
-    setStatusInput([]);
-    setActionsInput([]);
-    setTvlInput("");
-    setInnerSearch("");
-    setSortInput("");
-    onClear?.();
-  }
-
-  useEffect(() => {
-    if (navigation.state === "idle") {
-      setApplying(false);
-      setClearing(false);
-    }
-  }, [navigation]);
+  const { track } = useMixpanelTracking();
 
   return (
-    <Group className="justify-between flex-nowrap">
-      <Group
-        className={`items-center flex-nowrap w-full ${merklConfig.opportunityLibrary?.views?.length === 1 ? "justify-between" : ""}`}>
+    <Group className="justify-between flex-nowrap overflow-x-scroll">
+      <Group className="items-center flex-nowrap">
         {fields.includes("search") && (
-          <Form>
-            <Input
-              look="base"
-              name="search"
-              value={innerSearch}
-              className="min-w-[12ch]"
-              state={[innerSearch, v => setInnerSearch(v ?? "")]}
-              suffix={<Icon remix="RiSearchLine" />}
-              onClick={onSearchSubmit}
-              placeholder="Search"
-            />
-          </Form>
+          <Input
+            look="base"
+            name="search"
+            value={filtersState.searchFilter.input ?? ""}
+            className="min-w-[12ch]"
+            state={[filtersState.searchFilter.input ?? "", filtersState.searchFilter.setInput]}
+            onClick={() => track("Click on button", { button: "search", type: "searchbar" })}
+            onKeyDown={e => {
+              if (e.key !== "Enter") return;
+              track("Click on button", {
+                button: "search",
+                type: "searchbar",
+                search: filtersState.searchFilter.input,
+              });
+              filtersState.searchFilter.executeSearch();
+            }}
+            suffix={
+              <Icon
+                remix="RiSearchLine"
+                className="cursor-pointer hover:text-main-12"
+                onClick={() => {
+                  track("Click on button", {
+                    button: "search",
+                    type: "searchbar",
+                    search: filtersState.searchFilter.input,
+                  });
+                  filtersState.searchFilter.executeSearch();
+                }}
+              />
+            }
+            placeholder="Search"
+          />
         )}
-        <Group
-          className={`items-center flex-nowrap ${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-wrap flex-row-reverse" : ""}`}>
-          <Group className="items-center flex-nowrap">
-            {fields.includes("action") && (
-              <Select
-                state={[actionsInput, setActionsInput]}
-                allOption={"All actions"}
-                multiple
-                options={actionOptions}
-                look="tint"
-                placeholder="Actions"
-              />
-            )}
-            {fields.includes("status") && (
-              <Select
-                state={[statusInput, setStatusInput]}
-                allOption={"All status"}
-                multiple
-                options={statusOptions}
-                look="tint"
-                placeholder="Status"
-              />
-            )}
-            {fields.includes("chain") && !isSingleChain && (
-              <Select
-                state={[chainIdsInput, n => setChainIdsInput(n)]}
-                allOption={"All chains"}
-                multiple
-                search
-                options={chainOptions}
-                look="tint"
-                placeholder="Chains"
-              />
-            )}
-            {fields.includes("protocol") && (
-              <Select
-                state={[protocolInput, n => setProtocolInput(n)]}
-                allOption={"All protocols"}
-                multiple
-                search
-                options={protocolOptions}
-                look="tint"
-                placeholder="Protocols"
-              />
-            )}
-            {fields.includes("tvl") && (
-              <Form>
-                <Input
-                  state={[tvlInput, n => (/^\d+$/.test(n ?? "") || !n) && setTvlInput(n ?? "")]}
-                  look="base"
-                  name="tvl"
-                  value={tvlInput}
-                  className="min-w-[10ch] !max-w-[15ch]"
-                  suffix={<Icon remix="RiFilterFill" />}
-                  placeholder="Minimum TVL"
-                />
-              </Form>
-            )}
-            {view === "cells" && (
-              <Select state={[sortInput, setSortInput]} options={sortOptions} look="tint" placeholder="Sort by" />
-            )}
-          </Group>
-          <Group
-            className={`${merklConfig.opportunityLibrary?.views?.length === 1 ? "flex-row-reverse flex-wrap" : ""} flex-nowrap items-center`}>
-            {((canApply && !clearing && navigation.state === "idle") ||
-              (applying && !clearing && navigation.state === "loading")) && (
-              <Button onClick={onApplyFilters} look="bold">
-                Apply
-                {navigation.state === "loading" ? (
-                  <Icon className="animate-spin" remix="RiLoader2Line" />
-                ) : (
-                  <Icon remix="RiArrowRightLine" />
-                )}
-              </Button>
-            )}
-            <Button onClick={onClearFilters} look="soft" size="xs" className="text-nowrap">
-              Clear filters
-              <Icon remix="RiCloseLine" />{" "}
-            </Button>
-          </Group>
-        </Group>
+        {fields.includes("action") && (
+          <Select
+            state={[
+              filtersState.actionsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.actionsFilter.setInput(ids);
+                track("Click on button", { button: "category", type: "searchbar", actions: ids });
+              },
+            ]}
+            allOption={"All categories"}
+            multiple
+            options={filtersState.actionsFilter.options}
+            look="tint"
+            placeholder="Category"
+            placeholderIcon={<Icon remix="RiLayoutMasonryFill" />}
+          />
+        )}
+        {fields.includes("status") && (
+          <Select
+            state={[
+              filtersState.statusFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.statusFilter.setInput(ids);
+                track("Click on button", { button: "status", type: "searchbar", statuses: ids });
+              },
+            ]}
+            multiple
+            options={filtersState.statusFilter.options}
+            look="tint"
+            placeholder="Status"
+            placeholderIcon={<Icon remix="RiCheckboxCircleFill" />}
+          />
+        )}
+        {fields.includes("chain") && !isSingleChain && (
+          <Select
+            state={[
+              filtersState.chainIdsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.chainIdsFilter.setInput(ids);
+                track("Click on button", {
+                  button: "chain",
+                  type: "searchbar",
+                  chains: ids?.map(id => chains?.find(c => c.id === +id)?.name),
+                });
+              },
+            ]}
+            allOption={"All chains"}
+            multiple
+            search
+            options={chainOptions}
+            searchOptions={chainSearchOptions}
+            indexOptions={chainIndexOptions}
+            look="tint"
+            placeholder="Chain"
+            placeholderIcon={<Icon remix="RiLink" />}
+          />
+        )}
+        {fields.includes("protocol") && !isSingleProtocol && (
+          <Select
+            state={[
+              filtersState.protocolsFilter.input ?? [],
+              (ids: string[]) => {
+                filtersState.protocolsFilter.setInput(ids);
+                track("Click on button", { button: "protocol", type: "searchbar", protocols: ids });
+              },
+            ]}
+            allOption={"All protocols"}
+            multiple
+            search
+            options={protocolOptions}
+            look="tint"
+            placeholder="Protocol"
+            placeholderIcon={<Icon remix="RiShapesFill" />}
+          />
+        )}
+        <Button onClick={clearFilters} look="soft" size="xs" className="text-nowrap">
+          Clear all filters
+          <Icon remix="RiCloseLine" />
+        </Button>
       </Group>
-      {(merklConfig.opportunityLibrary?.views == null || merklConfig.opportunityLibrary?.views?.length > 1) && view && (
-        <Group className="flex-nowrap">
-          <Button
-            disabled={view === "cells"}
-            className={view === "cells" ? "text-accent-11 !opacity-100" : ""}
-            look="soft"
-            onClick={() => setView?.("cells")}>
-            <Icon remix="RiDashboardFill" />
-          </Button>
-          <Button
-            disabled={view === "table"}
-            className={view === "table" ? "text-accent-11 !opacity-100" : ""}
-            look="soft"
-            onClick={() => setView?.("table")}>
-            <Icon remix="RiSortDesc" />
-          </Button>
-        </Group>
+      {fields.includes("sort") && (
+        <Select
+          state={[
+            filtersState.sortFilter.input,
+            (ids: string) => {
+              //biome-ignore lint/suspicious/noExplicitAny: no reasons for it to have type errors
+              filtersState.sortFilter.setInput(ids as any);
+              // biome-ignore lint/suspicious/noExplicitAny: no reasons for it to have type errors
+              track("Click on button", { button: "sorting", type: "searchbar", sorting: ids as any });
+            },
+          ]}
+          options={filtersState.sortFilter.options}
+          look="hype"
+          placeholder={defaultSortPlaceholder}
+        />
       )}
     </Group>
   );

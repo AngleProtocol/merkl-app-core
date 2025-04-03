@@ -6,6 +6,15 @@ import Token from "../../token/components/element/Token";
 import type { Campaign } from "../campaign.model";
 import type { RuleType } from "../components/rules/Rule";
 
+// to refactor when we handles all hooks (type should be handled by apiTyping)
+export type HookJumper = {
+  fromChains: number[];
+  hookType: number;
+  tokens: string[];
+  since: number;
+  minAmountInUSD: number;
+};
+
 /**
  * Formats basic metadata for a given opportunity
  */
@@ -114,7 +123,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
           type: "address",
           value: {
             description:
-              "Only the following addresses are eligible for rewards. If a liquidity manager (ALM) address is whitelisted, any addresses that provided liquidity via the ALM are also eligible",
+              "Only the following whitelisted addresses are eligible for rewards. If one of this address is a liquidity manager (ALM)vault, any addresses that provided liquidity via such ALM will be eligible.",
             label: (
               <>
                 <Icon remix="RiProhibitedFill" />
@@ -132,6 +141,25 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
   );
 
   /**
+   * Get Hooks (to refactor when we handles all hooks)
+   */
+  const getJumperHook = useCallback((campaign: Campaign) => {
+    const jumperHook: HookJumper | undefined = campaign.params?.hooks?.find((hook: HookJumper) => hook.hookType === 0);
+    if (!jumperHook) return;
+    return {
+      type: "jumper",
+      value: {
+        label: "Jumper bridge needed",
+        fromchains: jumperHook.fromChains,
+        hooktype: jumperHook.hookType,
+        tokens: jumperHook.tokens,
+        since: jumperHook.since,
+        minAmountInUSD: jumperHook.minAmountInUSD,
+      },
+    } as RuleType;
+  }, []);
+
+  /**
    * Aggregate all rules for given campaign
    */
   const rules = useMemo(() => {
@@ -144,8 +172,9 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         // biome-ignore lint/suspicious/noExplicitAny: type is enforced above
         .concat(typeSpecificRule?.[campaign.type]?.(campaign as any) ?? [])
         .concat(getListRestrictionRules(campaign).filter(a => !!a))
+        .concat([getJumperHook(campaign)].filter(a => !!a))
     );
-  }, [campaign, getListRestrictionRules, getLiquidityProfileRules]);
+  }, [campaign, getListRestrictionRules, getLiquidityProfileRules, getJumperHook]);
 
   return {
     rules,

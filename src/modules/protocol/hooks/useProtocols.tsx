@@ -1,5 +1,5 @@
 import type { Protocol } from "@merkl/api";
-import { Icon } from "dappkit";
+import { Icon, Text } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 
 /**
@@ -18,7 +18,7 @@ export default function useProtocols(protocols?: Protocol[]) {
             [chain.id]: (
               <>
                 <Icon size="sm" src={chain?.icon} />
-                {chain.name}
+                <Text look="bold">{chain.name}</Text>
               </>
             ),
           }),
@@ -27,7 +27,10 @@ export default function useProtocols(protocols?: Protocol[]) {
     [protocols],
   );
 
+  const isSingleProtocol = protocols?.length === 1;
+
   return {
     options,
+    isSingleProtocol,
   };
 }

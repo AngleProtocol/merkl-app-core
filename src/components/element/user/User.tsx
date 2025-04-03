@@ -21,7 +21,7 @@ export default function User({ address, chain }: UserProps) {
           <Group className="flex-col" size="md">
             <Button to={`/users/${address}`} size="xs" look="soft">
               <Icon remix="RiArrowRightLine" />
-              Check user claims
+              Check user dashboard
             </Button>
             {chain?.explorers?.map(explorer => {
               return (

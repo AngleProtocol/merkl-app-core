@@ -1,13 +1,17 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Reward } from "@merkl/api";
 import { Fmt } from "dappkit";
 import { useMemo } from "react";
 import { getAddress, isAddress } from "viem";
-import merklConfig from "../../config";
 
-function getValueOf(chainRewards: Reward["rewards"], amount: (t: Reward["rewards"][number]) => bigint) {
+function getValueOf(
+  rewardsTotalClaimableMode: string | undefined,
+  chainRewards: Reward["rewards"],
+  amount: (t: Reward["rewards"][number]) => bigint,
+) {
   return chainRewards.reduce((sum: number, reward) => {
-    if (isAddress(merklConfig.rewardsTotalClaimableMode ?? "")) {
-      if (reward.token.address === getAddress(merklConfig.rewardsTotalClaimableMode ?? "")) {
+    if (isAddress(rewardsTotalClaimableMode ?? "")) {
+      if (reward.token.address === getAddress(rewardsTotalClaimableMode ?? "")) {
         return sum + Number.parseFloat(amount(reward).toString());
       }
       return sum;
@@ -17,12 +21,17 @@ function getValueOf(chainRewards: Reward["rewards"], amount: (t: Reward["rewards
 }
 
 export default function useRewards(rewards: Reward[]) {
+  const rewardsTotalClaimableMode = useMerklConfig(store => store.config.rewardsTotalClaimableMode);
   const { earned, unclaimed, pending } = useMemo(() => {
     return rewards.reduce(
       ({ earned, unclaimed, pending }, chain) => {
-        const valueUnclaimed = getValueOf(chain.rewards, token => token.amount - token.claimed);
-        const valueEarned = getValueOf(chain.rewards, token => token.amount);
-        const valuePending = getValueOf(chain.rewards, token => token.pending);
+        const valueUnclaimed = getValueOf(
+          rewardsTotalClaimableMode,
+          chain.rewards,
+          token => token.amount - token.claimed,
+        );
+        const valueEarned = getValueOf(rewardsTotalClaimableMode, chain.rewards, token => token.amount);
+        const valuePending = getValueOf(rewardsTotalClaimableMode, chain.rewards, token => token.pending);
         return {
           earned: earned + valueEarned,
           unclaimed: unclaimed + valueUnclaimed,
@@ -35,16 +44,46 @@ export default function useRewards(rewards: Reward[]) {
         pending: 0,
       },
     );
-  }, [rewards]);
+  }, [rewards, rewardsTotalClaimableMode]);
 
   const sortedRewards = useMemo(() => {
     return rewards.sort((a, b) => {
-      const unclaimedA = getValueOf(a.rewards, token => token.amount - token.claimed);
-      const unclaimedB = getValueOf(b.rewards, token => token.amount - token.claimed);
+      const unclaimedA = getValueOf(rewardsTotalClaimableMode, a.rewards, token => token.amount - token.claimed);
+      const unclaimedB = getValueOf(rewardsTotalClaimableMode, b.rewards, token => token.amount - token.claimed);
 
       return unclaimedB - unclaimedA;
     });
+  }, [rewards, rewardsTotalClaimableMode]);
+
+  /**
+   * Determines if the opportunity has only reward token points
+   */
+  const isOnlyPointOrTest = useMemo(() => {
+    return rewards.every(rewardsPerChain =>
+      rewardsPerChain.rewards.every(reward => !!reward.token.isPoint || !!reward.token.isTest),
+    );
   }, [rewards]);
 
-  return { earned, unclaimed, sortedRewards, pending };
+  /**
+   * SINGLE Point aggregation (will be refacto to handle multiple points on same opportunity) test tokens are excluded
+   */
+  const pointAggregation = useMemo(() => {
+    if (!isOnlyPointOrTest) return null;
+
+    return rewards.reduce(
+      ({ earned, unclaimed, pending }, rewardsPerChain) => {
+        rewardsPerChain.rewards.forEach(record => {
+          if (!record.token.isTest) {
+            unclaimed += Fmt.toNumber(record.amount - record.claimed, record.token.decimals);
+            earned += Fmt.toNumber(record.amount, record.token.decimals);
+            pending += Fmt.toNumber(record.pending, record.token.decimals);
+          }
+        });
+        return { earned, unclaimed, pending };
+      },
+      { unclaimed: 0, earned: 0, pending: 0 },
+    );
+  }, [isOnlyPointOrTest, rewards]);
+
+  return { earned, unclaimed, sortedRewards, pending, isOnlyPointOrTest, pointAggregation };
 }

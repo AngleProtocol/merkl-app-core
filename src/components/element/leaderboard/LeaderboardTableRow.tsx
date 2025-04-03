@@ -1,14 +1,14 @@
+import type { Api } from "@core/api/types";
 import type { Chain, Token as TokenType } from "@merkl/api";
 import { type Component, Group, type ListProps, PrimitiveTag, Text, Value, mergeClass } from "dappkit";
 import { useMemo } from "react";
 import { formatUnits } from "viem";
-import type { RewardService } from "../../../modules/reward/reward.service";
 import Token from "../../../modules/token/components/element/Token";
 import User from "../user/User";
 import { LeaderboardRow, LeaderboardRowWithoutReason } from "./LeaderboardTable";
 
 export type LeaderboardTableRowProps = Component<{
-  row: Awaited<ReturnType<typeof RewardService.getCampaignLeaderboard>>["rewards"][0];
+  row: NonNullable<Awaited<ReturnType<Api["v4"]["rewards"]["index"]["get"]>>["data"]>["0"];
   total: bigint;
   rank: number;
   token: TokenType;
@@ -36,8 +36,7 @@ export default function LeaderboardTableRow({
 
   return showreason ? (
     <LeaderboardRow
-      // {...props}
-      className={mergeClass("cursor-pointer", className)}
+      className={mergeClass("cursor-pointer bg-main-2", className)}
       rankColumn={
         <Group className="flex-nowrap">
           <PrimitiveTag className="pointer-events-none" look="bold">

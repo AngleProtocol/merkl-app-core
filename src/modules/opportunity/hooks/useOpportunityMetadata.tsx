@@ -1,9 +1,19 @@
 import type { TagProps, TagType, TagTypes } from "@core/components/element/Tag";
 import Tag from "@core/components/element/Tag";
-import merklConfig from "@core/config";
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Icon, Icons as IconGroup, type IconProps, type IconsProps } from "dappkit";
+import { Link } from "@remix-run/react";
+import {
+  type Component,
+  Divider,
+  Group,
+  Icon,
+  Icons as IconGroup,
+  type IconProps,
+  type IconsProps,
+  Text,
+} from "dappkit";
 import { useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { OpportunityService } from "../opportunity.service";
@@ -36,13 +46,14 @@ export default function useOpportunityMetadata({
   depositUrl,
   ...opportunity
 }: PickAndOptOut<Opportunity, (typeof metadata)[number], "depositUrl" | "protocol">) {
+  const opportunityPercentage = useMerklConfig(store => store.config.opportunityPercentage);
   /**
    * Formatted name
    */
   const configuredName = useMemo(() => {
-    if (!merklConfig.opportunityPercentage) return name.replace(/\s*\d+(\.\d+)?%$/, "").trim();
+    if (!opportunityPercentage) return name.replace(/\s*\d+(\.\d+)?%$/, "").trim();
     return name;
-  }, [name]);
+  }, [name, opportunityPercentage]);
 
   /**
    * Formatted name split into multiple spans to be used in page header titles
@@ -99,22 +110,23 @@ export default function useOpportunityMetadata({
 
   /**
    * Extensible tags components that can be filtered
-   * @param hide which tags to filers out
+   * @param tags which tags to display, the order has its importance
    * @param props tag item props
    */
   const Tags = useCallback(
     function TagsComponent({
-      hide,
-      only,
+      tags: selectedTags,
       ...props
-    }: { hide?: (keyof TagTypes)[]; only?: (keyof TagTypes)[] } & Omit<
-      Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
-      "value" | "type"
-    >) {
-      return tags
-        ?.filter(a => a !== undefined)
-        ?.filter(({ type }) => !hide || !hide.includes(type))
-        ?.filter(({ type }) => !only || only.includes(type))
+    }: { tags: (keyof TagTypes)[] } & Omit<Component<TagProps<keyof TagTypes>, HTMLButtonElement>, "value" | "type">) {
+      if (!selectedTags?.length || !tags?.length) return null;
+
+      // Create a map of available tags for O(1) lookup
+      const availableTags = new Map(tags.filter(tag => tag !== undefined).map(tag => [tag.type, tag]));
+
+      // Filter and order tags based on the selectedTags array
+      return selectedTags
+        .map(type => availableTags.get(type))
+        .filter((tag): tag is NonNullable<typeof tag> => tag !== undefined)
         .map(tag => <Tag {...tag} key={tag.key ?? uuidv4()} size="sm" {...props} />);
     },
     [tags],
@@ -165,13 +177,152 @@ export default function useOpportunityMetadata({
     [icons],
   );
 
+  const navigateToMerklStatusPage = useCallback(() => {
+    window.open("https://beta.merkl.xyz/status", "_blank");
+  }, []);
+
   /**
-   * Explainer for the opportunity
+   * Explainer for the opportunity with Helpers
    */
   const description = useMemo(
-    () => OpportunityService.getDescription({ tokens, protocol, chain, action }),
+    () => OpportunityService({}).getDescription({ tokens, protocol, chain, action }),
     [tokens, protocol, chain, action],
   );
+
+  const howToEarnRewardsHelper = useMemo(() => {
+    const symbols = tokens?.map(t => t.symbol).join("-");
+
+    const commonThirdStep = (
+      <>
+        Claim
+        <Link to="/users"> rewards</Link> anytime via Merkl (updated every 3-12 hours).{" "}
+        <Text className="cursor-pointer" look="tint" onClick={navigateToMerklStatusPage} size={"sm"}>
+          Check next reward update
+        </Text>
+      </>
+    );
+
+    const commonTitle = (
+      <>
+        <Group size={"sm"}>
+          <Icon remix="RiMegaphoneFill" className="text-main-11" />
+          <Text bold look="tint">
+            Step to earn rewards
+          </Text>
+        </Group>
+        <Divider />
+      </>
+    );
+
+    switch (action) {
+      case "POOL":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Provide liquidity on {protocol?.name}.</li>
+                <li>Earn rewards based on your liquidity position.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "HOLD":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Hold {symbols}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "LEND":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Lend assets on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "BORROW":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Borrow assets on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "DROP":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Check your eligibility on Merkl.</li>
+                <li>Eligible rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "LONG":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Open a long position on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "SHORT":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Open a short position on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      case "SWAP":
+        return (
+          <Group>
+            {commonTitle}
+            <Text className="inline" size={"sm"}>
+              <ul className="list-decimal ml-lg space-y-2">
+                <li>Swap on {protocol?.name}.</li>
+                <li>Rewards accumulate automatically.</li>
+                <li>{commonThirdStep}</li>
+              </ul>
+            </Text>
+          </Group>
+        );
+      default:
+        return null;
+    }
+  }, [tokens, protocol, action, navigateToMerklStatusPage]);
 
   return {
     name: configuredName,
@@ -188,5 +339,6 @@ export default function useOpportunityMetadata({
     },
     tags,
     Tags,
+    howToEarnRewardsHelper,
   };
 }

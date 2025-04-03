@@ -10,6 +10,7 @@ import { ZyfiService } from "../../../modules/zyfi/zyfi.service";
 
 export const action = async ({ params: { name }, request }: ActionFunctionArgs) => {
   const payload = await request.json();
+  const zyfiService = ZyfiService({});
 
   switch (name) {
     case "claim": {
@@ -24,7 +25,7 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
         }),
       };
       if (payload.sponsor) {
-        const sponsoredTx = await ZyfiService.wrapAndPrepareTx(tx);
+        const sponsoredTx = await zyfiService.wrapAndPrepareTx(tx);
 
         return sponsoredTx;
       }
@@ -39,12 +40,12 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
         if (!tx) return new Response(tx, { status: 500 });
 
         if (payload.sponsor && !tx.approved) {
-          tx.approval = (await ZyfiService.wrapAndPrepareTx({
+          tx.approval = (await zyfiService.wrapAndPrepareTx({
             ...tx.approval,
             from: payload.userAddress,
           }))!;
         } else if (payload.sponsor) {
-          tx.transaction = (await ZyfiService.wrapAndPrepareTx({
+          tx.transaction = (await zyfiService.wrapAndPrepareTx({
             ...tx.transaction,
             from: payload.userAddress,
           }))!;
@@ -84,7 +85,7 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
       };
 
       if (payload.sponsor) {
-        const sponsoredTx = await ZyfiService.wrapAndPrepareTx(tx);
+        const sponsoredTx = await zyfiService.wrapAndPrepareTx(tx);
         return sponsoredTx;
       }
 
@@ -104,7 +105,7 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
       };
 
       if (payload.sponsor) {
-        const sponsoredTx = await ZyfiService.wrapAndPrepareTx(tx);
+        const sponsoredTx = await zyfiService.wrapAndPrepareTx(tx);
         return sponsoredTx;
       }
 

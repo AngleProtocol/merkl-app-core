@@ -1,89 +1,88 @@
-import { api } from "../../api";
-import { fetchWithLogs } from "../../api/utils";
-import merklConfig from "../../config";
-import { DEFAULT_ITEMS_PER_PAGE } from "../../constants/pagination";
+import type { Api } from "@core/api/types";
+import { defineModule } from "@merkl/conduit";
+import { type ApiQuery, type ApiResponse, fetchResource } from "../../api/utils";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
+export const DEFAULT_ITEMS_PER_PAGE_PROTOCOLS = 500;
 
-export abstract class ProtocolService {
-  // ─── Get Many Protocols ──────────────────────────────────────────────
+export const ProtocolService = defineModule<{ api: Api; backend: MerklBackendConfig; request: Request }>().create(
+  ({ inject }) => {
+    const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Protocol")(call);
+    const queryFromRequest = (request: Request, override?: ApiQuery<Api["v4"]["opportunities"]["index"]["get"]>) => {
+      const page = new URL(request.url).searchParams.get("page");
+      const items = new URL(request.url).searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE_PROTOCOLS;
+      const search = new URL(request.url).searchParams.get("search");
 
-  static async get(query: Parameters<typeof api.v4.protocols.index.get>[0]["query"]) {
-    return await ProtocolService.#fetch(async () =>
-      api.v4.protocols.index.get({
-        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
-      }),
-    );
-  }
+      const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
-  // ─── Get First Protocol ──────────────────────────────────────────────
+      const filters = Object.assign(
+        { items, sort, order, name: search, page },
+        override ?? {},
+        page !== null && { page: Number(page) - 1 },
+      );
 
-  static async getById(id: string) {
-    return await ProtocolService.#fetch(async () =>
-      api.v4
-        .protocols({
-          id,
-        })
-        .get(),
-    );
-  }
+      const query = Object.entries(filters).reduce(
+        (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
+        {},
+      );
 
-  // ─── Get Many Protocols from request ──────────────────────────────────
+      return query;
+    };
 
-  static async getManyFromRequest(request: Request) {
-    const query: Parameters<typeof api.v4.protocols.index.get>[0]["query"] =
-      ProtocolService.#getQueryFromRequest(request);
-    const protocols = await ProtocolService.#fetch(async () =>
-      api.v4.protocols.index.get({
-        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
-      }),
-    );
-    const count = await ProtocolService.#fetch(async () =>
-      api.v4.protocols.count.get({
-        query: Object.assign({ ...query }, merklConfig.tags?.[0] ? { opportunityTag: merklConfig.tags?.[0] } : {}),
-      }),
-    );
+    const get = inject(["api", "backend"]).inFunction(
+      ({ api, backend }, query: ApiQuery<Api["v4"]["protocols"]["index"]["get"]>) => {
+        const testParam: Record<string, boolean> = {};
+        if (backend.alwaysShowTestTokens === true) testParam.test = true;
 
-    return { protocols, count };
-  }
-
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Protocol",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
-
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
-
-  /**
-   * Retrieves protocols query params from page request
-   * @param request request containing query params such as paginatio
-   * @param override params for which to override value
-   * @returns query
-   */
-  static #getQueryFromRequest(
-    request: Request,
-    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
-  ) {
-    const page = new URL(request.url).searchParams.get("page");
-    const items = new URL(request.url).searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
-    const search = new URL(request.url).searchParams.get("search");
-
-    const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
-
-    const filters = Object.assign(
-      { items, sort, order, name: search, page },
-      override ?? {},
-      page !== null && { page: Number(page) - 1 },
+        return fetchApi(() =>
+          api.v4.protocols.index.get({
+            query: Object.assign(
+              { ...query, ...testParam },
+              backend.tags?.[0] ? { opportunityTag: backend.tags?.[0], ...testParam } : {},
+            ),
+          }),
+        );
+      },
     );
 
-    const query = Object.entries(filters).reduce(
-      (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
-      {},
-    );
+    const getById = inject(["api"]).inFunction(({ api }, id: string) => {
+      return fetchApi(() =>
+        api.v4
+          .protocols({
+            id,
+          })
+          .get(),
+      );
+    });
 
-    return query;
-  }
-}
+    const getManyFromRequest = inject(["api", "request", "backend"]).inFunction(async ({ api, request, backend }) => {
+      const query: Parameters<typeof api.v4.protocols.index.get>[0]["query"] = queryFromRequest(request);
+      const showTest: Record<string, boolean> = {};
+      if (backend.alwaysShowTestTokens === true) showTest.test = true;
+
+      const protocols = await fetchApi(async () =>
+        api.v4.protocols.index.get({
+          query: Object.assign(
+            { ...query, ...showTest },
+            backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {},
+          ),
+        }),
+      );
+      const count = await fetchApi(async () =>
+        api.v4.protocols.count.get({
+          query: Object.assign(
+            { ...query, ...showTest },
+            backend.tags?.[0] ? { opportunityTag: backend.tags?.[0] } : {},
+          ),
+        }),
+      );
+
+      return { protocols, count };
+    });
+
+    return {
+      get,
+      getById,
+      getManyFromRequest,
+    };
+  },
+);

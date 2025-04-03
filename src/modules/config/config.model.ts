@@ -1,75 +1,71 @@
-import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
-import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
-import type { MetaDescriptor } from "@remix-run/react";
-import type * as RemixIcon from "@remixicon/react";
-import type { Themes, sizeScale } from "dappkit";
-import type { WalletOptions } from "dappkit";
-import type { Chain as viemChain } from "viem/chains";
-import { createConfig as createWagmiConfig } from "wagmi";
-import type { TagTypes } from "../components/element/Tag";
 import type {
   OpportunityNavigationMode,
   OpportunityRowView,
   OpportunitySortedBy,
   OpportunityView,
-} from "./opportunity";
-import type { RewardsNavigationMode } from "./rewards";
+} from "@core/config/opportunity";
+import type { RewardsNavigationMode } from "@core/config/rewards";
+import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
+import type { IconProps, WalletOptions } from "packages/dappkit/src";
+import type { Chain } from "viem";
+import type { createConfig as createWagmiConfig } from "wagmi";
+import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";
+import type { MerklBackendConfig } from "./types/merklBackendConfig";
+import type { MerklRoutes } from "./types/merklRoutesConfig";
+import type { MerklThemeConfig } from "./types/merklThemeConfig";
 
-export type routesType = {
-  [key: string]: {
-    route: string;
-    icon: keyof typeof RemixIcon;
-    key: string;
-    external?: boolean;
-    enabled?: boolean;
-    inHeader?: boolean;
-  };
+/**
+ * Route entry in the links menu, either an external link or internal route
+ */
+export type NavigationMenuRoute<L extends "link" | "menu" = "link" | "menu"> = {
+  icon: IconProps;
+  name: string;
+} & (L extends "link"
+  ? { link: string; flags?: { replaceWithWallet: string }; external?: boolean; disabled?: boolean }
+  : { routes: NavigationMenuRoutes });
+
+/**
+ * Collection of routes
+ * {@link NavigationMenuRoute }
+ */
+export type NavigationMenuRoutes = {
+  [key: string]: NavigationMenuRoute;
 };
 
 // TODO: groups by entity
-export type MerklConfig<T extends Themes> = {
-  /**
-   * Themes available
-   * @notice the first theme is the default one by default
-   */
-  themes: T;
-
-  metaDatasGlobal: (url: string) => MetaDescriptor[];
-
-  metaDatas: {
-    home: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    opportunities: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    opportunity: (
-      url: string,
-      config: Omit<MerklConfig<T>, "wagmi" | "themes">,
-      opportunity: Opportunity,
-    ) => MetaDescriptor[];
-    "opportunity/leaderboard": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    bridge: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    dashboard: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, address: string) => MetaDescriptor[];
-    "dashboard/connect": (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    tokens: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    token: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, token: Token) => MetaDescriptor[];
-    chains: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    chain: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, chain: Chain) => MetaDescriptor[];
-    protocols: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
-    protocol: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">, protocol: Protocol) => MetaDescriptor[];
-    faq: (url: string, config: Omit<MerklConfig<T>, "wagmi" | "themes">) => MetaDescriptor[];
+export type MerklConfig = {
+  theme: MerklThemeConfig;
+  routes: MerklRoutes;
+  backend: MerklBackendConfig;
+  mixpanel?: {
+    token: string;
   };
 
+  editable?: boolean;
+
   /**
-   * Sizing theme, influences the padding, gaps & radius.
+   * Hide the price of reward tokens in the UI
    */
-  sizing: {
-    width: { [Size in (typeof sizeScale)[number]]: number };
-    spacing: { [Size in (typeof sizeScale)[number]]: number };
-    radius: { [Size in (typeof sizeScale)[number]]: number };
-  };
+  hideRewardTokenPrice?: string[];
+
   /**
    * Filter resources like opportunities by their inherent tags
    */
   tags?: string[];
-  defaultTheme: keyof T;
+
+  /**
+   * Filters enabled in the opportunities header list
+   */
+  opportunitiesFilters: Record<string, { name: string }>;
+  /**
+   * Navigation Menu and Header links configuration
+   */
+  navigation: {
+    brand?: () => JSX.Element;
+    header: NavigationMenuRoutes;
+    addtionalHeaderLinks?: NavigationMenuRoutes;
+    menu: NavigationMenuRoutes;
+  };
   /**
    * Toggle supply modal allowing users to deposit/withdraw directly on opportunities
    */
@@ -82,15 +78,20 @@ export type MerklConfig<T extends Themes> = {
    * Chains that can be connected to the dapp
    * @notice chains needs to be set in the wagmi config as well to allow wallets to connect
    */
-  chains?: viemChain[];
+  chains?: Chain[];
+  protocols?: string[];
+  referral?: {
+    /**
+     *
+     */
+    chainId: number;
+    referralKey: string;
+  };
   /**
    * Show opportunities & campaigns created with test tokens (aglaMerkl)
    */
   alwaysShowTestTokens?: boolean;
-  /**
-   * Toggle ability to copy the id of an opportunity
-   */
-  showCopyOpportunityIdToClipboard?: boolean;
+
   walletOptions?: WalletOptions;
   /**
    * Provides a default order of to sort tokens when no balance or not connected
@@ -146,7 +147,6 @@ export type MerklConfig<T extends Themes> = {
   /**
    * Enables themes to be switched between dark and light or enforce only one
    */
-  modes: ("dark" | "light")[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   /**
    * Custom white-label-banner component to showup on the top of pages
@@ -157,7 +157,6 @@ export type MerklConfig<T extends Themes> = {
    */
   appName: string;
   fonts?: { italic?: boolean };
-  routes: routesType;
   opportunity: {
     featured: {
       enabled: boolean;
@@ -166,6 +165,8 @@ export type MerklConfig<T extends Themes> = {
     library: {
       sortedBy: OpportunitySortedBy;
       dailyRewardsTokenAddress: string;
+      overrideDisplay?: OpportuntyLibraryOverride<"table">;
+      overrideCell?: OpportuntyLibraryOverride<"cell">;
       columns: {
         action: {
           enabled: boolean;
@@ -179,9 +180,6 @@ export type MerklConfig<T extends Themes> = {
     defaultView?: OpportunityView;
     views?: OpportunityView[];
     rowView?: OpportunityRowView;
-    cells?: {
-      hideTags?: (keyof TagTypes)[];
-    };
     excludeFilters?: OpportunityFilter[];
   };
   bridge: {
@@ -209,6 +207,8 @@ export type MerklConfig<T extends Themes> = {
   };
   decimalFormat: {
     dollar: string;
+    apr: string;
+    point: string;
   };
   hero: {
     bannerOnAllPages: boolean; // show banner on all pages
@@ -229,11 +229,4 @@ export type MerklConfig<T extends Themes> = {
     [key: string]: string;
   };
   footerLinks: { image: string; link: string; key: string }[];
-  footerNavLinks?: routesType;
 };
-
-export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
-  const wagmiConfig = createWagmiConfig(wagmi);
-
-  return { wagmi: wagmiConfig, ...config };
-}

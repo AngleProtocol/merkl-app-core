@@ -6,6 +6,12 @@ import moment from "moment";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 
+export enum ECampaignStatus {
+  LIVE = "live",
+  UPCOMING = "upcoming",
+  PAST = "past",
+}
+
 /**
  * Formats basic metadata for a given opportunity
  */
@@ -43,8 +49,8 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     const live = BigInt(campaign.endTimestamp) * 1000n > moment.now();
     return (
       <>
-        {!live && "Ended "}
-        <Time timestamp={Number(campaign.endTimestamp) * 1000} />
+        <Time prefix=" " timestamp={Number(campaign.endTimestamp) * 1000} />
+        {live && " left"}
       </>
     );
   }, [campaign.endTimestamp]);
@@ -87,11 +93,21 @@ export default function useCampaignMetadata(campaign: CampaignFromApi) {
     return Number(campaign.endTimestamp) > moment().unix();
   }, [campaign.endTimestamp]);
 
+  const campaignStatus = useMemo(() => {
+    const now = BigInt(moment.now());
+    const start = BigInt(campaign.startTimestamp) * 1000n;
+    const end = BigInt(campaign.endTimestamp) * 1000n;
+    if (end < now) return ECampaignStatus.PAST;
+    if (start > now) return ECampaignStatus.UPCOMING;
+    return ECampaignStatus.LIVE;
+  }, [campaign]);
+
   return {
     amount,
     dailyRewards,
     time,
     progressBar,
     active,
+    campaignStatus,
   };
 }

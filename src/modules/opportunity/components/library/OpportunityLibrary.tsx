@@ -1,15 +1,15 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Box, Group, type Order, Title } from "dappkit";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { Box, Button, Group, Icon, List, Text } from "dappkit";
+import { useMemo, useState } from "react";
 import Pagination from "../../../../components/element/Pagination";
-import merklConfig from "../../../../config";
 import type { OpportunityView } from "../../../../config/opportunity";
-import useSearchParamState from "../../../../hooks/filtering/useSearchParamState";
+import useOpportunityFilters from "../../hooks/useOpportunityFilters";
+import useOpportunityTable from "../../hooks/useOpportunityTable";
 import OpportunityFilters, { type OpportunityFilterProps } from "../OpportunityFilters";
 import OpportunityCell from "../items/OpportunityCell";
 import OpportunityTableRow from "../items/OpportunityTableRow";
-import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";
 
 export type Displays = "grid" | "list";
 
@@ -27,44 +27,48 @@ export default function OpportunityLibrary({
   only,
   exclude = [],
   chains,
-  protocols,
   hideFilters,
   forceView,
 }: OpportunityLibrary) {
-  const sortable = ["apr", "tvl", "rewards"] as const satisfies typeof opportunityColumns;
+  const opportunityLibraryDefaultView = useMerklConfig(store => store.config.opportunityLibrary.defaultView);
+  const opportunityLibraryViews = useMerklConfig(store => store.config.opportunityLibrary?.views);
+  const excludeFilters = useMerklConfig(store => store.config.opportunityLibrary?.excludeFilters);
+  const opportunityNavigationMode = useMerklConfig(store => store.config.opportunityNavigationMode);
 
   // Merge global and local exclusions
   const mergedExclusions = useMemo(() => {
     // Get global exclusions from config
-    const globalExclusions = merklConfig?.opportunityLibrary.excludeFilters || [];
+    const globalExclusions = excludeFilters || [];
     // Combine global and local exclusions
     const combinedExclusions = [...globalExclusions, ...exclude];
     // Remove duplicates
     return Array.from(new Set(combinedExclusions));
-  }, [exclude]);
+  }, [exclude, excludeFilters]);
 
-  const [sortIdAndOrder, setSortIdAndOrder] = useSearchParamState<[id: (typeof sortable)[number], order: Order]>(
-    "sort",
-    v => v?.join("-"),
-    v => v?.split("-") as [(typeof sortable)[number], order: Order],
-  );
+  const [view, setView] = useState<OpportunityView>(forceView ?? opportunityLibraryDefaultView ?? "table");
+  const { clearFilters } = useOpportunityFilters();
 
-  const onSort = useCallback(
-    (column: (typeof opportunityColumns)[number], order: Order) => {
-      if (!sortable.some(s => s === column)) return;
+  const { OpportunityTable } = useOpportunityTable(undefined, count);
 
-      setSortIdAndOrder([column as (typeof sortable)[number], order]);
-    },
-    [sortable, setSortIdAndOrder],
-  );
-
-  const [view, setView] = useState<OpportunityView>(forceView ?? merklConfig.opportunityLibrary.defaultView ?? "table");
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleClearFilters = useCallback(() => {
-    scrollContainerRef.current?.scrollTo({ left: 0, behavior: "smooth" });
-  }, []);
+  const renderSwitchDisplayButton = useMemo(() => {
+    if (opportunityLibraryViews === null) return null;
+    if (opportunityLibraryViews?.length === 1) return null;
+    if (!view) return null;
+    return (
+      <Group className="flex-nowrap" size="sm">
+        {view === "table" && (
+          <Button look="soft" onClick={() => setView?.("cells")}>
+            <Icon remix="RiDashboardFill" />
+          </Button>
+        )}
+        {view === "cells" && (
+          <Button look="soft" onClick={() => setView?.("table")} className={"min-w-[64px] justify-center"}>
+            <Icon remix="RiSortDesc" />
+          </Button>
+        )}
+      </Group>
+    );
+  }, [view, opportunityLibraryViews]);
 
   const display = useMemo(() => {
     switch (view) {
@@ -73,21 +77,12 @@ export default function OpportunityLibrary({
           <OpportunityTable
             responsive
             exclude={["tvl"]}
-            opportunityHeader={
-              <Title className="!text-main-11" h={5}>
-                Opportunities
-              </Title>
-            }
-            dividerClassName={index => (index < 2 ? "bg-accent-11" : "bg-main-8")}
-            sortable={sortable}
-            order={(sortIdAndOrder ?? [])?.[1]}
-            sort={(sortIdAndOrder ?? [])?.[0] ?? "rewards"}
-            onSort={onSort}
+            dividerClassName={() => "bg-main-6"}
+            ctaHeader={renderSwitchDisplayButton}
             footer={count !== undefined && <Pagination count={count} />}>
             {opportunities?.map(o => (
               <OpportunityTableRow
-                hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
-                navigationMode={merklConfig.opportunityNavigationMode}
+                navigationMode={opportunityNavigationMode}
                 key={`${o.chainId}_${o.type}_${o.identifier}`}
                 opportunity={o}
               />
@@ -96,43 +91,72 @@ export default function OpportunityLibrary({
         );
       case "cells":
         return (
-          <Group>
-            <Group className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
-              {opportunities?.map(o => (
-                <OpportunityCell
-                  navigationMode={merklConfig.opportunityNavigationMode}
-                  hideTags={merklConfig.opportunityLibrary.cells?.hideTags}
-                  key={`${o.chainId}_${o.type}_${o.identifier}`}
-                  opportunity={o}
-                />
-              ))}
-            </Group>
+          <List dividerClassName={() => "bg-main-6"}>
+            <Box size="lg" className="!p-lg !rounded-lg+md">
+              <Group className="justify-between">
+                <Text look="soft" size={5}>
+                  {count ?? ""} Opportunities
+                </Text>
+                {renderSwitchDisplayButton}
+              </Group>
+            </Box>
+            <Box>
+              <Group className="grid md:grid-cols-2 lg:grid-cols-3 my-md" size="lg">
+                {opportunities?.map(o => (
+                  <OpportunityCell
+                    navigationMode={opportunityNavigationMode}
+                    key={`${o.chainId}_${o.type}_${o.identifier}`}
+                    opportunity={o}
+                  />
+                ))}
+              </Group>
+            </Box>
             {count !== undefined && (
               <Box content="sm" className="w-full">
                 <Pagination count={count} />
               </Box>
             )}
-          </Group>
+          </List>
         );
     }
-  }, [opportunities, view, count, sortable, onSort, sortIdAndOrder]);
+  }, [opportunities, view, count, OpportunityTable, opportunityNavigationMode, renderSwitchDisplayButton]);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="w-full">
       {!hideFilters && (
-        <div className="overflow-x-visible -mx-[clamp(0.5rem,3vw,5rem)] lg:mx-0" ref={scrollContainerRef}>
-          <div className="min-w-min max-w-full px-[clamp(0.5rem,3vw,5rem)] lg:px-0">
-            <Box content="sm" className="mb-lg justify-between w-full">
-              <OpportunityFilters
-                {...{ only, chains, protocols, view, setView }}
-                exclude={mergedExclusions}
-                onClear={handleClearFilters}
-              />
-            </Box>
-          </div>
-        </div>
+        <Box content="sm" className="mb-lg justify-between w-full overflow-x-hidden">
+          <OpportunityFilters {...{ only, chains, view, setView }} exclude={mergedExclusions} />
+        </Box>
       )}
-      {display}
+
+      {count === 0 ? (
+        <List dividerClassName={() => "bg-accent-11"}>
+          <Box size="lg" className="!p-lg !rounded-lg+md">
+            <Group className="justify-between">
+              <Text look="hype" size={5}>
+                {count ?? ""} Opportunities
+              </Text>
+              {renderSwitchDisplayButton}
+            </Group>
+          </Box>
+          <Box className="py-xl*4 flex items-center justify-center gap-xl">
+            <Text size="lg" className="flex items-center gap-md" bold>
+              <Icon remix="RiErrorWarningFill" />
+              No opportunity yet :)
+            </Text>
+            <Button onClick={clearFilters}>
+              Clear all filters <Icon remix="RiArrowRightLine" />
+            </Button>
+          </Box>
+          {count !== undefined && (
+            <Box content="sm" className="w-full">
+              <Pagination count={count} />
+            </Box>
+          )}
+        </List>
+      ) : (
+        display
+      )}
     </div>
   );
 }

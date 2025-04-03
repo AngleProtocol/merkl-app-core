@@ -1,90 +1,62 @@
-import config from "@core/config";
+import { api } from "@core/api";
+import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { withUrl } from "@core/utils/url";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
+import type { Chain, Opportunity } from "@merkl/api";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero, { defaultHeroSideDatas } from "../../../components/composite/Hero";
 import { Cache } from "../../../modules/cache/cache.service";
-import { ChainService } from "../../../modules/chain/chain.service";
-import { OpportunityService } from "../../../modules/opportunity/opportunity.service";
 import { TokenService } from "../../../modules/token/token.service";
 
-export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
-  const tokens = await TokenService.getSymbol(symbol);
-  const chains = await ChainService.getAll();
+export async function loader({ context: { backend, routes }, params: { symbol }, request }: LoaderFunctionArgs) {
+  const tokens = await TokenService({ backend, api, request }).getSymbol(symbol);
 
-  const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
-    tokens: symbol,
+  const chains = await ChainService({ api, request, backend }).getAll();
+  const opportunityService = OpportunityService({ api, backend, request });
+
+  const { opportunities: opportunitiesByApr, count } = await opportunityService.getMany({
+    rewardTokenSymbol: symbol,
     status: "LIVE",
-    sort: "apr",
-    order: "desc",
   });
 
-  const { sum: dailyRewards } = await OpportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
-
-  return withUrl(request, {
-    tokens,
+  return {
+    tokens: tokens,
     chains,
-    dailyRewards,
-    maxApr: opportunitiesByApr?.[0]?.apr,
+    opportunities: opportunitiesByApr,
     count,
-  });
+    backend,
+    routes,
+    ...MetadataService({ request, backend, routes }).fill(),
+  };
 }
 
 export const clientLoader = Cache.wrap("token", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
-  const symbol = data?.tokens?.[0]?.symbol;
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
-  if (!symbol) return [{ title: `${config?.appName} | Token` }];
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrapMetadata("token", [data?.url, config, data?.tokens?.[0]]);
+export type OutletContextTokens = {
+  opportunities: Opportunity[];
+  chains: Chain[];
+  count: number;
 };
 
 export default function Index() {
-  const { tokens, dailyRewards, count, maxApr } = useLoaderData<typeof loader>();
+  const { tokens, count, opportunities, chains } = useLoaderData<typeof loader>();
   const token = tokens?.[0];
-
-  // Have been disabled with @Pablo
-  // const tags = useMemo(() => {
-  //   return tokens
-  //     .sort(({ chainId: a }, { chainId: b }) => {
-  //       const order = chainIdOrder;
-
-  //       if (order.indexOf(b) === -1) return -1;
-  //       if (order.indexOf(b) === -1 && order.indexOf(a) === -1) return 0;
-  //       if (order.indexOf(a) === -1) return 1;
-  //       return order.indexOf(b) - order.indexOf(a);
-  //     })
-  //     .map(
-  //       t =>
-  //         ({
-  //           type: "tokenChain",
-  //           value: { ...t, chain: chains?.find(c => c.id === t.chainId) },
-  //         }) satisfies TagType<"tokenChain">,
-  //     );
-  // }, [tokens, chains]);
 
   return (
     <Hero
-      breadcrumbs={[
-        { link: "/tokens", name: "Tokens" },
-        { link: `/tokens/${tokens?.[0]?.symbol}`, name: tokens?.[0]?.symbol },
-      ]}
-      icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
+      icons={[{ src: tokens?.find(t => t.icon && t.icon !== "")?.icon }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
-      title={
-        <>
-          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
-        </>
+      title={token?.name ?? "Token not found"}
+      description={
+        token?.name
+          ? `Earn rewards by using ${token?.symbol} as liquidity, or directly earn ${token?.symbol} as rewards`
+          : ""
       }
-      description={`Earn rewards by using ${token.symbol} as liquidity, or directly earn ${token.symbol} as rewards`}
-      sideDatas={defaultHeroSideDatas(count, maxApr, Number.parseFloat(dailyRewards))}
-      // tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}
-    >
-      <Outlet />
+      sideDatas={defaultHeroSideDatas(count)}>
+      <Outlet context={{ opportunities, count, chains }} />
     </Hero>
   );
 }

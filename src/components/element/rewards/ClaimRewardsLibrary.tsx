@@ -1,8 +1,8 @@
+import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Reward } from "@merkl/api";
-import { Group, Text } from "dappkit";
+import { Box, Group, Icon, Space, Text } from "dappkit";
 import type { TransactionButtonProps } from "dappkit";
 import { useMemo } from "react";
-import merklConfig from "../../../config";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";
 import ClaimRewardsByOpportunity from "./byOpportunity/ClaimRewardsByOpportunity";
@@ -14,7 +14,9 @@ export type ClaimRewardsLibraryProps = {
 };
 
 export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: ClaimRewardsLibraryProps) {
-  const flatenedRewards = useMemo(
+  const rewardsNavigationMode = useMerklConfig(store => store.config.rewardsNavigationMode);
+
+  const flattenedRewards = useMemo(
     () =>
       rewards.flatMap(({ chain, rewards, distributor }) =>
         rewards.flatMap(reward =>
@@ -25,27 +27,36 @@ export default function ClaimRewardsLibrary({ from, rewards, onClaimSuccess }: C
   );
 
   const renderRewards = useMemo(() => {
-    switch (merklConfig.rewardsNavigationMode) {
+    switch (rewardsNavigationMode) {
       case "opportunity":
-        return <ClaimRewardsByOpportunity from={from} rewards={flatenedRewards} />;
+        return <ClaimRewardsByOpportunity from={from} rewards={flattenedRewards} />;
       default:
         return (
-          <ClaimRewardsChainTable dividerClassName={index => (index === 1 ? "bg-accent-10" : "bg-main-7")}>
-            {rewards?.map((reward, index) => (
-              <ClaimRewardsChainTableRow
-                {...{ from, reward }}
-                key={reward.chain?.id ?? index}
-                onClaimSuccess={onClaimSuccess}
-              />
-            ))}
+          <ClaimRewardsChainTable
+            header={<Text className="uppercase font-bold">Tokens earned</Text>}
+            dividerClassName={() => "bg-main-6"}>
+            {rewards?.length > 0 ? (
+              rewards?.map((reward, index) => (
+                <ClaimRewardsChainTableRow
+                  {...{ from, reward }}
+                  key={reward.chain?.id ?? index}
+                  onClaimSuccess={onClaimSuccess}
+                />
+              ))
+            ) : (
+              <Box>
+                <Space size="xl" />
+                <Text className="flex flex-nowrap justify-center w-full gap-md">
+                  <Icon remix="RiForbid2Fill" />
+                  No rewards found
+                </Text>
+                <Space size="xl" />
+              </Box>
+            )}
           </ClaimRewardsChainTable>
         );
     }
-  }, [rewards, flatenedRewards, from, onClaimSuccess]);
+  }, [rewards, flattenedRewards, from, onClaimSuccess, rewardsNavigationMode]);
 
-  return (
-    <Group className="flex-row w-full [&>*]:flex-grow">
-      {rewards?.length > 0 ? renderRewards : <Text>No reward detected</Text>}
-    </Group>
-  );
+  return <Group className="flex-row w-full [&>*]:flex-grow">{renderRewards}</Group>;
 }

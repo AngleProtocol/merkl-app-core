@@ -1,26 +1,19 @@
-import { api as clientApi } from "@core/api";
-import { fetchWithLogs } from "@core/api/utils";
+import type { Api } from "@core/api/types";
+import { type ApiResponse, fetchResource } from "@core/api/utils";
+import type { Opportunity } from "@merkl/api";
+import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import type { TransactionName, TransactionPayload } from "./interaction.model";
 
-export abstract class InteractionService {
-  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
-    call: () => Promise<T>,
-    resource = "Chain",
-  ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await fetchWithLogs(call);
+export const InteractionService = defineModule<{ api: Api; backend: MerklBackendConfig }>().create(({ inject }) => {
+  const fetchApi = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Interaction")(call);
 
-    if (status === 404) throw new Response(`${resource} not found`, { status });
-    if (status === 500) throw new Response(`${resource} unavailable`, { status });
-    if (data == null) throw new Response(`${resource} unavailable`, { status });
-    return data;
-  }
-
-  static async get<Tx extends TransactionName>(
+  const get = async <Tx extends TransactionName>(
     //TODO: template type the transaction
     name: Tx,
     payload: TransactionPayload[Tx],
     options?: { sponsor?: boolean },
-  ) {
+  ) => {
     const response = await fetch(`/transaction/${name}`, {
       method: "POST",
       headers: {
@@ -32,32 +25,43 @@ export abstract class InteractionService {
     //TODO: use template type to get correct response type
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return (await response.json()) as any;
-  }
+  };
 
-  /**
-   * Client side
-   * @param chainId
-   * @param protocolId
-   * @param identifier
-   */
-  static async getTargets(chainId: number, protocolId: string, identifier: string) {
-    const targets = await InteractionService.#fetch(() =>
-      clientApi.v4.interaction.targets.get({
+  const getTargets = inject(["api"]).inFunction(({ api }, chainId: number, protocolId: string, identifier: string) => {
+    return fetchApi(() =>
+      api.v4.interaction.targets.get({
         query: { chainId, protocolId, identifier },
       }),
     );
+  });
 
-    //TODO: opportunity/:id/target instead of taking the first result and expecting unique
-    return targets;
-  }
-
-  static async getBalances(chainId: number, address: string) {
-    const tokens = await InteractionService.#fetch(() =>
-      clientApi.v4.tokens.balances.get({
+  const getBalances = inject(["api"]).inFunction(async ({ api }, chainId: number, address: string) => {
+    return fetchApi(() =>
+      api.v4.tokens.balances.get({
         query: { chainId: chainId, userAddress: address },
       }),
     );
+  });
 
-    return tokens;
-  }
-}
+  const getTargetsByOpportunity = inject(["api", "backend"]).inFunction(
+    async ({ api, backend }, opportunity: Pick<Opportunity, "protocol" | "chainId" | "identifier"> | undefined) => {
+      if (!opportunity || !opportunity.protocol || !backend.deposit) return undefined;
+      const targets = await getTargets.handler(
+        { api },
+        opportunity.chainId,
+        opportunity?.protocol?.id,
+        opportunity?.identifier,
+      );
+
+      if (targets && targets.length === 0) return;
+      return targets;
+    },
+  );
+
+  return {
+    get,
+    getTargets,
+    getBalances,
+    getTargetsByOpportunity,
+  };
+});

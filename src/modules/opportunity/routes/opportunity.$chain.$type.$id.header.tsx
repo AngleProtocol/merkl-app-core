@@ -1,48 +1,46 @@
+import { api } from "@core/api";
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
-import config from "@core/config";
-import merklConfig from "@core/config";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
-import useOpportunityMetrics from "@core/modules/opportunity/hooks/useOpportunityMetrics";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import { withUrl } from "@core/utils/url";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
-import { Button, Group, Icon } from "dappkit";
-import { useClipboard } from "dappkit";
+import { Group } from "dappkit";
+import OpportunityDevHelpers from "../components/element/OpportunityDevHelpers";
 
-export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
+export async function loader({
+  context: { backend, routes },
+  params: { id, type, chain: chainId },
+  request,
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ name: chainId });
+  const chain = await ChainService({ api, request, backend }).get({ name: chainId });
 
-  const opportunity = await OpportunityService.getCampaignsByParams({
+  const opportunity = await OpportunityService({ api, request, backend }).getCampaignsByParams({
     chainId: chain.id,
     type: type,
     identifier: id,
   });
 
-  return withUrl(request, {
-    //TODO: remove workaroung by either calling opportunity + campaigns or uniformizing api return types
+  return {
+    //TODO: remove workaround by either calling opportunity + campaigns or uniformizing api return types
     opportunity: opportunity as typeof opportunity & Opportunity,
     chain,
-  });
+    backend,
+    routes,
+    ...MetadataService({ request, backend, routes }).fill("opportunity", opportunity as Opportunity),
+  };
 }
 
 export const clientLoader = Cache.wrap("opportunity", 300);
 
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
-  if (error) return [{ title: error }];
-  if (!data) return [{ title: error }];
-
-  return MetadataService.wrapMetadata("opportunity", [data?.url, config, data?.opportunity]);
-};
+export const meta = MetadataService({}).forwardMetadata<typeof loader>();
 
 export type OutletContextOpportunity = {
   opportunity: Opportunity & { campaigns: Campaign[] };
@@ -52,66 +50,20 @@ export type OutletContextOpportunity = {
 export default function Index() {
   const { opportunity, chain } = useLoaderData<typeof loader>();
 
-  const { headerMetrics } = useOpportunityMetrics(opportunity);
-  const { title, Tags, description, link, url, icons } = useOpportunityData(opportunity);
-
-  const { copy: copyCall, isCopied } = useClipboard();
-
-  const currentLiveCampaign = opportunity.campaigns?.[0];
+  const { title, description, icons } = useOpportunityData(opportunity);
 
   return (
     <>
       <Meta />
       <Hero
         icons={icons}
-        breadcrumbs={[
-          { link: merklConfig.routes.opportunities?.route ?? "/", name: "Opportunities" },
-          {
-            link: "/",
-            name: opportunity.name,
-          },
-        ]}
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            {merklConfig.deposit && (
-              <>
-                {!!url && (
-                  <Button to={url} external className="inline-flex" size="md">
-                    <Icon remix="RiArrowRightUpLine" size="sm" />
-                  </Button>
-                )}
-                <OpportunityParticipateModal opportunity={opportunity}>
-                  <Button className="inline-flex" look="hype" size="md">
-                    Supply
-                  </Button>
-                </OpportunityParticipateModal>
-              </>
-            )}
-            {!merklConfig.deposit && !!url && (
-              <Button className="inline-flex" look="hype" size="md" to={url} external>
-                Supply
-                <Icon remix="RiArrowRightUpLine" size="sm" />
-              </Button>
-            )}
-            {(merklConfig.showCopyOpportunityIdToClipboard ?? false) && (
-              <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
-                <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
-              </Button>
-            )}
+            <OpportunityDevHelpers opportunityId={opportunity.id} />
           </Group>
         }
-        description={description}
-        tabs={[
-          { label: "Overview", link, key: "overview" },
-          {
-            label: "Leaderboard",
-            link: `${link}/leaderboard?campaignId=${currentLiveCampaign?.campaignId}`,
-            key: "leaderboard",
-          },
-        ]}
-        tags={<Tags size="sm" />}
-        sideDatas={headerMetrics}>
+        description={description}>
         <Outlet context={{ opportunity, chain }} />
       </Hero>
     </>

@@ -1,40 +1,58 @@
-import { api } from "@core/api";
+import type { Api } from "@core/api/types";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import type { Chain } from "@merkl/api";
+import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
-export abstract class ChainService {
-  static #fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
+export const ChainService = defineModule<{ api: Api; request: Request; backend: MerklBackendConfig }>().create(
+  ({ inject }) => {
+    const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
 
-  static async getAll() {
-    const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query: {} }));
+    const getAll = inject(["api", "backend", "request"]).inFunction(({ api, backend, request }) => {
+      const url = new URL(request.url);
+      const showTest: Record<string, boolean> = {};
+      if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+      return fetch(() => api.v4.chains.index.get({ query: showTest }));
+    });
 
-    //TODO: add some cache here
-    return chains;
-  }
-
-  static async getMany(query: Parameters<typeof api.v4.chains.index.get>[0]["query"]): Promise<Chain[]> {
-    const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query }));
-
-    //TODO: add some cache here
-    return chains;
-  }
-
-  static async get(query: Parameters<typeof api.v4.chains.index.get>[0]["query"]): Promise<Chain> {
-    const chains = await ChainService.#fetch(async () =>
-      api.v4.chains.index.get({
-        query: {
-          name: query.name?.replace("-", " "),
-        },
-      }),
+    const getMany = inject(["api", "backend", "request"]).inFunction(
+      ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+        const url = new URL(request.url);
+        const showTest: Record<string, boolean> = {};
+        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+        return fetch(async () => api.v4.chains.index.get({ query: { ...query, ...showTest } }));
+      },
     );
 
-    if (chains.length === 0) throw new Response("Chain not found", { status: 404 });
+    const get = inject(["api", "backend", "request"]).inFunction(
+      async ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
+        const url = new URL(request.url);
+        const showTest: Record<string, boolean> = {};
+        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+        const chains = await fetch(async () =>
+          api.v4.chains.index.get({
+            query: {
+              name: query.name?.replace("-", " "),
+              ...showTest,
+            },
+          }),
+        );
 
-    //TODO: add some cache here
-    return chains?.[0];
-  }
+        if (chains.length === 0) throw new Response("Chain not found", { status: 404 });
 
-  static async getById(chainId: number): Promise<Chain> {
-    return await ChainService.#fetch(async () => api.v4.chains({ chainId }).get());
-  }
-}
+        //TODO: add some cache here
+        return chains?.[0];
+      },
+    );
+
+    const getById = inject(["api"]).inFunction(async ({ api }, chainId: number) => {
+      return fetch(() => api.v4.chains({ chainId }).get());
+    });
+
+    return {
+      getAll,
+      get,
+      getMany,
+      getById,
+    };
+  },
+);

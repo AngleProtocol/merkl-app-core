@@ -1,15 +1,13 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import { ChainRow } from "@core/modules/chain/components/library/ChainTable";
 import type { Chain } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { type BoxProps, Group, Icon, Title, mergeClass } from "dappkit";
 
 export type ChainTableRowProps = {
-  hideTags?: (keyof TagTypes)[];
   chain: Chain;
 } & BoxProps;
 
-export default function ChainTableRow({ hideTags, chain, className, ...props }: ChainTableRowProps) {
+export default function ChainTableRow({ chain, className, ...props }: ChainTableRowProps) {
   return (
     <Link to={`/chains/${chain.name.replace(" ", "-").toLowerCase()}`}>
       <ChainRow

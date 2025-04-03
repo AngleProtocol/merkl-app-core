@@ -21,7 +21,7 @@ export default function PositionLibrary(props: PositionLibraryProps) {
     <PositionTable
       dividerClassName={index => (index < 2 ? "bg-accent-8" : "bg-main-8")}
       header={
-        <Title h={5} className="!text-main-11 w-full">
+        <Title h={5} look="soft" className="w-full">
           Your Liquidity
         </Title>
       }
