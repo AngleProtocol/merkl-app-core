@@ -92,40 +92,39 @@ export const TokenService = defineModule<{ api: Api; request: Request; backend: 
       return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
     });
 
-    const getAllowance = inject(["api"]).inFunction(
-      async ({ api }, chainId: number, address: string, owner: string, spender: string) => {
-        const id = `${chainId}-${address}`;
-
-        return await fetchApi(async () => api.v4.tokens({ id }).allowance({ owner })({ spender }).get());
-      },
-    );
-
     const getCompoundV2 = inject(["api"]).inFunction(
       async ({ api }, query: Parameters<typeof api.v3.compoundV2.get>[0]["query"]) => {
-        return await TokenService.#fetch(async () => api.v3.compoundV2.get({ query }));
+        return await fetchApi(async () => api.v3.compoundV2.get({ query }));
       },
     );
 
-    // static async getRadiant(query: Parameters<typeof api.v3.radiant.get>[0]["query"]) {
-    //   return await TokenService.#fetch(async () => api.v3.radiant.get({ query }));
-    // }
+    const getRadiant = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.radiant.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.radiant.get({ query }));
+      },
+    );
 
-    // static async getDolomite(query: Parameters<typeof api.v3.dolomite.get>[0]["query"]) {
-    //   return await TokenService.#fetch(async () => api.v3.dolomite.get({ query }));
-    // }
+    const getDolomite = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.dolomite.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.dolomite.get({ query }));
+      },
+    );
 
-    // static async getSilo(query: Parameters<typeof api.v3.silo.get>[0]["query"]) {
-    //   return await TokenService.#fetch(async () => api.v3.silo.get({ query }));
-    // }
+    const getSilo = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.silo.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.silo.get({ query }));
+      },
+    );
 
-    // static async getEuler(query: Parameters<typeof api.v3.euler.get>[0]["query"]) {
-    //   return await TokenService.#fetch(async () => api.v3.euler.get({ query }));
-    // }
-
-    // static async getValidRewardTokenByChain(chainId: number): Promise<Token[]> {
-    //   const tokens = await TokenService.#fetch(async () => api.v4.tokens.reward({ chainId }).get());
-    //   return tokens;
-    // }
+    // wip to fix
+    const getEuler = inject(["api"]).inFunction(
+      async () => {
+        return null;
+      },
+      // async ({ api }, query: Parameters<typeof api.v3.euler.get>[0]["query"]) => {
+      // return await fetchApi(async () => api.v3.euler.get({ query }));
+      // }
+    );
 
     return {
       getMany,
@@ -135,6 +134,11 @@ export const TokenService = defineModule<{ api: Api; request: Request; backend: 
       sortForUser,
       findUniqueOrThrow,
       getValidRewardTokenByChain,
+      getCompoundV2,
+      getRadiant,
+      getDolomite,
+      getSilo,
+      getEuler,
     };
   },
 );
