@@ -18,7 +18,9 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
         // ------
 
         const filters = {
-          status: url.searchParams.get("status") ?? backend.opportunityDefaultStatus?.join(",") ?? undefined,
+          status: campaignId
+            ? undefined
+            : (url.searchParams.get("status") ?? backend.opportunityDefaultStatus?.join(",") ?? undefined),
           mainProtocolId: url.searchParams.get("protocol") ?? url.searchParams.get("mainProtocolId") ?? undefined,
           action: url.searchParams.get("action") ?? undefined,
           chainId: url.searchParams.get("chain") ?? undefined,
@@ -26,7 +28,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           items: url.searchParams.get("items") ? Number(url.searchParams.get("items")) : DEFAULT_ITEMS_PER_PAGE,
           sort: url.searchParams.get("sort")?.split("-")[0],
           order: url.searchParams.get("sort")?.split("-")[1],
-          search: searchString,
+          search: !!campaignId ? searchString : searchString,
           campaignId,
           test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
           point: backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false),
