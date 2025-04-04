@@ -12,7 +12,11 @@ export default function useReward(reward?: Reward, userAddress?: string, tokenAd
   const payload = useMemo(() => {
     if (!userAddress || !reward) return;
 
-    const rewards = reward.rewards.filter(({ token: { address } }) => !tokenAddresses || tokenAddresses?.has(address));
+    const rewards = reward.rewards.filter(
+      ({ amount, claimed, token: { address } }) =>
+        BigInt(amount) - BigInt(claimed) > 0n && (!tokenAddresses || tokenAddresses?.has(address)),
+    );
+
     const addresses = rewards.map(({ token }) => token.address as `0x${string}`);
     const accumulatedRewards = rewards.map(({ amount }) => amount.toString());
     const proofs = rewards.map(({ proofs }) => proofs as `0x${string}`[]);

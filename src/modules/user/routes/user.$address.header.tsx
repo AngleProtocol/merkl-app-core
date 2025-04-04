@@ -5,11 +5,11 @@ import { MetadataService } from "@core/modules/metadata/metadata.service";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { isAddress } from "viem";
 import Hero from "../../../components/composite/Hero";
 import useReward from "../../../hooks/resources/useReward";
@@ -23,7 +23,7 @@ import { UserService } from "../user.service";
 export async function loader({ context: { backend, routes }, params: { address }, request }: LoaderFunctionArgs) {
   if (!address || !isAddress(address)) throw "";
 
-  const rewards = await RewardService({ api, backend, request }).getForUser(address);
+  const rewards = await RewardService({ api, backend }).getForUser(address, new URL(request.url));
   const token = !!backend.rewardsTotalClaimableMode
     ? (
         await TokenService({ backend, api, request }).getMany({
@@ -38,6 +38,7 @@ export async function loader({ context: { backend, routes }, params: { address }
     address,
     token,
     isBlacklisted,
+    request,
     backend,
     routes,
     ...MetadataService({ backend, routes, request }).fill("user", { address }),
@@ -57,19 +58,20 @@ export type OutletContextRewards = {
  * @returns
  */
 export default function Index() {
-  const { rewards: raw, address, token: rawToken, isBlacklisted, url } = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof loader>();
+  const { rewards: raw, address, token, isBlacklisted, url, backend } = useLoaderData<typeof loader>();
+  const { chainId, chains, address: user } = useWalletContext();
 
   const { reload: reloadBalances } = useBalances();
+  const [reloadedRewards, setReloadedRewards] = useState<typeof raw>(raw);
 
   const onClaimSuccess = async (_hash: string) => {
     track("Click on button", { button: "claim", type: "header" });
-    reloadBalances();
-    // await fetcher.submit(null, { method: "post", action: `/claim/${address}?chainId=${chainId}` });
+
+    setReloadedRewards(await RewardService({ api, backend }).getForUser(address, new URL(`${url}?chainId=${chainId}`)));
+    await reloadBalances();
   };
 
-  const rawRewards = useMemo(() => fetcher?.data?.rewards ?? raw, [raw, fetcher?.data?.rewards]);
-  const token = useMemo(() => fetcher?.data?.token ?? rawToken, [rawToken, fetcher?.data?.token]);
+  const rawRewards = useMemo(() => reloadedRewards ?? raw, [raw, reloadedRewards]);
 
   const { earned, pending, sortedRewards, unclaimed, isOnlyPointOrTest, pointAggregation } = useRewards(rawRewards);
 
@@ -79,7 +81,6 @@ export default function Index() {
   const decimalFormatUsd = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
-  const { chainId, chains, address: user } = useWalletContext();
   const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
   const reward = useMemo(() => rawRewards.find(({ chain: { id } }) => id === chainId), [chainId, rawRewards]);
   const { claimTransaction } = useReward(reward, user);
