@@ -92,6 +92,40 @@ export const TokenService = defineModule<{ api: Api; request: Request; backend: 
       return [...tokensWithBalance, ...tokensInPriority, ...otherTokens];
     });
 
+    const getCompoundV2 = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.compoundV2.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.compoundV2.get({ query }));
+      },
+    );
+
+    const getRadiant = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.radiant.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.radiant.get({ query }));
+      },
+    );
+
+    const getDolomite = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.dolomite.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.dolomite.get({ query }));
+      },
+    );
+
+    const getSilo = inject(["api"]).inFunction(
+      async ({ api }, query: Parameters<typeof api.v3.silo.get>[0]["query"]) => {
+        return await fetchApi(async () => api.v3.silo.get({ query }));
+      },
+    );
+
+    // wip to fix
+    const getEuler = inject(["api"]).inFunction(
+      async () => {
+        return null;
+      },
+      // async ({ api }, query: Parameters<typeof api.v3.euler.get>[0]["query"]) => {
+      // return await fetchApi(async () => api.v3.euler.get({ query }));
+      // }
+    );
+
     return {
       getMany,
       getManyFromRequest,
@@ -100,6 +134,11 @@ export const TokenService = defineModule<{ api: Api; request: Request; backend: 
       sortForUser,
       findUniqueOrThrow,
       getValidRewardTokenByChain,
+      getCompoundV2,
+      getRadiant,
+      getDolomite,
+      getSilo,
+      getEuler,
     };
   },
 );
