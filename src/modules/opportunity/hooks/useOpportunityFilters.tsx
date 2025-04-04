@@ -142,6 +142,12 @@ export default function useOpportunityFilters() {
           <Icon remix="RiArrowDownLine" />
         </Group>
       ),
+      "lastCampaignCreatedAt-desc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["created-desc"]?.name || "By Most Recent Campaign"}</Text>
+          <Icon remix="RiArrowDownLine" />
+        </Group>
+      ),
     };
   }, [filtersConfigEnabled]);
 

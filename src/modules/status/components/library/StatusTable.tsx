@@ -45,7 +45,7 @@ export const [StatusTable, StatusRow, statusColumns] = createTable({
   },
   contracts: {
     name: "Contracts",
-    size: "minmax(350px,1.5fr)",
+    size: "minmax(300px,1fr)",
     className: "justify-start",
     main: true,
   },
