@@ -28,8 +28,7 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
           name="Name"
           value={opportunity.name}
           onApply={async name => {
-            await opportunityService.override(opportunity.id, { name });
-            return await new Promise(resolve => setTimeout(resolve, 2000));
+            return await opportunityService.override(opportunity.id, { name });
           }}
           onRemove={async () => opportunityService.deleteOverride(opportunity.id, ["name"])}
         />
@@ -46,14 +45,14 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
         />
         <Divider className="mt-xl mb-md border-main-6" /> */}
 
-        {/* <Editor
+        <Editor
           name="Deposit Url"
           value={opportunity.depositUrl ?? ""}
-          onApply={async name => {
-            //OpportunityService.update(opportunity.id, { name });
-            return await new Promise(resolve => setTimeout(resolve, 2000));
+          onApply={async depositUrl => {
+            return await opportunityService.override(opportunity.id, { depositUrl });
           }}
-        /> */}
+          onRemove={async () => opportunityService.deleteOverride(opportunity.id, ["depositUrl"])}
+        />
         <Divider className="my-xl border-main-6" />
       </Scroll>
     </>
