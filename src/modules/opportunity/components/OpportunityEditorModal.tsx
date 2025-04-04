@@ -1,9 +1,9 @@
+import { api } from "@core/api";
 import Editor from "@core/components/element/Editor";
 import type { Opportunity } from "@merkl/api";
 import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "packages/dappkit/src";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import { OpportunityService } from "../opportunity.service";
-import { api } from "@core/api";
 
 export interface OpportunityEditorModalProps extends ButtonProps {
   opportunity: Opportunity;

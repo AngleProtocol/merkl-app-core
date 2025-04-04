@@ -1,9 +1,9 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
+import type { Opportunity } from "@merkl/api";
 import { Button, type Component, EventBlocker, Group, Icon, Modal, Tooltip, useClipboard } from "dappkit";
 import { useState } from "react";
 import { OpportunityService } from "../../opportunity.service";
-import type { Opportunity } from "@merkl/api";
 import OpportunityEditorModal from "../OpportunityEditorModal";
 
 export type OpportunityDevHelpersProps = {

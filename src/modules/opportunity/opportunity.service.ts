@@ -2,12 +2,12 @@ import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Opportunity } from "@merkl/api";
-import { defineModule } from "@merkl/conduit";
-import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import type {
   OpportunityDeleteOverrideModel,
   OpportunityOverrideModel,
 } from "@merkl/api/dist/src/modules/v4/opportunity";
+import { defineModule } from "@merkl/conduit";
+import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
 export const OpportunityService = defineModule<{ api: Api; request: Request; backend: MerklBackendConfig }>().create(
   ({ inject }) => {
