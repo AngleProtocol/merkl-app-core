@@ -30,7 +30,9 @@ export default function ClaimRewardsChainTableRow({
   ...props
 }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
-  const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
+  const [selectedTokens, setSelectedTokens] = useState<Set<string>>(
+    new Set<string>(reward.rewards.map(({ token }) => token.address)),
+  );
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const { address: user, chainId, switchChain } = useWalletContext();
@@ -68,7 +70,7 @@ export default function ClaimRewardsChainTableRow({
           className="cursor-pointer [&>*>*]:cursor-auto"
           showCheckbox={isOnCorrectChain && isAbleToClaim}
           checkedState={[
-            selectedTokens.has(_reward.token.address) || !selectedTokens.size,
+            selectedTokens.has(_reward.token.address),
             () => {
               setSelectedTokens(t => {
                 if (!t.has(_reward.token.address)) t.add(_reward.token.address);
@@ -81,7 +83,7 @@ export default function ClaimRewardsChainTableRow({
           reward={_reward}
         />
       ));
-  }, [reward, selectedTokens.size, selectedTokens, isOnCorrectChain, isAbleToClaim]);
+  }, [reward, selectedTokens, isOnCorrectChain, isAbleToClaim]);
 
   const onSwitchChain = useCallback(() => {
     if (!reward.chain.id) return;
