@@ -11,15 +11,7 @@ import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Show, Space, Title } from "dappkit";
 
 export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {
-  // --- Default sortering
-  const url = new URL(request.url);
-  const hasSearchParams = url.searchParams.size > 0;
-  if (!hasSearchParams) url.searchParams.set("status", backend.opportunityDefaultStatus.join(","));
-  const defaultRequest = { ...request, url: url.toString() };
-  // ---
-
-  const opportunityService = OpportunityService({ api, backend, request: defaultRequest });
-
+  const opportunityService = OpportunityService({ api, backend, request });
   const { opportunities, count } = await opportunityService.getManyFromRequest();
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured();
 

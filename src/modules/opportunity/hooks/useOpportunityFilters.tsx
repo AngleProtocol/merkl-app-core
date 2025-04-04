@@ -191,6 +191,14 @@ export default function useOpportunityFilters() {
       );
   }, [filtersConfigEnabled, sortOptions]);
 
+  const onStatusChange = useCallback(
+    (status: string[]) => {
+      const uniqueStatus = Array.from(new Set(status.flatMap(s => s.split(","))));
+      setStatus(uniqueStatus);
+    },
+    [setStatus],
+  );
+
   return {
     toggleSortOrder,
     clearFilters,
@@ -203,7 +211,7 @@ export default function useOpportunityFilters() {
       },
       statusFilter: {
         input: status ?? defaultStatus,
-        setInput: setStatus,
+        setInput: onStatusChange,
         options: statusOptions,
       },
       chainIdsFilter: { input: chainIds, setInput: setChainIds },
