@@ -60,7 +60,7 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            <OpportunityDevHelpers opportunityId={opportunity.id} />
+            <OpportunityDevHelpers opportunity={opportunity} />
           </Group>
         }
         description={description}>

@@ -2,6 +2,8 @@ import Editor from "@core/components/element/Editor";
 import type { Opportunity } from "@merkl/api";
 import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "packages/dappkit/src";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
+import { OpportunityService } from "../opportunity.service";
+import { api } from "@core/api";
 
 export interface OpportunityEditorModalProps extends ButtonProps {
   opportunity: Opportunity;
@@ -9,6 +11,7 @@ export interface OpportunityEditorModalProps extends ButtonProps {
 
 export default function OpportunityEditorModal({ opportunity }: OpportunityEditorModalProps) {
   const { Tags } = useOpportunityMetadata(opportunity);
+  const opportunityService = OpportunityService({ api });
 
   return (
     <>
@@ -20,17 +23,19 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
       <Divider className="mt-xl border-main-6" />
       <Scroll className="max-h-[300px] w-full max-w-[90vw] lg:max-w-full" vertical>
         <Space size="xl" />
+
         <Editor
           name="Name"
           value={opportunity.name}
           onApply={async name => {
-            console.log(name);
-            //OpportunityService.update(opportunity.id, { name });
+            await opportunityService.override(opportunity.id, { name });
             return await new Promise(resolve => setTimeout(resolve, 2000));
           }}
+          onRemove={async () => opportunityService.deleteOverride(opportunity.id, ["name"])}
         />
+
         <Divider className="mt-xl mb-md border-main-6" />
-        <Editor
+        {/* <Editor
           name="Protocol Id"
           value={opportunity.protocol?.id ?? ""}
           onApply={async name => {
@@ -39,17 +44,16 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
             return await new Promise(resolve => setTimeout(resolve, 2000));
           }}
         />
-        <Divider className="mt-xl mb-md border-main-6" />
+        <Divider className="mt-xl mb-md border-main-6" /> */}
 
-        <Editor
+        {/* <Editor
           name="Deposit Url"
           value={opportunity.depositUrl ?? ""}
           onApply={async name => {
-            console.log(name);
             //OpportunityService.update(opportunity.id, { name });
             return await new Promise(resolve => setTimeout(resolve, 2000));
           }}
-        />
+        /> */}
         <Divider className="my-xl border-main-6" />
       </Scroll>
     </>

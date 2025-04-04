@@ -13,7 +13,6 @@ import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
-import OpportunityEditor from "../OpportunityEditor";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export interface OpportunityBoxParticipateProps {
@@ -171,7 +170,6 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}
-          <OpportunityEditor look="hype" size="xl" className="w-full justify-center" opportunity={opportunity} />
         </Group>
       </Box>
     </>
