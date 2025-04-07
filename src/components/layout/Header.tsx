@@ -2,7 +2,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import { useLocation } from "@remix-run/react";
-import { Button, Container, Group, Icon, Select, Text, WalletButton, mergeClass, useWalletContext } from "dappkit";
+import { Button, Container, Group, Icon, Select, Text, WalletButton, mergeClass, useWalletContext, Divider } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useChains from "../../modules/chain/hooks/useChains";
