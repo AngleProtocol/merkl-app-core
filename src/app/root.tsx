@@ -14,14 +14,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DAppProvider } from "dappkit";
 import type { PropsWithChildren } from "react";
 import { Links, type LoaderFunctionArgs, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
+import type { ServerContext } from "./server";
 
 /**
  * Root Loader
  * @notice This function is the common root loader for all app to use.
  * @returns The global data for the application.
  */
-export async function rootLoader({ context: { backend, routes, version }, request }: LoaderFunctionArgs) {
-  const chains = await ChainService({ api: api, backend }).getAll();
+export async function rootLoader({
+  context: { backend, routes, version },
+  request,
+}: LoaderFunctionArgs<ServerContext>) {
+  const chains = await ChainService({ api: api, backend, request }).getAll();
   const protocols = await ProtocolService({ api, backend }).get({ items: 500 });
 
   // Chains are essential to be able to use the app.
