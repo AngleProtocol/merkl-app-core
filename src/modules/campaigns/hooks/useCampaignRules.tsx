@@ -1,3 +1,4 @@
+import { UserService } from "@core/modules/user/user.service";
 import type { Campaign as CampaignFromApi } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Icon } from "dappkit";
@@ -48,7 +49,9 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
 
       //token weight rules
       for (const tokenIndex of [0, 1]) {
-        const token = opportunity.tokens[tokenIndex];
+        const token =
+          opportunity.tokens.find(t => UserService({}).isSame(t.address, params[`token${tokenIndex}`])) ??
+          opportunity.tokens[tokenIndex];
         const weight = params[`weightToken${tokenIndex}`];
 
         if (!token || weight === undefined) continue;
