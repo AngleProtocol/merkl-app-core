@@ -1,5 +1,4 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useLocation } from "react-router";
 import {
   Box,
   Button,
@@ -16,6 +15,7 @@ import {
   useTheme,
 } from "dappkit";
 import { useMemo } from "react";
+import { useLocation } from "react-router";
 import useReferrer from "../hooks/useReferrer";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 

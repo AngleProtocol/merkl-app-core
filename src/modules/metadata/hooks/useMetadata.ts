@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useLocation } from "react-router";
 import { useMemo } from "react";
+import { useLocation } from "react-router";
 import { MetadataService } from "../metadata.service";
 
 export default function useMetadata(url: string) {

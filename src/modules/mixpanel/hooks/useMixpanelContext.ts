@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { useLocation, useNavigation } from "react-router";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigation } from "react-router";
 
 type PageId = { path: string; route: string; label: string; fullLabel: string };
 export type MixpanelPageContext = {

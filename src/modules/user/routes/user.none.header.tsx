@@ -1,9 +1,9 @@
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { Outlet, useLoaderData } from "react-router";
 import { useState } from "react";
-import Hero from "../../../components/composite/Hero";
+import { Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
+import Hero from "../../../components/composite/Hero";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   return MetadataService({ backend, routes, request }).fill();

@@ -1,10 +1,10 @@
 import { api } from "@core/api";
-import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { Cache } from "../../../modules/cache/cache.service";
 import { TokenService } from "../../../modules/token/token.service";
 import TokenLibrary from "../components/library/TokenLibrary";
-import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { tokens, count } = await TokenService({ api, request }).getManyFromRequest();

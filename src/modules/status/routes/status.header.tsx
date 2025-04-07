@@ -1,6 +1,5 @@
 import Hero from "@core/components/composite/Hero";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-;
 import { Outlet } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 

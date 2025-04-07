@@ -1,11 +1,11 @@
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { useLoaderData } from "react-router";
 import { Container, Group, Space } from "dappkit";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import Hero from "../../../components/composite/Hero";
 import Refer from "../components/Refer";
 import Referral from "../components/Referral";
-import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
   const code = new URL(request.url).searchParams.get("code");

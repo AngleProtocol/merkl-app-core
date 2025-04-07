@@ -1,12 +1,12 @@
 import { api } from "@core/api";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { withUrl } from "@core/utils/url";
-import { useLoaderData } from "react-router";
 import { Box, Checkbox, Container, Group, Space, Text } from "dappkit";
 import { useState } from "react";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import StatusLibrary from "../components/library/StatusLibrary";
 import { StatusService } from "../status.service";
-import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ request, context: { backend } }: LoaderFunctionArgs) {
   const chains = await ChainService({ api, request, backend }).getAll();

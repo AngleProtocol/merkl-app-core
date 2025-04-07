@@ -1,38 +1,19 @@
-import type { PropsWithChildren } from "react";
-import type { MerklConfig } from "@core/modules/config/config.model";
-import type { Protocol } from "@merkl/api";
-import {
-  Links,
-  type LinksFunction,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-  type LoaderFunctionArgs,
-} from "react-router";
-import { ChainService } from "@core/modules/chain/chain.service";
-import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { ProtocolService } from "@core/modules/protocol/protocol.service";
-import { Cache } from "@core/modules/cache/cache.service";
 import { api } from "@core/api";
-import useMixpanel from "@core/modules/mixpanel/hooks/useMixpanel";
+import RootErrorBoundary from "@core/error";
+import { LoadingIndicator } from "@core/index.generated";
+import { Cache } from "@core/modules/cache/cache.service";
+import { ChainService } from "@core/modules/chain/chain.service";
 import { ConfigProvider } from "@core/modules/config/config.context";
+import type { MerklConfig } from "@core/modules/config/config.model";
+import { MetadataService } from "@core/modules/metadata/metadata.service";
+import Mixpanel from "@core/modules/mixpanel/components/Mixpanel";
+import useMixpanel from "@core/modules/mixpanel/hooks/useMixpanel";
+import { ProtocolService } from "@core/modules/protocol/protocol.service";
+import type { Protocol } from "@merkl/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DAppProvider } from "dappkit";
-import { LoadingIndicator } from "@core/index.generated";
-import Mixpanel from "@core/modules/mixpanel/components/Mixpanel";
-import dappkitStyles from "dappkit/src/style.css?url";
-import RootErrorBoundary from "@core/error";
-
-export const rootLinks: (links: ReturnType<LinksFunction>) => LinksFunction = links => () => [
-  {
-    rel: "stylesheet",
-    href: dappkitStyles,
-    as: "style",
-  },
-  ...links,
-];
+import type { PropsWithChildren } from "react";
+import { Links, type LoaderFunctionArgs, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
 
 /**
  * Root Loader

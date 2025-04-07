@@ -1,7 +1,7 @@
-import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router";
 import { Group, Icon, Text, Title } from "packages/dappkit/src";
 import ThemeProvider from "packages/dappkit/src/context/Theme.context";
 import { useEffect } from "react";
+import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router";
 import type { MerklConfig } from "./modules/config/config.model";
 
 export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {

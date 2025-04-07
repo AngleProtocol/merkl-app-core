@@ -1,9 +1,9 @@
 import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
-import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router";
 const filters = ["search", "action", "status", "chain", "protocol", "sort", "tvl"] as const;
 export type ProtocolFilter = (typeof filters)[number];
 

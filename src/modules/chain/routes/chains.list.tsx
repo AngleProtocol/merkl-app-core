@@ -1,7 +1,7 @@
 import { Cache } from "@core/modules/cache/cache.service";
 import ChainLibrary from "@core/modules/chain/components/library/ChainLibrary";
-import { useLoaderData } from "react-router";
 import { Container, Space } from "dappkit";
+import { useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 
 // DEPRECATED

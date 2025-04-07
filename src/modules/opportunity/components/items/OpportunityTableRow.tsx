@@ -7,12 +7,12 @@ import OpportunityParticipateModal from "@core/modules/opportunity/components/el
 import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
 import type { Opportunity } from "@merkl/api";
-import { Link } from "react-router";
 import type { BoxProps } from "dappkit";
 import { Dropdown, Group, Icon, Icons as IconGroup, Text, Title, Value, mergeClass } from "dappkit";
 import { EventBlocker } from "dappkit";
 import { useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
+import { Link } from "react-router";
 import useOpportunityTable from "../../hooks/useOpportunityTable";
 
 export type OpportunityTableRowProps = {

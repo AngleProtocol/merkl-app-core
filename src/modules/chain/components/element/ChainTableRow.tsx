@@ -1,7 +1,7 @@
 import { ChainRow } from "@core/modules/chain/components/library/ChainTable";
 import type { Chain } from "@merkl/api";
-import { Link } from "react-router";
 import { type BoxProps, Group, Icon, Title, mergeClass } from "dappkit";
+import { Link } from "react-router";
 
 export type ChainTableRowProps = {
   chain: Chain;

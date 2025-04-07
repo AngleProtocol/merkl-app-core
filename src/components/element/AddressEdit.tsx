@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router";
 import { Button, Group, Icon, Input } from "dappkit";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function AddressEdit() {
   const navigate = useNavigate();

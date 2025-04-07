@@ -1,9 +1,9 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useNavigate } from "react-router";
 import { Box, Button, Connected, Container, Group, Icon, Input, Space, Text, Title } from "dappkit";
 import { useWalletContext } from "dappkit";
 import { Fmt } from "dappkit";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function Index() {
   const [_isEditingAddress] = useState(false);

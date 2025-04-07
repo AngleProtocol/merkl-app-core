@@ -5,7 +5,6 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useNavigate } from "react-router";
 import {
   Box,
   Button,
@@ -29,6 +28,7 @@ import { Time } from "dappkit";
 import { Tooltip } from "dappkit";
 import moment from "moment";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import useChain from "../../../chain/hooks/useChain";
 import Token from "../../../token/components/element/Token";

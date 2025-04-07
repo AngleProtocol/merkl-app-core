@@ -1,9 +1,9 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Protocol } from "@merkl/api";
-import { Link } from "react-router";
 import type { BoxProps } from "dappkit";
 import { Box, Divider, Group, Icon, Text, Title, Value, mergeClass, useOverflowingRef } from "dappkit";
 import { useMemo } from "react";
+import { Link } from "react-router";
 import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 
 export type ProtocolCellProps = {

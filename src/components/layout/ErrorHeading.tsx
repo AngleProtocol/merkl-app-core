@@ -1,6 +1,6 @@
-import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "react-router";
 import { Container } from "dappkit";
 import { useMemo } from "react";
+import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "react-router";
 import Hero from "../composite/Hero";
 
 export function ErrorHeading() {

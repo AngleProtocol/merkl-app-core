@@ -1,9 +1,9 @@
 import type { Opportunity } from "@merkl/api";
-import { Form, useLocation } from "react-router";
 import { Divider, Group, Icon, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
 import { Scroll } from "dappkit";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { Form, useLocation } from "react-router";
 import { type Results, type Searchable, useMerklSearch } from "../../../hooks/useMerklSearch";
 import useOpportunityData from "../../../modules/opportunity/hooks/useOpportunityMetadata";
 

@@ -1,11 +1,11 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { TokenRow } from "@core/modules/token/components/library/TokenTable";
 import type { Token } from "@merkl/api";
-import { Link } from "react-router";
 import { Button, Group, Icon, Value } from "dappkit";
 import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
+import { Link } from "react-router";
 
 export type TokenTableRowProps = {
   token: Token;
