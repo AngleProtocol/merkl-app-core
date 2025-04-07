@@ -1,4 +1,5 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import { ErrorContent } from "@core/components/layout/ErrorContent";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { InteractionService } from "@core/modules/interaction/interaction.service";
@@ -14,7 +15,7 @@ export async function loader({
   context: { backend },
   params: { id, type, chain: chainId },
   request,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs<MerklServerContext>) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });

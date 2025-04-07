@@ -1,4 +1,5 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
@@ -14,7 +15,7 @@ export async function loader({
   context: { backend },
   params: { id, type, chain: chainId },
   request,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs<MerklServerContext>) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });
