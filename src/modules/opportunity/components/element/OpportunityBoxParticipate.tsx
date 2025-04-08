@@ -44,7 +44,8 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
 
     if (protocolUrl) track("Click on supply", { ...opportunity, mode: isDirect ? "direct" : "indirect" });
 
-    if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
+    if ((!isDepositEnabled || !targets) && protocolUrl)
+      return window.open(protocolUrl, "_blank", "noopener,noreferrer");
     setSupplyModalOpen(true);
   }, [protocolUrl, targets, isDepositEnabled, track, opportunity]);
 

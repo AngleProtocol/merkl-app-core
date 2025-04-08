@@ -178,7 +178,7 @@ export default function useOpportunityMetadata({
   );
 
   const navigateToMerklStatusPage = useCallback(() => {
-    window.open("https://beta.merkl.xyz/status", "_blank");
+    window.open("https://beta.merkl.xyz/status", "_blank", "noopener,noreferrer");
   }, []);
 
   /**

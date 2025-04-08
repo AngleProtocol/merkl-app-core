@@ -22,7 +22,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
       const navigateToExplorer = useCallback(
         (address: string) => {
           const explorer = opportunity.chain?.Explorer?.[0].url;
-          window.open(`${explorer}/token/${address}`, "_blank");
+          window.open(`${explorer}/token/${address}`, "_blank", "noopener,noreferrer");
         },
         [opportunity.chain?.Explorer?.[0].url],
       );

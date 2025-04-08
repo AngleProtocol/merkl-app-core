@@ -16,7 +16,7 @@ export default function ExplorerTag({
     /**
      * @todo make sure this works will al explorers
      */
-    window?.open(`${chain.explorers?.[0]?.url}/address/${address}`);
+    window.open(`${chain.explorers?.[0]?.url}/address/${address}`, "_blank", "noopener,noreferrer");
   }, [chain, address]);
 
   if (!chain) return;
