@@ -7,7 +7,7 @@ import MetricBox from "@core/modules/opportunity/components/element/MetricBox";
 import { Container, Group, Icon, Space, Tabs, Value } from "dappkit";
 import { TransactionButton, type TransactionButtonProps } from "dappkit";
 import { useWalletContext } from "dappkit";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { isAddress } from "viem";
