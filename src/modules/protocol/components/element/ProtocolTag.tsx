@@ -1,7 +1,7 @@
 import type { Protocol } from "@merkl/api";
-import { useNavigate } from "@remix-run/react";
 import { EventBlocker, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 import { type ReactNode, useCallback } from "react";
+import { useNavigate } from "react-router";
 import useProtocolMetadata from "../../hooks/useProtocolMetadata";
 
 export default function ProtocolTag({

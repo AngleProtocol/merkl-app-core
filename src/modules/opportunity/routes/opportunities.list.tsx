@@ -1,4 +1,5 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import CustomBanner from "@core/components/element/CustomBanner";
 import { ErrorContent } from "@core/components/layout/ErrorContent";
 import { Cache } from "@core/modules/cache/cache.service";
@@ -6,11 +7,11 @@ import { ChainService } from "@core/modules/chain/chain.service";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import { Container, Group, Show, Space, Title } from "dappkit";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 
-export async function loader({ context: { backend }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend }, request }: LoaderFunctionArgs<MerklServerContext>) {
   const opportunityService = OpportunityService({ api, backend, request });
   const { opportunities, count } = await opportunityService.getManyFromRequest();
   const { opportunities: featuredOpportunities } = await opportunityService.getFeatured();

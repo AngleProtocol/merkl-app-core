@@ -1,6 +1,6 @@
-import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import { Container, Group, Space, Title } from "dappkit";
 import { useMemo } from "react";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 export function ErrorContent() {
   const error = useRouteError();

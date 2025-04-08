@@ -1,9 +1,9 @@
 import { actions as allActions } from "@core/config/actions";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useSearchParams } from "@remix-run/react";
 import { Group, Icon, Text } from "packages/dappkit/src";
 import { useCallback, useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 
 export enum SortOrder {
   ASC = "asc",

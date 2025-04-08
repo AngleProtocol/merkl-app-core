@@ -1,5 +1,4 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useNavigate } from "@remix-run/react";
 import {
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   useTheme,
 } from "dappkit";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import { zeroAddress } from "viem";
 import useReferral from "../hooks/useReferral";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";

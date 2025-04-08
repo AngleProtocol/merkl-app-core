@@ -1,5 +1,5 @@
-import type { ClientLoaderFunction, ClientLoaderFunctionArgs } from "@remix-run/react";
 import NodeCache from "node-cache";
+import type { ClientLoaderFunction, ClientLoaderFunctionArgs } from "react-router";
 
 export class CacheService {
   cache = new NodeCache();
