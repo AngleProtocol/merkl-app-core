@@ -9,6 +9,7 @@ const version = process.env.VERSION;
 export type ServerContext = {
   backend: MerklBackendConfig;
   routes: MerklRoutesConfig;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   serverIndexBuildPath: () => Promise<any>;
   version: string;
 };
