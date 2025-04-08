@@ -25,10 +25,21 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
    */
   const getLiquidityProfileRules = useCallback(
     ({ params }: Campaign["params"]) => {
-      const onlyTypes: CampaignFromApi["type"][] = ["CLAMM"];
+      const onlyTypes: CampaignFromApi["type"][] = ["CLAMM", "UNISWAP_V4"];
+
       const arr: RuleType[] = [];
 
       if (!opportunity || !onlyTypes.includes(opportunity.type)) return [];
+
+      const keys = {
+        tokenAddresses: ["token0", "token1"],
+        tokenWeight: ["weightToken0", "weightToken1"],
+      };
+      switch (opportunity.type) {
+        case "UNISWAP_V4":
+          keys.tokenAddresses = ["currency0", "currency1"];
+          break;
+      }
 
       //fees rule
       arr.push({
@@ -50,7 +61,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
       //token weight rules
       for (const tokenIndex of [0, 1]) {
         const token =
-          opportunity.tokens.find(t => UserService({}).isSame(t.address, params[`token${tokenIndex}`])) ??
+          opportunity.tokens.find(t => UserService({}).isSame(t.address, params[keys.tokenAddresses[tokenIndex]])) ??
           opportunity.tokens[tokenIndex];
         const weight = params[`weightToken${tokenIndex}`];
 
@@ -168,6 +179,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
   const rules = useMemo(() => {
     const typeSpecificRule: { [C in CampaignFromApi["type"]]?: (scopedCampaign: Campaign<C>) => RuleType[] } = {
       CLAMM: c => getLiquidityProfileRules(c),
+      UNISWAP_V4: c => getLiquidityProfileRules(c),
     };
 
     return (
