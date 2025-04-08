@@ -2,8 +2,8 @@ import Hero from "@core/components/composite/Hero";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import { Button, Group, Icon, Text } from "packages/dappkit/src";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
