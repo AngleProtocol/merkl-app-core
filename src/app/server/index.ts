@@ -9,7 +9,7 @@ const version = process.env.VERSION;
 export type ServerContext = {
   backend: MerklBackendConfig;
   routes: MerklRoutesConfig;
-  serverIndexBuildPath: string;
+  serverIndexBuildPath: () => Promise<any>;
   version: string;
 };
 
@@ -24,7 +24,7 @@ export const defineServer = async ({ backend, routes, serverIndexBuildPath }: Se
     mode,
     build: !!viteServer
       ? await viteServer.ssrLoadModule("virtual:react-router/server-build")
-      : await import(serverIndexBuildPath),
+      : await serverIndexBuildPath(),
     getLoadContext() {
       return { backend, routes, version };
     },
