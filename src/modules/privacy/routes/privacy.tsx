@@ -1,11 +1,11 @@
+import type { MerklServerContext } from "@core/app/server/context";
 import Hero from "@core/components/composite/Hero";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { Button, Group, Icon, Text } from "packages/dappkit/src";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
-import { Button, Group, Icon, Text } from "packages/dappkit/src";
-import type { MerklServerContext } from "@core/app/server/context";
 
 export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs<MerklServerContext>) {
   return MetadataService({ request, backend, routes }).fill();
