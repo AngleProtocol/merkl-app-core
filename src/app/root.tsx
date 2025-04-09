@@ -99,7 +99,7 @@ export const RootApp = (config: MerklConfig) => () => {
   );
 };
 
-export const ErrorBoundary = (config: MerklConfig) => () => RootErrorBoundary(config);
+export const ErrorBoundary = (config: MerklConfig) => RootErrorBoundary(config);
 
 export default {
   loader: rootLoader,

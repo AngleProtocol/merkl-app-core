@@ -11,10 +11,10 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
     const notARoute = isRouteErrorResponse(error) && error.status === 404;
 
     //Log error in hosted console
-    notARoute && console.error(error);
+    !notARoute && console.error(error);
 
     useEffect(() => {
-      if (isRouteErrorResponse(error) && error.status === 404) return navigate("/");
+      if (isRouteErrorResponse(error) && error.status === 404) navigate("/");
     }, [error, navigate]);
 
     if (notARoute)

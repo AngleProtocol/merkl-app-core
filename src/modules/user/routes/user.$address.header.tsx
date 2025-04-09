@@ -21,7 +21,7 @@ import Token from "../../token/components/element/Token";
 import { UserService } from "../user.service";
 
 export async function loader({ context: { backend, routes }, params: { address }, request }: LoaderFunctionArgs) {
-  if (!address || !isAddress(address)) throw "";
+  if (!address || !isAddress(address)) throw new Response("Address not found or invalid", { status: 404 });
 
   const rewards = await RewardService({ api, backend }).getForUser(address, new URL(request.url));
   const token = !!backend.rewardsTotalClaimableMode
