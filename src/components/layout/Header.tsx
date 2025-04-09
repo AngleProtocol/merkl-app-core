@@ -208,7 +208,12 @@ export default function Header() {
                 </Group>
                 <SwitchMode />
                 <Group className="flex">
-                  <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
+                  <WalletButton
+                    onConnect={(connectorId: string) =>
+                      track("Click on button", { button: "connect", wallet: connectorId ?? "unknown", type: "header" })
+                    }
+                    select={chainSwitcher}
+                    hideSpyMode={hideSpyMode}>
                     <Button to={`/users/${user}`} size="sm" look="soft">
                       <Icon remix="RiArrowRightLine" /> Check dashboard
                     </Button>

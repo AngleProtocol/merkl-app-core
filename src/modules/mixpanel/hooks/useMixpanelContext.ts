@@ -1,5 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
+import { useWalletContext } from "packages/dappkit/src";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigation } from "react-router";
 
@@ -7,10 +8,12 @@ type PageId = { path: string; route: string; label: string; fullLabel: string };
 export type MixpanelPageContext = {
   from: PageId | "nowhere";
   to: PageId;
+  walletConnected?: string;
   app_version?: string;
 };
 
 export default function useMixpanelContext(): MixpanelPageContext {
+  const { connected, connector } = useWalletContext();
   const routes = useMerklConfig(store => store.config.routes);
   const location = useLocation();
   const navigation = useNavigation();
@@ -37,6 +40,7 @@ export default function useMixpanelContext(): MixpanelPageContext {
 
   return {
     ...pageNavigation,
+    walletConnected: !connected ? (connector?.name ?? "unknown") : undefined,
     // biome-ignore lint/suspicious/noExplicitAny: @todo embed env type definition after react-router upgrade
     app_version: typeof document !== "undefined" && ((window as any)?.ENV! as any)?.MERKL_VERSION,
   };
