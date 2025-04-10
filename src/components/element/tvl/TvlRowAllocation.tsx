@@ -11,7 +11,6 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const tokenTvl = opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN");
-
   let content: React.ReactNode = null;
 
   if (tokenTvl.length >= 2) {
@@ -26,11 +25,13 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
     content = (
       <Group className="flex-col" size="sm">
         {tokenTvl.map(tvlBreakdown => {
-          const token = opportunity.tokens.find(t => t.address === tvlBreakdown.identifier);
+          let token = opportunity.tokens.find(t => t.id === tvlBreakdown.identifier);
+          if (!token) token = opportunity.tokens.find(t => t.address === tvlBreakdown.identifier);
 
+          if (!token) return null;
           return (
             <Text key={tvlBreakdown.id} className="flex items-center gap-sm" size="sm" look="soft">
-              <Icon src={opportunity.tokens[0].icon} />
+              <Icon src={token.icon} />
               <Text bold className="flex gap-sm" size="sm">
                 <Value value format="0.0a">
                   {tvlBreakdown?.value}

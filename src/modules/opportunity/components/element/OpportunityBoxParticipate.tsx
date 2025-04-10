@@ -138,26 +138,21 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
-              {opportunity.type === "CLAMM" ? (
-                <Dropdown
-                  onHover
-                  onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
-                  content={
-                    <Group className="flex-col" size="md">
-                      <TvlRowAllocation opportunity={opportunity} />
-                      <TvlSection opportunity={opportunity} />
-                    </Group>
-                  }>
-                  <Text bold className="flex items-center gap-sm " look="soft">
-                    TVL
-                    <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
-                  </Text>
-                </Dropdown>
-              ) : (
-                <Text bold className="flex items-center gap-sm ">
+              <Dropdown
+                onHover
+                onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
+                content={
+                  <Group className="flex-col" size="md">
+                    <TvlRowAllocation opportunity={opportunity} />
+                    <TvlSection opportunity={opportunity} />
+                  </Group>
+                }>
+                <Text bold className="flex items-center gap-sm " look="soft">
                   TVL
+                  <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
                 </Text>
-              )}
+              </Dropdown>
+
               <Title h={3} look="tint">
                 <Value value format={decimalFormatDolar}>
                   {opportunity.tvl}
