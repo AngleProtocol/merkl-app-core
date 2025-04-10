@@ -1,19 +1,15 @@
 import { api } from "@core/api";
 import RootErrorBoundary from "@core/error";
-import { LoadingIndicator } from "@core/index.generated";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
-import { ConfigProvider } from "@core/modules/config/config.context";
 import type { MerklConfig } from "@core/modules/config/config.model";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import Mixpanel from "@core/modules/mixpanel/components/Mixpanel";
 import useMixpanel from "@core/modules/mixpanel/hooks/useMixpanel";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
 import type { Protocol } from "@merkl/api";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DAppProvider } from "dappkit";
 import type { PropsWithChildren } from "react";
 import { Links, type LoaderFunctionArgs, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
+import AppProviders from "./providers";
 import type { ServerContext } from "./server";
 
 /**
@@ -59,43 +55,15 @@ export function RootLayout({ children }: PropsWithChildren) {
   );
 }
 
-const queryClient = new QueryClient();
-
 export const RootApp = (config: MerklConfig) => () => {
   const data = useLoaderData<typeof rootLoader>();
 
   useMixpanel(config.mixpanel?.token);
 
   return (
-    <ConfigProvider config={config} protocols={data.protocols as Protocol[]}>
-      <QueryClientProvider client={queryClient}>
-        <DAppProvider
-          walletOptions={config.walletOptions}
-          chains={data.chains}
-          modes={config.theme.modes}
-          themes={config.theme.themes}
-          sizing={config.theme.sizing}
-          config={config.wagmi}>
-          <LoadingIndicator />
-          <Outlet />
-          <Mixpanel />
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TSSVRH2ZV" />
-          <script
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
-            dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(data?.ENV)};
-
-            // Google Analytics
-             window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-1TSSVRH2ZV');
-            `,
-            }}
-          />
-        </DAppProvider>
-      </QueryClientProvider>
-    </ConfigProvider>
+    <AppProviders env={data.ENV} config={config} protocols={data.protocols as Protocol[]} chains={data.chains}>
+      <Outlet />
+    </AppProviders>
   );
 };
 
