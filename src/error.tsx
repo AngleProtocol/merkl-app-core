@@ -26,7 +26,7 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
                 // icons={[{ remix: "RiPlanetFill" }]}
                 navigation={{ label: "Back to opportunities", link: "/" }}
                 title={"Oops!"}
-                description={"The page you are looking for not longer exists"}
+                description={"The page you are looking for no longer exists"}
               />
               <div className="h-full justify-center flex-1 flex flex-col items-center">
                 <div className="bg-main-12  p-xl*4 border-[10px] h-full border-main-6 aspect-square max-w-[96px] min-w-[96px] max-h-[96px] min-h-[96px] mx-auto flex items-center justify-center !rounded-[10000px]">
