@@ -15,8 +15,19 @@ export const UserService = defineModule<{ api: Api }>().create(({ inject }) => {
     return fetchApi(() => api.v4.blacklists.check({ address }).get({ query: {} }));
   });
 
+  const checkTerms = inject(["api"]).inFunction(({ api }, address: string, chainId: number) => {
+    return fetchApi(() =>
+      api.v4.users({ address }).terms.get({
+        query: {
+          chainId,
+        },
+      }),
+    );
+  });
+
   return {
     isSame,
     isBlacklisted,
+    checkTerms,
   };
 });
