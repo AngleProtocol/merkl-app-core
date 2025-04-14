@@ -228,7 +228,7 @@ export default function CampaignTableRow({
           <Group className="flex-nowrap p-lg flex-col" size="xs">
             <Group className="justify-between flex-grow flex-col size-full gap-xs">
               <Text bold size="sm">
-                Campaign Informations
+                Campaign Information
               </Text>
               {campaignInformation}
             </Group>
