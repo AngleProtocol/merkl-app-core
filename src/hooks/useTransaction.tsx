@@ -6,8 +6,12 @@ import { api } from "./../api";
 
 type Transaction = Awaited<ReturnType<Api["v4"]["interaction"]["transaction"]["get"]>>["data"];
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function useTransaction(chainId: number, payload: any, txFunctionName: "deposit" | "approve") {
+export default function useTransaction(
+  chainId: number,
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  payload: any,
+  txFunctionName: "deposit" | "approve" | "acceptTerms" | "hasAcceptedTerms",
+) {
   const { sponsorTransactions } = useWalletContext();
 
   const [loading, setLoading] = useState(false);
