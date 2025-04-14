@@ -29,6 +29,7 @@ const metadata = [
   "chain",
   "tokens",
   "tags",
+  "rewardsRecord",
 ] satisfies (keyof Opportunity)[];
 
 /**
@@ -44,6 +45,7 @@ export default function useOpportunityMetadata({
   tokens,
   protocol,
   depositUrl,
+  rewardsRecord,
   ...opportunity
 }: PickAndOptOut<Opportunity, (typeof metadata)[number], "depositUrl" | "protocol">) {
   const opportunityPercentage = useMerklConfig(store => store.config.opportunityPercentage);
@@ -105,8 +107,12 @@ export default function useOpportunityMetadata({
       tag("action", action),
       ...tokens.map(token => tag("token", token)),
       tag("status", status),
+      tag(
+        "preTGE",
+        rewardsRecord.breakdowns?.some(x => x?.token?.isPreTGE),
+      ),
     ].filter(a => a !== undefined);
-  }, [protocol, action, status, tokens, chain]);
+  }, [protocol, action, status, tokens, chain, rewardsRecord]);
 
   /**
    * Extensible tags components that can be filtered
