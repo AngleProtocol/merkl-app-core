@@ -122,27 +122,6 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
           functionName: "acceptConditions",
         }),
         value: 0n,
-        summary: "Accepted Merkl T&Cs",
-      };
-
-      if (payload.sponsor) {
-        const sponsoredTx = await zyfiService.wrapAndPrepareTx(tx);
-        return sponsoredTx;
-      }
-
-      return tx;
-    }
-    case "hasAcceptedTerms": {
-      const abi = parseAbi(["function userSignatureWhitelist(address user) view returns (uint256)"]);
-      console.log({ payload, abi });
-      const tx = {
-        to: payload.to,
-        data: encodeFunctionData({
-          abi,
-          functionName: "userSignatureWhitelist",
-          args: [payload.userAddress],
-        }),
-        summary: "Check whitelist status for the given address",
       };
 
       if (payload.sponsor) {
