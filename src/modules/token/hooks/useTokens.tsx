@@ -26,7 +26,7 @@ export default function useTokens(tokensData?: Token[]) {
               <Group>
                 <Icon src={token?.icon} className="h-[40px] w-[40px]" />
                 <Group className="flex-col" size="xs">
-                  <Text look="bold" bold size={"md"}>
+                  <Text look="bold" bold size={"md"} className="text-left">
                     {token.name}
                   </Text>
                   <Group>
