@@ -28,7 +28,11 @@ export async function rootLoader({
   if (!chains) throw new Response("Unable to fetch chains", { status: 500 });
 
   return {
-    ENV: { API_URL: process.env.API_URL, MERKL_VERSION: version },
+    ENV: {
+      API_URL: process.env.API_URL,
+      MERKL_VERSION: version,
+      BACKOFFICE_SECRET: process.env?.BACKOFFICE_SECRET ?? undefined,
+    },
     chains,
     protocols,
     backend,
