@@ -15,7 +15,7 @@ export default function OpportunityTableTvl({
 }: Component<OpportunityTableTvlProps>) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
-  if (!opportunity.tvlRecord?.breakdowns?.length)
+  if (!opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN")?.length)
     return (
       <Text bold look="tint" size="lg">
         {children ?? (

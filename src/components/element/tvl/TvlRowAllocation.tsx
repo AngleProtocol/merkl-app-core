@@ -13,7 +13,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   const tokenTvl = opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN");
   let content: React.ReactNode = null;
 
-  if (tokenTvl.length >= 2) {
+  if (!!tokenTvl.length) {
     const navigateToExplorer = useCallback(
       (address: string) => {
         const explorer = opportunity.chain?.Explorer?.[0].url;
