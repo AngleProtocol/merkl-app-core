@@ -1,5 +1,5 @@
 import type { Token } from "@merkl/api";
-import { Icon, Text } from "dappkit";
+import { Group, Hash, Icon, Text } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 
 /**
@@ -23,10 +23,22 @@ export default function useTokens(tokensData?: Token[]) {
         (obj, token) =>
           Object.assign(obj, {
             [token.address]: (
-              <>
-                <Icon size="sm" src={token?.icon} />
-                <Text look="bold">{token.name}</Text>
-              </>
+              <Group>
+                <Icon src={token?.icon} className="h-[40px] w-[40px]" />
+                <Group className="flex-col" size="xs">
+                  <Text look="bold" bold size={"md"}>
+                    {token.name}
+                  </Text>
+                  <Group>
+                    <Text look="tint" size={"sm"}>
+                      {token.symbol}
+                    </Text>
+                    <Hash format={"short"} look="soft" size={"xs"} copy>
+                      {token.address}
+                    </Hash>
+                  </Group>
+                </Group>
+              </Group>
             ),
           }),
         {},
