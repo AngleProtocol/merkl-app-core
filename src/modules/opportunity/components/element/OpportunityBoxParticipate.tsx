@@ -26,7 +26,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
 
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
-  const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const decimalFormatDollar = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
@@ -76,7 +76,9 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                   </Value>
                 </>
               ) : (
-                <Value value format={decimalFormatDolar}>
+                <Value
+                  value
+                  format={`${opportunity.rewardsRecord.breakdowns.some(x => x.token.isPreTGE) ? "~" : ""}${decimalFormatDollar}`}>
                   {opportunity.dailyRewards}
                 </Value>
               )}
@@ -159,7 +161,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                 </Text>
               )}
               <Title h={3} look="tint">
-                <Value value format={decimalFormatDolar}>
+                <Value value format={decimalFormatDollar}>
                   {opportunity.tvl}
                 </Value>
               </Title>

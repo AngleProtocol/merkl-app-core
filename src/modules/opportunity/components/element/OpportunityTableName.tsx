@@ -45,7 +45,7 @@ export default function OpportunityTableName({
       </Group>
 
       <Group className="items-center">
-        <Tags tags={tags ?? ["chain", "protocol", "status", "action"]} size={tagsSize ?? "xs"} />
+        <Tags tags={tags ?? ["chain", "protocol", "status", "action", "preTGE"]} size={tagsSize ?? "xs"} />
         <OpportunityDevHelpers opportunity={opportunity} />
       </Group>
     </Group>

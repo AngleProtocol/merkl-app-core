@@ -35,10 +35,26 @@ export default function TokenTooltip({ token, size }: TokenTooltipProps) {
           </Button>
         </Group>
         <Divider look="soft" horizontal />
-        {token.price !== null && token.price !== undefined && (
+        {!token.isPreTGE && token.price !== null && token.price !== undefined && (
           <Group className="w-full justify-between">
             <Text>Unit Price:</Text>
             <Value format={"$0.######"}>{token.price}</Value>
+          </Group>
+        )}
+        {token.isPreTGE && token.price !== null && token.price !== undefined && (
+          <Group className="w-full justify-between">
+            <Text>Pre TGE Unit Price:</Text>
+            <Value format={"$0.######"}>{token.price}</Value>
+          </Group>
+        )}
+        {token.isPreTGE && (
+          <Group className="w-full justify-between flex">
+            <Icon remix="RiTimer2Fill" size="md" />
+            <Text size="sm">
+              This token hasn’t launched yet.
+              <br />
+              Unit price is estimated and subject to change.
+            </Text>
           </Group>
         )}
         <Group className="w-full justify-between">
