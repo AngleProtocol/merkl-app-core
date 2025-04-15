@@ -2,17 +2,7 @@ import ChainTag from "@core/modules/chain/components/element/ChainTag";
 import ProtocolTag from "@core/modules/protocol/components/element/ProtocolTag";
 import type { Chain, Token } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import {
-  Button,
-  type Component,
-  Dropdown,
-  EventBlocker,
-  Group,
-  Icon,
-  PrimitiveTag,
-  type PrimitiveTagProps,
-  Text,
-} from "dappkit";
+import { Button, type Component, Icon, PrimitiveTag, type PrimitiveTagProps } from "dappkit";
 import type { ReactNode } from "react";
 import { actions } from "../../config/actions";
 import { statuses } from "../../config/status";
@@ -95,27 +85,10 @@ export default function Tag<T extends keyof TagTypes>({
     case "preTGE": {
       return (
         (value as TagTypes["preTGE"]) && (
-          <EventBlocker>
-            <Dropdown
-              className="flex-nowrap items-center"
-              size="sm"
-              onHover
-              content={
-                <Group className="w-full justify-between flex">
-                  <Icon remix="RiTimer2Fill" size="md" />
-                  <Text size="sm">
-                    This token hasn’t launched yet.
-                    <br />
-                    Its unit price is estimated and subject to change.
-                  </Text>
-                </Group>
-              }>
-              <PrimitiveTag look="hype" {...props}>
-                <Icon size={props?.size} remix="RiBasketballFill" />
-                Pre-TGE
-              </PrimitiveTag>
-            </Dropdown>
-          </EventBlocker>
+          <PrimitiveTag look="hype" {...props}>
+            <Icon size={props?.size} remix="RiBasketballFill" />
+            Pre-TGE
+          </PrimitiveTag>
         )
       );
     }

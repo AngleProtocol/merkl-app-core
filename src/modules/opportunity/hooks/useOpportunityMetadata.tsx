@@ -109,7 +109,7 @@ export default function useOpportunityMetadata({
       tag("status", status),
       tag(
         "preTGE",
-        rewardsRecord.breakdowns?.some(x => x?.token?.isPreTGE),
+        rewardsRecord?.breakdowns?.some(x => x?.token?.isPreTGE),
       ),
     ].filter(a => a !== undefined);
   }, [protocol, action, status, tokens, chain, rewardsRecord]);
