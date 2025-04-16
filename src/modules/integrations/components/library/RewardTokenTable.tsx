@@ -9,30 +9,30 @@ export const [RewardTokenTable, RewardTokenRow, rewardTokenColumns] = createTabl
   },
   token: {
     name: "Token",
-    size: "minmax(350px,1fr)",
+    size: "minmax(100px,1fr)",
     className: "justify-start",
     main: true,
   },
-  test: {
-    name: "",
-    size: "minmax(50px,1fr)",
+  type: {
+    name: "Type",
+    size: "minmax(100px,1fr)",
     className: "justify-start",
     main: true,
   },
   price: {
-    name: "",
-    size: "minmax(50px,1fr)",
-    className: "justify-start",
-    main: true,
-  },
-  point: {
-    name: "",
-    size: "minmax(50px,1fr)",
+    name: "Price",
+    size: "minmax(100px,1fr)",
     className: "justify-start",
     main: true,
   },
   minAmount: {
-    name: "Minimum Amount / Hour",
+    name: "Min amount/hour",
+    size: "minmax(100px,1fr)",
+    className: "justify-start",
+    main: true,
+  },
+  address: {
+    name: "Address",
     size: "minmax(100px,1fr)",
     className: "justify-start",
     main: true,

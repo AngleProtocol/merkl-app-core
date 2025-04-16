@@ -4,19 +4,21 @@ import { useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { IntegrationsService } from "../integration.service";
 import RewardTokenLibrary from "../components/library/RewardTokenLibrary";
+import { ChainService } from "@core/index.generated";
 
-export async function loader(_args: LoaderFunctionArgs) {
-  const rewardTokens = await IntegrationsService({ api }).getAll();
-  return { rewardTokens };
+export async function loader({ request, context: { backend } }: LoaderFunctionArgs) {
+  const rewardTokens = await IntegrationsService({ api, request }).getAll();
+  const chains = await ChainService({ api, request, backend }).getAll();
+  return { rewardTokens, chains };
 }
 
 export default function Index() {
-  const { rewardTokens } = useLoaderData<typeof loader>();
+  const { rewardTokens, chains } = useLoaderData<typeof loader>();
 
   return (
     <Container>
       <Space size="xl" />
-      <RewardTokenLibrary rewardTokens={rewardTokens} />
+      <RewardTokenLibrary rewardTokens={rewardTokens} chains={chains} />
     </Container>
   );
 }

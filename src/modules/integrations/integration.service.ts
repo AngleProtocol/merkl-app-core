@@ -7,8 +7,15 @@ export const IntegrationsService = defineModule<{ api: Api; request: Request; ba
   ({ inject }) => {
     const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Chain")(call);
 
-    const getAll = inject(["api"]).inFunction(({ api }) => {
-      return fetch(() => api.v4.tokens.reward.get());
+    const getAll = inject(["api", "request"]).inFunction(({ api, request }) => {
+      const url = new URL(request.url);
+      return fetch(() =>
+        api.v4.tokens.reward.get({
+          query: {
+            chainId: url.searchParams.get("chain") ?? undefined,
+          },
+        }),
+      );
     });
 
     return {
