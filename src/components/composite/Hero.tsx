@@ -14,12 +14,13 @@ import {
   useTheme,
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
-import React from "react";
+import { type VariantProps, tv } from "tailwind-variants";
 import { v4 as uuidv4 } from "uuid";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
   compact?: boolean;
+  full?: boolean;
   title: ReactNode;
   breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
@@ -27,6 +28,7 @@ export type HeroProps = PropsWithChildren<{
   tags?: ReactNode[] | ReactNode;
   sideDatas?: HeroInformations[];
   tabs?: { label: ReactNode; link: string; key: string }[];
+  banner?: ReactNode;
 }>;
 
 export type HeroInformations = {
@@ -35,26 +37,47 @@ export type HeroInformations = {
   key: string;
 };
 
+export const heroStyles = tv(
+  {
+    base: "bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto",
+    variants: {
+      size: {
+        base: "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]",
+        compact: "bg-cover xl:min-h-[150px]",
+        full: "flex",
+      },
+    },
+    defaultVariants: {
+      size: "base",
+    },
+  },
+  { twMerge: false },
+);
+
 export default function Hero({
   compact = false,
+  full = false,
   breadcrumbs,
   icons,
   title,
   description,
   tags,
   sideDatas,
+  banner,
   tabs,
   children,
-}: HeroProps) {
+}: HeroProps & VariantProps<typeof heroStyles>) {
   const { mode } = useTheme();
   const heroConfig = useMerklConfig(store => store.config.hero);
   const images = useMerklConfig(store => store.config.images);
+
+  const style = heroStyles({ size: compact ? "compact" : full ? "full" : "base" });
 
   return (
     <>
       <OverrideTheme mode={!!heroConfig.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
-          className={`${"bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto min-h-[150px] md:min-h-[200px] lg:min-h-[250px]"} flex-row justify-between bg-cover bg-no-repeat xl:aspect-auto ${compact ? "bg-cover xl:min-h-[150px]" : "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]"}`}
+          className={style}
           style={{
             backgroundImage: `url('${mode === "dark" ? images.heroDark : images.heroLight}')`,
           }}>
@@ -126,6 +149,7 @@ export default function Hero({
               </Group>
             </Group>
           </Container>
+          {banner}
         </Group>
       </OverrideTheme>
 
