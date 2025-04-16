@@ -1,6 +1,7 @@
 import type { Token } from "@merkl/api";
 import { Group, Hash, Icon, Text } from "dappkit";
 import { type ReactNode, useMemo } from "react";
+import merklLogo from "../../../assets/images/default-token-logo.svg";
 
 /**
  * Utilities for displaying data & components related to tokens
@@ -24,7 +25,7 @@ export default function useTokens(tokensData?: Token[]) {
           Object.assign(obj, {
             [token.address]: (
               <Group>
-                <Icon src={token?.icon} className="h-[40px] w-[40px]" />
+                <Icon src={token?.icon === "" ? merklLogo : token?.icon} className="h-[40px] w-[40px]" />
                 <Group className="flex-col" size="xs">
                   <Text look="bold" bold size={"md"} className="text-left">
                     {token.name}
