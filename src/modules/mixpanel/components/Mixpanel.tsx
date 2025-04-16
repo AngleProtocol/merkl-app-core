@@ -12,6 +12,7 @@ export default function Mixpanel() {
 
   const { consent, setConsent } = useMixpanelConsent();
 
+  if (!token) return;
   if (consent !== undefined) return;
   if (typeof document === "undefined") return;
   return (

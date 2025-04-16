@@ -13,7 +13,6 @@ import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
-import OpportunityEditor from "../OpportunityEditor";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
 
 export interface OpportunityBoxParticipateProps {
@@ -27,7 +26,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
   const [isSupplyModalOpen, setSupplyModalOpen] = React.useState<boolean>(false);
 
   const isDepositEnabled = useMerklConfig(store => store.config.deposit);
-  const decimalFormatDolar = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const decimalFormatDollar = useMerklConfig(store => store.config.decimalFormat.dollar);
   const decimalFormatPoint = useMerklConfig(store => store.config.decimalFormat.point);
 
   const { url: protocolUrl } = useOpportunityMetadata(opportunity);
@@ -45,7 +44,8 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
 
     if (protocolUrl) track("Click on supply", { ...opportunity, mode: isDirect ? "direct" : "indirect" });
 
-    if ((!isDepositEnabled || !targets) && protocolUrl) return window.open(protocolUrl, "_blank");
+    if ((!isDepositEnabled || !targets) && protocolUrl)
+      return window.open(protocolUrl, "_blank", "noopener,noreferrer");
     setSupplyModalOpen(true);
   }, [protocolUrl, targets, isDepositEnabled, track, opportunity]);
 
@@ -76,7 +76,9 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                   </Value>
                 </>
               ) : (
-                <Value value format={decimalFormatDolar}>
+                <Value
+                  value
+                  format={`${opportunity.rewardsRecord.breakdowns.some(x => x.token.isPreTGE) ? "~" : ""}${decimalFormatDollar}`}>
                   {opportunity.dailyRewards}
                 </Value>
               )}
@@ -138,7 +140,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               <Text size={"xs"}>{isOnlyPoint && "/per $ per day"}</Text>
             </Group>
             <Group className="border-1 rounded-lg border-main-9 p-lg flex-col flex-1" size="sm">
-              {opportunity.type === "CLAMM" ? (
+              {opportunity.tvlRecord?.breakdowns?.length >= 2 ? (
                 <Dropdown
                   onHover
                   onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
@@ -159,7 +161,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                 </Text>
               )}
               <Title h={3} look="tint">
-                <Value value format={decimalFormatDolar}>
+                <Value value format={decimalFormatDollar}>
                   {opportunity.tvl}
                 </Value>
               </Title>
@@ -171,7 +173,6 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {(!targets || !isDepositEnabled) && <Icon remix="RiArrowRightUpLine" size="sm" />}
             </Button>
           )}
-          <OpportunityEditor look="hype" size="xl" className="w-full justify-center" opportunity={opportunity} />
         </Group>
       </Box>
     </>

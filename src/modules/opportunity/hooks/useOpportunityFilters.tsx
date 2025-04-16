@@ -1,9 +1,9 @@
 import { actions as allActions } from "@core/config/actions";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useSearchParams } from "@remix-run/react";
 import { Group, Icon, Text } from "packages/dappkit/src";
 import { useCallback, useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 
 export enum SortOrder {
   ASC = "asc",
@@ -142,6 +142,12 @@ export default function useOpportunityFilters() {
           <Icon remix="RiArrowDownLine" />
         </Group>
       ),
+      "lastCampaignCreatedAt-desc": (
+        <Group className="flex-nowrap !gap-sm">
+          <Text look="bold">{filtersConfigEnabled?.["created-desc"]?.name || "By Most Recent Campaign"}</Text>
+          <Icon remix="RiArrowDownLine" />
+        </Group>
+      ),
     };
   }, [filtersConfigEnabled]);
 
@@ -191,6 +197,14 @@ export default function useOpportunityFilters() {
       );
   }, [filtersConfigEnabled, sortOptions]);
 
+  const onStatusChange = useCallback(
+    (status: string[]) => {
+      const uniqueStatus = Array.from(new Set(status.flatMap(s => s.split(","))));
+      setStatus(uniqueStatus);
+    },
+    [setStatus],
+  );
+
   return {
     toggleSortOrder,
     clearFilters,
@@ -203,7 +217,7 @@ export default function useOpportunityFilters() {
       },
       statusFilter: {
         input: status ?? defaultStatus,
-        setInput: setStatus,
+        setInput: onStatusChange,
         options: statusOptions,
       },
       chainIdsFilter: { input: chainIds, setInput: setChainIds },

@@ -1,7 +1,7 @@
 import { api } from "@core/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "dappkit";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { isAddress } from "viem";
 import HistoricalClaimsLibrary from "../../../components/element/historicalClaimsLibrary/HistoricalClaimsLibrary";
 import { ClaimsService } from "../../../modules/claim/claim.service";

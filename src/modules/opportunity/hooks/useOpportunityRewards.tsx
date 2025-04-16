@@ -71,6 +71,7 @@ export default function useOpportunityRewards({
     return (
       <Group className="flex items-center" size="sm">
         <Text bold look="hype" size="lg">
+          {tokens.some(token => token.isPreTGE) && "~"}
           <Value value format={dollarFormat}>
             {dailyRewards ?? 0}
           </Value>
@@ -104,7 +105,7 @@ export default function useOpportunityRewards({
   }, [rewardsRecord]);
 
   /**
-   * SINGLE Point aggregation (will be refacto to handlesmultiple point on sameopportunity) test token excluded
+   * SINGLE Point aggregation (will be refacto to handles multiple points on the same opportunity) test token excluded
    */
   const pointAggregation = useMemo(() => {
     if (!isOnlyPoint) return null;

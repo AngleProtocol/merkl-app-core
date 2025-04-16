@@ -14,6 +14,7 @@ import {
   useTheme,
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export type HeroProps = PropsWithChildren<{
@@ -95,7 +96,7 @@ export default function Hero({
 
                   {!!description && (
                     <Text size="lg" look="base">
-                      {description}
+                      {typeof description === "string" ? (description?.split("\n").map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)) : description}
                     </Text>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}

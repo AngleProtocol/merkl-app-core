@@ -14,9 +14,9 @@ export default function ExplorerTag({
   const navigateToChainPage = useCallback(() => {
     if (!chain) return;
     /**
-     * @todo make sure this works will al explorers
+     * @todo make sure this works will all explorers
      */
-    window?.open(`${chain.explorers?.[0]?.url}/address/${address}`);
+    window.open(`${chain.explorers?.[0]?.url}/address/${address}`, "_blank", "noopener,noreferrer");
   }, [chain, address]);
 
   if (!chain) return;

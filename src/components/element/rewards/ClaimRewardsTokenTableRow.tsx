@@ -25,6 +25,46 @@ export default function ClaimRewardsTokenTableRow({
 
   const unclaimed = useMemo(() => BigInt(reward.amount) - BigInt(reward.claimed), [reward]);
 
+  const detailCollapsible = useMemo(
+    () => (
+      <Collapsible state={[open, setOpen]}>
+        <Space size="md" />
+        {reward.breakdowns
+          .sort(
+            (a, b) => Fmt.toPrice(b.amount - b.claimed, reward.token) - Fmt.toPrice(a.amount - a.claimed, reward.token),
+          )
+          .filter(b => b.opportunity !== null)
+          .map(b => {
+            return (
+              <React.Fragment key={b.opportunity.identifier.concat("-divider")}>
+                <Divider look="soft" horizontal key={b.opportunity.identifier.concat("-divider")} />
+                <ClaimRewardsTokenRow
+                  key={b.opportunity.identifier}
+                  data-look={props?.look ?? "none"}
+                  className="!px-0 py-xl  !m-0 border-none bg-main-0"
+                  onClick={() => setOpen(o => !o)}
+                  tokenColumn={
+                    <Group className="pl-md justify-center items-center flex-nowrap">
+                      <Text size="xl">
+                        <Icon className="size" remix="RiCornerDownRightLine" />
+                      </Text>
+                      <OpportunityButton opportunity={b.opportunity} />
+                    </Group>
+                  }
+                  amountColumn={
+                    <Token size="md" token={reward.token} format="amount_price" amount={BigInt(b.amount - b.claimed)} />
+                  }
+                  claimedColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.claimed} />}
+                  pendingColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.pending} />}
+                />
+              </React.Fragment>
+            );
+          })}
+      </Collapsible>
+    ),
+    [reward.breakdowns, open, reward.token, props.look],
+  );
+
   return (
     <ClaimRewardsTokenRow
       {...props}
@@ -57,41 +97,7 @@ export default function ClaimRewardsTokenTableRow({
           "-"
         )
       }>
-      <Collapsible state={[open, setOpen]}>
-        <Space size="md" />
-        {reward.breakdowns
-          .sort(
-            (a, b) => Fmt.toPrice(b.amount - b.claimed, reward.token) - Fmt.toPrice(a.amount - a.claimed, reward.token),
-          )
-          .filter(b => b.opportunity !== null)
-          .map(b => {
-            return (
-              <React.Fragment key={b.opportunity.identifier.concat("-divider")}>
-                <Divider look="soft" horizontal key={b.opportunity.identifier.concat("-divider")} />
-                <ClaimRewardsTokenRow
-                  {...props}
-                  key={b.opportunity.identifier}
-                  data-look={props?.look ?? "none"}
-                  className="!px-0 py-xl  !m-0 border-none bg-main-0"
-                  onClick={() => setOpen(o => !o)}
-                  tokenColumn={
-                    <Group className="pl-md justify-center items-center flex-nowrap">
-                      <Text size="xl">
-                        <Icon className="size" remix="RiCornerDownRightLine" />
-                      </Text>
-                      <OpportunityButton opportunity={b.opportunity} />
-                    </Group>
-                  }
-                  amountColumn={
-                    <Token size="md" token={reward.token} format="amount_price" amount={BigInt(b.amount - b.claimed)} />
-                  }
-                  claimedColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.claimed} />}
-                  pendingColumn={<Token size="md" token={reward.token} format="amount_price" amount={b.pending} />}
-                />
-              </React.Fragment>
-            );
-          })}
-      </Collapsible>
+      {detailCollapsible}
     </ClaimRewardsTokenRow>
   );
 }

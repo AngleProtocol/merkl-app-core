@@ -3,7 +3,6 @@ import Tag from "@core/components/element/Tag";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { PickAndOptOut } from "@core/utils/object";
 import type { Opportunity } from "@merkl/api";
-import { Link } from "@remix-run/react";
 import {
   type Component,
   Divider,
@@ -15,6 +14,7 @@ import {
   Text,
 } from "dappkit";
 import { useCallback, useMemo } from "react";
+import { Link } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import { OpportunityService } from "../opportunity.service";
 
@@ -29,6 +29,7 @@ const metadata = [
   "chain",
   "tokens",
   "tags",
+  "rewardsRecord",
 ] satisfies (keyof Opportunity)[];
 
 /**
@@ -44,6 +45,7 @@ export default function useOpportunityMetadata({
   tokens,
   protocol,
   depositUrl,
+  rewardsRecord,
   ...opportunity
 }: PickAndOptOut<Opportunity, (typeof metadata)[number], "depositUrl" | "protocol">) {
   const opportunityPercentage = useMerklConfig(store => store.config.opportunityPercentage);
@@ -105,8 +107,12 @@ export default function useOpportunityMetadata({
       tag("action", action),
       ...tokens.map(token => tag("token", token)),
       tag("status", status),
+      tag(
+        "preTGE",
+        rewardsRecord?.breakdowns?.some(x => x?.token?.isPreTGE),
+      ),
     ].filter(a => a !== undefined);
-  }, [protocol, action, status, tokens, chain]);
+  }, [protocol, action, status, tokens, chain, rewardsRecord]);
 
   /**
    * Extensible tags components that can be filtered
@@ -178,7 +184,7 @@ export default function useOpportunityMetadata({
   );
 
   const navigateToMerklStatusPage = useCallback(() => {
-    window.open("https://beta.merkl.xyz/status", "_blank");
+    window.open("https://beta.merkl.xyz/status", "_blank", "noopener,noreferrer");
   }, []);
 
   /**

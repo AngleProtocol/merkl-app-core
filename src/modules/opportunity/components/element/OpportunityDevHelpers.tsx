@@ -1,14 +1,16 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { Button, type Component, EventBlocker, Group, Icon, Tooltip, useClipboard } from "dappkit";
+import type { Opportunity } from "@merkl/api";
+import { Button, type Component, EventBlocker, Group, Icon, Modal, Tooltip, useClipboard } from "dappkit";
 import { useState } from "react";
 import { OpportunityService } from "../../opportunity.service";
+import OpportunityEditorModal from "../OpportunityEditorModal";
 
 export type OpportunityDevHelpersProps = {
-  opportunityId: string;
+  opportunity: Opportunity;
 };
 
-export default function OpportunityDevHelpers({ opportunityId }: Component<OpportunityDevHelpersProps>) {
+export default function OpportunityDevHelpers({ opportunity }: Component<OpportunityDevHelpersProps>) {
   const opportunityService = OpportunityService({ api });
 
   // Dev helpers
@@ -22,7 +24,7 @@ export default function OpportunityDevHelpers({ opportunityId }: Component<Oppor
       <EventBlocker>
         <Group>
           <Tooltip icon={false} helper={<>Copy the Opportunity ID</>}>
-            <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunityId)}>
+            <Button className="inline-flex" look="hype" size="md" onClick={async () => copyCall(opportunity.id)}>
               <Icon remix={isCopied ? "RiCheckboxCircleFill" : "RiFileCopyFill"} size="sm" />
             </Button>{" "}
           </Tooltip>
@@ -34,7 +36,7 @@ export default function OpportunityDevHelpers({ opportunityId }: Component<Oppor
               onClick={async () => {
                 setIsReparsing(true);
                 try {
-                  await (await opportunityService).reparse(opportunityId);
+                  await (await opportunityService).reparse(opportunity.id);
                 } catch {}
                 setIsReparsing(false);
               }}>
@@ -44,6 +46,13 @@ export default function OpportunityDevHelpers({ opportunityId }: Component<Oppor
                 <Icon remix="RiRestartLine" size="sm" />
               )}
             </Button>
+          </Tooltip>
+          <Tooltip icon={false} helper={<>Edit Opportunity Static data</>}>
+            <Modal modal={<OpportunityEditorModal opportunity={opportunity} />}>
+              <Button className="inline-flex" look="hype" size="md">
+                <Icon remix="RiEdit2Fill" size="sm" />
+              </Button>
+            </Modal>
           </Tooltip>
         </Group>
       </EventBlocker>

@@ -1,4 +1,5 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import Hero from "@core/components/composite/Hero";
 import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import { Cache } from "@core/modules/cache/cache.service";
@@ -8,16 +9,16 @@ import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMe
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { Group } from "dappkit";
+import { Meta, Outlet, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import OpportunityDevHelpers from "../components/element/OpportunityDevHelpers";
 
 export async function loader({
   context: { backend, routes },
   params: { id, type, chain: chainId },
   request,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs<MerklServerContext>) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });
@@ -60,7 +61,7 @@ export default function Index() {
         title={
           <Group className="items-center md:flex-nowrap" size="lg">
             <span className="w-full md:w-auto md:flex-1">{title} </span>
-            <OpportunityDevHelpers opportunityId={opportunity.id} />
+            <OpportunityDevHelpers opportunity={opportunity} />
           </Group>
         }
         description={description}>

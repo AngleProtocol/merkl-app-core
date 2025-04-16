@@ -2,6 +2,10 @@ import type { Api } from "@core/api/types";
 import { type ApiQuery, type ApiResponse, fetchResource } from "@core/api/utils";
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Opportunity } from "@merkl/api";
+import type {
+  OpportunityDeleteOverrideModel,
+  OpportunityOverrideModel,
+} from "@merkl/api/dist/src/modules/v4/opportunity";
 import { defineModule } from "@merkl/conduit";
 import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 
@@ -107,6 +111,38 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       );
     });
 
+    const override = inject(["api"]).inFunction(
+      async ({ api }, opportunityId: string, override: OpportunityOverrideModel) => {
+        await fetchApi(async () =>
+          api.v4
+            .opportunities({
+              id: opportunityId,
+            })
+            .override.patch(override, {
+              headers: {
+                authorization: `Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`,
+              },
+            }),
+        );
+      },
+    );
+
+    const deleteOverride = inject(["api"]).inFunction(
+      async ({ api }, opportunityId: string, override: OpportunityDeleteOverrideModel) => {
+        await fetchApi(async () =>
+          api.v4
+            .opportunities({
+              id: opportunityId,
+            })
+            .override.delete(override, {
+              headers: {
+                authorization: `Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`,
+              },
+            }),
+        );
+      },
+    );
+
     const getCampaignsByParams = inject(["api", "backend", "request"]).inFunction(
       async (
         { api, backend, request },
@@ -184,6 +220,8 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       getFeatured,
       getCampaignsByParams,
       getDescription,
+      override,
+      deleteOverride,
     };
   },
 );

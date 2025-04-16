@@ -1,10 +1,11 @@
+import type { MerklServerContext } from "@core/app/server/context";
 import Hero from "@core/components/composite/Hero";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 
-export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs) {
+export async function loader({ context: { backend, routes }, request }: LoaderFunctionArgs<MerklServerContext>) {
   return MetadataService({ request, backend, routes }).fill();
 }
 

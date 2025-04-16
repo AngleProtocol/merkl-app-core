@@ -1,8 +1,8 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { Box, Button, Container, Fmt, Group, Icon, OverrideTheme, Space, Text, useWalletContext } from "dappkit";
 import { useMemo } from "react";
+import { useLoaderData, useOutletContext } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { isAddress } from "viem";
 import { I18n } from "../../../I18n";
 import ReinvestBanner from "../../../components/element/reinvest/ReinvestBanner";

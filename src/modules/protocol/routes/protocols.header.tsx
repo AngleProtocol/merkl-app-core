@@ -1,8 +1,8 @@
 import { api } from "@core/api";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { I18n } from "../../../I18n";
 import Hero from "../../../components/composite/Hero";
 import { ProtocolService } from "../../../modules/protocol/protocol.service";

@@ -10,83 +10,56 @@ type TvlRowAllocationProps = {
 export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
+  const tokenTvl = opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN");
   let content: React.ReactNode = null;
-  switch (opportunity.type) {
-    case "CLAMM": {
-      const tokenTvl = opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN");
-      const token0 = opportunity.tokens[0];
-      const token1 = opportunity.tokens[1];
-      const tvlBreakdownToken0 = tokenTvl?.find(b => b.identifier === opportunity?.tokens[0]?.address);
-      const tvlBreakdownToken1 = tokenTvl?.find(b => b.identifier === opportunity?.tokens[1]?.address);
 
-      const navigateToExplorer = useCallback(
-        (address: string) => {
-          const explorer = opportunity.chain?.Explorer?.[0].url;
-          window.open(`${explorer}/token/${address}`, "_blank");
-        },
-        [opportunity.chain?.Explorer?.[0].url],
-      );
+  if (tokenTvl.length >= 2) {
+    const navigateToExplorer = useCallback(
+      (address: string) => {
+        const explorer = opportunity.chain?.Explorer?.[0].url;
+        window.open(`${explorer}/token/${address}`, "_blank", "noopener,noreferrer");
+      },
+      [opportunity.chain?.Explorer?.[0].url],
+    );
 
-      content = (
-        <Group className="flex-col" size="sm">
-          <Text className="flex items-center gap-sm" size="sm" look="soft">
-            <Icon src={opportunity.tokens[0].icon} />
-            <Text bold className="flex gap-sm" size="sm">
-              <Value value format="0.0a">
-                {tvlBreakdownToken0?.value}
-              </Value>
-              <span>{token0.symbol}</span>
-            </Text>
+    content = (
+      <Group className="flex-col" size="sm">
+        {tokenTvl.map(tvlBreakdown => {
+          let token = opportunity.tokens.find(t => t.id === tvlBreakdown.identifier);
+          if (!token) token = opportunity.tokens.find(t => t.address === tvlBreakdown.identifier);
 
-            {!!tvlBreakdownToken0?.value && !!token0?.price && (
-              <Text size="sm" className="flex items-center gap-sm">
-                (
-                <Value value format={dollarFormat}>
-                  {tvlBreakdownToken0.value * token0.price}
+          if (!token) return null;
+          return (
+            <Text key={tvlBreakdown.id} className="flex items-center gap-sm" size="sm" look="soft">
+              <Icon src={token.icon} />
+              <Text bold className="flex gap-sm" size="sm">
+                <Value value format="0.0a">
+                  {tvlBreakdown?.value}
                 </Value>
-                {" - "}
-                <Value value format="0a%">
-                  {(tvlBreakdownToken0?.value * token0.price) / opportunity.tvlRecord.total}
-                </Value>
-                {" TVL"})
-                <Button external size="xs" look="soft" onClick={() => navigateToExplorer(token0.address)}>
-                  <Icon remix="RiExternalLinkLine" />
-                </Button>
+                <span>{token.symbol}</span>
               </Text>
-            )}
-          </Text>
-          <Text className="flex items-center gap-sm" size="sm" look="soft">
-            <Icon src={opportunity.tokens[1].icon} />
-            <Text bold className="flex gap-sm" size="sm">
-              <Value value format="0.0a">
-                {tvlBreakdownToken1?.value}
-              </Value>
-              <span>{token1.symbol}</span>
-            </Text>
 
-            {!!tvlBreakdownToken1?.value && !!token1?.price && (
-              <Text size="sm" className="flex items-center gap-sm">
-                (
-                <Value value format={dollarFormat}>
-                  {tvlBreakdownToken1.value * token1.price}
-                </Value>
-                {" - "}
-                <Value value format="0a%">
-                  {(tvlBreakdownToken1?.value * token1.price) / opportunity.tvlRecord.total}
-                </Value>
-                {" TVL"})
-                <Button external size="xs" look="soft" onClick={() => navigateToExplorer(token1.address)}>
-                  <Icon remix="RiExternalLinkLine" />
-                </Button>
-              </Text>
-            )}
-          </Text>
-        </Group>
-      );
-      break;
-    }
-    default:
-      content = null;
+              {!!tvlBreakdown?.value && !!token?.price && (
+                <Text size="sm" className="flex items-center gap-sm">
+                  (
+                  <Value value format={dollarFormat}>
+                    {tvlBreakdown.value * token.price}
+                  </Value>
+                  {" - "}
+                  <Value value format="0a%">
+                    {(tvlBreakdown?.value * token.price) / opportunity.tvlRecord.total}
+                  </Value>
+                  {" TVL"})
+                  <Button external size="xs" look="soft" onClick={() => navigateToExplorer(token.address)}>
+                    <Icon remix="RiExternalLinkLine" />
+                  </Button>
+                </Text>
+              )}
+            </Text>
+          );
+        })}
+      </Group>
+    );
   }
   if (!content) return null;
   return (

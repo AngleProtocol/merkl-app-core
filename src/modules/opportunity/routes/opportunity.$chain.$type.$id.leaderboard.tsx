@@ -1,12 +1,13 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import LeaderboardLibrary from "@core/components/element/leaderboard/LeaderboardLibrary";
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
 import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
 import { useCallback } from "react";
+import { useLoaderData, useNavigate, useOutletContext } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "./opportunity.$chain.$type.$id.header";
 
@@ -14,7 +15,7 @@ export async function loader({
   context: { backend },
   params: { id, type, chain: chainId },
   request,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs<MerklServerContext>) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });

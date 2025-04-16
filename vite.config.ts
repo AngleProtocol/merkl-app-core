@@ -1,4 +1,4 @@
-import { vitePlugin as remix } from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
 import svgr from "@svgr/rollup";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -13,7 +13,7 @@ declare module "@remix-run/server-runtime" {
 export default defineConfig({
   plugins: [
     svgr(),
-    remix({
+    reactRouter({
       appDirectory: "./src",
       ignoredRouteFiles: ["*"],
       future: {

@@ -80,7 +80,7 @@ export default function StatusTableRow({ status, chain, className, ...props }: S
               <Icon remix="RiFileChart2Fill" />
             </Button>
           </Tooltip>
-          <Time timestamp={status.endOfDisputePeriod * 1000} />
+          <Time timestamp={status.endOfDisputePeriod * 1000} prefix="In " />
         </Group>
       }
       treeColumn={

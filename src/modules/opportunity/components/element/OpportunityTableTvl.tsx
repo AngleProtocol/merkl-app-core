@@ -15,26 +15,26 @@ export default function OpportunityTableTvl({
 }: Component<OpportunityTableTvlProps>) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
-  if (!opportunity.tvlRecord?.breakdowns?.length)
+  if (opportunity.tvlRecord?.breakdowns?.filter(b => b.type === "TOKEN")?.length >= 2)
     return (
       <Text bold look="tint" size="lg">
-        {children ?? (
-          <Value value format={dollarFormat}>
-            {opportunity.tvl ?? 0}
-          </Value>
-        )}
+        <Dropdown size="xl" onHover content={<TvlModal opportunity={opportunity} {...props} />}>
+          {children ?? (
+            <Value value format={dollarFormat}>
+              {opportunity.tvl ?? 0}
+            </Value>
+          )}
+        </Dropdown>
       </Text>
     );
 
   return (
     <Text bold look="tint" size="lg">
-      <Dropdown size="xl" onHover content={<TvlModal opportunity={opportunity} {...props} />}>
-        {children ?? (
-          <Value value format={dollarFormat}>
-            {opportunity.tvl ?? 0}
-          </Value>
-        )}
-      </Dropdown>
+      {children ?? (
+        <Value value format={dollarFormat}>
+          {opportunity.tvl ?? 0}
+        </Value>
+      )}
     </Text>
   );
 }

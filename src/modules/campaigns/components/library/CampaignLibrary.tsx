@@ -2,10 +2,10 @@ import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportuni
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { useOutletContext } from "@remix-run/react";
 import { Button, Divider, Group, Icon, OverrideTheme, Text, Tooltip } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
+import { useOutletContext } from "react-router";
 import CampaignTableRow from "../element/CampaignTableRow";
 import { CampaignTable } from "./CampaignTable";
 

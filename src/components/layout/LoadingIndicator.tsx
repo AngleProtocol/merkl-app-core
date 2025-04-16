@@ -1,6 +1,6 @@
-import { useNavigation } from "@remix-run/react";
 import { Bar, mergeClass } from "dappkit";
 import { useEffect, useState } from "react";
+import { useNavigation } from "react-router";
 
 const RESET_DELAY = 250;
 const LOADING_BASE = 20;

@@ -16,7 +16,7 @@ export default function TvlModal(props: TvlModalProps) {
     <Group className="flex-col">
       <Group className="justify-between items-center">
         <Title look="soft" h={5}>
-          TVL INFORMATIONS
+          TVL INFORMATION
         </Title>
         <PrimitiveTag look="tint" size="lg">
           <Value value format={dollarFormat}>

@@ -18,6 +18,7 @@ export type TagTypes = {
   action: Opportunity["action"];
   status: Opportunity["status"];
   explorer: { address: string; chainId: number };
+  preTGE: boolean;
 };
 
 export type TagType<T extends keyof TagTypes = keyof TagTypes> = {
@@ -81,6 +82,17 @@ export default function Tag<T extends keyof TagTypes>({
       if (!protocol) return;
       return <ProtocolTag suffix={suffix} look="bold" protocol={protocol} {...props} />;
     }
+    case "preTGE": {
+      return (
+        (value as TagTypes["preTGE"]) && (
+          <PrimitiveTag look="hype" {...props}>
+            <Icon size={props?.size} remix="RiBasketballFill" />
+            Pre-TGE
+          </PrimitiveTag>
+        )
+      );
+    }
+
     default:
       return (
         <PrimitiveTag {...props}>

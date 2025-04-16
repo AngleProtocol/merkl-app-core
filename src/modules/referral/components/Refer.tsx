@@ -1,5 +1,4 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { useLocation } from "@remix-run/react";
 import {
   Box,
   Button,
@@ -16,6 +15,7 @@ import {
   useTheme,
 } from "dappkit";
 import { useMemo } from "react";
+import { useLocation } from "react-router";
 import useReferrer from "../hooks/useReferrer";
 import ReferralCalculationTooltip from "./ReferralCalculationTooltip";
 
@@ -74,6 +74,8 @@ export default function Refer({ url }: ReferProps) {
                 onClick={() =>
                   window.open(
                     `https://wa.me/?text=${shareMessage} ${`${url}${location.pathname}?code=${referral.code}`}`,
+                    "_blank",
+                    "noopener,noreferrer",
                   )
                 }
                 size="xl"
@@ -84,6 +86,8 @@ export default function Refer({ url }: ReferProps) {
                 onClick={() =>
                   window.open(
                     `https://t.me/share/url?url=${`${url}${location.pathname}?code=${referral.code}`}&text=${shareMessage}`,
+                    "_blank",
+                    "noopener,noreferrer",
                   )
                 }
                 size="xl"
@@ -94,6 +98,8 @@ export default function Refer({ url }: ReferProps) {
                 onClick={() =>
                   window.open(
                     `https://x.com/intent/post?text=${encodeURIComponent(shareMessage)} ${encodeURIComponent(`${url}${location.pathname}?code=${referral.code}`)}`,
+                    "_blank",
+                    "noopener,noreferrer",
                   )
                 }
                 size="xl"

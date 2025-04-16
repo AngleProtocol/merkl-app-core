@@ -1,12 +1,13 @@
 import { api } from "@core/api";
+import type { MerklServerContext } from "@core/app/server/context";
 import { ErrorContent } from "@core/components/layout/ErrorContent";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { InteractionService } from "@core/modules/interaction/interaction.service";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Opportunity } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { Container, Group } from "dappkit";
+import { Outlet, useLoaderData, useOutletContext } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
 import { OpportunityService } from "../opportunity.service";
 
@@ -14,7 +15,7 @@ export async function loader({
   context: { backend },
   params: { id, type, chain: chainId },
   request,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs<MerklServerContext>) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });

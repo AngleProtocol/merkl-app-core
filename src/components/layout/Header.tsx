@@ -1,7 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { NavigationMenuRoute } from "@core/modules/config/config.model";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
-import { useLocation } from "@remix-run/react";
 import {
   Button,
   Container,
@@ -16,6 +15,7 @@ import {
 } from "dappkit";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router";
 import useChains from "../../modules/chain/hooks/useChains";
 import SwitchMode from "../element/SwitchMode";
 import BrandNavigationMenu from "./BrandNavigationMenu";
@@ -208,7 +208,12 @@ export default function Header() {
                 </Group>
                 <SwitchMode />
                 <Group className="flex">
-                  <WalletButton select={chainSwitcher} hideSpyMode={hideSpyMode}>
+                  <WalletButton
+                    onConnect={(connectorId: string) =>
+                      track("Click on button", { button: "connect", wallet: connectorId ?? "unknown", type: "header" })
+                    }
+                    select={chainSwitcher}
+                    hideSpyMode={hideSpyMode}>
                     <Button to={`/users/${user}`} size="sm" look="soft">
                       <Icon remix="RiArrowRightLine" /> Check dashboard
                     </Button>

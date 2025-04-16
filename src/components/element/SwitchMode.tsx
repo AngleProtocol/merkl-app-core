@@ -1,5 +1,4 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { MixpanelService } from "@core/modules/mixpanel/mixpanel.service";
 import { Button, Icon, Select, useTheme } from "dappkit";
 import { useCallback, useMemo } from "react";
 
@@ -19,11 +18,8 @@ export default function SwitchMode() {
   }, [themes]);
 
   const toggle = useCallback(() => {
-    const oppositeMode = mode === "dark" ? "light" : "dark";
-
-    MixpanelService({}).track("Switch Mode", { from: mode, to: oppositeMode });
     toggleMode();
-  }, [mode, toggleMode]);
+  }, [toggleMode]);
 
   return (
     <>

@@ -1,9 +1,9 @@
-import { useMerklConfig } from "@core/modules/config/config.context";
 import { Container, useTheme } from "dappkit";
 import { Button, Group, Text } from "dappkit";
 import { Image } from "dappkit";
 import merklDarkLogo from "../../assets/images/by-merkl-dark.svg";
 import merklLogo from "../../assets/images/by-merkl.svg";
+import { useMerklConfig } from "../../modules/config/config.context";
 import Socials from "../element/Socials";
 import BrandNavigationMenu from "./BrandNavigationMenu";
 
