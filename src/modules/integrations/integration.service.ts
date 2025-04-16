@@ -9,11 +9,11 @@ export const IntegrationsService = defineModule<{ api: Api; request: Request; ba
 
     const getAll = inject(["api", "request"]).inFunction(({ api, request }) => {
       const url = new URL(request.url);
+      const query = {};
+      if (url.searchParams.get("chain")) query.chainId = url.searchParams.get("chain");
       return fetch(() =>
         api.v4.tokens.reward.get({
-          query: {
-            chainId: url.searchParams.get("chain") ?? undefined,
-          },
+          query,
         }),
       );
     });
