@@ -17,15 +17,16 @@ export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewa
   const { distributionTypes } = useOpportunityDistributionTypes(opportunity);
 
   const mergedBreakdowns = opportunity.rewardsRecord.breakdowns.reduce<
-    Record<string, { token: TokenType; amount: bigint }>
+    Record<string, { token: TokenType; amount: bigint; distributionType: DistributionType; value: number }>
   >((acc, tokenBreakdown) => {
-    const { token, amount } = tokenBreakdown;
-    const key = token.address;
+    const { token, amount, distributionType, value } = tokenBreakdown;
+    const key = `${token.address}_${distributionType}`;
 
     if (acc[key]) {
       acc[key].amount = acc[key].amount + BigInt(amount);
+      acc[key].value = acc[key].value + value;
     } else {
-      acc[key] = { token, amount: BigInt(amount) };
+      acc[key] = { token, amount: BigInt(amount), distributionType, value };
     }
 
     return acc;
@@ -63,10 +64,30 @@ export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewa
 
         {Object.values(mergedBreakdowns)
           .filter(x => x.token.isPreTGE)
-          .map(({ token, amount }, index) => (
+          .map(({ token, amount, value, distributionType }, index) => (
             <Box key={token.id} look="base" size="md">
               <Group className="flex-col">
-                <Token token={token} amount={amount} look="bold" />
+                <Group className="gap-md">
+                  <Token token={token} amount={amount} look="bold" />
+                  {distributionType === DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_VALUE && (
+                    <Text size="xs" look="soft">
+                      {"(~"}
+                      <Value format="0,0.###a" value>
+                        {Number(formatUnits(amount, token.decimals)) / opportunity.tvl}
+                      </Value>
+                      {` ${token.symbol}/$/Day)`}
+                    </Text>
+                  )}
+                  {distributionType === DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_AMOUNT && (
+                    <Text size="xs" look="soft">
+                      {"(~"}
+                      <Value format="0,0.###a" value>
+                        {value / opportunity.tvl}
+                      </Value>
+                      {`$ of ${token.symbol}/$/Day)`}
+                    </Text>
+                  )}
+                </Group>
                 <Divider look="soft" horizontal />
                 {!!token.price && (
                   <Group className="justify-between">
