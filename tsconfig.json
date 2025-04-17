@@ -1,25 +1,9 @@
 {
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "packages"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "public"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "packages"],
+  "exclude": ["node_modules", "dist", "build", "public"],
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
-    "types": [
-      "@react-router/node",
-      "vite/client"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["@react-router/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -38,9 +22,7 @@
     "sourceMap": true,
     "outDir": "./dist/merkl-app-core",
     "paths": {
-      "@core/*": [
-        "./src/*"
-      ]
+      "@core/*": ["./src/*"]
     },
     "verbatimModuleSyntax": true,
     "noEmit": true

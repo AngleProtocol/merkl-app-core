@@ -96,7 +96,14 @@ export default function Hero({
 
                   {!!description && (
                     <Text size="lg" look="base">
-                      {typeof description === "string" ? (description?.split("\n").map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)) : description}
+                      {typeof description === "string"
+                        ? description?.split("\n").map((line, index) => (
+                            <React.Fragment key={line}>
+                              {index > 0 && <br />}
+                              {line}
+                            </React.Fragment>
+                          ))
+                        : description}
                     </Text>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
