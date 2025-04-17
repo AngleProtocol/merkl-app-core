@@ -18,13 +18,13 @@ export default function CampaignTooltipDates({ campaign }: CampaignTooltipDatesP
             <Text size="sm" look={"bold"}>
               Start
             </Text>
-            <Text size="sm">{moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY ha (UTC +02.00)")}</Text>
+            <Text size="sm">{moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY ha z")}</Text>
           </Group>
           <Group>
             <Text size="sm" look={"bold"}>
               End
             </Text>
-            <Text size="sm">{moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY ha (UTC +02.00)")}</Text>
+            <Text size="sm">{moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY ha z")}</Text>
           </Group>
         </Group>
       </Group>
