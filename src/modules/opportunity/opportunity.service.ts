@@ -111,6 +111,23 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       );
     });
 
+    const refreshMetadata = inject(["api"]).inFunction(async ({ api }, opportunityId: string) => {
+      await fetchApi(async () =>
+        api.v4.campaigns
+          .tvls({
+            id: opportunityId,
+          })
+          .put(
+            {},
+            {
+              headers: {
+                authorization: `Bearer ${(window as { ENV?: { BACKOFFICE_SECRET?: string } })?.ENV?.BACKOFFICE_SECRET}`,
+              },
+            },
+          ),
+      );
+    });
+
     const override = inject(["api"]).inFunction(
       async ({ api }, opportunityId: string, override: OpportunityOverrideModel) => {
         await fetchApi(async () =>
@@ -214,6 +231,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
 
     return {
       reparse,
+      refreshMetadata,
       getMany,
       getAggregate,
       getManyFromRequest,

@@ -16,6 +16,7 @@ export default function OpportunityDevHelpers({ opportunity }: Component<Opportu
   // Dev helpers
   const showDevelopmentHelpers = useMerklConfig(store => store.config.backend.showDevelopmentHelpers);
   const [isReparsing, setIsReparsing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { copy: copyCall, isCopied } = useClipboard();
 
@@ -44,6 +45,25 @@ export default function OpportunityDevHelpers({ opportunity }: Component<Opportu
                 <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
               ) : (
                 <Icon remix="RiRestartLine" size="sm" />
+              )}
+            </Button>
+          </Tooltip>
+          <Tooltip icon={false} helper={<>Refresh the Opportunity Dynamic data</>}>
+            <Button
+              className="inline-flex"
+              look="hype"
+              size="md"
+              onClick={async () => {
+                setIsRefreshing(true);
+                try {
+                  await (await opportunityService).refreshMetadata(opportunity.id);
+                } catch {}
+                setIsRefreshing(false);
+              }}>
+              {isRefreshing ? (
+                <Icon remix="RiLoader2Fill" className="text-main-12 animate-spin" />
+              ) : (
+                <Icon remix="RiLineChartLine" size="sm" />
               )}
             </Button>
           </Tooltip>
