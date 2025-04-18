@@ -111,5 +111,25 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
 
       return tx;
     }
+    case "acceptTerms": {
+      const abi = parseAbi(["function acceptConditions() nonpayable"]);
+
+      const tx = {
+        to: payload.to,
+        from: payload.userAddress,
+        data: encodeFunctionData({
+          abi,
+          functionName: "acceptConditions",
+        }),
+        value: 0n,
+      };
+
+      if (payload.sponsor) {
+        const sponsoredTx = await zyfiService.wrapAndPrepareTx(tx);
+        return sponsoredTx;
+      }
+
+      return tx;
+    }
   }
 };

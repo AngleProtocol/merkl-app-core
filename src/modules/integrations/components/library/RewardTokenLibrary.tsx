@@ -1,10 +1,10 @@
-import { useMemo } from "react";
-import { useChains, type Api } from "@core/index.generated";
-import { RewardTokenTable } from "./RewardTokenTable";
-import RewardTokenTableRow from "../element/RewardTokenTableRow";
-import { Box, Button, Group, Icon, Select } from "packages/dappkit/src";
+import { type Api, useChains } from "@core/index.generated";
 import useOpportunityFilters from "@core/modules/opportunity/hooks/useOpportunityFilters";
 import type { Chain } from "@merkl/api";
+import { Box, Button, Group, Icon, Select } from "packages/dappkit/src";
+import { useMemo } from "react";
+import RewardTokenTableRow from "../element/RewardTokenTableRow";
+import { RewardTokenTable } from "./RewardTokenTable";
 
 export type RewardTokenLibraryProps = {
   rewardTokens: NonNullable<Awaited<ReturnType<Api["v4"]["tokens"]["reward"]["get"]>>["data"]>;

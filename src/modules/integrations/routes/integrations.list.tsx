@@ -1,10 +1,10 @@
 import { api } from "@core/api";
+import { ChainService } from "@core/index.generated";
 import { Container, Space } from "dappkit";
 import { useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
-import { IntegrationsService } from "../integration.service";
 import RewardTokenLibrary from "../components/library/RewardTokenLibrary";
-import { ChainService } from "@core/index.generated";
+import { IntegrationsService } from "../integration.service";
 
 export async function loader({ request, context: { backend } }: LoaderFunctionArgs) {
   const rewardTokens = await IntegrationsService({ api, request }).getAll();

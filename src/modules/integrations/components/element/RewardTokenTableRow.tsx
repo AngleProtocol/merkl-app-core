@@ -1,6 +1,6 @@
-import { ChainTag, Tag, Token, TokenTag, useChain, type Api } from "@core/index.generated";
-import { RewardTokenRow } from "../library/RewardTokenTable";
+import { type Api, ChainTag, Tag, Token, TokenTag, useChain } from "@core/index.generated";
 import { Button, Group, Hash, Icon, Tooltip, Value } from "packages/dappkit/src";
+import { RewardTokenRow } from "../library/RewardTokenTable";
 
 export type RewardTokenTableRowProps = {
   rewardToken: NonNullable<Awaited<ReturnType<Api["v4"]["tokens"]["reward"]["get"]>>["data"]>[number][number];
