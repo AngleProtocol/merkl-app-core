@@ -44,7 +44,7 @@ export const heroStyles = tv(
       size: {
         base: "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]",
         compact: "bg-cover xl:min-h-[150px]",
-        full: "flex",
+        full: "flex pt-xl*2",
       },
     },
     defaultVariants: {
