@@ -1,5 +1,5 @@
 import { type Api, ChainTag, Tag, Token, TokenTag, useChain } from "@core/index.generated";
-import { Button, Group, Hash, Icon, Value } from "packages/dappkit/src";
+import { Button, Group, Hash, Icon, Tooltip, Value } from "packages/dappkit/src";
 import { RewardTokenRow } from "../library/RewardTokenTable";
 
 export type RewardTokenTableRowProps = {
@@ -14,13 +14,20 @@ export default function RewardTokenTableRow({ rewardToken }: RewardTokenTableRow
       chainColumn={<ChainTag chain={{ id: rewardToken.chainId }} disabled />}
       tokenColumn={<TokenTag token={rewardToken} />}
       typeColumn={
-        rewardToken.isPoint && rewardToken.isTest
-          ? "Test Point"
-          : rewardToken.isPoint
-            ? "Point"
-            : rewardToken.isTest
-              ? "Test"
-              : "Token"
+        <Group className="flex items-center justify-between">
+          {rewardToken.isPoint && rewardToken.isTest
+            ? "Test Point"
+            : rewardToken.isPoint
+              ? "Point"
+              : rewardToken.isTest
+                ? "Test"
+                : "Token"}
+          {!rewardToken.verified && (
+            <Tooltip helper="Token is not verified" icon={false}>
+              <Icon remix="RiAlarmWarningFill" color="red" />
+            </Tooltip>
+          )}
+        </Group>
       }
       priceColumn={
         !rewardToken.price ? (
