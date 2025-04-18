@@ -14,6 +14,7 @@ import {
   useTheme,
 } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
+import React from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import { v4 as uuidv4 } from "uuid";
 
@@ -39,7 +40,7 @@ export type HeroInformations = {
 
 export const heroStyles = tv(
   {
-    base: "bg-cover bg-right-bottom flex-row justify-between relative xl:aspect-auto",
+    base: "bg-cover flex-row justify-between relative xl:aspect-auto bg-right-top",
     variants: {
       size: {
         base: "min-h-[150px] md:min-h-[200px] lg:min-h-[250px] xl:min-h-[300px]",
