@@ -1,9 +1,9 @@
 import type { Api } from "@core/api/types";
 import { type ApiResponse, fetchResource } from "@core/api/utils";
-import type { MerklBackend } from "@core/config/backend";
+import type { MerklBackendConfig } from "@core/index.generated";
 import { defineModule } from "@merkl/conduit";
 
-export const CampaignService = defineModule<{ backend: MerklBackend; request: Request; api: Api }>().create(
+export const CampaignService = defineModule<{ backend: MerklBackendConfig; request: Request; api: Api }>().create(
   ({ inject }) => {
     const fetch = <R, T extends ApiResponse<R>>(call: () => Promise<T>) => fetchResource<R, T>("Campaigns")(call);
 
