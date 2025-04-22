@@ -8,14 +8,14 @@ import merklLogo from "../../../assets/images/default-token-logo.svg";
  * Utilities for displaying data & components related to tokens
  * @param tokensData array from api
  */
-export default function useTokens(tokensData?: Token[]) {
+export default function useTokens(tokensData?: Token[], chainId?: number) {
   /**
    * Filtered Options
    * @description filters on enabled tokens
    */
   const tokens = useMemo(() => tokensData ?? [], [tokensData]);
 
-  const { balances } = useBalances();
+  const { balances } = useBalances(chainId);
 
   const nonNullBalances = useMemo(() => {
     if (!balances) return [];
