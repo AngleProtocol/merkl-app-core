@@ -32,21 +32,14 @@ export default function useTokens(tokensData?: Token[]) {
    * @description filters on enabled tokens
    */
   const options: { [id: number]: ReactNode } = useMemo(() => {
-    const sorted = tokens
-      .slice() // don’t mutate original
-      .sort((a, b) => {
-        const balA = getTokenBalance(a.address);
-        const balB = getTokenBalance(b.address);
+    const sorted = tokens.slice().sort((a, b) => {
+      const balA = getTokenBalance(a.address);
+      const balB = getTokenBalance(b.address);
 
-        // if only A has a balance, A wins
-        if (balA > 0 && balB === 0) return -1;
-        // if only B has a balance, B wins
-        if (balB > 0 && balA === 0) return 1;
-        // otherwise, fall back to name
-        return 0;
-      });
-
-    console.log({ sorted, nonNullBalances });
+      if (balA > 0 && balB === 0) return -1;
+      if (balB > 0 && balA === 0) return 1;
+      return 0;
+    });
 
     return sorted.reduce<{ [id: string]: ReactNode }>((acc, token) => {
       acc[token.address] = (
@@ -69,7 +62,7 @@ export default function useTokens(tokensData?: Token[]) {
       );
       return acc;
     }, {});
-  }, [tokens, getTokenBalance, nonNullBalances]);
+  }, [tokens, getTokenBalance]);
 
   /**
    * Selector Options
