@@ -22,8 +22,6 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
             <Header />
             <main className="flex-1 h-full flex flex-col">
               <Hero
-                className="h-full"
-                // icons={[{ remix: "RiPlanetFill" }]}
                 navigation={{ label: "Back to opportunities", link: "/" }}
                 title={"Oops!"}
                 description={"The page you are looking for no longer exists"}

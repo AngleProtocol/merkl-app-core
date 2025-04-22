@@ -122,7 +122,6 @@ export * from "./modules/zyfi/zyfi.service";
  * modules/campaigns
  */
 export * from "./modules/campaigns/campaign.service";
-export * from "./modules/campaigns/campaign.model";
 
 /**
  * modules/chain
