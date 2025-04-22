@@ -5,7 +5,7 @@ import { ErrorHeading } from "@core/components/layout/ErrorHeading";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import { OpportunityService } from "@core/modules/opportunity/opportunity.service";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
@@ -51,7 +51,7 @@ export type OutletContextOpportunity = {
 export default function Index() {
   const { opportunity, chain } = useLoaderData<typeof loader>();
 
-  const { title, description, icons } = useOpportunityData(opportunity);
+  const { title, icons } = useOpportunityMetadata(opportunity);
 
   return (
     <>
@@ -64,7 +64,7 @@ export default function Index() {
             <OpportunityDevHelpers opportunity={opportunity} />
           </Group>
         }
-        description={description}>
+        description={opportunity.description}>
         <Outlet context={{ opportunity, chain }} />
       </Hero>
     </>

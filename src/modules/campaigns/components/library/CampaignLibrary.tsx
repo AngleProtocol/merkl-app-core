@@ -1,11 +1,10 @@
-import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
 import type { Campaign, Chain } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Icon, OverrideTheme, Text, Tooltip } from "dappkit";
 import moment from "moment";
-import { useMemo, useState } from "react";
-import { useOutletContext } from "react-router";
+import { useCallback, useMemo, useState } from "react";
+import { Link, useOutletContext } from "react-router";
 import CampaignTableRow from "../element/CampaignTableRow";
 import { CampaignTable } from "./CampaignTable";
 
@@ -19,8 +18,6 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
   const { opportunity: opportunityOutlet, chain: chainOutlet } = useOutletContext<OutletContextOpportunity>();
   opportunity = opportunityOutlet || opportunity;
   chain = chainOutlet || chain;
-
-  const { howToEarnRewardsHelper } = useOpportunityMetadata(opportunity);
 
   const rows = useMemo(() => {
     if (!opportunity?.campaigns) return null;
@@ -42,6 +39,10 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
 
   const hasSomeInactiveCampaigns = opportunity.campaigns.some(c => Number(c.endTimestamp) < moment().unix());
   const hasOnlyInactiveCampaigns = opportunity.campaigns.every(c => Number(c.endTimestamp) < moment().unix());
+
+  const navigateToMerklStatusPage = useCallback(() => {
+    window.open("https://beta.merkl.xyz/status", "_blank", "noopener,noreferrer");
+  }, []);
 
   return (
     <CampaignTable
@@ -95,12 +96,39 @@ export default function CampaignLibrary({ opportunity, chain }: CampaignLibraryP
               />
             </Group>
           </OverrideTheme>
-          {!!howToEarnRewardsHelper && (
+          {!!opportunity.howToSteps?.length && (
             <Group size="sm">
               <Text look="tint" size="md" bold>
                 How to?
               </Text>
-              <Tooltip helper={howToEarnRewardsHelper} className="p-xl" />
+              <Tooltip
+                helper={
+                  <Group>
+                    <Group size={"sm"}>
+                      <Icon remix="RiMegaphoneFill" className="text-main-11" />
+                      <Text bold look="tint">
+                        Step to earn rewards
+                      </Text>
+                    </Group>
+                    <Divider />
+                    <Text className="inline" size={"sm"}>
+                      <ul className="list-decimal ml-lg space-y-2">
+                        {opportunity.howToSteps.map(step => (
+                          <li key={step}>{step}</li>
+                        ))}
+                        <li>
+                          Claim
+                          <Link to="/users"> rewards</Link> anytime via Merkl (updated every 3-12 hours).{" "}
+                          <Text className="cursor-pointer" look="tint" onClick={navigateToMerklStatusPage} size={"sm"}>
+                            Check next reward update
+                          </Text>
+                        </li>
+                      </ul>
+                    </Text>
+                  </Group>
+                }
+                className="p-xl"
+              />
             </Group>
           )}
         </Group>

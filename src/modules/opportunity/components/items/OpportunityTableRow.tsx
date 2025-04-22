@@ -4,7 +4,7 @@ import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
 import type { Opportunity } from "@merkl/api";
 import type { BoxProps } from "dappkit";
@@ -26,7 +26,7 @@ export default function OpportunityTableRow({
   navigationMode,
   ...props
 }: OpportunityTableRowProps) {
-  const { name, tags, link, icons, Tags } = useOpportunityData(opportunity);
+  const { name, tags, link, icons, Tags } = useOpportunityMetadata(opportunity);
   const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   const opportunityLibraryRowView = useMerklConfig(store => store.config.opportunityLibrary.rowView);

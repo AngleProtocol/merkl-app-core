@@ -34,16 +34,26 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
         />
 
         <Divider className="mt-xl mb-md border-main-6" />
-        {/* <Editor
-          name="Protocol Id"
-          value={opportunity.protocol?.id ?? ""}
-          onApply={async name => {
-            console.log(name);
-            //OpportunityService.update(opportunity.id, { name });
-            return await new Promise(resolve => setTimeout(resolve, 2000));
+
+        <Editor
+          name="Description"
+          value={opportunity.description ?? ""}
+          onApply={async description => {
+            return await opportunityService.override(opportunity.id, { description });
           }}
+          onRemove={async () => opportunityService.deleteOverride(opportunity.id, ["description"])}
         />
-        <Divider className="mt-xl mb-md border-main-6" /> */}
+        <Divider className="my-xl border-main-6" />
+
+        <Editor
+          name="How to participate"
+          value={opportunity.howToSteps?.join("<br/>") ?? ""}
+          onApply={async howToSteps => {
+            return await opportunityService.override(opportunity.id, { howToSteps: howToSteps.split("<br/>") });
+          }}
+          onRemove={async () => opportunityService.deleteOverride(opportunity.id, ["howToSteps"])}
+        />
+        <Divider className="my-xl border-main-6" />
 
         <Editor
           name="Deposit Url"

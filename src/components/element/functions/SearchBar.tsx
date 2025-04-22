@@ -5,7 +5,7 @@ import { Scroll } from "dappkit";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Form, useLocation } from "react-router";
 import { type Results, type Searchable, useMerklSearch } from "../../../hooks/useMerklSearch";
-import useOpportunityData from "../../../modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetadata from "../../../modules/opportunity/hooks/useOpportunityMetadata";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -14,7 +14,7 @@ const titles: { [S in Searchable]: ReactNode } = {
 };
 
 function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
-  const { link, Icons } = useOpportunityData(opportunity);
+  const { link, Icons } = useOpportunityMetadata(opportunity);
 
   return (
     <>
