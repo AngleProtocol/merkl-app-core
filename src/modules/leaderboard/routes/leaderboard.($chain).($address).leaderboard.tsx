@@ -1,6 +1,5 @@
 import { api } from "@core/api";
 import { useMerklConfig } from "@core/modules/config/config.context";
-import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward";
 import { Box, Container, Group, Space, Title, Value } from "dappkit";
 import { useMemo } from "react";
 import { useLoaderData } from "react-router";
@@ -9,14 +8,22 @@ import { formatUnits } from "viem";
 import LeaderboardLibrary from "../../../components/element/leaderboard/LeaderboardLibrary";
 import { Cache } from "../../../modules/cache/cache.service";
 import { RewardService } from "../../reward/reward.service";
-import { extractChainAndTokenFromParams } from "./leaderboard.($chain).($address).header";
+import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward/reward.model";
+import { ChainService, TokenService } from "@core/index.generated";
 
 export async function loader({
   context: { backend },
   params: { address, chain: chainName },
   request,
 }: LoaderFunctionArgs) {
-  const { chain, token } = await extractChainAndTokenFromParams(address, chainName);
+  if (!chainName && !backend.leaderboard) throw "";
+  if (!chainName) chainName = backend.leaderboard!.chain;
+
+  if (!address && !backend.leaderboard) throw "";
+  if (!address) address = backend.leaderboard!.address;
+
+  const chain = await ChainService({ api, backend, request }).get({ name: chainName });
+  const token = await TokenService({ api }).findUniqueOrThrow(chain.id, address!);
 
   const { rewards, count, total } = await RewardService({ api, backend, request }).getTokenLeaderboard({
     chainId: chain.id,
