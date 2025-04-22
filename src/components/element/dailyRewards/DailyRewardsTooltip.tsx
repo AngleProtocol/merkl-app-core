@@ -2,7 +2,7 @@ import OpportunityAPRIcon from "@core/modules/opportunity/components/element/Opp
 import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import { DistributionType } from "@merkl/api/dist/database/api/.generated";
-import { Box, Divider, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
+import { Box, Divider, Group, Icon, Text, Title, Value } from "dappkit";
 import React from "react";
 import { formatUnits } from "viem";
 
@@ -40,11 +40,11 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
         </Title>
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
-      <Group className="flex-col" size="md">
+      <Group className="flex-col" size="lg">
         {Object.values(mergedBreakdowns)
           .filter(x => x.token.isPreTGE)
           .map(({ token, amount, value, distributionType }, index) => (
-            <Box key={token.id} look="base" size="md">
+            <Box key={token.id} look="base" size="md" className="bg-main-6">
               <Group className="flex-col">
                 <Group className="gap-md">
                   <Token token={token} amount={amount} look="bold" />
@@ -89,8 +89,8 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
             </Box>
           ))}
 
-        {Object.values(mergedBreakdowns).filter(x => !x.token.isPreTGE).length && (
-          <Box look="base" size="md">
+        {!!Object.values(mergedBreakdowns).filter(x => !x.token.isPreTGE).length ? (
+          <Box look="base" size="md" className="bg-main-6">
             {Object.values(mergedBreakdowns)
               .filter(x => !x.token.isPreTGE)
               .map(({ token, amount }) => (
@@ -99,20 +99,26 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
                 </Group>
               ))}
           </Box>
-        )}
+        ) : null}
         <Text size="sm" look="soft">
-          {`Daily reward for $${TVL_EXAMPLE_VALUE} deposited are currently estimated to `}
-          {Object.values(mergedBreakdowns).map((x, index) => (
-            <React.Fragment key={x.token.id}>
-              {
-                <Value format="0,0.###a" value>
-                  {(Number(formatUnits(x.amount, x.token.decimals)) * TVL_EXAMPLE_VALUE) / opportunity.tvl}
-                </Value>
-              }{" "}
-              {x.token.symbol}
-              {index !== Object.values(mergedBreakdowns).length - 1 && " + "}
-            </React.Fragment>
-          ))}
+          {"Daily reward for "}
+          <Text size="sm" look="base">
+            ${TVL_EXAMPLE_VALUE}
+          </Text>
+          {" deposited are currently estimated to "}
+          <Text size="sm" look="base">
+            {Object.values(mergedBreakdowns).map((x, index) => (
+              <React.Fragment key={x.token.id}>
+                {
+                  <Value format="0,0.###a" value>
+                    {(Number(formatUnits(x.amount, x.token.decimals)) * TVL_EXAMPLE_VALUE) / opportunity.tvl}
+                  </Value>
+                }{" "}
+                {x.token.symbol}
+                {index !== Object.values(mergedBreakdowns).length - 1 && " + "}
+              </React.Fragment>
+            ))}
+          </Text>
           .
         </Text>
       </Group>

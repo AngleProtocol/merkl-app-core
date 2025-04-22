@@ -14,11 +14,13 @@ export default function OpportunityTableDailyRewards({
 }: Component<OpportunityTableDailyRewardsProps>) {
   const { formattedDailyRewards } = useOpportunityRewards(opportunity);
 
-  return (
+  return opportunity.rewardsRecord.breakdowns.length ? (
     <EventBlocker>
-      <Dropdown size="xl" onHover look="soft" content={<DailyRewardsTooltip opportunity={opportunity} />}>
+      <Dropdown size="xl" onHover content={<DailyRewardsTooltip opportunity={opportunity} />}>
         <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
       </Dropdown>
     </EventBlocker>
+  ) : (
+    <Group className="min-w-0 flex-nowrap items-center overflow-hidden">{formattedDailyRewards}</Group>
   );
 }

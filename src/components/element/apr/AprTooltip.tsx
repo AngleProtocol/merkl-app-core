@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Divider, Group, Icon, PrimitiveTag, Text, Title } from "dappkit";
+import { Box, Divider, Group, Icon, PrimitiveTag, Text, Title } from "dappkit";
 import AprSection from "./AprSection";
 import AprValue from "./AprValue";
 import useOpportunityDistributionTypes from "@core/modules/opportunity/hooks/useOpportunityDistributionTypes";
@@ -75,6 +75,10 @@ export default function AprTooltip(props: AprTooltipProps) {
     return "AVERAGE APR";
   }, [distributionTypes]);
 
+  const displayClammWarning = useMemo(() => {
+    return opportunity.type === "CLAMM" || opportunity.type === "UNISWAP_V4";
+  }, [opportunity.type]);
+
   return (
     <Group className="flex-col lg:max-w-[25vw]" size="xl">
       <Group className="justify-between items-center">
@@ -90,7 +94,7 @@ export default function AprTooltip(props: AprTooltipProps) {
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
       <Group className="flex-col" size="md">
-        {description && (
+        {!displayClammWarning && description && (
           <Group className="p-md">
             <Text size="xs" look="soft">
               {description}
@@ -133,6 +137,38 @@ export default function AprTooltip(props: AprTooltipProps) {
           </Group>
         )}
       </Group>
+      {displayClammWarning && (
+        <Box look="base" size="md" className="bg-main-6 my-lg">
+          <Group size="xs" className="px-md">
+            <Text size="sm" look="soft" bold>
+              How is APR Calculated?
+            </Text>
+            <Text size="sm" look="soft">
+              • APR = Total rewards / Pool TVL
+              <br />• Actual APR may vary based on your position. Check campaign parameters to understand how rewards
+              are distributed.
+            </Text>
+          </Group>
+          <Group size="xs" className="px-md">
+            <Text size="sm" look="soft" bold>
+              ⚠️ Common Pitfall
+            </Text>
+            <Text size="sm" look="soft">
+              • Full-range or out-of-range positions earn significantly less—especially in fee-based campaigns.
+            </Text>
+          </Group>
+          <Group size="xs" className="px-md">
+            <Text size="sm" look="soft" bold>
+              Maximize Your Rewards
+            </Text>
+            <Text size="sm" look="soft">
+              • Concentrate liquidity near the market price (watch for impermanent loss)
+              <br />• Stay in-range during active swaps
+              <br />• Use ALMs like Gamma, Arrakis, Beefy (if supported) to automate rebalancing
+            </Text>
+          </Group>
+        </Box>
+      )}
       <TvlSection opportunity={opportunity} />
     </Group>
   );
