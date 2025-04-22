@@ -8,7 +8,7 @@ import type { MixpanelPageContext } from "./hooks/useMixpanelContext";
 
 export type MixpanelEvents = {
   "Click on supply": Opportunity & { mode: "direct" | "indirect" };
-  "Click on leadeboard": Campaign & Opportunity;
+  "Click on leaderboard": Campaign & Opportunity;
   "Click on opportunity": Opportunity & { view: "table" | "cell" };
   "Click on opportunity button": { opportunity: Opportunity; type: string; button: string };
   "Check filters": object;

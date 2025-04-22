@@ -7,7 +7,7 @@ import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import type { MerklConfig } from "./modules/config/config.model";
 
-export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
+export default function RootErrorBoundary(config: MerklConfig) {
   return () => {
     const error = useRouteError();
     const notARoute = isRouteErrorResponse(error) && error.status === 404;
@@ -17,7 +17,7 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
 
     if (notARoute)
       return (
-        <AppProviders config={config}>
+        <AppProviders config={config} env={{}}>
           <Group size="xl" className="!gap-0 min-h-screen !flex-nowrap flex-col">
             <Header />
             <main className="flex-1 h-full flex flex-col">
