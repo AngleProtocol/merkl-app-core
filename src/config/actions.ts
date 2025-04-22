@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import type { iconProps } from "dappkit";
+import type { IconProps } from "dappkit";
 
 export const actions = {
   INVALID: {
@@ -56,13 +56,13 @@ export const actions = {
     icon: { remix: "RiArrowLeftRightLine" },
     cta: "Open Short",
   },
-} satisfies { [S in Opportunity["action"]]: { label: string; icon: iconProps; description: string; cta: string } };
+} satisfies { [S in Opportunity["action"]]: { label: string; icon: IconProps; description: string; cta: string } };
 
 export type Action = keyof typeof actions;
 
 export function getActionData(
   labelOrKey: string,
-): { label: string; icon: iconProps; description: string; cta: string } | undefined {
+): { label: string; icon: IconProps; description: string; cta: string } | undefined {
   return Object.entries(actions).find(
     ([action, data]) =>
       data.label?.toLowerCase() === labelOrKey?.toLowerCase() ||

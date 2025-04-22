@@ -2,6 +2,9 @@ import { defineModule } from "@merkl/conduit";
 import type { Location } from "@remix-run/react";
 import type { MerklBackendConfig } from "../config/types/merklBackendConfig";
 import type { MerklRoute, MerklRouteType, MerklRoutes } from "../config/types/merklRoutesConfig";
+import type { MetaDescriptor } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
+import type { MetaFunction } from "react-router";
 
 type Dependencies = {
   routes: MerklRoutes;

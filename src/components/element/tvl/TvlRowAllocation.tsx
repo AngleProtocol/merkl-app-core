@@ -1,3 +1,4 @@
+import { useChain } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Icon, Text, Value } from "dappkit";
@@ -9,6 +10,7 @@ type TvlRowAllocationProps = {
 
 export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
+  const { chain } = useChain({ id: opportunity.chain?.id });
 
   const tokenTvl = opportunity.tvlRecord?.breakdowns.filter(b => b.type === "TOKEN");
   let content: React.ReactNode = null;
@@ -16,10 +18,10 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
   if (tokenTvl.length >= 2) {
     const navigateToExplorer = useCallback(
       (address: string) => {
-        const explorer = opportunity.chain?.Explorer?.[0].url;
+        const explorer = chain?.explorers?.[0].url;
         window.open(`${explorer}/token/${address}`, "_blank", "noopener,noreferrer");
       },
-      [opportunity.chain?.Explorer?.[0].url],
+      [chain],
     );
 
     content = (

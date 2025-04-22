@@ -8,7 +8,7 @@ import type { RewardsNavigationMode } from "@core/config/rewards";
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
 import type { IconProps, WalletOptions } from "packages/dappkit/src";
 import type { Chain } from "viem";
-import type { createConfig as createWagmiConfig } from "wagmi";
+import type { ResolvedRegister } from "wagmi";
 import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoutes } from "./types/merklRoutesConfig";
@@ -145,7 +145,7 @@ export type MerklConfig = {
   /**
    * Enables themes to be switched between dark and light or enforce only one
    */
-  wagmi: Parameters<typeof createWagmiConfig>["0"];
+  wagmi: ResolvedRegister["config"];
   /**
    * Custom white-label-banner component to showup on the top of pages
    */
