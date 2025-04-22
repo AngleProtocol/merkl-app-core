@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { type Component, Dropdown, EventBlocker, Group } from "packages/dappkit/src";
+import { type Component, Dropdown, EventBlocker, Group } from "dappkit";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import DailyRewardsTooltip from "@core/components/element/dailyRewards/DailyRewardsTooltip";
 
