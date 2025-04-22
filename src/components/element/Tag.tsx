@@ -47,7 +47,7 @@ export default function Tag<T extends keyof TagTypes>({
       return <ExplorerTag chain={{ id: explorer.chainId }} address={explorer.address} suffix={suffix} {...props} />;
     }
     case "status": {
-      const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
+      const status = statuses[value] ?? statuses.LIVE;
       return (
         <PrimitiveTag className={!filter ? "pointer-events-none" : ""} look="soft" {...props}>
           <Icon size={props?.size} {...status.icon} />
@@ -60,7 +60,7 @@ export default function Tag<T extends keyof TagTypes>({
       return <ChainTag suffix={suffix} chain={value as TagTypes["chain"]} {...props} />;
     }
     case "action": {
-      const action = actions[value as TagTypes["action"]];
+      const action = actions[value];
       if (!action) return <Button {...props}>{value as string}</Button>;
       return (
         <PrimitiveTag className={!filter ? "pointer-events-none" : ""} look="soft" key={action.label} {...props}>

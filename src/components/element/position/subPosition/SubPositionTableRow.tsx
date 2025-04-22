@@ -1,9 +1,9 @@
-import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
 import { type Component, Divider, Group, Icon, type ListProps, Text, mergeClass } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import Token from "../../../../modules/token/components/element/Token";
 import { SubPositionRow } from "./SubPositionTable";
+import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity/liquidity.model";
 
 export type SubPositionTableRowProps = Component<{
   row: PositionT;

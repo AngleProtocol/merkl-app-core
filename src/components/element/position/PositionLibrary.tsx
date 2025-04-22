@@ -1,9 +1,9 @@
-import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
 import { Text, Title } from "dappkit";
 import { useMemo } from "react";
 import Pagination from "../Pagination";
 import { PositionTable } from "./PositionTable";
 import PositionTableRow from "./PositionTableRow";
+import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity/liquidity.model";
 
 export type PositionLibraryProps = {
   positions: PositionT[];
