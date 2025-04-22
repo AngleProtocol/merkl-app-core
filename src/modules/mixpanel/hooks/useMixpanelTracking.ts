@@ -50,6 +50,7 @@ export default function useMixpanelTracking() {
           );
         },
         "Check filters": params => MixpanelService({ context }).trackButton("check", "check_filters", params),
+        "Create campaign success": params => MixpanelService({ context }).track("create campaign", params),
       };
 
       return events[event]?.(data);
