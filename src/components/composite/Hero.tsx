@@ -62,7 +62,8 @@ export default function Hero({
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
               <Group className="items-center" size="sm">
                 {breadcrumbs?.map((breadcrumb, index) => {
-                  if (breadcrumb.component) return <>{breadcrumb.component}</>;
+                  if (breadcrumb.component)
+                    return <React.Fragment key={breadcrumb.link}>{breadcrumb.component}</React.Fragment>;
                   return (
                     <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
                       {index > 0 && <Icon remix="RiArrowRightSLine" />}

@@ -1,4 +1,4 @@
-import AprModal from "@core/components/element/apr/AprModal";
+import AprTooltip from "@core/components/element/apr/AprTooltip";
 import AprValue from "@core/components/element/apr/AprValue";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
@@ -36,7 +36,7 @@ export default function OpportunityTableRow({
   const aprColumn = useMemo(
     () => (
       <EventBlocker>
-        <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} />}>
+        <Dropdown size="xl" onHover content={<AprTooltip opportunity={opportunity} />}>
           <Text bold look="tint" size="lg">
             <AprValue value>{opportunity.apr}</AprValue>
           </Text>
