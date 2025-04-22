@@ -1,20 +1,19 @@
 import OpportunityAPRIcon from "@core/modules/opportunity/components/element/OpportunityAPRIcon";
-import useOpportunityDistributionTypes from "@core/modules/opportunity/hooks/useOpportunityDistributionTypes";
 import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import { DistributionType } from "@merkl/api/dist/database/api/.generated";
-import { Box, type Component, Divider, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
-import React, { useMemo } from "react";
+import { Box, Divider, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
+import React from "react";
 import { formatUnits } from "viem";
+
+const TVL_EXAMPLE_VALUE = 1000;
 
 export type DailyRewardsTooltipProps = {
   opportunity: Opportunity;
 };
 
-export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewardsTooltipProps>) {
+export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltipProps) {
   if (!opportunity.rewardsRecord?.breakdowns) return null;
-
-  const { distributionTypes } = useOpportunityDistributionTypes(opportunity);
 
   const mergedBreakdowns = opportunity.rewardsRecord.breakdowns.reduce<
     Record<string, { token: TokenType; amount: bigint; distributionType: DistributionType; value: number }>
@@ -32,20 +31,8 @@ export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewa
     return acc;
   }, {});
 
-  const description = useMemo(() => {
-    if (
-      distributionTypes.has(DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_VALUE) ||
-      distributionTypes.has(DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_VALUE) ||
-      distributionTypes.has(DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_AMOUNT) ||
-      distributionTypes.has(DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_AMOUNT)
-    )
-      return "Estimations based on current TVL and Campaign budget.";
-
-    return null;
-  }, [distributionTypes]);
-
   return (
-    <Group className="flex-col lg:max-w-[30vw]" size="xl">
+    <Group className="flex-col lg:max-w-[20vw]" size="xl">
       <Group className="items-center">
         <Title look="bold" h={5} className="gap-md flex">
           <OpportunityAPRIcon opportunity={opportunity} floatingAPRIcon size="lg" />
@@ -54,14 +41,6 @@ export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewa
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
       <Group className="flex-col" size="md">
-        {description && (
-          <Group className="p-md">
-            <Text size="xs" look="soft">
-              {description}
-            </Text>
-          </Group>
-        )}
-
         {Object.values(mergedBreakdowns)
           .filter(x => x.token.isPreTGE)
           .map(({ token, amount, value, distributionType }, index) => (
@@ -121,23 +100,21 @@ export default function DailyRewardsTooltip({ opportunity }: Component<DailyRewa
               ))}
           </Box>
         )}
-        <Group className="px-md">
-          <Text size="xs" look="soft">
-            Daily reward for $100 deposited are currently estimated to{" "}
-            {Object.values(mergedBreakdowns).map((x, index) => (
-              <React.Fragment key={x.token.id}>
-                {
-                  <Value format="0,0.###a" value>
-                    {(Number(formatUnits(x.amount, x.token.decimals)) * 100) / opportunity.tvl}
-                  </Value>
-                }{" "}
-                {x.token.symbol}
-                {index !== Object.values(mergedBreakdowns).length - 1 && " + "}
-              </React.Fragment>
-            ))}
-            .
-          </Text>
-        </Group>
+        <Text size="sm" look="soft">
+          {`Daily reward for $${TVL_EXAMPLE_VALUE} deposited are currently estimated to `}
+          {Object.values(mergedBreakdowns).map((x, index) => (
+            <React.Fragment key={x.token.id}>
+              {
+                <Value format="0,0.###a" value>
+                  {(Number(formatUnits(x.amount, x.token.decimals)) * TVL_EXAMPLE_VALUE) / opportunity.tvl}
+                </Value>
+              }{" "}
+              {x.token.symbol}
+              {index !== Object.values(mergedBreakdowns).length - 1 && " + "}
+            </React.Fragment>
+          ))}
+          .
+        </Text>
       </Group>
     </Group>
   );

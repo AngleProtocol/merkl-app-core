@@ -76,7 +76,7 @@ export default function AprTooltip(props: AprTooltipProps) {
   }, [distributionTypes]);
 
   return (
-    <Group className="flex-col lg:max-w-[30vw]" size="xl">
+    <Group className="flex-col lg:max-w-[25vw]" size="xl">
       <Group className="justify-between items-center">
         <Group className="flex items-center gap-md">
           <OpportunityAPRIcon opportunity={opportunity} floatingAPRIcon size="lg" />
