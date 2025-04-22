@@ -1,7 +1,7 @@
 import { actions } from "@core/config/actions";
-import type * as RemixIcon from "@remixicon/react";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
+import type * as RemixIcon from "@remixicon/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router";

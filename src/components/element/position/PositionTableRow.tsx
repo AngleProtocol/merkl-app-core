@@ -1,11 +1,11 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import OpportunityButton from "@core/modules/opportunity/components/OpportunityButton";
+import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity/liquidity.model";
 import { type Component, type ListProps, PrimitiveTag, Value, sizeScale } from "dappkit";
 import { useMemo } from "react";
 import { parseUnits } from "viem";
 import Token from "../../../modules/token/components/element/Token";
 import { PositionRow } from "./PositionTable";
-import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity/liquidity.model";
 
 export type PositionRowProps = Component<{
   row: PositionT;

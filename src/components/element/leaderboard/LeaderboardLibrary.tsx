@@ -1,5 +1,6 @@
 import { DEFAULT_ITEMS_PER_PAGE } from "@core/constants/pagination";
 import type { Chain, Token } from "@merkl/api";
+import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward/reward.model";
 import { Group, Text } from "dappkit";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router";
@@ -7,7 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 import Pagination from "../Pagination";
 import { LeaderboardTable, LeaderboardTableWithoutReason } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
-import type { BreakdownForCampaignsRaw } from "@merkl/api/dist/src/modules/v4/reward/reward.model";
 
 export type LeaderboardLibraryProps = {
   leaderboard: BreakdownForCampaignsRaw[];

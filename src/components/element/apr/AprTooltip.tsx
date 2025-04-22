@@ -1,12 +1,12 @@
-import type { Opportunity } from "@merkl/api";
-import { Box, Divider, Group, Icon, PrimitiveTag, Text, Title } from "dappkit";
-import AprSection from "./AprSection";
-import AprValue from "./AprValue";
-import useOpportunityDistributionTypes from "@core/modules/opportunity/hooks/useOpportunityDistributionTypes";
-import { useMemo } from "react";
-import { DistributionType } from "@merkl/api/dist/database/api/.generated";
 import { TvlSection } from "@core/index.generated";
 import OpportunityAPRIcon from "@core/modules/opportunity/components/element/OpportunityAPRIcon";
+import useOpportunityDistributionTypes from "@core/modules/opportunity/hooks/useOpportunityDistributionTypes";
+import type { Opportunity } from "@merkl/api";
+import { DistributionType } from "@merkl/api/dist/database/api/.generated";
+import { Box, Divider, Group, Icon, PrimitiveTag, Text, Title } from "dappkit";
+import { useMemo } from "react";
+import AprSection from "./AprSection";
+import AprValue from "./AprValue";
 
 type AprTooltipProps = {
   opportunity: Opportunity;
