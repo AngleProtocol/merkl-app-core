@@ -1,6 +1,6 @@
 import { useBalances } from "@core/index.generated";
 import type { Token } from "@merkl/api";
-import { Group, Hash, Icon, Text } from "dappkit";
+import { Fmt, Group, Hash, Icon, Text, Value } from "dappkit";
 import { type ReactNode, useCallback, useMemo } from "react";
 import merklLogo from "../../../assets/images/default-token-logo.svg";
 
@@ -23,7 +23,7 @@ export default function useTokens(tokensData?: Token[], chainId?: number) {
   }, [balances]);
 
   const getTokenBalance = useCallback(
-    (addr: string) => Number(nonNullBalances.find(b => b.address === addr)?.balance || "0"),
+    (addr: string) => nonNullBalances.find(b => b.address === addr)?.balance || 0n,
     [nonNullBalances],
   );
 
@@ -33,17 +33,25 @@ export default function useTokens(tokensData?: Token[], chainId?: number) {
    */
   const options: { [id: number]: ReactNode } = useMemo(() => {
     const sorted = tokens.slice().sort((a, b) => {
-      const balA = getTokenBalance(a.address);
-      const balB = getTokenBalance(b.address);
+      const balA = Fmt.toNumber(getTokenBalance(a.address), a.decimals);
+      const balB = Fmt.toNumber(getTokenBalance(b.address), b.decimals);
 
-      if (balA > 0 && balB === 0) return -1;
-      if (balB > 0 && balA === 0) return 1;
+      const isZeroA = balA === 0;
+      const isZeroB = balB === 0;
+
+      if (isZeroA && !isZeroB) return 1;
+      if (!isZeroA && isZeroB) return -1;
+
+      if (balA > balB) return -1;
+      if (balA < balB) return 1;
+
       return 0;
     });
 
     return sorted.reduce<{ [id: string]: ReactNode }>((acc, token) => {
+      const balance = getTokenBalance(token.address);
       acc[token.address] = (
-        <Group>
+        <Group key={token.address}>
           <Icon src={token.icon || merklLogo} className="h-[40px] w-[40px]" />
           <Group className="flex-col" size="xs">
             <Text look="bold" bold size="md" className="text-left">
@@ -56,6 +64,11 @@ export default function useTokens(tokensData?: Token[], chainId?: number) {
               <Hash format="short" look="soft" size="xs" copy>
                 {token.address}
               </Hash>
+              {balance !== 0n && (
+                <Value format="0,0.000##a" size={"xs"} look="soft">
+                  {Fmt.toNumber(balance.toString(), token.decimals)}
+                </Value>
+              )}
             </Group>
           </Group>
         </Group>
