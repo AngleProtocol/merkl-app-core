@@ -112,7 +112,10 @@ export default function useOpportunityMetadata({
     function TagsComponent({
       tags: selectedTags,
       ...props
-    }: { tags: (keyof TagTypes)[] } & Omit<Component<TagProps<keyof TagTypes>, HTMLButtonElement>, "value" | "type">) {
+    }: { tags: (typeof tags)[number]["type"][] } & Omit<
+      Component<TagProps<keyof TagTypes>, HTMLButtonElement>,
+      "value" | "type"
+    >) {
       if (!selectedTags?.length || !tags?.length) return null;
 
       // Create a map of available tags for O(1) lookup

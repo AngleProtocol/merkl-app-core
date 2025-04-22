@@ -1,4 +1,3 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import type { Opportunity } from "@merkl/api";
 import {
   type Component,
@@ -14,7 +13,7 @@ import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 export type OpportunityCellNameProps = {
   opportunity: Opportunity;
   titleProps?: TitleProps;
-  tags?: (keyof TagTypes)[];
+  tags?: Parameters<ReturnType<typeof useOpportunityMetadata>["Tags"]>[0]["tags"];
   tagsSize?: (typeof sizeScale)[number];
 };
 

@@ -24,7 +24,7 @@ export default function JumperBridgeRule({
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const rawChainsEntities = useMemo(
-    () => fromchains.map(chainId => chains.find(c => c.id === chainId)),
+    () => fromchains.map(chainId => chains.find(c => c.id === chainId))?.filter(c => c !== undefined) ?? [],
     [fromchains, chains],
   );
 

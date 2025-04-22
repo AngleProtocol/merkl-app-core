@@ -27,7 +27,7 @@ export async function loader({ context: { backend }, params: { id: chainId }, re
 export const clientLoader = Cache.wrap("chain/opportunities", 300);
 
 export default function Index() {
-  const { opportunities, count, protocols, featuredOpportunities } = useLoaderData<typeof loader>();
+  const { opportunities, count, featuredOpportunities } = useLoaderData<typeof loader>();
   const areFeturedOpportunitiesEnabled = useMerklConfig(store => store.config.opportunity.featured.enabled);
 
   return (
@@ -46,7 +46,7 @@ export default function Index() {
             </Title>
           </>
         )}
-        <OpportunityLibrary exclude={["chain"]} opportunities={opportunities} count={count} protocols={protocols} />
+        <OpportunityLibrary exclude={["chain"]} opportunities={opportunities} count={count} />
       </Group>
     </Container>
   );

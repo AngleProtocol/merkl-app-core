@@ -18,7 +18,7 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
       <Title h={2}>Edit opportunity</Title>
       <Text>{opportunity.name}</Text>
       <Group>
-        <Tags tags={["chain", "protocol", "status", "action", "explorer", "token"]} size="xs" />
+        <Tags tags={["chain", "protocol", "status", "action", "token"]} size="xs" />
       </Group>
       <Divider className="mt-xl border-main-6" />
       <Scroll className="max-h-[300px] w-full max-w-[90vw] lg:max-w-full" vertical>

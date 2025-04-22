@@ -5,6 +5,7 @@ import type { Chain, Protocol } from "@merkl/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DAppProvider } from "packages/dappkit/src";
 import type { ReactNode } from "react";
+import type { ResolvedRegister } from "wagmi";
 
 export type AppProvidersProps = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -27,7 +28,7 @@ export default function AppProviders({ env, config, protocols, chains, children 
           modes={config.theme.modes}
           themes={config.theme.themes}
           sizing={config.theme.sizing}
-          config={config.wagmi}>
+          config={config.wagmi as unknown as ResolvedRegister["config"]}>
           <LoadingIndicator />
           {children}
           <Mixpanel />
