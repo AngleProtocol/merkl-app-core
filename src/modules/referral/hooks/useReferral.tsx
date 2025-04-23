@@ -9,7 +9,7 @@ export default function useReferral(code?: string) {
   const referralKey = useMerklConfig(store => store.config.referral?.referralKey);
   const { chainId, address } = useWalletContext();
   const [loading, setLoading] = useState(true);
-  const [referral, setReferral] = useState<{ code: string; referrer?: string; transaction: UserTransaction }>();
+  const [referral, setReferral] = useState<{ code: string; referrer?: string; transaction?: UserTransaction }>();
   const isCodeAvailable = useMemo(() => {
     return !!referral?.referrer;
   }, [referral]);

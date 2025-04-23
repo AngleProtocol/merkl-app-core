@@ -95,7 +95,10 @@ export default function Referral({ code: defaultCode }: ReferalProps) {
         <TransactionButton
           name={"Redeem a referral code"}
           disabled={!isCodeAvailable || validity === "harm"}
-          tx={referral?.transaction}
+          tx={{
+            ...referral?.transaction,
+            value: BigInt(referral?.transaction?.value ?? 0n),
+          }}
           onSuccess={() => setRedeemed(true)}
           size="lg"
           look="hype"
