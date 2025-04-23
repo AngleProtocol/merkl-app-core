@@ -1,6 +1,6 @@
 import { defineModule } from "@merkl/conduit";
-import type { MetaDescriptor } from "react-router";
 import type { DefineRoutesFunction } from "@react-router/remix-routes-option-adapter";
+import type { MetaDescriptor } from "react-router";
 import { createConfig as createWagmiConfig } from "wagmi";
 import type { MerklConfig, MerklConfigBuilded } from "./config.model";
 import { defaultMerklConfig } from "./merkl.default.config";

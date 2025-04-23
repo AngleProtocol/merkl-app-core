@@ -9,11 +9,11 @@ import type { OpportunityFilter } from "@core/modules/opportunity/components/Opp
 import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain } from "viem";
 import type { CreateConfigParameters } from "wagmi";
+import type { createConfig as createWagmiConfig } from "wagmi";
 import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoutes } from "./types/merklRoutesConfig";
 import type { MerklThemeConfig } from "./types/merklThemeConfig";
-import type { createConfig as createWagmiConfig } from "wagmi";
 
 /**
  * Route entry in the links menu, either an external link or internal route
