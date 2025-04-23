@@ -1,6 +1,5 @@
 import { defineModule } from "@merkl/conduit";
-import type { Location } from "@remix-run/react";
-import type { MetaDescriptor } from "react-router";
+import type { Location, MetaDescriptor } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import type { MetaFunction } from "react-router";
 import type { MerklBackendConfig } from "../config/types/merklBackendConfig";

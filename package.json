@@ -54,13 +54,15 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
     "@types/bun": "latest",
-    "@types/react": "^18.2.20",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
     "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.2.20",
     "elysia": "^1.1.19",
     "postcss": "^8.4.38",
     "typescript": "^5.8.0-dev.20250116",
-    "vite": "^5.1.0",
-    "vite-tsconfig-paths": "^4.2.1"
+    "vite-tsconfig-paths": "^4.2.1",
+    "vite": "^5.1.0"
   },
   "engines": {
     "node": ">=20.0.0"
