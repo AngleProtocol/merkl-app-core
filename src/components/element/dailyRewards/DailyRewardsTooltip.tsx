@@ -1,9 +1,9 @@
+import { useOpportunityRewards } from "@core/index.generated";
 import OpportunityAPRIcon from "@core/modules/opportunity/components/element/OpportunityAPRIcon";
-import Token from "@core/modules/token/components/element/Token";
 import type { Opportunity, Token as TokenType } from "@merkl/api";
 import { DistributionType } from "@merkl/api/dist/database/api/.generated";
-import { Box, Divider, Group, Icon, Text, Title, Value } from "dappkit";
-import React from "react";
+import { Box, Divider, Group, Icon, PrimitiveTag, Text, Title, Value } from "dappkit";
+import React, { useCallback } from "react";
 import { formatUnits } from "viem";
 
 const TVL_EXAMPLE_VALUE = 1000;
@@ -13,6 +13,8 @@ export type DailyRewardsTooltipProps = {
 };
 
 export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltipProps) {
+  const { formattedDailyRewardsText } = useOpportunityRewards(opportunity);
+
   if (!opportunity.rewardsRecord?.breakdowns) return null;
 
   const mergedBreakdowns = opportunity.rewardsRecord.breakdowns.reduce<
@@ -31,13 +33,60 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
     return acc;
   }, {});
 
+  const tokenLine = useCallback(
+    (breakdown: { token: TokenType; amount: bigint; distributionType: DistributionType; value: number }) => {
+      const { token, amount, distributionType, value } = breakdown;
+      return (
+        <Group className="gap-md items-center">
+          <Icon size="sm" rounded src={token?.icon} />
+          <Text size="md" look="bold" bold>
+            <Value fallback={v => (v as string).includes("0.000") && "< 0.001"} value format="0,0.###a">
+              {formatUnits(amount, token.decimals)}
+            </Value>{" "}
+          </Text>
+
+          {distributionType === DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_VALUE ? (
+            <Text size="md" look="soft">
+              {"(~"}
+              <Value format="0,0.###a" value>
+                {Number(formatUnits(amount, token.decimals)) / opportunity.tvl}
+              </Value>
+              {` ${token.symbol}/$/Day)`}
+            </Text>
+          ) : (
+            <Text size="md" look="bold" bold>
+              {`${token.symbol}`}
+            </Text>
+          )}
+
+          {distributionType === DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_AMOUNT && (
+            <Text size="xs" look="soft">
+              {"(~"}
+              <Value format="0,0.###a" value>
+                {value / opportunity.tvl}
+              </Value>
+              {`$ of ${token.symbol}/$/Day)`}
+            </Text>
+          )}
+        </Group>
+      );
+    },
+    [opportunity.tvl],
+  );
+
   return (
     <Group className="flex-col lg:max-w-[20vw]" size="xl">
-      <Group className="items-center">
-        <Title look="bold" h={5} className="gap-md flex">
+      <Group className="justify-between items-center">
+        <Group className="flex items-center gap-md">
           <OpportunityAPRIcon opportunity={opportunity} floatingAPRIcon size="lg" />
-          Daily rewards
-        </Title>
+          <Title look="soft" h={5}>
+            DAILY REWARDS
+          </Title>
+        </Group>
+
+        <PrimitiveTag look="tint" size="md">
+          {formattedDailyRewardsText}
+        </PrimitiveTag>
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
       <Group className="flex-col" size="lg">
@@ -46,27 +95,7 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
           .map(({ token, amount, value, distributionType }, index) => (
             <Box key={token.id} look="base" size="md" className="bg-main-6">
               <Group className="flex-col">
-                <Group className="gap-md">
-                  <Token token={token} amount={amount} look="bold" />
-                  {distributionType === DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_VALUE && (
-                    <Text size="xs" look="soft">
-                      {"(~"}
-                      <Value format="0,0.###a" value>
-                        {Number(formatUnits(amount, token.decimals)) / opportunity.tvl}
-                      </Value>
-                      {` ${token.symbol}/$/Day)`}
-                    </Text>
-                  )}
-                  {distributionType === DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_AMOUNT && (
-                    <Text size="xs" look="soft">
-                      {"(~"}
-                      <Value format="0,0.###a" value>
-                        {value / opportunity.tvl}
-                      </Value>
-                      {`$ of ${token.symbol}/$/Day)`}
-                    </Text>
-                  )}
-                </Group>
+                {tokenLine({ token, amount, distributionType, value })}
                 <Divider look="soft" horizontal />
                 {!!token.price && (
                   <Group className="justify-between">
@@ -93,9 +122,9 @@ export default function DailyRewardsTooltip({ opportunity }: DailyRewardsTooltip
           <Box look="base" size="md" className="bg-main-6">
             {Object.values(mergedBreakdowns)
               .filter(x => !x.token.isPreTGE)
-              .map(({ token, amount }) => (
+              .map(({ token, amount, distributionType, value }) => (
                 <Group key={token.id} className="flex-col">
-                  <Token token={token} amount={amount} look="bold" />
+                  {tokenLine({ token, amount, distributionType, value })}
                 </Group>
               ))}
           </Box>
