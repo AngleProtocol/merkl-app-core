@@ -1,5 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { Value } from "packages/dappkit/src";
+import { Value } from "dappkit";
 import { useMemo } from "react";
 
 export type ValueFormatProps = {

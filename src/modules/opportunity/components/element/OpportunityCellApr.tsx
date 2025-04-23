@@ -1,6 +1,6 @@
 import AprValue from "@core/components/element/apr/AprValue";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Group, Text } from "packages/dappkit/src";
+import { type Component, Group, Text } from "dappkit";
 import OpportunityAPRIcon from "./OpportunityAPRIcon";
 
 export type OpportunityCellAprProps = {

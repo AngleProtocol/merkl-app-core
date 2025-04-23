@@ -1,4 +1,4 @@
-import { Divider, Dropdown, Group, Icon, Text } from "packages/dappkit/src";
+import { Divider, Dropdown, Group, Icon, Text } from "dappkit";
 
 export default function ReferralCalculationTooltip() {
   return (

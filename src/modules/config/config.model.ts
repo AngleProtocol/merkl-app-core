@@ -6,7 +6,7 @@ import type {
 } from "@core/config/opportunity";
 import type { RewardsNavigationMode } from "@core/config/rewards";
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
-import type { IconProps, WalletOptions } from "packages/dappkit/src";
+import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain } from "viem";
 import type { CreateConfigParameters } from "wagmi";
 import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";

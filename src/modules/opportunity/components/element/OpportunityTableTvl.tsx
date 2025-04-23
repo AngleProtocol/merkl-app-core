@@ -1,7 +1,7 @@
 import TvlModal from "@core/components/element/tvl/TvlModal";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Dropdown, Text, Value } from "packages/dappkit/src";
+import { type Component, Dropdown, Text, Value } from "dappkit";
 
 export type OpportunityTableTvlProps = {
   opportunity: Opportunity;

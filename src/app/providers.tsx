@@ -3,7 +3,7 @@ import type { MerklConfig } from "@core/modules/config/config.model";
 import Mixpanel from "@core/modules/mixpanel/components/Mixpanel";
 import type { Chain, Protocol } from "@merkl/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DAppProvider } from "packages/dappkit/src";
+import { DAppProvider } from "dappkit";
 import type { ReactNode } from "react";
 import type { ResolvedRegister } from "wagmi";
 

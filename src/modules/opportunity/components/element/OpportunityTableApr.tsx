@@ -1,7 +1,7 @@
 import AprTooltip from "@core/components/element/apr/AprTooltip";
 import AprValue from "@core/components/element/apr/AprValue";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Dropdown, EventBlocker, Group, Text } from "packages/dappkit/src";
+import { type Component, Dropdown, EventBlocker, Group, Text } from "dappkit";
 import OpportunityAPRIcon from "./OpportunityAPRIcon";
 
 export type OpportunityTableAprProps = {

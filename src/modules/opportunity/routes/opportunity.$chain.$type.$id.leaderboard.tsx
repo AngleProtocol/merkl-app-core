@@ -4,7 +4,7 @@ import LeaderboardLibrary from "@core/components/element/leaderboard/Leaderboard
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
-import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
+import { Box, Button, Group, Hash, Icon, Text } from "dappkit";
 import { useCallback } from "react";
 import { useLoaderData, useNavigate, useOutletContext } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";

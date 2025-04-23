@@ -1,7 +1,7 @@
 import { api } from "@core/api";
 import Editor from "@core/components/element/Editor";
 import type { Opportunity } from "@merkl/api";
-import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "packages/dappkit/src";
+import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "dappkit";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import { OpportunityService } from "../opportunity.service";
 

@@ -2,7 +2,7 @@ import Hero from "@core/components/composite/Hero";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMetadata from "@core/modules/metadata/hooks/useMetadata";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { Button, Group, Icon, Text } from "packages/dappkit/src";
+import { Button, Group, Icon, Text } from "dappkit";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 

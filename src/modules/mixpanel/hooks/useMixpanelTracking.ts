@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { useWalletContext } from "packages/dappkit/src";
+import { useWalletContext } from "dappkit";
 import { useCallback } from "react";
 import { type MixpanelEvents, MixpanelService } from "../mixpanel.service";
 import useMixpanelContext from "./useMixpanelContext";

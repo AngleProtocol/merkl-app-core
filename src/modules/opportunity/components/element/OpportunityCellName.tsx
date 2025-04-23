@@ -1,13 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import {
-  type Component,
-  Group,
-  Title,
-  type TitleProps,
-  mergeClass,
-  type sizeScale,
-  useOverflowingRef,
-} from "packages/dappkit/src";
+import { type Component, Group, Title, type TitleProps, mergeClass, type sizeScale, useOverflowingRef } from "dappkit";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 
 export type OpportunityCellNameProps = {

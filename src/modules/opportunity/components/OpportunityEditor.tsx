@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { Button, type ButtonProps, Icon, Modal } from "packages/dappkit/src";
+import { Button, type ButtonProps, Icon, Modal } from "dappkit";
 import OpportunityEditorModal from "./OpportunityEditorModal";
 
 export interface OpportunityEditorProps extends ButtonProps {
