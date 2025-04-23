@@ -13,6 +13,7 @@ import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoutes } from "./types/merklRoutesConfig";
 import type { MerklThemeConfig } from "./types/merklThemeConfig";
+import type { createConfig as createWagmiConfig } from "wagmi";
 
 /**
  * Route entry in the links menu, either an external link or internal route
@@ -228,3 +229,5 @@ export type MerklConfig = {
   };
   footerLinks: { image: string; link: string; key: string }[];
 };
+
+export type MerklConfigBuilded = Omit<MerklConfig, "wagmi"> & { wagmi: ReturnType<typeof createWagmiConfig> };

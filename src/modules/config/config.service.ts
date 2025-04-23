@@ -2,7 +2,7 @@ import { defineModule } from "@merkl/conduit";
 import type { MetaDescriptor } from "react-router";
 import type { DefineRoutesFunction } from "@react-router/remix-routes-option-adapter";
 import { createConfig as createWagmiConfig } from "wagmi";
-import type { MerklConfig } from "./config.model";
+import type { MerklConfig, MerklConfigBuilded } from "./config.model";
 import { defaultMerklConfig } from "./merkl.default.config";
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoute, MerklRouteType, MerklRoutes, MerklRoutesConfig } from "./types/merklRoutesConfig";
@@ -72,7 +72,7 @@ export const ConfigService = defineModule<object>().create(() => {
     };
   };
 
-  const createConfig = ({ wagmi, ...config }: MerklConfig) => {
+  const createConfig = ({ wagmi, ...config }: MerklConfig): MerklConfigBuilded => {
     const wagmiConfig = createWagmiConfig(wagmi);
 
     return { wagmi: wagmiConfig, ...config };

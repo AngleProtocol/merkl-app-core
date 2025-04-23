@@ -1,5 +1,5 @@
 import { ConfigProvider, LoadingIndicator } from "@core/index.generated";
-import type { MerklConfig } from "@core/modules/config/config.model";
+import type { MerklConfigBuilded } from "@core/modules/config/config.model";
 import Mixpanel from "@core/modules/mixpanel/components/Mixpanel";
 import type { Chain, Protocol } from "@merkl/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ import type { ResolvedRegister } from "wagmi";
 export type AppProvidersProps = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   env: any;
-  config: MerklConfig;
+  config: MerklConfigBuilded;
   protocols?: Protocol[];
   chains?: Chain[];
   children: ReactNode;

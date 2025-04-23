@@ -5,9 +5,9 @@ import AppProviders from "./app/providers";
 import Hero from "./components/composite/Hero";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import type { MerklConfig } from "./modules/config/config.model";
+import type { MerklConfigBuilded } from "./modules/config/config.model";
 
-export default function RootErrorBoundary(config: MerklConfig) {
+export default function RootErrorBoundary(config: MerklConfigBuilded) {
   return () => {
     const error = useRouteError();
     const notARoute = isRouteErrorResponse(error) && error.status === 404;

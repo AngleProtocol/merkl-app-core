@@ -2,7 +2,7 @@ import { api } from "@core/api";
 import RootErrorBoundary from "@core/error";
 import { Cache } from "@core/modules/cache/cache.service";
 import { ChainService } from "@core/modules/chain/chain.service";
-import type { MerklConfig } from "@core/modules/config/config.model";
+import type { MerklConfigBuilded } from "@core/modules/config/config.model";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
 import useMixpanel from "@core/modules/mixpanel/hooks/useMixpanel";
 import { ProtocolService } from "@core/modules/protocol/protocol.service";
@@ -59,7 +59,7 @@ export function RootLayout({ children }: PropsWithChildren) {
   );
 }
 
-export const RootApp = (config: MerklConfig) => () => {
+export const RootApp = (config: MerklConfigBuilded) => () => {
   const data = useLoaderData<typeof rootLoader>();
 
   useMixpanel(config.mixpanel?.token);
@@ -71,7 +71,7 @@ export const RootApp = (config: MerklConfig) => () => {
   );
 };
 
-export const ErrorBoundary = (config: MerklConfig) => RootErrorBoundary(config);
+export const ErrorBoundary = (config: MerklConfigBuilded) => RootErrorBoundary(config);
 
 export default {
   loader: rootLoader,
