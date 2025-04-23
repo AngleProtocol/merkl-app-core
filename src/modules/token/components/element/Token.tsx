@@ -12,7 +12,7 @@ import {
   Value,
   sizeScale,
 } from "dappkit";
-import { Fragment, useMemo } from "react";
+import React, { useMemo } from "react";
 import { formatUnits } from "viem";
 
 export type TokenProps = Omit<ButtonProps, "value"> & {
@@ -52,7 +52,7 @@ export default function Token({
     switch (format) {
       case "amount_price":
         return (
-          <Fragment>
+          <React.Fragment>
             <PrimitiveTag className="items-center font-title" size={size}>
               <Icon size={size} rounded src={token?.icon} />
               <Value
@@ -70,12 +70,12 @@ export default function Token({
                 {amountUSD}
               </Value>
             )}
-          </Fragment>
+          </React.Fragment>
         );
       //TODO: refactor all other format into individual blocks
       default:
         return (
-          <Fragment>
+          <React.Fragment>
             {(format === "amount" || format === "symbol") && (!!amount || (amount === 0n && showZero)) && (
               <Value
                 fallback={v => (v as string).includes("0.000") && "< 0.001"}
@@ -101,7 +101,7 @@ export default function Token({
                 </PrimitiveTag>
               </Group>
             )}
-          </Fragment>
+          </React.Fragment>
         );
     }
   }, [

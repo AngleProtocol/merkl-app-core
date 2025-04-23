@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
-import { Fragment, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface TvlSectionProps {
   opportunity: Opportunity;
@@ -80,7 +80,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
             {tvlFiltered?.map(breakdown => {
               const aprBreakdown = aprFiltered.find(b => b.identifier === breakdown.identifier);
               return (
-                <Fragment key={breakdown.id}>
+                <React.Fragment key={breakdown.id}>
                   <Group
                     className="grid"
                     style={{
@@ -104,7 +104,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                       </Value>
                     </Text>
                   </Group>
-                </Fragment>
+                </React.Fragment>
               );
             })}
           </Group>
