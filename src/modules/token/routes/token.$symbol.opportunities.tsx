@@ -1,6 +1,6 @@
 import { Cache } from "@core/modules/cache/cache.service";
 import OpportunityLibrary from "@core/modules/opportunity/components/library/OpportunityLibrary";
-import { Container, Group, Space } from "packages/dappkit/src";
+import { Container, Group, Space } from "dappkit";
 import { useOutletContext } from "react-router";
 import type { OutletContextTokens } from "./token.$symbol.header";
 

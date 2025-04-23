@@ -70,7 +70,10 @@ export default function Interact({
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   const priceImpactValue = useMemo(
-    () => transaction && inputToken && transaction.depositValue - Fmt.toPrice(BigInt(amount ?? 0), inputToken),
+    () =>
+      transaction?.depositValue &&
+      inputToken &&
+      transaction.depositValue - Fmt.toPrice(BigInt(amount ?? 0), inputToken),
     [transaction, amount, inputToken],
   );
   const priceImpact = useMemo(
@@ -136,7 +139,10 @@ export default function Interact({
           onSuccess={() => reloadBalances()}
           name={`Approve ${inputToken?.symbol}`}
           {...commonProps}
-          tx={transaction?.approval}>
+          tx={{
+            ...transaction?.approval,
+            value: BigInt(transaction?.approval.value ?? 0n),
+          }}>
           Approve
         </TransactionButton>
       );
@@ -152,7 +158,10 @@ export default function Interact({
           }}
           {...commonProps}
           name={`Supply ${inputToken?.symbol} on ${opportunity.protocol?.name}`}
-          tx={transaction?.transaction}>
+          tx={{
+            ...transaction?.transaction,
+            value: BigInt(transaction?.transaction?.value ?? 0n),
+          }}>
           Participate
         </TransactionButton>
       );

@@ -2,7 +2,7 @@ import { actions as allActions } from "@core/config/actions";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type * as RemixIcons from "@remixicon/react";
-import { Group, Icon, Text } from "packages/dappkit/src";
+import { Group, Icon, Text } from "dappkit";
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 

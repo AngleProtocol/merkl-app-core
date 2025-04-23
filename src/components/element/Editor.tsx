@@ -1,4 +1,4 @@
-import { Button, Group, Icon, Input, Title, Tooltip } from "packages/dappkit/src";
+import { Button, Group, Icon, Input, Title, Tooltip } from "dappkit";
 import { useCallback, useMemo, useState } from "react";
 
 export type EditorProps = {

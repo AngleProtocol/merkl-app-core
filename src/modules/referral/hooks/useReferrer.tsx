@@ -13,7 +13,7 @@ export default function useReferrer() {
     code: string;
     referredUsers: string[];
     referrer: boolean;
-    transaction: UserTransaction;
+    transaction?: UserTransaction;
   }>();
   const isReferrer = useMemo(() => {
     return referral?.referrer;

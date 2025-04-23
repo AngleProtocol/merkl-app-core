@@ -9,7 +9,7 @@ import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Opportunity } from "@merkl/api";
 import type { InteractionTarget } from "@merkl/api/dist/src/modules/v4/interaction/interaction.model";
-import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "packages/dappkit/src";
+import { Box, Button, Dropdown, Group, Icon, Text, Title, Value } from "dappkit";
 import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";

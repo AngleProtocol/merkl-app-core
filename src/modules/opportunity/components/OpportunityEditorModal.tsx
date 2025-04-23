@@ -1,7 +1,7 @@
 import { api } from "@core/api";
 import Editor from "@core/components/element/Editor";
 import type { Opportunity } from "@merkl/api";
-import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "packages/dappkit/src";
+import { type ButtonProps, Divider, Group, Scroll, Space, Text, Title } from "dappkit";
 import useOpportunityMetadata from "../hooks/useOpportunityMetadata";
 import { OpportunityService } from "../opportunity.service";
 
@@ -18,7 +18,7 @@ export default function OpportunityEditorModal({ opportunity }: OpportunityEdito
       <Title h={2}>Edit opportunity</Title>
       <Text>{opportunity.name}</Text>
       <Group>
-        <Tags tags={["chain", "protocol", "status", "action", "explorer", "token"]} size="xs" />
+        <Tags tags={["chain", "protocol", "status", "action", "token"]} size="xs" />
       </Group>
       <Divider className="mt-xl border-main-6" />
       <Scroll className="max-h-[300px] w-full max-w-[90vw] lg:max-w-full" vertical>

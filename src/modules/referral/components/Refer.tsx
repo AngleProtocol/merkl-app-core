@@ -36,7 +36,7 @@ export default function Refer({ url }: ReferProps) {
     if (referral) return `Join me on ${appName} and earn a +5% boost using my referral code: ${referral.code}`;
   }, [referral, appName]);
 
-  if (isReferrer && referral)
+  if (isReferrer && referral && shareMessage)
     return (
       <OverrideTheme coloring={"good"}>
         <div className="border-accent-10 border-2 rounded-xl+md">
@@ -131,7 +131,10 @@ export default function Refer({ url }: ReferProps) {
         <TransactionButton
           name="Become a referrer"
           onSuccess={reload}
-          tx={referral?.transaction}
+          tx={{
+            ...referral?.transaction,
+            value: BigInt(referral?.transaction?.value ?? 0n),
+          }}
           size="lg"
           look="hype"
           className="justify-center">

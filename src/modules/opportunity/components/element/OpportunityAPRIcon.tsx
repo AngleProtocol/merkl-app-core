@@ -1,6 +1,6 @@
 import type { Opportunity } from "@merkl/api";
 import { DistributionType } from "@merkl/api/dist/database/api/.generated";
-import { type Component, Icon, type IconProps } from "packages/dappkit/src";
+import { type Component, Icon, type IconProps } from "dappkit";
 import useOpportunityDistributionTypes from "../../hooks/useOpportunityDistributionTypes";
 
 export type OpportunityAPRIconProps = {

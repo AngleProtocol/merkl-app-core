@@ -1,4 +1,3 @@
-import { createColoring } from "dappkit/src/theming/coloring";
 import { http, createClient, custom } from "viem";
 import {
   arbitrum,
@@ -39,7 +38,12 @@ import { eip712WalletActions, zksync } from "viem/zksync";
 import { walletConnect } from "wagmi/connectors";
 import type { MerklConfig } from "./config.model";
 
-export const defaultMerklConfig: MerklConfig = {
+export const defaultMerklConfig: Omit<MerklConfig, "backend" | "routes" | "theme"> = {
+  header: {
+    searchbar: {
+      enabled: false,
+    },
+  },
   appName: "Merkl",
   navigation: {
     header: {},
@@ -139,42 +143,30 @@ export const defaultMerklConfig: MerklConfig = {
 
   chains: [],
   opportunity: {
-    enabled: false,
-    length: 6,
+    featured: {
+      enabled: false,
+      length: 6,
+    },
     library: {
       sortedBy: "rewards",
       dailyRewardsTokenAddress: "",
-      columns: { enabled: false },
-      minWalletBalance: 100,
+      columns: { action: { enabled: false } },
     },
-    bridge: {
-      helperLink: "",
-    },
-    dashboard: {
+    minWalletBalance: 100,
+  },
+  bridge: {
+    helperLink: "",
+  },
+  dashboard: {
+    liquidityTab: {
       enabled: false,
-      reinvestTokenAddress: "",
     },
-    tagsDetails: {
-      enabled: true,
-    },
-    decimalFormat: {
-      dollar: "$0,0.##a",
-      apr: "0.##%a",
-    },
-    themes: {
-      merkl: {
-        base: createColoring(["#7653FF", "#6C78A9", "#141313"], ["#7653FF", "#6C78A9", "#FFFFFF"]),
-        info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        good: createColoring(["#41D5BB", "#8FF2E1", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      },
-      ignite: {
-        base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
-        info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-        harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+    reinvestTokenAddress: "",
+  },
+  tagsDetails: {
+    token: {
+      visitOpportunities: {
+        enabled: true,
       },
     },
   },
@@ -183,12 +175,6 @@ export const defaultMerklConfig: MerklConfig = {
     apr: "0.##%a",
     point: "0.00##a",
   },
-  sizing: {
-    width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },
-    spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
-    radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
-  },
-  alwaysShowTestTokens: true,
   socials: {
     discord: "",
     telegram: "https://t.me/+2T0RNabX2ANkMzAx",

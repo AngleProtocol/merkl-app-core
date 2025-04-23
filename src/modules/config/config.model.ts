@@ -6,13 +6,14 @@ import type {
 } from "@core/config/opportunity";
 import type { RewardsNavigationMode } from "@core/config/rewards";
 import type { OpportunityFilter } from "@core/modules/opportunity/components/OpportunityFilters";
-import type { IconProps, WalletOptions } from "packages/dappkit/src";
+import type { IconProps, WalletOptions } from "dappkit";
 import type { Chain } from "viem";
-import type { ResolvedRegister } from "wagmi";
+import type { CreateConfigParameters } from "wagmi";
 import type { OpportuntyLibraryOverride } from "../opportunity/opportunity.model";
 import type { MerklBackendConfig } from "./types/merklBackendConfig";
 import type { MerklRoutes } from "./types/merklRoutesConfig";
 import type { MerklThemeConfig } from "./types/merklThemeConfig";
+import type { createConfig as createWagmiConfig } from "wagmi";
 
 /**
  * Route entry in the links menu, either an external link or internal route
@@ -85,11 +86,6 @@ export type MerklConfig = {
     chainId: number;
     referralKey: string;
   };
-  /**
-   * Show opportunities & campaigns created with test tokens (aglaMerkl)
-   */
-  alwaysShowTestTokens?: boolean;
-
   walletOptions?: WalletOptions;
   /**
    * Provides a default order of to sort tokens when no balance or not connected
@@ -145,7 +141,12 @@ export type MerklConfig = {
   /**
    * Enables themes to be switched between dark and light or enforce only one
    */
-  wagmi: ResolvedRegister["config"];
+  wagmi: {
+    chains: CreateConfigParameters["chains"];
+    ssr: true;
+    client: Exclude<CreateConfigParameters["client"], undefined>;
+    connectors: CreateConfigParameters["connectors"];
+  };
   /**
    * Custom white-label-banner component to showup on the top of pages
    */
@@ -228,3 +229,5 @@ export type MerklConfig = {
   };
   footerLinks: { image: string; link: string; key: string }[];
 };
+
+export type MerklConfigBuilded = Omit<MerklConfig, "wagmi"> & { wagmi: ReturnType<typeof createWagmiConfig> };

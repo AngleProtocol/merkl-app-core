@@ -1,4 +1,4 @@
-import { Dropdown, Group, Icon, type Look, Text, Title } from "packages/dappkit/src";
+import { Dropdown, Group, Icon, type Look, Text, Title } from "dappkit";
 import type { ReactNode } from "react";
 
 interface MetricBoxProps {

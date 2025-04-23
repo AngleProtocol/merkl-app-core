@@ -1,4 +1,3 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
@@ -12,7 +11,7 @@ import useOpportunityCell from "../../hooks/useOpportunityCell";
 
 export type OpportunityCellProps = {
   opportunity: Opportunity;
-  tags?: (keyof TagTypes)[];
+  tags?: Parameters<ReturnType<typeof useOpportunityMetadata>["Tags"]>[0]["tags"];
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 

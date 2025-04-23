@@ -1,4 +1,4 @@
-import { Button, Divider, Dropdown, Group, Icon, OverrideTheme, PrimitiveTag, Text } from "packages/dappkit/src";
+import { Button, Divider, Dropdown, Group, Icon, OverrideTheme, PrimitiveTag, Text } from "dappkit";
 import { useMemo } from "react";
 
 export const interactionRouters = {
