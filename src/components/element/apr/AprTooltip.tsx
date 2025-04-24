@@ -154,7 +154,8 @@ export default function AprTooltip(props: AprTooltipProps) {
               ⚠️ Common Pitfall
             </Text>
             <Text size="sm" look="soft">
-              • Full-range or out-of-range positions earn significantly less—especially in fee-based campaigns.
+              • Full-range or out-of-range positions earn significantly less—especially in campaigns where the liquidity
+              contribution parameter carries a high weight.
             </Text>
           </Group>
           <Group size="xs" className="px-md">
@@ -162,8 +163,8 @@ export default function AprTooltip(props: AprTooltipProps) {
               Maximize Your Rewards
             </Text>
             <Text size="sm" look="soft">
-              • Concentrate liquidity near the market price (watch for impermanent loss)
-              <br />• Stay in-range during active swaps
+              • Concentrate liquidity near the active tick (watch for impermanent loss)
+              <br />• Stay in-range as much as possible across the whole campaign duration
               <br />• Use ALMs like Gamma, Arrakis, Beefy (if supported) to automate rebalancing
             </Text>
           </Group>

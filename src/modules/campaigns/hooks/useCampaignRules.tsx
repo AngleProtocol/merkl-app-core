@@ -40,14 +40,21 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
           break;
       }
 
-      //fees rule
+      // Fees / Liquidity Contribution rule
+      const isUniswapV4 = opportunity.type === "UNISWAP_V4";
+
       arr.push({
         type: "liquidity" as const,
         value: {
-          description: `${
-            params.weightFees / 100
-          }% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
-          label: (
+          description: isUniswapV4
+            ? `${params.weightFees / 100}% of campaign rewards are distributed based on the time-weighted liquidity contribution of each position. Positions that remain highly concentrated over time earn a greater share of rewards.`
+            : `${params.weightFees / 100}% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
+          label: isUniswapV4 ? (
+            <>
+              <Icon remix="RiWaterFlashFill" />
+              Liquidity Contribution
+            </>
+          ) : (
             <>
               <Icon remix="RiDiscountPercentFill" />
               Fees
