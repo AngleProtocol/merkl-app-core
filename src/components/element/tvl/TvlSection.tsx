@@ -80,7 +80,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
             {tvlFiltered?.map(breakdown => {
               const aprBreakdown = aprFiltered.find(b => b.identifier === breakdown.identifier);
               return (
-                <React.Fragment key={breakdown.id}>
+                <React.Fragment key={breakdown.identifier}>
                   <Group
                     className="grid"
                     style={{

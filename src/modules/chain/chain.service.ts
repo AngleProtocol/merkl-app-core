@@ -10,7 +10,7 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
     const getAll = inject(["api", "backend", "request"]).inFunction(({ api, backend, request }) => {
       const url = new URL(request.url);
       const showTest: Record<string, boolean> = {};
-      if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+      if (backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true") showTest.test = true;
       return fetch(() => api.v4.chains.index.get({ query: showTest }));
     });
 
@@ -18,7 +18,7 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
       ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
         const url = new URL(request.url);
         const showTest: Record<string, boolean> = {};
-        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+        if (backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true") showTest.test = true;
         return fetch(async () => api.v4.chains.index.get({ query: { ...query, ...showTest } }));
       },
     );
@@ -27,7 +27,7 @@ export const ChainService = defineModule<{ api: Api; request: Request; backend: 
       async ({ api, backend, request }, query: Parameters<Api["v4"]["chains"]["index"]["get"]>[0]["query"]) => {
         const url = new URL(request.url);
         const showTest: Record<string, boolean> = {};
-        if (backend.alwaysShowTestTokens === true || url.searchParams.get("test")) showTest.test = true;
+        if (backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true") showTest.test = true;
         const chains = await fetch(async () =>
           api.v4.chains.index.get({
             query: {

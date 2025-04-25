@@ -46,7 +46,7 @@ export default function AprSection({ breakdowns }: AprSectionProps) {
     <Group className="flex-col" size="sm">
       <Group className="flex-col" size="sm">
         {breakdowns?.map(breakdown => (
-          <Group key={breakdown.id} className="items-center justify-between" size="sm">
+          <Group key={breakdown.identifier} className="items-center justify-between" size="sm">
             <Text size="sm" look="bold">
               {getAprName(breakdown)}
             </Text>

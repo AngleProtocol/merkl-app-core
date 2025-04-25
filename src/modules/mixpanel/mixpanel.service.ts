@@ -1,5 +1,5 @@
 import type { Api } from "@core/api/types";
-import type { Campaign, Chain, Opportunity } from "@merkl/api";
+import type { Chain, Opportunity } from "@merkl/api";
 import { defineModule } from "@merkl/conduit";
 export type MorphoPayload = Awaited<ReturnType<Api["v3"]["morphoMarkets"]["get"]>>["data"];
 //@ts-ignore: mixpanel did not bother using types :'/
@@ -8,7 +8,7 @@ import type { MixpanelPageContext } from "./hooks/useMixpanelContext";
 
 export type MixpanelEvents = {
   "Click on supply": Opportunity & { mode: "direct" | "indirect" };
-  "Click on leaderboard": Campaign & Opportunity;
+  "Click on leaderboard": Opportunity;
   "Click on opportunity": Opportunity & { view: "table" | "cell" };
   "Click on opportunity button": { opportunity: Opportunity; type: string; button: string };
   "Check filters": object;

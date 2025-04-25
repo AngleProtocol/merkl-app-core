@@ -3,8 +3,7 @@ import useCampaignMetadata, { ECampaignStatus } from "@core/modules/campaigns/ho
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
-import type { Campaign, Chain as ChainType } from "@merkl/api";
-import type { Opportunity } from "@merkl/api";
+import type { Opportunity, Campaign, Chain as ChainType } from "@merkl/api";
 import {
   Box,
   Button,
@@ -36,6 +35,7 @@ import useCampaignStats from "../../hooks/useCampaignStats";
 import CampaignTooltipDates from "../CampaignTooltipDates";
 import { CampaignRow } from "../library/CampaignTable";
 import Rule from "../rules/Rule";
+import { DistributionType } from "@merkl/api/dist/database/api/.generated";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
@@ -155,7 +155,7 @@ export default function CampaignTableRow({
           {stats?.count}
         </Value>
         {" Users / "}
-        {campaign.rewardToken?.isPoint || !(campaign.rewardToken?.price > 0) ? (
+        {campaign.rewardToken?.isPoint || !((campaign.rewardToken?.price ?? 0) > 0) ? (
           <Value value format={"0.###a"}>
             {Fmt.toNumber(stats?.total?.amount, campaign.rewardToken?.decimals ?? 0) ?? 0}
           </Value>
@@ -201,7 +201,11 @@ export default function CampaignTableRow({
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
           <Text bold className="hidden md:block flex-nowrap gap-xs items-center whitespace-nowrap" look="tint">
-            Daily Rewards
+            {campaign.distributionType === DistributionType.FIX_REWARD_VALUE_PER_LIQUIDITY_AMOUNT
+              ? "Fixed Rewards"
+              : campaign.distributionType === DistributionType.FIX_REWARD_AMOUNT_PER_LIQUIDITY_VALUE
+                ? "Fixed Reward Amounts"
+                : "Daily Rewards"}
           </Text>
           <Token
             size="md"

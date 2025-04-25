@@ -476,10 +476,6 @@ export { default as SearchBar } from "./components/element/functions/SearchBar";
 export * from "./components/element/apr/AprTooltip";
 export { default as AprTooltip } from "./components/element/apr/AprTooltip";
 export * from "./components/element/apr/AprSection";
-export { default as AprSection } from "./components/element/apr/AprSection";
-export * from "./components/element/apr/AprSectionCampaigns";
-export { default as AprSectionCampaigns } from "./components/element/apr/AprSectionCampaigns";
-
 /**
  * components/element/historicalClaimsLibrary
  */

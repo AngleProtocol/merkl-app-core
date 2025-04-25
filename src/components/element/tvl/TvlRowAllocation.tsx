@@ -32,7 +32,7 @@ export default function TvlRowAllocation({ opportunity }: TvlRowAllocationProps)
 
           if (!token) return null;
           return (
-            <Text key={tvlBreakdown.id} className="flex items-center gap-sm" size="sm" look="soft">
+            <Text key={tvlBreakdown.identifier} className="flex items-center gap-sm" size="sm" look="soft">
               <Icon src={token.icon} />
               <Text bold className="flex gap-sm" size="sm">
                 <Value value format="0.0a">
