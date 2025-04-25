@@ -36,10 +36,7 @@ export default function useOpportunityRewards({
     });
   }, [rewardsRecord]);
 
-  /**
-   * Formatted daily rewards displayed
-   */
-  const formattedDailyRewards = useMemo(() => {
+  const formattedDailyRewardsText = useMemo(() => {
     if (!rewardsRecord?.breakdowns) return;
 
     if (dailyRewardsTokenAddress) {
@@ -49,12 +46,44 @@ export default function useOpportunityRewards({
 
       return (
         <>
-          <Text bold look="soft">
-            <Value value format={"0,0.##a"}>
-              {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
-            </Value>
+          <Value value format={"0,0.##a"}>
+            {Fmt.toNumber(breakdownAmount.toString() ?? "0", token?.decimals).toString()}
+          </Value>
 
-            {token?.symbol && ` ${token?.symbol}`}
+          {token?.symbol && ` ${token?.symbol}`}
+        </>
+      );
+    }
+
+    const tokens = rewardsRecord?.breakdowns.reduce<Token[]>((acc, { token }) => {
+      if (!acc.some(t => t.id === token.id)) acc.push(token);
+      return acc;
+    }, []);
+
+    return (
+      <>
+        {tokens.some(token => token.isPreTGE) && "~"}
+        <Value value format={dollarFormat}>
+          {dailyRewards ?? 0}
+        </Value>
+      </>
+    );
+  }, [rewardsRecord, dailyRewards, dollarFormat, dailyRewardsTokenAddress]);
+
+  /**
+   * Formatted daily rewards displayed
+   */
+  const formattedDailyRewards = useMemo(() => {
+    if (!rewardsRecord?.breakdowns) return;
+
+    if (dailyRewardsTokenAddress) {
+      const breakdowns = rewardsRecord.breakdowns.filter(({ token }) => token?.address === dailyRewardsTokenAddress);
+      const token = breakdowns?.[0]?.token;
+
+      return (
+        <>
+          <Text bold look="soft">
+            {formattedDailyRewardsText}
           </Text>
           <Text className="text-lg">
             <Icon key={token?.icon} src={token?.icon} />
@@ -71,10 +100,7 @@ export default function useOpportunityRewards({
     return (
       <Group className="flex items-center" size="sm">
         <Text bold look="hype" size="lg">
-          {tokens.some(token => token.isPreTGE) && "~"}
-          <Value value format={dollarFormat}>
-            {dailyRewards ?? 0}
-          </Value>
+          {formattedDailyRewardsText}
         </Text>
         <Group className="relative">
           <Group className="flex items-center !gap-0">
@@ -94,7 +120,7 @@ export default function useOpportunityRewards({
         </Group>
       </Group>
     );
-  }, [rewardsRecord, dailyRewards, dollarFormat, dailyRewardsTokenAddress]);
+  }, [rewardsRecord, dailyRewardsTokenAddress, formattedDailyRewardsText]);
 
   /**
    * Determines if the opportunity has only reward token points
@@ -117,6 +143,7 @@ export default function useOpportunityRewards({
 
   return {
     rewardsBreakdown,
+    formattedDailyRewardsText,
     formattedDailyRewards,
     dailyRewards,
     isOnlyPoint,

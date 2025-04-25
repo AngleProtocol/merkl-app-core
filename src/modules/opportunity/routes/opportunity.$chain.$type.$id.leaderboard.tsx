@@ -4,7 +4,7 @@ import LeaderboardLibrary from "@core/components/element/leaderboard/Leaderboard
 import { CampaignService } from "@core/modules/campaigns/campaign.service";
 import { ChainService } from "@core/modules/chain/chain.service";
 import { RewardService } from "@core/modules/reward/reward.service";
-import { Box, Button, Group, Hash, Icon, Text } from "packages/dappkit/src";
+import { Box, Button, Group, Hash, Icon, Text } from "dappkit";
 import { useCallback } from "react";
 import { useLoaderData, useNavigate, useOutletContext } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
@@ -21,13 +21,12 @@ export async function loader({
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });
   const campaignId = new URL(request.url).searchParams.get("campaignId");
 
-  // TODO Need to be replace by findFisrt campaign by id
   const campaigns = await CampaignService({ backend, api }).getByOpportunity({
     campaignId: campaignId ?? "",
   });
 
   const selectedCampaign = campaigns[0];
-  // --------
+
   const computeChain = await ChainService({ api }).getById(selectedCampaign?.computeChainId ?? chain.id);
 
   const { rewards, count, total } = await RewardService({ backend, api, request }).getCampaignLeaderboard({

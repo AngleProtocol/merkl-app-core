@@ -1,10 +1,9 @@
 import { UserService } from "@core/modules/user/user.service";
-import type { Campaign as CampaignFromApi } from "@merkl/api";
+import type { Campaign as CampaignFromApi, CampaignParams } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
 import { Icon } from "dappkit";
 import { useCallback, useMemo } from "react";
 import Token from "../../token/components/element/Token";
-import type { Campaign } from "../campaign.model";
 import type { RuleType } from "../components/rules/Rule";
 
 // to refactor when we handles all hooks (type should be handled by apiTyping)
@@ -24,7 +23,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
    * Get weighted liquidity/fees campaigns rules
    */
   const getLiquidityProfileRules = useCallback(
-    ({ params }: Campaign["params"]) => {
+    ({ params }: CampaignFromApi["params"]) => {
       const onlyTypes: CampaignFromApi["type"][] = ["CLAMM", "UNISWAP_V4"];
 
       const arr: RuleType[] = [];
@@ -41,14 +40,21 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
           break;
       }
 
-      //fees rule
+      // Fees / Liquidity Contribution rule
+      const isUniswapV4 = opportunity.type === "UNISWAP_V4";
+
       arr.push({
         type: "liquidity" as const,
         value: {
-          description: `${
-            params.weightFees / 100
-          }% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
-          label: (
+          description: isUniswapV4
+            ? `${params.weightFees / 100}% of campaign rewards are distributed based on the time-weighted liquidity contribution of each position. Positions that remain highly concentrated over time earn a greater share of rewards.`
+            : `${params.weightFees / 100}% of campaign rewards are split amongst liquidity providers based on the fees their positions earn`,
+          label: isUniswapV4 ? (
+            <>
+              <Icon remix="RiWaterFlashFill" />
+              Liquidity Contribution
+            </>
+          ) : (
             <>
               <Icon remix="RiDiscountPercentFill" />
               Fees
@@ -107,13 +113,13 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
    * Get whitelist/blacklist address rules
    */
   const getListRestrictionRules = useCallback(
-    ({ params, chain }: Campaign["params"]) => {
+    ({ params, chain }: CampaignFromApi["params"]) => {
       const excludeTypes = ["JSON_AIRDROP", "ERC20_SNAPSHOT", "INVALID"] satisfies CampaignFromApi["type"][];
       const arr: RuleType[] = [];
 
       if (!opportunity || (excludeTypes as CampaignFromApi["type"][]).includes(opportunity.type)) return [];
 
-      const { blacklist, whitelist } = params as Campaign<(typeof excludeTypes)[number]>["params"];
+      const { blacklist, whitelist } = params as CampaignParams<(typeof excludeTypes)[number]>["params"];
 
       blacklist.length &&
         arr.push({
@@ -157,7 +163,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
   /**
    * Get Hooks (to refactor when we handles all hooks)
    */
-  const getJumperHook = useCallback((campaign: Campaign) => {
+  const getJumperHook = useCallback((campaign: CampaignFromApi) => {
     const jumperHook: HookJumper | undefined = campaign.params?.hooks?.find((hook: HookJumper) => hook.hookType === 0);
     if (!jumperHook) return;
     return {
@@ -177,7 +183,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
    * Aggregate all rules for given campaign
    */
   const rules = useMemo(() => {
-    const typeSpecificRule: { [C in CampaignFromApi["type"]]?: (scopedCampaign: Campaign<C>) => RuleType[] } = {
+    const typeSpecificRule: { [C in CampaignFromApi["type"]]?: (scopedCampaign: CampaignFromApi) => RuleType[] } = {
       CLAMM: c => getLiquidityProfileRules(c),
       UNISWAP_V4: c => getLiquidityProfileRules(c),
     };

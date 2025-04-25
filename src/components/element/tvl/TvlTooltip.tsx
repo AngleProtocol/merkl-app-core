@@ -4,11 +4,11 @@ import { Divider, Group, PrimitiveTag, Title, Value } from "dappkit";
 import TvlRowAllocation from "./TvlRowAllocation";
 import TvlSection from "./TvlSection";
 
-type TvlModalProps = {
+type TvlTooltipProps = {
   opportunity: Opportunity;
 };
 
-export default function TvlModal(props: TvlModalProps) {
+export default function TvlTooltip(props: TvlTooltipProps) {
   const { opportunity } = props;
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
@@ -18,7 +18,7 @@ export default function TvlModal(props: TvlModalProps) {
         <Title look="soft" h={5}>
           TVL INFORMATION
         </Title>
-        <PrimitiveTag look="tint" size="lg">
+        <PrimitiveTag look="tint" size="md">
           <Value value format={dollarFormat}>
             {opportunity.tvl ?? 0}
           </Value>

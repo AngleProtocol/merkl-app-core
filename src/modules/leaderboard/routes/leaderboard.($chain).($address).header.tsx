@@ -19,7 +19,7 @@ export async function loader({
   if (!address) address = backend.leaderboard!.address;
 
   const chain = await ChainService({ api, backend, request }).get({ name: chainName });
-  const token = await TokenService({ api }).findUniqueOrThrow(chain.id, address);
+  const token = await TokenService({ api }).findUniqueOrThrow(chain.id, address!);
 
   return {
     token,

@@ -40,15 +40,25 @@ export const action = async ({ params: { name }, request }: ActionFunctionArgs) 
         if (!tx) return new Response(tx, { status: 500 });
 
         if (payload.sponsor && !tx.approved) {
-          tx.approval = (await zyfiService.wrapAndPrepareTx({
+          const preparedTx = (await zyfiService.wrapAndPrepareTx({
             ...tx.approval,
             from: payload.userAddress,
+            value: BigInt(tx.approval.value ?? "0"),
           }))!;
+          tx.approval = {
+            ...preparedTx,
+            value: preparedTx?.value.toString() ?? "0",
+          };
         } else if (payload.sponsor) {
-          tx.transaction = (await zyfiService.wrapAndPrepareTx({
+          const preparedTx = (await zyfiService.wrapAndPrepareTx({
             ...tx.transaction,
             from: payload.userAddress,
+            value: BigInt(tx.approval.value ?? "0"),
           }))!;
+          tx.transaction = {
+            ...preparedTx,
+            value: preparedTx?.value.toString() ?? "0",
+          };
         }
 
         return tx;

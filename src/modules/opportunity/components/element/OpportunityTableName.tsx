@@ -1,4 +1,3 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import type { Opportunity } from "@merkl/api";
 import { type Component, Group, Title, type TitleProps, mergeClass, type sizeScale, useOverflowingRef } from "dappkit";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
@@ -7,7 +6,7 @@ import OpportunityDevHelpers from "./OpportunityDevHelpers";
 export type OpportunityTableNameProps = {
   opportunity: Opportunity;
   titleProps?: TitleProps;
-  tags?: (keyof TagTypes)[];
+  tags?: Parameters<ReturnType<typeof useOpportunityMetadata>["Tags"]>[0]["tags"];
   tagsSize?: (typeof sizeScale)[number];
 };
 

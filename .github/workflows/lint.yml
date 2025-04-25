@@ -2,6 +2,9 @@ name: Check code quality
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 defaults:
   run:
@@ -46,7 +49,7 @@ jobs:
           bun-version: latest
 
       - name: Check dependencies
-        run: bun install
+        run: bun install && git submodule update --init --recursive && git submodule foreach 'bun install' 
 
       - name: Check codebase linting
         run: bun lint:ci
@@ -67,7 +70,7 @@ jobs:
           bun-version: latest
 
       - name: Check dependencies
-        run: bun install
+        run: bun install && git submodule update --init --recursive && git submodule foreach 'bun install' 
 
       - name: Check codebase typing
         run: bun typecheck

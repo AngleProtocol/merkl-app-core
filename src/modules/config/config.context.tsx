@@ -7,7 +7,7 @@ export interface ConfigContextStore {
   config: Omit<MerklConfig, "wagmi">;
   protocols: Protocol[];
 }
-export const initConfigProvider = (config: MerklConfig, protocols: Protocol[]) =>
+export const initConfigProvider = (config: Omit<MerklConfig, "wagmi">, protocols: Protocol[]) =>
   create<ConfigContextStore>(() => ({
     config,
     protocols,

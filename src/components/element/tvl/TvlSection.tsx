@@ -1,7 +1,7 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
 import { Button, Divider, Group, Hash, Icon, PrimitiveTag, Text, Value } from "dappkit";
-import { Fragment, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface TvlSectionProps {
   opportunity: Opportunity;
@@ -52,62 +52,64 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
 
   return (
     <>
-      <Group className="flex-col" size="sm">
-        {hasForwarders && (
-          <>
-            <Group
-              className="grid"
-              style={{
-                gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
-              }}>
-              <Text bold className="flex items-center gap-xs " size="sm" look="bold">
-                <Icon remix="RiForwardEndFill" />
-                Forwarder details
-              </Text>
-
-              <Text bold size="sm" className="inline-flex justify-end" look="bold">
-                APR
-              </Text>
-              <Text bold size="sm" className="inline-flex justify-end" look="bold">
-                TVL
-              </Text>
-            </Group>
-            <Divider />
-          </>
-        )}
+      {(hasForwarders || !!tvlFiltered?.length) && (
         <Group className="flex-col" size="sm">
-          {tvlFiltered?.map(breakdown => {
-            const aprBreakdown = aprFiltered.find(b => b.identifier === breakdown.identifier);
-            return (
-              <Fragment key={breakdown.id}>
-                <Group
-                  className="grid"
-                  style={{
-                    gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
-                  }}
-                  size="md">
-                  <Text size="sm" look="bold">
-                    {getTvlName(breakdown)}
-                  </Text>
+          {hasForwarders && (
+            <>
+              <Group
+                className="grid"
+                style={{
+                  gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
+                }}>
+                <Text bold className="flex items-center gap-xs " size="sm" look="bold">
+                  <Icon remix="RiForwardEndFill" />
+                  Forwarder details
+                </Text>
 
-                  {aprBreakdown && (
-                    <PrimitiveTag className="w-fit ml-auto" look="bold" size="sm">
-                      <Value value format={aprFormat}>
-                        {aprBreakdown.value / 100}
+                <Text bold size="sm" className="inline-flex justify-end" look="bold">
+                  APR
+                </Text>
+                <Text bold size="sm" className="inline-flex justify-end" look="bold">
+                  TVL
+                </Text>
+              </Group>
+              <Divider />
+            </>
+          )}
+          <Group className="flex-col" size="sm">
+            {tvlFiltered?.map(breakdown => {
+              const aprBreakdown = aprFiltered.find(b => b.identifier === breakdown.identifier);
+              return (
+                <React.Fragment key={breakdown.id}>
+                  <Group
+                    className="grid"
+                    style={{
+                      gridTemplateColumns: "minmax(auto, 1fr) minmax(min-content, 100px) minmax(min-content, 100px)",
+                    }}
+                    size="md">
+                    <Text size="sm" look="bold">
+                      {getTvlName(breakdown)}
+                    </Text>
+
+                    {aprBreakdown && (
+                      <PrimitiveTag className="w-fit ml-auto" look="bold" size="sm">
+                        <Value value format={aprFormat}>
+                          {aprBreakdown.value / 100}
+                        </Value>
+                      </PrimitiveTag>
+                    )}
+                    <Text look="bold" className="inline-flex justify-end" size="sm">
+                      <Value value format={dollarFormat}>
+                        {breakdown.value}
                       </Value>
-                    </PrimitiveTag>
-                  )}
-                  <Text look="bold" className="inline-flex justify-end" size="sm">
-                    <Value value format={dollarFormat}>
-                      {breakdown.value}
-                    </Value>
-                  </Text>
-                </Group>
-              </Fragment>
-            );
-          })}
+                    </Text>
+                  </Group>
+                </React.Fragment>
+              );
+            })}
+          </Group>
         </Group>
-      </Group>
+      )}
       {tvlFiltered?.length > DEFAULT_ARRAY_SIZE && (
         <>
           <Divider look="soft" />

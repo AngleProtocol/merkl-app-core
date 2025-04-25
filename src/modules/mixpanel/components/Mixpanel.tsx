@@ -1,5 +1,5 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
-import { Box, Button, Container, Group, Icon, Text } from "packages/dappkit/src";
+import { Box, Button, Container, Group, Icon, Text } from "dappkit";
 import useMixpanel from "../hooks/useMixpanel";
 import useMixpanelConsent from "../hooks/useMixpanelConsent";
 import useMixpanelPage from "../hooks/useMixpanelPage";

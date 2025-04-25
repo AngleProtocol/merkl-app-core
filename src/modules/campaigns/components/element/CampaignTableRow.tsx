@@ -39,7 +39,7 @@ import Rule from "../rules/Rule";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
-  opportunity?: Opportunity;
+  opportunity: Opportunity;
   startsOpen?: boolean;
   chain: ChainType;
   size?: Parameters<typeof CampaignRow>["0"]["size"];
@@ -59,7 +59,7 @@ export default function CampaignTableRow({
   const { chain: distributionChain } = useChain(campaign.distributionChain);
   const { rules } = useCampaignRules(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
-  const { loading, stats } = useCampaignStats(distributionChain!.id, campaign.campaignId, isOpen);
+  const { loading, stats } = useCampaignStats(distributionChain!.id, campaign.campaignId);
   const navigate = useNavigate();
 
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
@@ -67,7 +67,7 @@ export default function CampaignTableRow({
   const { track } = useMixpanelTracking();
   const onNavigateToLeaderBoard = useCallback(() => {
     navigate(`leaderboard?campaignId=${campaign.campaignId}`);
-    track("Click on leadeboard", { ...opportunity });
+    track("Click on leaderboard", { ...opportunity });
   }, [track, campaign.campaignId, navigate, opportunity]);
 
   const campaignInformation = useMemo(() => {

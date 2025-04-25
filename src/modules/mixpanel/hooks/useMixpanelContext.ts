@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import { MetadataService } from "@core/modules/metadata/metadata.service";
-import { useWalletContext } from "packages/dappkit/src";
+import { useWalletContext } from "dappkit";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigation } from "react-router";
 

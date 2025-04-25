@@ -1,7 +1,7 @@
 import { type Api, useChains } from "@core/index.generated";
 import useOpportunityFilters from "@core/modules/opportunity/hooks/useOpportunityFilters";
 import type { Chain } from "@merkl/api";
-import { Box, Button, Group, Icon, Select } from "packages/dappkit/src";
+import { Box, Button, Group, Icon, Select } from "dappkit";
 import { useMemo } from "react";
 import RewardTokenTableRow from "../element/RewardTokenTableRow";
 import { RewardTokenTable } from "./RewardTokenTable";

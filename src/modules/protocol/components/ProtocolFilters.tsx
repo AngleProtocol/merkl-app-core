@@ -1,6 +1,7 @@
 import { actions } from "@core/config/actions";
 import type { OpportunityView } from "@core/config/opportunity";
 import useSearchParamState from "@core/hooks/filtering/useSearchParamState";
+import type * as RemixIcon from "@remixicon/react";
 import { Button, Group, Icon, Input, Select } from "dappkit";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router";
@@ -31,7 +32,7 @@ export default function ProtocolFilter({ only, exclude, onClear, clearing }: Pro
         Object.assign(obj, {
           [action]: (
             <>
-              <Icon size="sm" {...icon} />
+              <Icon size="sm" remix={icon.remix as keyof typeof RemixIcon} />
               {label}
             </>
           ),

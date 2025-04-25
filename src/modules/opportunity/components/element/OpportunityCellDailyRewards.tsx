@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { type Component, Group, Text } from "packages/dappkit/src";
+import { type Component, Group, Text } from "dappkit";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 
 export type OpportunityCellDailyRewardsProps = {

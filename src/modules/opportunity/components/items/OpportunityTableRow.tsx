@@ -1,10 +1,10 @@
-import AprModal from "@core/components/element/apr/AprModal";
+import AprTooltip from "@core/components/element/apr/AprTooltip";
 import AprValue from "@core/components/element/apr/AprValue";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import useOpportunityRewards from "@core/modules/opportunity/hooks/useOpportunityRewards";
 import type { Opportunity } from "@merkl/api";
 import type { BoxProps } from "dappkit";
@@ -26,7 +26,7 @@ export default function OpportunityTableRow({
   navigationMode,
   ...props
 }: OpportunityTableRowProps) {
-  const { name, tags, link, icons, Tags } = useOpportunityData(opportunity);
+  const { name, tags, link, icons, Tags } = useOpportunityMetadata(opportunity);
   const { rewardsBreakdown, formattedDailyRewards } = useOpportunityRewards(opportunity);
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   const opportunityLibraryRowView = useMerklConfig(store => store.config.opportunityLibrary.rowView);
@@ -36,7 +36,7 @@ export default function OpportunityTableRow({
   const aprColumn = useMemo(
     () => (
       <EventBlocker>
-        <Dropdown size="xl" onHover content={<AprModal opportunity={opportunity} />}>
+        <Dropdown size="xl" onHover content={<AprTooltip opportunity={opportunity} />}>
           <Text bold look="tint" size="lg">
             <AprValue value>{opportunity.apr}</AprValue>
           </Text>

@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Text, Value } from "packages/dappkit/src";
+import { type Component, Text, Value } from "dappkit";
 
 export type OpportunityCellTvlProps = {
   opportunity: Opportunity;

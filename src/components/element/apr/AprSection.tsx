@@ -1,26 +1,21 @@
 import type { Opportunity } from "@merkl/api";
 import { Group, Hash, PrimitiveTag, Text } from "dappkit";
-import { useMemo } from "react";
 import AprValue from "./AprValue";
 
 type AprSectionProps = {
-  opportunity: Opportunity;
+  breakdowns: Opportunity["aprRecord"]["breakdowns"];
 };
 
-export default function AprSection({ opportunity }: AprSectionProps) {
-  const breakdowns = useMemo(() => {
-    return opportunity.aprRecord?.breakdowns.filter(aprBreakdown => aprBreakdown.type !== "PROTOCOL");
-  }, [opportunity]);
-
+export default function AprSection({ breakdowns }: AprSectionProps) {
   const getAprName = (breakdown: Opportunity["aprRecord"]["breakdowns"][number]) => {
     if (!breakdown?.identifier) return null;
 
     switch (breakdown?.type) {
       case "CAMPAIGN":
         return (
-          <Text className="flex items-center gap-sm" size="sm">
+          <Text className="flex items-center gap-sm" size="sm" look="bold">
             <span>Campaign</span>
-            <Hash format="prefix" copy size={"sm"}>
+            <Hash format="prefix" copy size={"sm"} look="bold">
               {breakdown.identifier}
             </Hash>
           </Text>

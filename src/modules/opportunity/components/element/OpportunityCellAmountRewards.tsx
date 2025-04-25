@@ -1,5 +1,5 @@
 import type { Opportunity } from "@merkl/api";
-import { type Component, Fmt, Group, Icon, Text, Value } from "packages/dappkit/src";
+import { type Component, Fmt, Group, Icon, Text, Value } from "dappkit";
 import { useMemo } from "react";
 
 export type OpportunityCellAmountRewardsProps = {

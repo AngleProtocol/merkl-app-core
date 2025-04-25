@@ -122,7 +122,6 @@ export * from "./modules/zyfi/zyfi.service";
  * modules/campaigns
  */
 export * from "./modules/campaigns/campaign.service";
-export * from "./modules/campaigns/campaign.model";
 
 /**
  * modules/chain
@@ -474,8 +473,8 @@ export { default as SearchBar } from "./components/element/functions/SearchBar";
 /**
  * components/element/apr
  */
-export * from "./components/element/apr/AprModal";
-export { default as AprModal } from "./components/element/apr/AprModal";
+export * from "./components/element/apr/AprTooltip";
+export { default as AprTooltip } from "./components/element/apr/AprTooltip";
 export * from "./components/element/apr/AprSection";
 export { default as AprSection } from "./components/element/apr/AprSection";
 export * from "./components/element/apr/AprSectionCampaigns";

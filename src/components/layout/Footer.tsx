@@ -27,13 +27,7 @@ export default function Footer() {
               <Socials />
               {Object.keys(footerLinks ?? {}).length > 0 &&
                 Object.entries(footerLinks ?? {}).map(([key, route]) => (
-                  <Button
-                    look="soft"
-                    className="capitalize"
-                    size="lg"
-                    key={route.key}
-                    external={route.external}
-                    to={route.route}>
+                  <Button look="soft" className="capitalize" size="lg" key={route.key} external to={route.link}>
                     {key}
                   </Button>
                 ))}

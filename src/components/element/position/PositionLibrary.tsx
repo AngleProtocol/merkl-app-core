@@ -1,4 +1,4 @@
-import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity";
+import type { PositionT } from "@merkl/api/dist/src/modules/v4/liquidity/liquidity.model";
 import { Text, Title } from "dappkit";
 import { useMemo } from "react";
 import Pagination from "../Pagination";

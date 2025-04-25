@@ -1,5 +1,5 @@
 import { type Api, ChainTag, Tag, Token, TokenTag, useChain } from "@core/index.generated";
-import { Button, Group, Hash, Icon, Tooltip, Value } from "packages/dappkit/src";
+import { Button, Group, Hash, Icon, Tooltip, Value } from "dappkit";
 import { RewardTokenRow } from "../library/RewardTokenTable";
 
 export type RewardTokenTableRowProps = {

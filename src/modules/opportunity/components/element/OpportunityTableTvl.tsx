@@ -1,7 +1,7 @@
-import TvlModal from "@core/components/element/tvl/TvlModal";
+import TvlTooltip from "@core/components/element/tvl/TvlTooltip";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { type Component, Dropdown, Text, Value } from "packages/dappkit/src";
+import { type Component, Dropdown, Text, Value } from "dappkit";
 
 export type OpportunityTableTvlProps = {
   opportunity: Opportunity;
@@ -18,7 +18,7 @@ export default function OpportunityTableTvl({
   if (opportunity.tvlRecord?.breakdowns?.filter(b => b.type === "TOKEN")?.length >= 2)
     return (
       <Text bold look="tint" size="lg">
-        <Dropdown size="xl" onHover content={<TvlModal opportunity={opportunity} {...props} />}>
+        <Dropdown size="xl" onHover content={<TvlTooltip opportunity={opportunity} {...props} />}>
           {children ?? (
             <Value value format={dollarFormat}>
               {opportunity.tvl ?? 0}

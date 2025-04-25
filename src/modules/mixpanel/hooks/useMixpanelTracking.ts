@@ -1,6 +1,6 @@
 import { useMerklConfig } from "@core/modules/config/config.context";
 import type { Opportunity } from "@merkl/api";
-import { useWalletContext } from "packages/dappkit/src";
+import { useWalletContext } from "dappkit";
 import { useCallback } from "react";
 import { type MixpanelEvents, MixpanelService } from "../mixpanel.service";
 import useMixpanelContext from "./useMixpanelContext";
@@ -38,7 +38,7 @@ export default function useMixpanelTracking() {
         "Click on supply": ({ mode, ...opportunity }) => {
           MixpanelService({ context }).trackOpportunityButton("supply", mode, {}, opportunity, chains);
         },
-        "Click on leadeboard": ({ view, ...opportunity }) => {
+        "Click on leaderboard": ({ view, ...opportunity }) => {
           MixpanelService({ context }).trackOpportunityButton(
             "leaderboard",
             "campaign",

@@ -1,4 +1,4 @@
-import { Group, Icon, Text } from "packages/dappkit/src";
+import { Group, Icon, Text } from "dappkit";
 import { useMemo } from "react";
 import useOpportunityFilters, { SortOrder } from "../../hooks/useOpportunityFilters";
 

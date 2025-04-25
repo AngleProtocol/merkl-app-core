@@ -1,8 +1,7 @@
-import type { TagTypes } from "@core/components/element/Tag";
 import type { OpportunityNavigationMode } from "@core/config/opportunity";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import OpportunityParticipateModal from "@core/modules/opportunity/components/element/OpportunityParticipateModal";
-import useOpportunityData from "@core/modules/opportunity/hooks/useOpportunityMetadata";
+import useOpportunityMetadata from "@core/modules/opportunity/hooks/useOpportunityMetadata";
 import type { Opportunity } from "@merkl/api";
 import type { BoxProps } from "dappkit";
 import { Box, Button, Divider, Group, Icon, Text, Title } from "dappkit";
@@ -12,12 +11,12 @@ import useOpportunityCell from "../../hooks/useOpportunityCell";
 
 export type OpportunityCellProps = {
   opportunity: Opportunity;
-  tags?: (keyof TagTypes)[];
+  tags?: Parameters<ReturnType<typeof useOpportunityMetadata>["Tags"]>[0]["tags"];
   navigationMode?: OpportunityNavigationMode;
 } & BoxProps;
 
 export default function OpportunityCell({ opportunity, navigationMode, tags }: OpportunityCellProps) {
-  const { name, link, Tags, Icons } = useOpportunityData(opportunity);
+  const { name, link, Tags, Icons } = useOpportunityMetadata(opportunity);
   const { opportunityMetrics } = useOpportunityCell(opportunity);
 
   const cell = useMemo(

@@ -5,9 +5,9 @@ import AppProviders from "./app/providers";
 import Hero from "./components/composite/Hero";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import type { MerklConfig } from "./modules/config/config.model";
+import type { MerklConfigBuilded } from "./modules/config/config.model";
 
-export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
+export default function RootErrorBoundary(config: MerklConfigBuilded) {
   return () => {
     const error = useRouteError();
     const notARoute = isRouteErrorResponse(error) && error.status === 404;
@@ -17,13 +17,11 @@ export default function RootErrorBoundary(config: Pick<MerklConfig, "theme">) {
 
     if (notARoute)
       return (
-        <AppProviders config={config}>
+        <AppProviders config={config} env={{}}>
           <Group size="xl" className="!gap-0 min-h-screen !flex-nowrap flex-col">
             <Header />
             <main className="flex-1 h-full flex flex-col">
               <Hero
-                className="h-full"
-                // icons={[{ remix: "RiPlanetFill" }]}
                 navigation={{ label: "Back to opportunities", link: "/" }}
                 title={"Oops!"}
                 description={"The page you are looking for no longer exists"}

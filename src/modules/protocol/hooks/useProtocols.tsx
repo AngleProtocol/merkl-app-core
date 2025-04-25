@@ -13,12 +13,12 @@ export default function useProtocols(protocols?: Protocol[]) {
   const options: { [id: number]: ReactNode } = useMemo(
     () =>
       protocols?.reduce(
-        (obj, chain) =>
+        (obj, protocol) =>
           Object.assign(obj, {
-            [chain.id]: (
+            [protocol.name]: (
               <>
-                <Icon size="sm" src={chain?.icon} />
-                <Text look="bold">{chain.name}</Text>
+                <Icon size="sm" src={protocol?.icon} />
+                <Text look="bold">{protocol.name}</Text>
               </>
             ),
           }),
