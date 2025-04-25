@@ -1,5 +1,6 @@
 import Tag from "@core/components/element/Tag";
 import AprValue from "@core/components/element/apr/AprValue";
+import TvlTooltip from "@core/components/element/tvl/TvlTooltip";
 import { AprTooltip, getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
@@ -10,7 +11,6 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
-import TvlTooltip from "@core/components/element/tvl/TvlTooltip";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;

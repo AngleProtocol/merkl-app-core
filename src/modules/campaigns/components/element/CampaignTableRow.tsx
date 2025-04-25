@@ -3,7 +3,8 @@ import useCampaignMetadata, { ECampaignStatus } from "@core/modules/campaigns/ho
 import useCampaignRules from "@core/modules/campaigns/hooks/useCampaignRules";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
-import type { Opportunity, Campaign, Chain as ChainType } from "@merkl/api";
+import type { Campaign, Chain as ChainType, Opportunity } from "@merkl/api";
+import { DistributionType } from "@merkl/api/dist/database/api/.generated";
 import {
   Box,
   Button,
@@ -35,7 +36,6 @@ import useCampaignStats from "../../hooks/useCampaignStats";
 import CampaignTooltipDates from "../CampaignTooltipDates";
 import { CampaignRow } from "../library/CampaignTable";
 import Rule from "../rules/Rule";
-import { DistributionType } from "@merkl/api/dist/database/api/.generated";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;

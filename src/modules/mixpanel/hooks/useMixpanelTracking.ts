@@ -42,6 +42,7 @@ export default function useMixpanelTracking() {
           MixpanelService({ context }).trackOpportunityButton("leaderboard", "campaign", {}, opportunity, chains);
         },
         "Check filters": params => MixpanelService({ context }).trackButton("check", "check_filters", params),
+        "Create campaign success": params => MixpanelService({ context }).track("create campaign", params),
       };
 
       return events[event]?.(data);
