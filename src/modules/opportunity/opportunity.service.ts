@@ -33,7 +33,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
           order: url.searchParams.get("sort")?.split("-")[1],
           search: !!campaignId ? searchString : searchString,
           campaignId,
-          test: backend.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+          test: backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true",
           point: backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false),
           page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
           tags: url.searchParams.get("tag") ?? undefined,
@@ -175,7 +175,7 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
             headers: backend.showDevelopmentHelpers ? { "cache-control": "no-cache" } : undefined,
             query: {
               test: backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true",
-              point: backend.alwaysShowPointTokens ?? false,
+              point: backend.alwaysShowPointTokens ?? url.searchParams.get("test") === "true",
             },
           }),
         );

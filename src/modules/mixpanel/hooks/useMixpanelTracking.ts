@@ -38,16 +38,8 @@ export default function useMixpanelTracking() {
         "Click on supply": ({ mode, ...opportunity }) => {
           MixpanelService({ context }).trackOpportunityButton("supply", mode, {}, opportunity, chains);
         },
-        "Click on leaderboard": ({ view, ...opportunity }) => {
-          MixpanelService({ context }).trackOpportunityButton(
-            "leaderboard",
-            "campaign",
-            {
-              view,
-            },
-            opportunity,
-            chains,
-          );
+        "Click on leaderboard": ({ ...opportunity }) => {
+          MixpanelService({ context }).trackOpportunityButton("leaderboard", "campaign", {}, opportunity, chains);
         },
         "Check filters": params => MixpanelService({ context }).trackButton("check", "check_filters", params),
         "Create campaign success": params => MixpanelService({ context }).track("create campaign", params),

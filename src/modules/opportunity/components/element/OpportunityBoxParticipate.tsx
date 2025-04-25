@@ -1,10 +1,6 @@
 import Tag from "@core/components/element/Tag";
-import AprSectionCampaigns from "@core/components/element/apr/AprSectionCampaigns";
 import AprValue from "@core/components/element/apr/AprValue";
-import PointsModalCampaigns from "@core/components/element/points/PointsModalCampaigns";
-import TvlRowAllocation from "@core/components/element/tvl/TvlRowAllocation";
-import TvlSection from "@core/components/element/tvl/TvlSection";
-import { getActionData } from "@core/index.generated";
+import { AprTooltip, getActionData } from "@core/index.generated";
 import { useMerklConfig } from "@core/modules/config/config.context";
 import useMixpanelTracking from "@core/modules/mixpanel/hooks/useMixpanelTracking";
 import type { Opportunity } from "@merkl/api";
@@ -14,6 +10,7 @@ import React, { useCallback, useMemo } from "react";
 import useOpportunityMetadata from "../../hooks/useOpportunityMetadata";
 import useOpportunityRewards from "../../hooks/useOpportunityRewards";
 import OpportunityParticipateModal from "./OpportunityParticipateModal";
+import TvlTooltip from "@core/components/element/tvl/TvlTooltip";
 
 export interface OpportunityBoxParticipateProps {
   opportunity: Opportunity;
@@ -107,16 +104,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                 <Dropdown
                   onHover
                   onOpen={() => track("Click on opportunity button", { button: "apr", type: "tooltip", opportunity })}
-                  content={
-                    isOnlyPoint ? (
-                      <PointsModalCampaigns opportunity={opportunity} />
-                    ) : (
-                      <Group className="flex-col" size="md">
-                        <AprSectionCampaigns opportunity={opportunity} />
-                        <TvlSection opportunity={opportunity} />
-                      </Group>
-                    )
-                  }>
+                  content={<AprTooltip opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm ">
                     {isOnlyPoint ? "SCORE" : "APR"}
                     <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />
@@ -144,12 +132,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
                 <Dropdown
                   onHover
                   onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
-                  content={
-                    <Group className="flex-col" size="md">
-                      <TvlRowAllocation opportunity={opportunity} />
-                      <TvlSection opportunity={opportunity} />
-                    </Group>
-                  }>
+                  content={<TvlTooltip opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm " look="soft">
                     TVL
                     <Icon remix="RiQuestionFill" size="sm" className="fill-accent-10" />

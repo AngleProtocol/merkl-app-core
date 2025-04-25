@@ -13,16 +13,17 @@ export const CampaignService = defineModule<{ backend: MerklBackendConfig; reque
     const getQueryFromRequest = inject(["backend", "request"]).inFunction(
       ({ request, backend }, override?: Parameters<Api["v4"]["campaigns"]["index"]["get"]>[0]["query"]) => {
         if (!request) return override ?? {};
+        const url = new URL(request.url);
 
-        const status = new URL(request.url).searchParams.get("status");
-        const action = new URL(request.url).searchParams.get("action");
-        const chainId = new URL(request.url).searchParams.get("chain");
-        const page = new URL(request.url).searchParams.get("page");
-        const test = backend.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
-        const point = backend.alwaysShowPointTokens ? true : (new URL(request.url).searchParams.get("point") ?? false);
-        const items = new URL(request.url).searchParams.get("items");
-        const search = new URL(request.url).searchParams.get("search");
-        const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
+        const status = url.searchParams.get("status");
+        const action = url.searchParams.get("action");
+        const chainId = url.searchParams.get("chain");
+        const page = url.searchParams.get("page");
+        const test = backend.alwaysShowTestTokens ?? url.searchParams.get("test") === "true";
+        const point = backend.alwaysShowPointTokens ? true : (url.searchParams.get("point") ?? false);
+        const items = url.searchParams.get("items");
+        const search = url.searchParams.get("search");
+        const [sort, order] = url.searchParams.get("sort")?.split("-") ?? [];
 
         const filters = Object.assign(
           { status, action, chainId, items, sort, order, name: search, page, test, point },

@@ -28,7 +28,7 @@ export default function TvlLibrary({ opportunity }: TvlLibraryProps) {
       tvlFiltered?.map(breakdown => {
         const aprBreakdown = aprFiltered.find(b => b.identifier === breakdown.identifier);
 
-        return <TvlTableRow key={breakdown.id} aprBreakdown={aprBreakdown} tvlBreakdown={breakdown} />;
+        return <TvlTableRow key={breakdown.identifier} aprBreakdown={aprBreakdown} tvlBreakdown={breakdown} />;
       }),
     [aprFiltered, tvlFiltered],
   );
