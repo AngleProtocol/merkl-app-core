@@ -103,6 +103,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {typeof apr === "number" ? (
                 <Dropdown
                   onHover
+                  size="xl"
                   onOpen={() => track("Click on opportunity button", { button: "apr", type: "tooltip", opportunity })}
                   content={<AprTooltip opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm ">
@@ -131,6 +132,7 @@ export default function OpportunityBoxParticipate(props: OpportunityBoxParticipa
               {opportunity.tvlRecord?.breakdowns?.length >= 2 ? (
                 <Dropdown
                   onHover
+                  size="xl"
                   onOpen={() => track("Click on opportunity button", { button: "tvl", type: "tooltip", opportunity })}
                   content={<TvlTooltip opportunity={opportunity} />}>
                   <Text bold className="flex items-center gap-sm " look="soft">

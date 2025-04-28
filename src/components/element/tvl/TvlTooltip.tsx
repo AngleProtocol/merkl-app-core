@@ -13,7 +13,7 @@ export default function TvlTooltip(props: TvlTooltipProps) {
   const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
 
   return (
-    <Group className="flex-col">
+    <Group className="flex-col lg:max-w-[25vw]" size="xl">
       <Group className="justify-between items-center">
         <Title look="soft" h={5}>
           TVL INFORMATION
