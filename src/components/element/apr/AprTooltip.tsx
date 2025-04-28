@@ -93,14 +93,7 @@ export default function AprTooltip(props: AprTooltipProps) {
         </PrimitiveTag>
       </Group>
       <Divider look="hype" className="-mx-xl w-[calc(100%+2*var(--spacing-xl))]" />
-      <Group className="flex-col" size="md">
-        {!displayClammWarning && description && (
-          <Group className="p-md">
-            <Text size="xs" look="soft">
-              {description}
-            </Text>
-          </Group>
-        )}
+      <Group className="flex-col" size="lg">
         {distributionTypes.size === 1 ? (
           <AprSection
             breakdowns={opportunity?.aprRecord?.breakdowns?.filter(breakdown => breakdown.type !== "PROTOCOL")}
@@ -136,9 +129,16 @@ export default function AprTooltip(props: AprTooltipProps) {
               : null}
           </Group>
         )}
+        {!displayClammWarning && description && (
+          <Group className="">
+            <Text size="xs" look="soft">
+              {description}
+            </Text>
+          </Group>
+        )}
       </Group>
       {displayClammWarning && (
-        <Box look="base" size="md" className="bg-main-6 my-lg">
+        <Box look="base" size="md" className="bg-main-6 my-md">
           <Group size="xs" className="px-md">
             <Text size="sm" look="soft" bold>
               How is APR Calculated?
