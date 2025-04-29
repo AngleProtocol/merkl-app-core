@@ -157,7 +157,7 @@ export default function Hero({
 
       {!!tabs?.length && <Tabs tabs={tabs} look="base" size="lg" />}
 
-      <div>{children}</div>
+      {children}
     </>
   );
 }
