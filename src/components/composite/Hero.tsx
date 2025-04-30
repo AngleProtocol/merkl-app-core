@@ -97,7 +97,7 @@ export default function Hero({
                 })}
               </Group>
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
-                <Group className={`${compact ? "py-xl md:py-lg*2" : ""} flex-col flex-1`} size="xl">
+                <Group className={`${compact ? "py-xl md:py-lg*2" : ""} flex-col flex-1`} size="lg">
                   <Group
                     className="gap-0 md:gap-lg flex-nowrap w-full items-center"
                     style={{
@@ -120,7 +120,7 @@ export default function Hero({
                   </Group>
 
                   {!!description && (
-                    <Text size="lg" look="base">
+                    <Text size="lg" look="soft">
                       {typeof description === "string"
                         ? description?.split("\n").map((line, index) => (
                             <React.Fragment key={line}>
@@ -157,7 +157,7 @@ export default function Hero({
 
       {!!tabs?.length && <Tabs tabs={tabs} look="base" size="lg" />}
 
-      <div>{children}</div>
+      {children}
     </>
   );
 }
