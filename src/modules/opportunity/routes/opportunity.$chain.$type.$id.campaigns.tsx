@@ -19,16 +19,16 @@ export async function loader({
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });
-  const opportunity = (await OpportunityService({ api, request, backend }).getCampaignsByParams({
-    chainId: chain.id,
-    type: type,
-    identifier: id,
-  })) as unknown as Opportunity;
-
-  const targets = await InteractionService({ api, backend }).getTargetsByOpportunity(opportunity as Opportunity);
+  // DISABLED FOR NOW (Crashing on opp identifier different from blockchain address)
+  // const opportunity = (await OpportunityService({ api, request, backend }).getCampaignsByParams({
+  //   chainId: chain.id,
+  //   type: type,
+  //   identifier: id,
+  // })) as unknown as Opportunity;
+  // const targets = await InteractionService({ api, backend }).getTargetsByOpportunity(opportunity as Opportunity);
 
   return {
-    targets,
+    targets :[],
   };
 }
 
