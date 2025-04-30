@@ -11,17 +11,5 @@ declare module "@remix-run/server-runtime" {
 }
 
 export default defineConfig({
-  plugins: [
-    svgr(),
-    reactRouter({
-      appDirectory: "./src",
-      ignoredRouteFiles: ["*"],
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-      },
-    }),
-    tsconfigPaths(),
-  ],
+  plugins: [svgr(), reactRouter(), tsconfigPaths()],
 });

@@ -2,14 +2,11 @@ import { api } from "@core/api";
 import type { MerklServerContext } from "@core/app/server/context";
 import { ErrorContent } from "@core/components/layout/ErrorContent";
 import { ChainService } from "@core/modules/chain/chain.service";
-import { InteractionService } from "@core/modules/interaction/interaction.service";
 import type { OutletContextOpportunity } from "@core/modules/opportunity/routes/opportunity.$chain.$type.$id.header";
-import type { Opportunity } from "@merkl/api";
 import { Container, Group } from "dappkit";
 import { Outlet, useLoaderData, useOutletContext } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import OpportunityBoxParticipate from "../components/element/OpportunityBoxParticipate";
-import { OpportunityService } from "../opportunity.service";
 
 export async function loader({
   context: { backend },
@@ -19,16 +16,16 @@ export async function loader({
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService({ api, request, backend }).get({ name: chainId });
-  const opportunity = (await OpportunityService({ api, request, backend }).getCampaignsByParams({
-    chainId: chain.id,
-    type: type,
-    identifier: id,
-  })) as unknown as Opportunity;
-
-  const targets = await InteractionService({ api, backend }).getTargetsByOpportunity(opportunity as Opportunity);
+  // DISABLED FOR NOW (Crashing on opp identifier different from blockchain address)
+  // const opportunity = (await OpportunityService({ api, request, backend }).getCampaignsByParams({
+  //   chainId: chain.id,
+  //   type: type,
+  //   identifier: id,
+  // })) as unknown as Opportunity;
+  // const targets = await InteractionService({ api, backend }).getTargetsByOpportunity(opportunity as Opportunity);
 
   return {
-    targets,
+    targets: [],
   };
 }
 
