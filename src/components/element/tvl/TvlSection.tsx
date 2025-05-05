@@ -98,7 +98,7 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                         </Value>
                       </PrimitiveTag>
                     ) : (
-                      <></>
+                      <Text> </Text>
                     )}
                     <Text look="bold" className="inline-flex justify-end" size="sm">
                       <Value value format={dollarFormat}>
