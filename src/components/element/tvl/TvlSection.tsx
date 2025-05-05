@@ -91,12 +91,14 @@ export default function TvlSection({ opportunity }: TvlSectionProps) {
                       {getTvlName(breakdown)}
                     </Text>
 
-                    {aprBreakdown && (
+                    {aprBreakdown ? (
                       <PrimitiveTag className="w-fit ml-auto" look="bold" size="sm">
                         <Value value format={aprFormat}>
                           {aprBreakdown.value / 100}
                         </Value>
                       </PrimitiveTag>
+                    ) : (
+                      <></>
                     )}
                     <Text look="bold" className="inline-flex justify-end" size="sm">
                       <Value value format={dollarFormat}>
