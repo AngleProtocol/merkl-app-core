@@ -130,7 +130,7 @@ export default function AprTooltip(props: AprTooltipProps) {
           </Group>
         )}
         {!displayClammWarning && description && (
-          <Group className="">
+          <Group className="my-md">
             <Text size="xs" look="soft">
               {description}
             </Text>

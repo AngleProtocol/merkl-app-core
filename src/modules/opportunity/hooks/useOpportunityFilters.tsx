@@ -145,7 +145,7 @@ export default function useOpportunityFilters() {
       ),
       "lastCampaignCreatedAt-desc": (
         <Group className="flex-nowrap !gap-sm">
-          <Text look="bold">{filtersConfigEnabled?.["created-desc"]?.name || "By Most Recent Campaign"}</Text>
+          <Text look="bold">{filtersConfigEnabled?.["lastCampaignCreatedAt-desc"]?.name || "Newest Arrivals"}</Text>
           <Icon remix="RiArrowDownLine" />
         </Group>
       ),
