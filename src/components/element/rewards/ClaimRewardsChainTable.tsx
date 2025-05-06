@@ -3,7 +3,7 @@ import { createTable } from "dappkit";
 export const [ClaimRewardsChainTable, ClaimRewardsChainRow, claimRewardsChainColumns] = createTable({
   chain: {
     name: "Chain",
-    size: "minmax(180px,1fr)",
+    size: "minmax(280px,1fr)",
     className: "justify-start",
     main: true,
   },
