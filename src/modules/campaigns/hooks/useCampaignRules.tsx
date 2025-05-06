@@ -148,7 +148,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
 
       return arr;
     },
-    [opportunity],
+    [opportunity, dollarFormat],
   );
 
   /**
