@@ -70,8 +70,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         arr.push({
           type: "liquidity",
           value: {
-            description:
-              `Only positions with an upper tick price below ${params.upperPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict upper limit on the price range for qualifying positions: any position with an upper tick price above this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the upper tick corresponds to a price of 1,050 or less are eligible. A position ranging from 980 to 1,040 qualifies; a position from 990 to 1,080 does not.`,
+            description: `Only positions with an upper tick price below ${params.upperPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict upper limit on the price range for qualifying positions: any position with an upper tick price above this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the upper tick corresponds to a price of 1,050 or less are eligible. A position ranging from 980 to 1,040 qualifies; a position from 990 to 1,080 does not.`,
             label: (
               <Group size="sm">
                 <Icon remix="RiDiscountPercentFill" />
@@ -90,8 +89,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         arr.push({
           type: "liquidity",
           value: {
-            description:
-              `Only positions with a lower tick price above ${params.lowerPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict lower limit on the price range for qualifying positions: any position with a lower tick price below this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the lower tick corresponds to a price of 1,050 or above are eligible. A position ranging from 1,060 to 1,080 qualifies; a position from 990 to 1,080 does not.`,
+            description: `Only positions with a lower tick price above ${params.lowerPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict lower limit on the price range for qualifying positions: any position with a lower tick price below this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the lower tick corresponds to a price of 1,050 or above are eligible. A position ranging from 1,060 to 1,080 qualifies; a position from 990 to 1,080 does not.`,
             label: (
               <Group size="sm">
                 <Icon remix="RiDiscountPercentFill" />
