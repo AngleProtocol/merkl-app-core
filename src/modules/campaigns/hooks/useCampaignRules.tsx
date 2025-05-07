@@ -1,7 +1,8 @@
+import { useMerklConfig } from "@core/index.generated";
 import { UserService } from "@core/modules/user/user.service";
 import type { Campaign as CampaignFromApi, CampaignParams } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Icon } from "dappkit";
+import { Group, Icon, Text, Value } from "dappkit";
 import { useCallback, useMemo } from "react";
 import Token from "../../token/components/element/Token";
 import type { RuleType } from "../components/rules/Rule";
@@ -19,6 +20,7 @@ export type HookJumper = {
  * Formats basic metadata for a given opportunity
  */
 export default function useCampaignRules(campaign: CampaignFromApi, opportunity?: Opportunity) {
+  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   /**
    * Get weighted liquidity/fees campaigns rules
    */
@@ -64,6 +66,46 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         },
       });
 
+      if (!!params.upperPriceBond)
+        arr.push({
+          type: "liquidity",
+          value: {
+            description:
+              "Only positions with an upper tick price below a fixed threshold are eligible for rewards. This rule sets a hard price ceiling for eligible positions: positions extending above this level do not qualify for rewards. Example: If the threshold is $1,050, only positions with an upper bound of $1,050 or lower are eligible.A position from $980 to $1,040 qualifies; one from $990 to $1,080 does not.",
+            label: (
+              <Group size="sm">
+                <Icon remix="RiDiscountPercentFill" />
+                <Text size={"xs"} look="bold">
+                  Upper Price Bound
+                </Text>
+                <Value format={dollarFormat} size="xs" className="font-bold">
+                  {params.upperPriceBond / 1000}
+                </Value>
+              </Group>
+            ),
+          },
+        });
+
+      if (!!params.lowerPriceBond)
+        arr.push({
+          type: "liquidity",
+          value: {
+            description:
+              "Only positions with a lower tick price above a fixed threshold are eligible. This rule sets a hard price floor for eligible positions: positions extending below this level do not qualify for rewards. Example: If the threshold is $0.50, only positions with a lower bound of $0.50 or higher are eligible.A position from $0.60 to $1.10 qualifies; one from $0.30 to $1.00 does not.",
+            label: (
+              <Group size="sm">
+                <Icon remix="RiDiscountPercentFill" />
+                <Text size={"xs"} look="bold">
+                  Lower Price Bound
+                </Text>
+                <Value format={dollarFormat} size="xs" className="font-bold">
+                  {params.lowerPriceBond / 1000}
+                </Value>
+              </Group>
+            ),
+          },
+        });
+
       //token weight rules
       for (const tokenIndex of [0, 1]) {
         const token =
@@ -106,7 +148,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
 
       return arr;
     },
-    [opportunity],
+    [opportunity, dollarFormat],
   );
 
   /**
