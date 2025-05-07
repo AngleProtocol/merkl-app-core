@@ -70,8 +70,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         arr.push({
           type: "liquidity",
           value: {
-            description:
-              "Only positions with an upper tick price below a fixed threshold are eligible for rewards. This rule sets a hard price ceiling for eligible positions: positions extending above this level do not qualify for rewards. Example: If the threshold is $1,050, only positions with an upper bound of $1,050 or lower are eligible.A position from $980 to $1,040 qualifies; one from $990 to $1,080 does not.",
+            description: `Only positions with an upper tick price below ${params.upperPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict upper limit on the price range for qualifying positions: any position with an upper tick price above this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the upper tick corresponds to a price of 1,050 or less are eligible. A position ranging from 980 to 1,040 qualifies; a position from 990 to 1,080 does not.`,
             label: (
               <Group size="sm">
                 <Icon remix="RiDiscountPercentFill" />
@@ -79,7 +78,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
                   Upper Price Bound
                 </Text>
                 <Value format={dollarFormat} size="xs" className="font-bold">
-                  {params.upperPriceBond / 1000}
+                  {params.upperPriceBond / 10000}
                 </Value>
               </Group>
             ),
@@ -90,8 +89,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
         arr.push({
           type: "liquidity",
           value: {
-            description:
-              "Only positions with a lower tick price above a fixed threshold are eligible. This rule sets a hard price floor for eligible positions: positions extending below this level do not qualify for rewards. Example: If the threshold is $0.50, only positions with a lower bound of $0.50 or higher are eligible.A position from $0.60 to $1.10 qualifies; one from $0.30 to $1.00 does not.",
+            description: `Only positions with a lower tick price above ${params.lowerPriceBond / 10000} are eligible for rewards. Here, "price" refers to the ratio of token 1 to token 0 — for example, if token 1 is ETH and token 0 is BTC, the price represents the ETH/BTC rate. This rule sets a strict lower limit on the price range for qualifying positions: any position with a lower tick price below this threshold is not eligible for rewards. Example: If the threshold is 1,050 token 1 per token 0, then only positions where the lower tick corresponds to a price of 1,050 or above are eligible. A position ranging from 1,060 to 1,080 qualifies; a position from 990 to 1,080 does not.`,
             label: (
               <Group size="sm">
                 <Icon remix="RiDiscountPercentFill" />
@@ -99,7 +97,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
                   Lower Price Bound
                 </Text>
                 <Value format={dollarFormat} size="xs" className="font-bold">
-                  {params.lowerPriceBond / 1000}
+                  {params.lowerPriceBond / 10000}
                 </Value>
               </Group>
             ),
