@@ -1,4 +1,3 @@
-import { useMerklConfig } from "@core/index.generated";
 import { UserService } from "@core/modules/user/user.service";
 import type { Campaign as CampaignFromApi, CampaignParams } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
@@ -20,7 +19,6 @@ export type HookJumper = {
  * Formats basic metadata for a given opportunity
  */
 export default function useCampaignRules(campaign: CampaignFromApi, opportunity?: Opportunity) {
-  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   /**
    * Get weighted liquidity/fees campaigns rules
    */
@@ -150,7 +148,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
 
       return arr;
     },
-    [opportunity, dollarFormat],
+    [opportunity],
   );
 
   /**
