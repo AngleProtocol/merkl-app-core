@@ -84,18 +84,20 @@ export default function Hero({
           }}>
           <Container className="z-10">
             <Group className={`flex-col h-full py-xl gap-md md:gap-xl lg:gap-xs ${compact ? "flex-nowrap" : ""}`}>
-              <Group className="items-center" size="sm">
-                {breadcrumbs?.map((breadcrumb, index) => {
-                  if (breadcrumb.component)
-                    return <React.Fragment key={breadcrumb.link}>{breadcrumb.component}</React.Fragment>;
-                  return (
-                    <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
-                      {index > 0 && <Icon remix="RiArrowRightSLine" />}
-                      {breadcrumb.name}
-                    </Button>
-                  );
-                })}
-              </Group>
+              {!!breadcrumbs && breadcrumbs?.length > 0 && (
+                <Group className="items-center" size="sm">
+                  {breadcrumbs?.map((breadcrumb, index) => {
+                    if (breadcrumb.component)
+                      return <React.Fragment key={breadcrumb.link}>{breadcrumb.component}</React.Fragment>;
+                    return (
+                      <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
+                        {index > 0 && <Icon remix="RiArrowRightSLine" />}
+                        {breadcrumb.name}
+                      </Button>
+                    );
+                  })}
+                </Group>
+              )}
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
                 <Group className={`${compact ? "py-xl md:py-lg*2" : ""} flex-col flex-1`} size="lg">
                   <Group
