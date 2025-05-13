@@ -198,10 +198,22 @@ export const OpportunityService = defineModule<{ api: Api; request: Request; bac
       },
     );
 
+    // Get univ4 pools
+    const getUniv4Pools = inject(["api"]).inFunction(
+      ({ api }, query: ApiQuery<Api["v3"]["uniswapv4"]["index"]["get"]>) => {
+        return fetchApi(async () =>
+          api.v3.uniswapv4.index.get({
+            query: Object.assign({ ...query }),
+          }),
+        );
+      },
+    );
+
     return {
       reparse,
       refreshMetadata,
       getMany,
+      getUniv4Pools,
       getAggregate,
       getManyFromRequest,
       getFeatured,
