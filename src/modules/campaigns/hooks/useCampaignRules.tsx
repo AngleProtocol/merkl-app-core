@@ -1,8 +1,7 @@
-import { useMerklConfig } from "@core/index.generated";
 import { UserService } from "@core/modules/user/user.service";
 import type { Campaign as CampaignFromApi, CampaignParams } from "@merkl/api";
 import type { Opportunity } from "@merkl/api";
-import { Group, Icon, Text, Value } from "dappkit";
+import { Group, Icon, Text } from "dappkit";
 import { useCallback, useMemo } from "react";
 import Token from "../../token/components/element/Token";
 import type { RuleType } from "../components/rules/Rule";
@@ -20,7 +19,6 @@ export type HookJumper = {
  * Formats basic metadata for a given opportunity
  */
 export default function useCampaignRules(campaign: CampaignFromApi, opportunity?: Opportunity) {
-  const dollarFormat = useMerklConfig(store => store.config.decimalFormat.dollar);
   /**
    * Get weighted liquidity/fees campaigns rules
    */
@@ -77,9 +75,11 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
                 <Text size={"xs"} look="bold">
                   Upper Price Bound
                 </Text>
-                <Value format={dollarFormat} size="xs" className="font-bold">
-                  {params.upperPriceBond / 10000}
-                </Value>
+                <Text size="xs" className="font-bold">
+                  {params.symbolCurrency0 && params.symbolCurrency1
+                    ? `${params.upperPriceBond / 10000} ${params.symbolCurrency1}/${params.symbolCurrency0}`
+                    : params.upperPriceBond / 10000}
+                </Text>
               </Group>
             ),
           },
@@ -96,9 +96,11 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
                 <Text size={"xs"} look="bold">
                   Lower Price Bound
                 </Text>
-                <Value format={dollarFormat} size="xs" className="font-bold">
-                  {params.lowerPriceBond / 10000}
-                </Value>
+                <Text size="xs" className="font-bold">
+                  {params.symbolCurrency0 && params.symbolCurrency1
+                    ? `${params.lowerPriceBond / 10000} ${params.symbolCurrency1}/${params.symbolCurrency0}`
+                    : params.lowerPriceBond / 10000}
+                </Text>
               </Group>
             ),
           },
@@ -146,7 +148,7 @@ export default function useCampaignRules(campaign: CampaignFromApi, opportunity?
 
       return arr;
     },
-    [opportunity, dollarFormat],
+    [opportunity],
   );
 
   /**
